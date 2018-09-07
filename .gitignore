@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 
 piwik/tmp
@@ -48,3 +49,55 @@ piwik/misc/GeoLite2-City.mmdb
 /app.0101jz.com/.env
 /app.0101jz.com/public/hequmegQLN.txt
 /app.0101jz.com/resources/views/piwik.blade.php
+=======
+
+
+piwik/tmp
+piwik/misc/GeoLite2-City.mmdb
+
+/admin.0101jz.com/.idea
+/admin.0101jz.com/public/resource
+/admin.0101jz.com/public/.well-known
+/admin.0101jz.com/vendor
+/admin.0101jz.com/storage/app/public/resource
+/admin.0101jz.com/storage
+/admin.0101jz.com/bootstrap/cache
+/admin.0101jz.com/config/public.php
+/admin.0101jz.com/.env
+/admin.0101jz.com/resources/views/piwik.blade.php
+
+/api.0101jz.com/.idea
+/api.0101jz.com/public/resource
+/api.0101jz.com/public/.well-known
+/api.0101jz.com/vendor
+/api.0101jz.com/storage/app/public/resource
+/api.0101jz.com/storage
+/api.0101jz.com/bootstrap/cache
+/api.0101jz.com/config/public.php
+/api.0101jz.com/.env
+/api.0101jz.com/resources/views/piwik.blade.php
+
+/work.0101jz.com/.idea
+/work.0101jz.com/public/resource
+/work.0101jz.com/public/.well-known
+/work.0101jz.com/vendor
+/work.0101jz.com/storage/app/public/resource
+/work.0101jz.com/storage
+/work.0101jz.com/bootstrap/cache
+/work.0101jz.com/config/public.php
+/work.0101jz.com/.env
+/work.0101jz.com/resources/views/piwik.blade.php
+/work.0101jz.com/public/2018/
+
+/app.0101jz.com/.idea
+/app.0101jz.com/public/resource
+/app.0101jz.com/public/.well-known
+/app.0101jz.com/vendor
+/app.0101jz.com/storage/app/public/resource
+/app.0101jz.com/storage
+/app.0101jz.com/bootstrap/cache
+/app.0101jz.com/config/public.php
+/app.0101jz.com/.env
+/app.0101jz.com/public/hequmegQLN.txt
+/app.0101jz.com/resources/views/piwik.blade.php
+>>>>>>> 6283170d092a61cb98a30fb7f97a1686ed61aee2
