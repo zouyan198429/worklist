@@ -1,0 +1,142 @@
+body { 	font: 16px/1.5 "microsoft yahei", Helvetica, Tahoma, Arial, "Microsoft jhengHei", sans-serif;	color:#404040; background-color:#fff;}
+body,p,pre,blockquote,
+h1,h2,h3,h4,h5,h6,			
+dl,dt,dd,ul,ol,li,			
+form,fieldset,legend,select,
+input,textarea,button,		
+table,caption,tr,th,td {margin:0;	padding:0;}
+* {margin:0;	padding:0;}
+
+ol,ul {	list-style:none;}
+fieldset,img {	border:0 none;}
+img { max-width: 100%;}
+a,a.link { color: #666; text-decoration: none;}
+a:hover{	text-decoration:underline;}
+input,button,textarea,select,option { font-family:inherit; font-size:100%;	outline: 0; border-radius: 3px;}
+textarea {	overflow: auto;	resize: none;}
+table td.tl { text-align: left; }
+.red { color: red;} 
+.green { color: green}
+.blue { color: blue}
+/* 公共独立类名 */
+.hidden {	display: none!important;}
+.block {	display: block;}
+.mod {	margin-bottom: 10px;	border: 1px solid #ebebeb;}
+.pillar {	display: inline-block;	width: 0;	height: 100%;	vertical-align: middle;}
+.ellipsis,.ellipsis li {	overflow: hidden;	text-overflow: ellipsis;	white-space: nowrap;}
+.c { clear:both;  }
+.must { color: red;}
+.tc { text-align: center;}
+
+/*input */
+
+input,select,textarea{ border:1px solid #bbb; vertical-align:middle;}
+input { padding-left: 3px; height: 18px }
+input:hover ,textarea:hover ,select:hover { box-shadow: 0 0 5px #1CC09F; border:1px solid #1CC09F;}
+
+input[type='text'] { color:#666; height:26px; line-height:26px; font-size: 14px;   }
+input[type='password'] { color:#666; height:26px; line-height:26px;  }
+input[type='radio'] {  border:0; margin:0 5px 0 0; vertical-align: middle }
+input[type='checkbox'] { border:0; margin:0 5px 0 0; }
+input[type='submit'] { color:#fff; background:#018CDA; border:0; height:26px; padding:0 15px; font-weight:bold; font-size:12px;}
+input[type='file'] { border:0; padding:5px 5px 5px 0; }
+select { height:24px; line-height:24px; }
+
+ 
+/* 按钮 */
+.btn {
+    display: inline-block;
+    margin: 0 0 5px;
+    padding: 6px 16px;
+    line-height: 22px;
+    font-size: 16px;
+    color: #FFFFFF;
+    cursor: pointer;
+    text-align: center;
+    vertical-align: middle;
+    border: 0 none;
+    border-radius: 2px 2px 2px 2px;
+	background-color: #348fd4;
+    transition: opacity 0.2s ease-in-out 0s;
+}
+
+.btn:hover {
+	text-decoration: none;
+	background-color: #2f81bf;
+}
+.btn-normal {
+    padding: 3px 12px;
+    font-size: 14px;
+    height: 27px;
+    margin-top: 5px;
+}
+
+/*  */
+html { height: 100%; }
+body { width: 100%;  margin:0 auto; border:1px solid #ddd; min-height: 100%; position: relative; padding-bottom: 100px; background: #f2f2f2;}
+
+
+#header { height: 80px; line-height: 80px; text-align: center; color: #fff;  font-size:1.25em; background: #348FD4; }
+
+#footnav { position: absolute; bottom: 0; left:0; height: 80px; line-height: 20px; border-top:1px  solid #ddd; width: 100%; background: #f2f2f2;}
+#footnav a { width: 24%; display: inline-block; text-align: center;  }
+#footnav a i { width: 100%; text-align: center; line-height: 30px; margin-top: 10px;}
+#footnav a span { line-height: 2rem; margin-top: 10px;}
+
+
+/* login */
+
+#loginheader { width: 20rem; height: 20rem; border:1px solid #ddd; margin:5rem auto; text-align: center;  border-radius:50%; line-height: 20rem; font-size: 1.5rem;}
+#loginbox { text-align: center;}
+#loginbox h1 { margin-bottom: 2rem;}
+#loginbox input { width: 20rem; height: 2.5rem; margin-bottom: 0.8rem;}
+#loginbox button { width: 20.3rem; height: 3rem; border:0;   background: #4ecdc4; color: #fff; font-size: 1rem; clear: both; }
+
+/* main  */
+
+#mainnav { width: 96%; margin:2rem 2%; text-align: center; }
+#mainnav li { width: 36%;  display:inline-block; margin:1rem 2%; text-align: center; min-height: 4rem; padding: 0.5rem 0; height: 8rem; border:1px solid #ddd; border-radius: 10%; background: #fff; }
+#mainnav li a { width: 100%; height: 100%; text-decoration: none;}
+#mainnav li i { width: 100%; text-align: center; line-height: 30px; margin-top: 2rem; font-size: 4rem; display: block; height: 3rem;  }
+#mainnav li span { line-height:2rem; margin-top: 10px; font-size: 1rem; }
+#mainnav li:hover { box-shadow: 0 0 12px #ddd;}
+
+
+/* work */
+.gd-list { width: 96%; margin:10px 2%; border:1px solid #ddd; border-collapse:collapse; border-radius: 5px; text-align: left; background: #fff; font-size: 0.75rem;}
+.gd-hd { background: #f5f5f5; padding: 10px 0;  text-indent: 0.5rem; }
+.gd-hd span { padding-right: 10px;}
+.gd-bd { border-bottom:1px solid  #ddd; padding: 5px 0.5rem; line-height: 2rem; font-size: 0.75rem;}
+.gd-bd span { padding-right: 10px; }
+
+.gd-fd { padding: 10px 0 5px 0;  text-indent: 0.5rem; min-height: 2.5rem;  }
+.gd-fd .btn { border-radius: 50px; margin-right: 10px; float: right; font-size: 0.75rem;}
+
+/* study */
+.table3 {  width: 96%; margin:10px 2%; background: #fff; }
+.table3 td { border-bottom:1px solid  #eee; padding:12px 5px; font-size: 1rem;}
+
+
+.main { width: 96%; margin:10px 2%; }
+
+#know-view h1 { text-align: center; padding: 1em 0;  }
+.content { padding-bottom: 40px; }
+
+
+.tip { padding: 20px;}
+.fanye { padding: 20px; }
+
+
+
+/* fankui */
+select { padding: 5px 0; height:40px; line-height: 30px; border:0;}
+input { padding: 5px 0; height: 40px; border:0;}
+textarea { border:0; }
+.wnormal { width: 40%; }
+.wlong { width: 80%; }
+
+#prlblem { padding: 20px 4%; width: 92%; background: #fff; margin-bottom: 20px;  }
+
+.table4 { width: 100%;  border-collapse:collapse;}
+.table4 th { padding: 12px 4px; width: 20%; text-align: left; font-weight: normal; border-bottom: 1px solid #eee; vertical-align: top; line-height: 40px;}
+.table4 td { padding: 12px 4px; border-bottom: 1px solid #eee; vertical-align: top; }
