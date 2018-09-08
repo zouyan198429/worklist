@@ -73,7 +73,7 @@ class IndexController extends WorksController
             $preKey = 1;
         }
         // 数据验证 TODO
-        SiteAdmin::login($admin_username,$admin_password);
+        SiteAdmin::login($admin_username,$admin_password,$preKey);
         return ajaxDataArr(1, [], '');
     }
 

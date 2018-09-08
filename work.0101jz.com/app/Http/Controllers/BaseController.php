@@ -47,45 +47,4 @@ class BaseController extends Controller
     }
 
     // 公共方法
-    // 判断权限-----开始
-    // 判断权限 ,返回当前记录[可再进行其它判断], 有其它主字段的，可以重新此方法
-    /**
-     * 判断权限
-     *
-     * @param object $modelObj 当前模型对象
-     * @param int $id id
-     * @param array $judgeArr 需要判断的下标[字段名]及值 一维数组
-     * @param string $model_name 模型名称
-     * @param int $companyId 企业id
-     * @param json/array $relations 要查询的与其它表的关系
-     * @param int $notLog 是否需要登陆 0需要1不需要
-     * @author zouyan(305463219@qq.com)
-     */
-    public function judgePower(Request $request, $id, $judgeArr = [] , $model_name = '', $company_id = '', $relations = '', $notLog  = 0){
-        // $this->InitParams($request);
-        if(empty($model_name)){
-            $model_name = $this->model_name;
-        }
-        // 获得当前记录
-        $infoData =  CommonBusiness::getinfoApi($model_name, $relations, $company_id , $id, $notLog);
-
-        $this->judgePowerByObj($request, $infoData, $judgeArr);
-        return $infoData;
-    }
-
-    public function judgePowerByObj(Request $request,$infoData, $judgeArr = [] ){
-        if(empty($infoData)){
-            throws('记录不存!', $this->source);
-        }
-        foreach($judgeArr as $field => $val){
-            if(!isset($infoData[$field])){
-                throws('字段[' . $field . ']不存在!', $this->source);
-            }
-            if( $infoData[$field] != $val ){
-                throws('没有操作此记录权限!信息字段[' . $field . ']', $this->source);
-            }
-        }
-    }
-
-    // 判断权限-----结束
 }
