@@ -8,7 +8,7 @@ use App\Services\Tool;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class UploadController extends LoginController
+class UploadController extends WorksController
 {
     protected $model_name = 'Resource';
     // 大后台 admin/年/月/日/文件

@@ -8,7 +8,7 @@ use App\Services\Tool;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class IndexController extends LoginController
+class IndexController extends WorksController
 {
     /**
      * 注册
