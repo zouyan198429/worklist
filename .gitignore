@@ -48,3 +48,5 @@ piwik/misc/GeoLite2-City.mmdb
 /app.0101jz.com/.env
 /app.0101jz.com/public/hequmegQLN.txt
 /app.0101jz.com/resources/views/piwik.blade.php
+
+/piwik.0101jz.com
