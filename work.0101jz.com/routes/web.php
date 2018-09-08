@@ -15,9 +15,10 @@
 //    return view('welcome');
 //});
 
+
 //Route::get('/test', 'IndexController@test');// 测试
 //Route::get('/test2', 'IndexController@test2');// 测试
-//Route::get('/', 'IndexController@index');// 首页
+Route::get('/', 'IndexController@index');// 首页
 //Route::get('reg', 'IndexController@reg');// 注册
 //Route::get('login', 'IndexController@login');// 登陆
 //Route::get('logout', 'IndexController@logout');// 注销
