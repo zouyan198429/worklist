@@ -17,7 +17,8 @@ class CountCallController extends AdminController
     public function index(Request $request)
     {
         $this->InitParams($request);
-        return view('manage.count_call.index',[]);
+        $reDataArr = $this->reDataArr;
+        return view('manage.count_call.index', $reDataArr);
     }
 
 }

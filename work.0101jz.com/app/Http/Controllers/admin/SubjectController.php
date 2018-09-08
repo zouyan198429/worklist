@@ -17,7 +17,8 @@ class SubjectController extends AdminController
     public function index(Request $request)
     {
         $this->InitParams($request);
-        return view('admin.subject.index',[]);
+        $reDataArr = $this->reDataArr;
+        return view('admin.subject.index', $reDataArr);
     }
 
     /**

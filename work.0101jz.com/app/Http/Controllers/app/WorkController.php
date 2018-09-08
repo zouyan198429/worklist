@@ -17,7 +17,9 @@ class WorkController extends WorksController
      */
     public function index(Request $request)
     {
-        return view('app.work.index',[]);
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        return view('app.work.index', $reDataArr);
     }
 
 

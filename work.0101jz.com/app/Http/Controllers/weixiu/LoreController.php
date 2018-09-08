@@ -16,7 +16,9 @@ class LoreController extends WorksController
      */
     public function index(Request $request)
     {
-        return view('weixiu.lore.index',[]);
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        return view('weixiu.lore.index', $reDataArr);
     }
 
     /**
@@ -28,7 +30,9 @@ class LoreController extends WorksController
      */
     public function info(Request $request)
     {
-        return view('weixiu.lore.info',[]);
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        return view('weixiu.lore.info', $reDataArr);
     }
 
 

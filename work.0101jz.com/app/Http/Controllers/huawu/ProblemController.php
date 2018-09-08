@@ -16,7 +16,9 @@ class ProblemController extends WorksController
      */
     public function add(Request $request)
     {
-        return view('huawu.problem.add',[]);
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        return view('huawu.problem.add', $reDataArr);
     }
 
 

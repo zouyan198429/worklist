@@ -16,7 +16,9 @@ class LoreController extends WorksController
      */
     public function index(Request $request)
     {
-        return view('app.lore.index',[]);
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        return view('app.lore.index', $reDataArr);
     }
     /**
      * 显示
@@ -27,7 +29,9 @@ class LoreController extends WorksController
      */
     public function info(Request $request)
     {
-        return view('app.lore.info',[]);
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        return view('app.lore.info', $reDataArr);
     }
 
 

@@ -16,7 +16,9 @@ class CustomerController extends WorksController
      */
     public function index(Request $request)
     {
-        return view('app.customer.index',[]);
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        return view('app.customer.index', $reDataArr);
     }
 
 }

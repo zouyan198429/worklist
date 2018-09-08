@@ -17,7 +17,9 @@ class CustomerController extends WorksController
      */
     public function index(Request $request)
     {
-        return view('weixiu.customer.index',[]);
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        return view('weixiu.customer.index', $reDataArr);
     }
     /**
      * 按日统计
@@ -28,7 +30,9 @@ class CustomerController extends WorksController
      */
     public function dayCount(Request $request)
     {
-        return view('weixiu.customer.dayCount',[]);
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        return view('weixiu.customer.dayCount', $reDataArr);
     }
 
 }

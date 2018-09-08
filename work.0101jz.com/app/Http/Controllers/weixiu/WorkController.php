@@ -17,7 +17,9 @@ class WorkController extends WorksController
      */
     public function list(Request $request)
     {
-        return view('weixiu.work.list',[]);
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        return view('weixiu.work.list', $reDataArr);
     }
 
 

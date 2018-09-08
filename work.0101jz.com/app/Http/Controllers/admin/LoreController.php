@@ -17,7 +17,8 @@ class LoreController extends AdminController
     public function index(Request $request)
     {
         $this->InitParams($request);
-        return view('admin.lore.index',[]);
+        $reDataArr = $this->reDataArr;
+        return view('admin.lore.index', $reDataArr);
     }
 
 

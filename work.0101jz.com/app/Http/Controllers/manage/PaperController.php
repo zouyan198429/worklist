@@ -17,7 +17,8 @@ class PaperController extends AdminController
     public function index(Request $request)
     {
         $this->InitParams($request);
-        return view('manage.paper.index',[]);
+        $reDataArr = $this->reDataArr;
+        return view('manage.paper.index', $reDataArr);
     }
 
 
@@ -31,7 +32,8 @@ class PaperController extends AdminController
     public function add(Request $request)
     {
         $this->InitParams($request);
-        return view('manage.paper.add',[]);
+        $reDataArr = $this->reDataArr;
+        return view('manage.paper.add', $reDataArr);
     }
 
 }

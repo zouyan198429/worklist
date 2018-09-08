@@ -19,7 +19,8 @@ class IndexController extends AdminController
     public function index(Request $request)
     {
         $this->InitParams($request);
-        return view('manage.index',[]);
+        $reDataArr = $this->reDataArr;
+        return view('manage.index', $reDataArr);
     }
 
     /**
@@ -105,7 +106,7 @@ class IndexController extends AdminController
      */
     public function logout(Request $request)
     {
-        $this->InitParams($request);
+        // $this->InitParams($request);
         SiteAdmin::loginOut();
         return redirect('manage/login');
     }

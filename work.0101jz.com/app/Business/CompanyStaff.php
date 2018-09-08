@@ -99,16 +99,11 @@ class CompanyStaff
         $saveData = [
             'lastlogintime' => date('Y-m-d H:i:s',time()),
         ];
-        CommonBusiness::saveByIdApi('CompanyAccounts', $account_id, $saveData, $company_id, 1);
+        CommonBusiness::saveByIdApi($modelName, $account_id, $saveData, $company_id, 1);
 
 
         $userInfo['modifyTime'] = time();
-        // 保存session
-        // 存储数据到session...
-        if (!session_id()) session_start(); // 初始化session
-        // $_SESSION['userInfo'] = $userInfo; //保存某个session信息
-        $redisKey = $this->setUserInfo($userInfo, $preKey);
-        $userInfo['redisKey'] = $redisKey;
+        return $userInfo;
     }
 
     /**

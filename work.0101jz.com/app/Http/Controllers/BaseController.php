@@ -16,6 +16,10 @@ class BaseController extends Controller
     // 是否从小程序来的请求
     protected $redisKey = null;
     protected $save_session = true;// true后台来的，false小程序来的
+    // 返回到前端的数据
+    protected $reDataArr = [
+        'real_name'=>'',
+    ];
 
     public function InitParams(Request $request)
     {

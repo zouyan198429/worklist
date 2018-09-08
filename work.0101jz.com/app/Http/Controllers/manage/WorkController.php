@@ -17,7 +17,8 @@ class WorkController extends AdminController
     public function index(Request $request)
     {
         $this->InitParams($request);
-        return view('manage.work.index',[]);
+        $reDataArr = $this->reDataArr;
+        return view('manage.work.index', $reDataArr);
     }
 
 
@@ -31,7 +32,8 @@ class WorkController extends AdminController
     public function list(Request $request)
     {
         $this->InitParams($request);
-        return view('manage.work.list',[]);
+        $reDataArr = $this->reDataArr;
+        return view('manage.work.list', $reDataArr);
     }
 
 }

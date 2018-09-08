@@ -17,7 +17,8 @@ class CustomerController extends AdminController
     public function index(Request $request)
     {
         $this->InitParams($request);
-        return view('admin.customer.index',[]);
+        $reDataArr = $this->reDataArr;
+        return view('admin.customer.index', $reDataArr);
     }
     /**
      * 按日统计
@@ -29,7 +30,8 @@ class CustomerController extends AdminController
     public function dayCount(Request $request)
     {
         $this->InitParams($request);
-        return view('admin.customer.dayCount',[]);
+        $reDataArr = $this->reDataArr;
+        return view('admin.customer.dayCount', $reDataArr);
     }
 
 }

@@ -17,7 +17,8 @@ class StaffController extends AdminController
     public function index(Request $request)
     {
         $this->InitParams($request);
-        return view('admin.staff.index',[]);
+        $reDataArr = $this->reDataArr;
+        return view('admin.staff.index', $reDataArr);
     }
 
 

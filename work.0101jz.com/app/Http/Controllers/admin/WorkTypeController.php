@@ -17,7 +17,8 @@ class WorkTypeController extends AdminController
     public function index(Request $request)
     {
         $this->InitParams($request);
-        return view('admin.work_type.index',[]);
+        $reDataArr = $this->reDataArr;
+        return view('admin.work_type.index', $reDataArr);
     }
 
 

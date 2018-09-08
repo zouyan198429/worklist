@@ -45,6 +45,12 @@ class WorksController extends BaseController
         $this->user_info =$userInfo;
         $this->user_id = $userInfo['id'] ?? '';
         $this->company_id = $company_id;
+        $real_name = $userInfo['real_name'] ?? '';
+        $mobile = $userInfo['mobile'] ?? '';
+        if(empty($real_name)){
+            $real_name = $mobile;
+        }
+        $this->reDataArr['real_name'] = $real_name;
         // 每*分钟，自动更新一下左则
 //        $recordTime  = time();
 //        $difTime = 60 * 5 ;// 5分钟

@@ -17,7 +17,8 @@ class DepartmentController extends AdminController
     public function index(Request $request)
     {
         $this->InitParams($request);
-        return view('admin.department.index',[]);
+        $reDataArr = $this->reDataArr;
+        return view('admin.department.index', $reDataArr);
     }
 
 

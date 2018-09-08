@@ -17,7 +17,8 @@ class SubjectController extends AdminController
     public function index(Request $request)
     {
         $this->InitParams($request);
-        return view('manage.subject.index',[]);
+        $reDataArr = $this->reDataArr;
+        return view('manage.subject.index', $reDataArr);
     }
 
     /**
@@ -30,7 +31,8 @@ class SubjectController extends AdminController
     public function add(Request $request)
     {
         $this->InitParams($request);
-        return view('manage.subject.add',[]);
+        $reDataArr = $this->reDataArr;
+        return view('manage.subject.add', $reDataArr);
     }
 
 

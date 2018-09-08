@@ -17,7 +17,8 @@ class CustomerTypeController extends AdminController
     public function index(Request $request)
     {
         $this->InitParams($request);
-        return view('admin.customer_type.index',[]);
+        $reDataArr = $this->reDataArr;
+        return view('admin.customer_type.index', $reDataArr);
     }
 
 

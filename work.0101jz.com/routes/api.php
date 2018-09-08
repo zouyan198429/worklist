@@ -33,6 +33,7 @@ Route::any('manage/ajax_login', 'manage\IndexController@ajax_login');// 登陆
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 //web-huawu 客服
+Route::any('huawu/ajax_login', 'huawu\IndexController@ajax_login');// 登陆
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -43,6 +44,8 @@ Route::any('weixiu/ajax_login', 'weixiu\IndexController@ajax_login');// 登陆
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //app
+Route::any('app/ajax_login', 'app\IndexController@ajax_login');// 登陆
+
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

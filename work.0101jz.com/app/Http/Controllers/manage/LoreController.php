@@ -17,7 +17,8 @@ class LoreController extends AdminController
     public function index(Request $request)
     {
         $this->InitParams($request);
-        return view('manage.lore.index',[]);
+        $reDataArr = $this->reDataArr;
+        return view('manage.lore.index', $reDataArr);
     }
 
     /**
@@ -30,7 +31,8 @@ class LoreController extends AdminController
     public function list(Request $request)
     {
         $this->InitParams($request);
-        return view('manage.lore.list',[]);
+        $reDataArr = $this->reDataArr;
+        return view('manage.lore.list', $reDataArr);
     }
 
     /**
@@ -43,7 +45,8 @@ class LoreController extends AdminController
     public function add(Request $request)
     {
         $this->InitParams($request);
-        return view('manage.lore.add',[]);
+        $reDataArr = $this->reDataArr;
+        return view('manage.lore.add', $reDataArr);
     }
 
     /**
@@ -56,7 +59,8 @@ class LoreController extends AdminController
     public function info(Request $request)
     {
         $this->InitParams($request);
-        return view('manage.lore.info',[]);
+        $reDataArr = $this->reDataArr;
+        return view('manage.lore.info', $reDataArr);
     }
 
 

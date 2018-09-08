@@ -17,7 +17,8 @@ class SiteAdminController extends AdminController
     public function index(Request $request)
     {
         $this->InitParams($request);
-        return view('admin.site_admin.index',[]);
+        $reDataArr = $this->reDataArr;
+        return view('admin.site_admin.index', $reDataArr);
     }
 
 

@@ -17,7 +17,8 @@ class ExamScoreController extends AdminController
     public function index(Request $request)
     {
         $this->InitParams($request);
-        return view('manage.exam_score.index',[]);
+        $reDataArr = $this->reDataArr;
+        return view('manage.exam_score.index', $reDataArr);
     }
 
 

@@ -19,7 +19,8 @@ class IndexController extends AdminController
     public function index(Request $request)
     {
         $this->InitParams($request);
-        return view('admin.index',[]);
+        $reDataArr = $this->reDataArr;
+        return view('admin.index', $reDataArr);
     }
 
     /**
@@ -31,7 +32,8 @@ class IndexController extends AdminController
      */
     public function login(Request $request)
     {
-        return view('admin.login',[]);
+        $reDataArr = $this->reDataArr;
+        return view('admin.login', $reDataArr);
     }
 
     /**
@@ -44,7 +46,8 @@ class IndexController extends AdminController
     public function password(Request $request)
     {
         $this->InitParams($request);
-        return view('admin.admin.password',[]);
+        $reDataArr = $this->reDataArr;
+        return view('admin.admin.password', $reDataArr);
     }
 
     /**
@@ -57,7 +60,8 @@ class IndexController extends AdminController
     public function info(Request $request)
     {
         $this->InitParams($request);
-        return view('admin.admin.info',[]);
+        $reDataArr = $this->reDataArr;
+        return view('admin.admin.info', $reDataArr);
     }
 
     /**
@@ -69,7 +73,8 @@ class IndexController extends AdminController
      */
     public function err404(Request $request)
     {
-        return view('404');
+        $reDataArr = $this->reDataArr;
+        return view('404', $reDataArr);
     }
 
     /**
@@ -90,8 +95,8 @@ class IndexController extends AdminController
 //            $preKey = 1;
 //        }
         // 数据验证 TODO
-        SiteAdmin::login($admin_username,$admin_password);
-        return ajaxDataArr(1, [], '');
+        $userInfo = SiteAdmin::login($admin_username,$admin_password);
+        return ajaxDataArr(1, $userInfo, '');
     }
 
     /**
@@ -103,8 +108,9 @@ class IndexController extends AdminController
      */
     public function logout(Request $request)
     {
-        $this->InitParams($request);
+        // $this->InitParams($request);
         SiteAdmin::loginOut();
-        return redirect('admin/login');
+        $reDataArr = $this->reDataArr;
+        return redirect('admin/login', $reDataArr);
     }
 }

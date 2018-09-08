@@ -18,7 +18,8 @@ class ExamController extends AdminController
     public function index(Request $request)
     {
         $this->InitParams($request);
-        return view('manage.exam.index',[]);
+        $reDataArr = $this->reDataArr;
+        return view('manage.exam.index', $reDataArr);
     }
 
     /**

@@ -17,7 +17,8 @@ class ProblemController extends AdminController
     public function index(Request $request)
     {
         $this->InitParams($request);
-        return view('admin.problem.index',[]);
+        $reDataArr = $this->reDataArr;
+        return view('admin.problem.index', $reDataArr);
     }
 
 

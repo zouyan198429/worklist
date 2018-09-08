@@ -17,7 +17,8 @@ class CountRepairController extends AdminController
     public function index(Request $request)
     {
         $this->InitParams($request);
-        return view('manage.count_repair.index',[]);
+        $reDataArr = $this->reDataArr;
+        return view('manage.count_repair.index', $reDataArr);
     }
 
 

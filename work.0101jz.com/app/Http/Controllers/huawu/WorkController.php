@@ -16,7 +16,9 @@ class WorkController extends WorksController
      */
     public function index(Request $request)
     {
-        return view('huawu.work.index',[]);
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        return view('huawu.work.index', $reDataArr);
     }
 
     /**
@@ -28,7 +30,9 @@ class WorkController extends WorksController
      */
     public function list(Request $request)
     {
-        return view('huawu.work.list',[]);
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        return view('huawu.work.list', $reDataArr);
     }
 
     /**
@@ -40,7 +44,9 @@ class WorkController extends WorksController
      */
     public function history(Request $request)
     {
-        return view('huawu.work.history',[]);
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        return view('huawu.work.history', $reDataArr);
     }
 
     /**
@@ -52,7 +58,9 @@ class WorkController extends WorksController
      */
     public function hot(Request $request)
     {
-        return view('huawu.work.hot',[]);
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        return view('huawu.work.hot', $reDataArr);
     }
 
     /**
@@ -64,7 +72,9 @@ class WorkController extends WorksController
      */
     public function re_list(Request $request)
     {
-        return view('huawu.work.re_list',[]);
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        return view('huawu.work.re_list', $reDataArr);
     }
 
 
@@ -77,7 +87,9 @@ class WorkController extends WorksController
      */
     public function add(Request $request)
     {
-        return view('huawu.work.add',[]);
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        return view('huawu.work.add', $reDataArr);
     }
 
 

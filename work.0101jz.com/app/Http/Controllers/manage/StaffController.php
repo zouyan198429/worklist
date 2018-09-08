@@ -17,7 +17,8 @@ class StaffController extends AdminController
     public function index(Request $request)
     {
         $this->InitParams($request);
-        return view('manage.staff.index',[]);
+        $reDataArr = $this->reDataArr;
+        return view('manage.staff.index', $reDataArr);
     }
 
     /**
@@ -30,7 +31,8 @@ class StaffController extends AdminController
     public function list(Request $request)
     {
         $this->InitParams($request);
-        return view('manage.staff.list',[]);
+        $reDataArr = $this->reDataArr;
+        return view('manage.staff.list', $reDataArr);
     }
 
     /**
@@ -43,6 +45,7 @@ class StaffController extends AdminController
     public function add(Request $request)
     {
         $this->InitParams($request);
-        return view('manage.staff.add',[]);
+        $reDataArr = $this->reDataArr;
+        return view('manage.staff.add', $reDataArr);
     }
 }

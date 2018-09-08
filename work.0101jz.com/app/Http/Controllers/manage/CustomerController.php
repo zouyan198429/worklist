@@ -17,7 +17,8 @@ class CustomerController extends AdminController
     public function index(Request $request)
     {
         $this->InitParams($request);
-        return view('manage.customer.index',[]);
+        $reDataArr = $this->reDataArr;
+        return view('manage.customer.index', $reDataArr);
     }
 
 }

@@ -16,7 +16,9 @@ class ExamController extends WorksController
      */
     public function index(Request $request)
     {
-        return view('weixiu.exam.index',[]);
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        return view('weixiu.exam.index', $reDataArr);
     }
 
     /**
@@ -28,7 +30,9 @@ class ExamController extends WorksController
      */
     public function doing(Request $request)
     {
-        return view('weixiu.exam.doing',[]);
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        return view('weixiu.exam.doing', $reDataArr);
     }
 
     /**
@@ -40,7 +44,9 @@ class ExamController extends WorksController
      */
     public function win(Request $request)
     {
-        return view('weixiu.exam.win',[]);
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        return view('weixiu.exam.win', $reDataArr);
     }
 
 }

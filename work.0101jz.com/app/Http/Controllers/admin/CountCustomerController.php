@@ -17,7 +17,8 @@ class CountCustomerController extends AdminController
     public function index(Request $request)
     {
         $this->InitParams($request);
-        return view('admin.count_customer.index',[]);
+        $reDataArr = $this->reDataArr;
+        return view('admin.count_customer.index', $reDataArr);
     }
 
 

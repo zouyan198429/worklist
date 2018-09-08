@@ -17,7 +17,8 @@ class TagsController extends AdminController
     public function index(Request $request)
     {
         $this->InitParams($request);
-        return view('admin.tags.index',[]);
+        $reDataArr = $this->reDataArr;
+        return view('admin.tags.index', $reDataArr);
     }
 
 

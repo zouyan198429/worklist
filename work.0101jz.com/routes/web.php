@@ -128,6 +128,7 @@ Route::get('manage/exam_score/index', 'manage\ExamScoreController@index');//exam
 
 //web-huawu 客服
 Route::get('huawu/login', 'huawu\IndexController@login');//login.html 登录
+Route::get('huawu/logout', 'huawu\IndexController@logout');// 注销
 Route::get('huawu/index', 'huawu\IndexController@index');//main.html 首页
    Route::get('huawu/info', 'huawu\IndexController@info');//myinfo.html  个人信息
    Route::get('huawu/password', 'huawu\IndexController@password');//psdmodify.html 个人信息-修改密码
@@ -157,6 +158,7 @@ Route::get('huawu/work/re_list', 'huawu\WorkController@re_list');//work_Return.h
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //web-weixiu 维修
 Route::get('weixiu/login', 'weixiu\IndexController@login');///login.html 登陆
+Route::get('weixiu/logout', 'weixiu\IndexController@logout');// 注销
 Route::get('weixiu/index', 'weixiu\IndexController@index');//main_wx.html  -首页
 Route::get('weixiu/info', 'weixiu\IndexController@info');//myinfo.html 个人信息
 Route::get('weixiu/password', 'weixiu\IndexController@password');//psdmodify.html- 修改密码
@@ -180,6 +182,7 @@ Route::get('weixiu/lore/info', 'weixiu\LoreController@info');//know_view.html �
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //app
 Route::get('app/login', 'app\IndexController@login');//login.html 登录
+Route::get('app/logout', 'app\IndexController@logout');// 注销
 Route::get('app/info', 'app\IndexController@info');//myinfo.html 我的详情
 //客户
 Route::get('app/customer/index', 'app\CustomerController@index');//customer_all.html 客户列表

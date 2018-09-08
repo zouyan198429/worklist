@@ -17,7 +17,8 @@ class AreaController extends AdminController
     public function index(Request $request)
     {
         $this->InitParams($request);
-        return view('admin.area.index',[]);
+        $reDataArr = $this->reDataArr;
+        return view('admin.area.index', $reDataArr);
     }
 
 

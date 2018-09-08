@@ -16,7 +16,9 @@ class StaffController extends WorksController
      */
     public function index(Request $request)
     {
-        return view('huawu.staff.index',[]);
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        return view('huawu.staff.index', $reDataArr);
     }
 
 
