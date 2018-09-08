@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 
-class ExamController extends LoginController
+class ExamController extends AdminController
 {
     /**
      * 首页
@@ -16,6 +16,7 @@ class ExamController extends LoginController
      */
     public function index(Request $request)
     {
+        $this->InitParams($request);
         return view('admin.exam.index',[]);
     }
 
@@ -28,6 +29,7 @@ class ExamController extends LoginController
      */
     public function add(Request $request)
     {
+        $this->InitParams($request);
         return view('admin.exam.add',[]);
     }
 

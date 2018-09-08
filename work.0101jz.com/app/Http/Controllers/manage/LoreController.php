@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\manage;
 
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 
-class LoreController extends LoginController
+class LoreController extends AdminController
 {
     /**
      * 首页
@@ -16,6 +16,7 @@ class LoreController extends LoginController
      */
     public function index(Request $request)
     {
+        $this->InitParams($request);
         return view('manage.lore.index',[]);
     }
 
@@ -28,6 +29,7 @@ class LoreController extends LoginController
      */
     public function list(Request $request)
     {
+        $this->InitParams($request);
         return view('manage.lore.list',[]);
     }
 
@@ -40,6 +42,7 @@ class LoreController extends LoginController
      */
     public function add(Request $request)
     {
+        $this->InitParams($request);
         return view('manage.lore.add',[]);
     }
 
@@ -52,6 +55,7 @@ class LoreController extends LoginController
      */
     public function info(Request $request)
     {
+        $this->InitParams($request);
         return view('manage.lore.info',[]);
     }
 

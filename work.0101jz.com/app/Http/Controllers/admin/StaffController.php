@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 
-class StaffController extends LoginController
+class StaffController extends AdminController
 {
     /**
      * 列表
@@ -16,6 +16,7 @@ class StaffController extends LoginController
      */
     public function index(Request $request)
     {
+        $this->InitParams($request);
         return view('admin.staff.index',[]);
     }
 

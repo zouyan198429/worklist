@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\manage;
 
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 
-class ProblemController extends LoginController
+class ProblemController extends AdminController
 {
     /**
      * 列表
@@ -16,6 +16,7 @@ class ProblemController extends LoginController
      */
     public function index(Request $request)
     {
+        $this->InitParams($request);
         return view('manage.problem.index',[]);
     }
 

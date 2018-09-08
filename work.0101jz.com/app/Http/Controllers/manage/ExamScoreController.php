@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\manage;
 
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 
-class ExamScoreController extends LoginController
+class ExamScoreController extends AdminController
 {
     /**
      * 列表
@@ -16,6 +16,7 @@ class ExamScoreController extends LoginController
      */
     public function index(Request $request)
     {
+        $this->InitParams($request);
         return view('manage.exam_score.index',[]);
     }
 

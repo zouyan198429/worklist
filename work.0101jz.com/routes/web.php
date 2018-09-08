@@ -29,6 +29,7 @@ Route::get('/', 'IndexController@index');// 首页
 // admin
 Route::get('admin/index', 'admin\IndexController@index');//index.html  首页
 Route::get('admin/login', 'admin\IndexController@login');//login.html 登录
+Route::get('admin/logout', 'admin\IndexController@logout');// 注销
 Route::get('admin/password', 'admin\IndexController@password');//psdmodify.html 个人信息-修改密码
 Route::get('admin/info', 'admin\IndexController@info');//myinfo.html 个人信息--显示
 
@@ -84,6 +85,7 @@ Route::get('admin/paper/index', 'admin\PaperController@index');//x_testpaper_lis
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //web-manage
 Route::get('manage/login', 'manage\IndexController@login');//login.html 登陆
+Route::get('manage/logout', 'manage\IndexController@logout');// 注销
 Route::get('manage/index', 'manage\IndexController@index');//main_admin.html -首页
 Route::get('manage/index_hot', 'manage\IndexController@index_hot');//work_hot.html 首页
 Route::get('manage/info', 'manage\IndexController@info');//myinfo.html 个人信息

@@ -1,5 +1,6 @@
 <?php
 namespace App\Exceptions;
+use App\Services\CommonBusiness;
 use Throwable;
 class ExportException extends \Exception
 {
@@ -30,7 +31,10 @@ class ExportException extends \Exception
         if(isAjax() || in_array($this->code,[2,3])){
             return ajaxDataArr(0, ['code' => $this->code], $this->message);
         }else{
-            return redirect('login');
+            $server = $_SERVER;
+            $httpHost = $server['HTTP_HOST'] ?? '';
+            return redirect(CommonBusiness::urlRedirect($httpHost, 2));
+            // return redirect('login');
         }
         // return ajaxDataArr(0, ['code' => $this->code], $this->message);
     }

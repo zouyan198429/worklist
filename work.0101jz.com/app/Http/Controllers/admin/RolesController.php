@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 
-class RolesController extends LoginController
+class RolesController extends AdminController
 {
     /**
      * 首页
@@ -16,6 +16,7 @@ class RolesController extends LoginController
      */
     public function index(Request $request)
     {
+        $this->InitParams($request);
         return view('admin.roles.index',[]);
     }
 

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\manage;
 
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 
-class StaffController extends LoginController
+class StaffController extends AdminController
 {
     /**
      * 列表
@@ -16,6 +16,7 @@ class StaffController extends LoginController
      */
     public function index(Request $request)
     {
+        $this->InitParams($request);
         return view('manage.staff.index',[]);
     }
 
@@ -28,8 +29,10 @@ class StaffController extends LoginController
      */
     public function list(Request $request)
     {
+        $this->InitParams($request);
         return view('manage.staff.list',[]);
     }
+
     /**
      * 添加
      *
@@ -39,6 +42,7 @@ class StaffController extends LoginController
      */
     public function add(Request $request)
     {
+        $this->InitParams($request);
         return view('manage.staff.add',[]);
     }
 }

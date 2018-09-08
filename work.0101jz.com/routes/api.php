@@ -18,8 +18,31 @@ Route::any('upload', 'UploadController@index');
 // Route::any('upload/test', 'UploadController@test');
 Route::any('upload/ajax_del', 'UploadController@ajax_del');// 根据id删除文件
 
+//
+// admin
+// 登陆
+Route::any('admin/ajax_login', 'admin\IndexController@ajax_login');// 登陆
 
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//web-manage
+// 登陆
+Route::any('manage/ajax_login', 'manage\IndexController@ajax_login');// 登陆
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+//web-huawu 客服
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//web-weixiu 维修
+// 登陆
+Route::any('weixiu/ajax_login', 'weixiu\IndexController@ajax_login');// 登陆
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//app
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

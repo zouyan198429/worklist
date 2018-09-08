@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\huawu;
 
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\WorksController;
 use Illuminate\Http\Request;
 
-class CustomerController extends LoginController
+class CustomerController extends WorksController
 {
 
     /**

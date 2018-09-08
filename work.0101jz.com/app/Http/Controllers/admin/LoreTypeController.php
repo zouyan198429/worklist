@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 
-class LoreTypeController extends LoginController
+class LoreTypeController extends AdminController
 {
     /**
      * 知识分类
@@ -16,6 +16,7 @@ class LoreTypeController extends LoginController
      */
     public function index(Request $request)
     {
+        $this->InitParams($request);
         return view('admin.lore_type.index',[]);
     }
 

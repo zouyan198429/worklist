@@ -9,5 +9,5 @@
                 <li><a href="{{ url('manage/password') }}" >修改密码</a></li>
             </ul>
         </div>
-        <span class="quit"><a href="{{ url('manage/login') }}"><i class="fa fa-power-off fa-fw" aria-hidden="true"></i>退出</a></span></div>
+        <span class="quit"><a href="{{ url('manage/logout') }}"><i class="fa fa-power-off fa-fw" aria-hidden="true"></i>退出</a></span></div>
 </div>

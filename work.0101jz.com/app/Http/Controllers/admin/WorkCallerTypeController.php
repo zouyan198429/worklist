@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 
-class WorkCallerTypeController extends LoginController
+class WorkCallerTypeController extends AdminController
 {
     /**
      * 列表页
@@ -16,6 +16,7 @@ class WorkCallerTypeController extends LoginController
      */
     public function index(Request $request)
     {
+        $this->InitParams($request);
         return view('admin.work_caller_type.index',[]);
     }
 

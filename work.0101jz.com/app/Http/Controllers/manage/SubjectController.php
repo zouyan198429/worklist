@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\manage;
 
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 
-class SubjectController extends LoginController
+class SubjectController extends AdminController
 {
     /**
      * 首页
@@ -16,6 +16,7 @@ class SubjectController extends LoginController
      */
     public function index(Request $request)
     {
+        $this->InitParams($request);
         return view('manage.subject.index',[]);
     }
 
@@ -28,6 +29,7 @@ class SubjectController extends LoginController
      */
     public function add(Request $request)
     {
+        $this->InitParams($request);
         return view('manage.subject.add',[]);
     }
 

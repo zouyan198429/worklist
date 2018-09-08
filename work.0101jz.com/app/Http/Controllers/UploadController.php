@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\Common;
+use App\Services\CommonBusiness;
 use App\Services\Tool;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -65,7 +66,8 @@ class UploadController extends LoginController
                     // 'resource_note' => '',
                     'resource_url' => $savPath . $saveName,
                 ];
-                $reslut = $this->createApi($this->model_name, $saveData, $company_id);
+                $reslut = CommonBusiness::createApi($this->model_name, $saveData, $company_id);
+
                 $id = $reslut['id'] ?? '';
                 if(empty($id)){
                     Log::info('上传文件日志-保存资源失败',$id);
@@ -119,7 +121,8 @@ class UploadController extends LoginController
         $id = Common::getInt($request, 'id');
         Common::judgeInitParams($request, 'id', $id);
         $company_id = $this->company_id;
-        $resultDatas = $this->ResourceDelById($id, $company_id);
+        $resultDatas = CommonBusiness::ResourceDelById($id, $company_id);
+
         return ajaxDataArr(1, $resultDatas, '');
 
     }

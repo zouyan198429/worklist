@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\weixiu;
 
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\WorksController;
 use Illuminate\Http\Request;
 
-class ExamController extends LoginController
+class ExamController extends WorksController
 {
     /**
      * 首页

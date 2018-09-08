@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 
-class SubjectTypeController extends LoginController
+class SubjectTypeController extends AdminController
 {
     /**
      * 首页
@@ -16,6 +16,7 @@ class SubjectTypeController extends LoginController
      */
     public function index(Request $request)
     {
+        $this->InitParams($request);
         return view('admin.subject_type.index',[]);
     }
 

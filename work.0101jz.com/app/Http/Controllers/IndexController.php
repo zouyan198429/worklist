@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\CommonBusiness;
 use App\Services\HttpRequest;
 use App\Services\Tool;
 use Illuminate\Http\Request;
@@ -36,7 +37,7 @@ class IndexController extends LoginController
 //    public function index(Request $request)
 //    {
 //        $this->InitParams($request);
-//        $url = config('public.apiUrl') . config('public.apiPath.index');
+//        $url = config('public.apiUrl') . config('apiUrl.common.index');
 //        // 生成带参数的测试get请求
 //        // $requestTesUrl = splicQuestAPI($url , $requestData);
 //        $requestData['company_id'] = $this->company_id ;
@@ -56,35 +57,7 @@ class IndexController extends LoginController
     {
         $urlArr = $request->server();
         $httpHost = $urlArr['HTTP_HOST'] ?? '';
-        switch ($httpHost) {
-            //管理平台(web)
-            case 'admin.0101jz.net':
-            case 'admin.0101jz.com':
-                return redirect('admin/index');
-                break;
-            //主管平台(web)
-            case 'piwik.0101jz.com':
-            case 'piwik.0101jz.com':
-                return redirect('manage/index');
-                break;
-            //客服端(web)
-            case 'work.0101jz.net':
-            case 'work.0101jz.com':
-                return redirect('huawu/index');
-                break;
-            //售后工程师端
-            case 'app.api.0101jz.net':
-            case 'app.api.0101jz.com':
-                return redirect('weixiu/index');
-                break;
-            //售后工程师端-app
-            case 'app.0101jz.com':
-            case 'app.0101jz.com':
-                return redirect('app/info');
-                break;
-            default:
-                return view('welcome');
-        }
+        return redirect(CommonBusiness::urlRedirect($httpHost, 1));
     }
     /**
      * 文件上传

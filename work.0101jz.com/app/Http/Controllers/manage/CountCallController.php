@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\manage;
 
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 
-class CountCallController extends LoginController
+class CountCallController extends AdminController
 {
     /**
      * 来电统计
@@ -16,6 +16,7 @@ class CountCallController extends LoginController
      */
     public function index(Request $request)
     {
+        $this->InitParams($request);
         return view('manage.count_call.index',[]);
     }
 

@@ -471,4 +471,9 @@ class Tool
         }
         return self::delRedis($redisKey); // 删除redis中的值
     }
+
+    // 资源操作
+
+
+
 }

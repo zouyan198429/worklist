@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\manage;
 
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 
-class PaperController extends LoginController
+class PaperController extends AdminController
 {
     /**
      * 首页
@@ -16,6 +16,7 @@ class PaperController extends LoginController
      */
     public function index(Request $request)
     {
+        $this->InitParams($request);
         return view('manage.paper.index',[]);
     }
 
@@ -29,6 +30,7 @@ class PaperController extends LoginController
      */
     public function add(Request $request)
     {
+        $this->InitParams($request);
         return view('manage.paper.add',[]);
     }
 
