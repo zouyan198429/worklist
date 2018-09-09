@@ -13,4 +13,20 @@ class CompanyDepartment extends BaseModel
      */
     protected $table = 'company_department';
 
+    /**
+     * 获取部门的员工
+     */
+    public function departmentStaff()
+    {
+        return $this->hasMany('App\Models\CompanyStaff', 'department_id', 'id');
+    }
+
+    /**
+     * 获取小组的员工
+     */
+    public function groupStaff()
+    {
+        return $this->hasMany('App\Models\CompanyStaff', 'group_id', 'id');
+    }
+
 }

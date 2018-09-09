@@ -12,8 +12,8 @@ class IndexController extends AdminController
     /**
      * 首页
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function index(Request $request)
@@ -26,8 +26,8 @@ class IndexController extends AdminController
     /**
      * 首页
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function index_hot(Request $request)
@@ -39,8 +39,8 @@ class IndexController extends AdminController
     /**
      * 登陆
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function login(Request $request)
@@ -51,8 +51,8 @@ class IndexController extends AdminController
     /**
      * 修改密码
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function password(Request $request)
@@ -64,8 +64,8 @@ class IndexController extends AdminController
     /**
      * 显示
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function info(Request $request)
@@ -78,36 +78,28 @@ class IndexController extends AdminController
     /**
      * ajax保存数据
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function ajax_login(Request $request)
     {
         // $this->InitParams($request);
         // $company_id = $this->company_id;
-        $admin_username = Common::get($request, 'admin_username');
-        $admin_password = Common::get($request, 'admin_password');
-//        $preKey = Common::get($request, 'preKey');// 0 小程序 1后台
-//        if(!is_numeric($preKey)){
-//            $preKey = 1;
-//        }
-        // 数据验证 TODO
-        SiteAdmin::login($admin_username,$admin_password);
-        return ajaxDataArr(1, [], '');
+        return SiteAdmin::login($request, $this);
     }
 
     /**
      * 注销
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function logout(Request $request)
     {
         // $this->InitParams($request);
-        SiteAdmin::loginOut();
+        SiteAdmin::loginOut($request, $this);
         return redirect('manage/login');
     }
 

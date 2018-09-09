@@ -285,7 +285,7 @@ function showPage($totalpg, $pg = 1, $record = 0,$showpage = 9,$show_num = 0)
 
     $page = '';
 
-    if($totalpg <= 1){
+    if($totalpg < 1){
        return $page;
     }
 
@@ -362,13 +362,13 @@ function showPage($totalpg, $pg = 1, $record = 0,$showpage = 9,$show_num = 0)
     $page .= '<span aria-hidden="true">末页</span>';
     $page .= '</a></li>';
 
-    if ($totalpg > 1 && ( ($show_num & 1) ==1 ) ) {//1输入页码跳转[按钮]通过 calss page_go 实现翻页
+    if ($totalpg >= 1 && ( ($show_num & 1) ==1 ) ) {//1输入页码跳转[按钮]通过 calss page_go 实现翻页
         $page .= '&nbsp;&nbsp;<span class="pagespan2" ><input class="form-control pagenum" id="page_num" name="page_num" type="text" value="" onkeyup="this.value=this.value.replace(/[^0-9]/g, \'\');" style="width:50px;">';
-        $page .= '&nbsp;&nbsp;<button class="btn btn-primary btn-page btn-xs page_go" type="button"  totalpage="' . $totalpg . '"> 跳转 </button></span>';
+        $page .= '&nbsp;&nbsp;<button class="btn btn-primary btn-page btn-xs page_go" type="button"  totalpage="' . $totalpg . '" > 跳转 </button></span>';
     }
-    if ($totalpg > 1 && ( ($show_num & 2) ==2 ) ) {//2输入页码跳转[按钮]通过btn_go()方法实现翻页
+    if ($totalpg >= 1 && ( ($show_num & 2) ==2 ) ) {//2输入页码跳转[按钮]通过btn_go()方法实现翻页
         $page .= '&nbsp;&nbsp;<span class="pagespan2"><input class="form-control pagenum" id="page_num" name="page_num" type="text" value=""  onkeyup="this.value=this.value.replace(/[^0-9]/g, \'\');" style="width:50px;">';
-        $page .= '&nbsp;&nbsp;<button class="btn btn-primary btn-page btn-xs" type="button" onclick="btn_go()"> 跳转 </button></span>';
+        $page .= '&nbsp;&nbsp;<button class="btn btn-primary btn-page btn-xs" type="button" onclick="btn_go()" > 跳转 </button></span>';
     }
     return $totalpg >= 1 ? $page : '';
 }

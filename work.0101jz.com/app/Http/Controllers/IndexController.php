@@ -13,8 +13,8 @@ class IndexController extends WorksController
     /**
      * 注册
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function test(Request $request)
@@ -30,8 +30,8 @@ class IndexController extends WorksController
     /**
      * 首页
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
 //    public function index(Request $request)
@@ -49,8 +49,8 @@ class IndexController extends WorksController
     /**
      * 首页
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function index(Request $request)
@@ -62,8 +62,8 @@ class IndexController extends WorksController
     /**
      * 文件上传
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
 //    public function upload(Request $request)
@@ -121,8 +121,8 @@ class IndexController extends WorksController
     /**
      * 注册
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
 //    public function reg(Request $request)
@@ -133,8 +133,8 @@ class IndexController extends WorksController
     /**
      * 登陆
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
 //    public function login(Request $request)
@@ -145,8 +145,8 @@ class IndexController extends WorksController
     /**
      * 注销
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
 //    public function logout(Request $request)
@@ -166,8 +166,8 @@ class IndexController extends WorksController
     /**
      * err404
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function err404(Request $request)

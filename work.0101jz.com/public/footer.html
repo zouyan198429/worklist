@@ -1,0 +1,15 @@
+
+<!-- 前端模板部分 -->
+<!-- 列表模板部分 开始-->
+<script type="text/template"  id="baidu_template_data_list">
+    <%for(var i = 0; i<data_list.length;i++){
+    var item = data_list[i];
+    %>
+    <tr>
+        <td><%=item.id%></td>
+        <td><a href="/new/<%=item.id%>" ><%=item.new_title%></a></td>
+        <td><%=item.created_at%></td>
+    </tr>
+    <%}%>
+</script>
+<!-- 列表模板部分 结束-->

@@ -10,8 +10,8 @@ class ProblemController extends WorksController
     /**
      * 添加
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function add(Request $request)

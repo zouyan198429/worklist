@@ -36,7 +36,7 @@ class CompanyStaff extends BaseModel
      *
      * @var array
      */
-    protected $hidden = ['account_password'];
+    protected $hidden = ['admin_password'];
 
     // 表里没有的字段
     protected $appends = ['account_statu_text', 'issuper_text', 'sex_text'];
@@ -80,6 +80,31 @@ class CompanyStaff extends BaseModel
     public function setAccountPasswordAttribute($value)
     {
         $this->attributes['account_password'] = md5($value);
+    }
+
+    /**
+     * 获取员工对应的部门
+     */
+    public function staffDepartment()
+    {
+        return $this->belongsTo('App\Models\CompanyDepartment', 'department_id', 'id');
+    }
+
+    /**
+     * 获取员工对应的小组
+     */
+    public function staffGroup()
+    {
+        return $this->belongsTo('App\Models\CompanyDepartment', 'group_id', 'id');
+    }
+
+
+    /**
+     * 获取员工对应的职位
+     */
+    public function staffPosition()
+    {
+        return $this->belongsTo('App\Models\CompanyPosition', 'position_id', 'id');
     }
 
 }

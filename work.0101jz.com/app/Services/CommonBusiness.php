@@ -749,7 +749,6 @@ class CommonBusiness
     /**
      * 判断权限
      *
-     * @param object $modelObj 当前模型对象
      * @param int $id id
      * @param array $judgeArr 需要判断的下标[字段名]及值 一维数组
      * @param string $model_name 模型名称

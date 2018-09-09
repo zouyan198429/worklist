@@ -8,16 +8,16 @@ use Illuminate\Http\Request;
 
 class BaseController extends Controller
 {
-    protected $company_id = null ;
-    protected $model_name = null;
-    protected $user_info = [];
-    protected $user_id = null;
-    protected $source = -1;// 来源-1网站页面，2ajax；3小程序
+    public $company_id = null ;
+    public $model_name = null;
+    public $user_info = [];
+    public $user_id = null;
+    public $source = -1;// 来源-1网站页面，2ajax；3小程序
     // 是否从小程序来的请求
-    protected $redisKey = null;
-    protected $save_session = true;// true后台来的，false小程序来的
+    public $redisKey = null;
+    public $save_session = true;// true后台来的，false小程序来的
     // 返回到前端的数据
-    protected $reDataArr = [
+    public $reDataArr = [
         'real_name'=>'',
     ];
 

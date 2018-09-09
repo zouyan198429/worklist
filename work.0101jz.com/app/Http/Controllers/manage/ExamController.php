@@ -11,8 +11,8 @@ class ExamController extends AdminController
     /**
      * 首页
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function index(Request $request)
@@ -25,8 +25,8 @@ class ExamController extends AdminController
     /**
      * 添加
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function add(Request $request)

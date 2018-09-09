@@ -25,7 +25,6 @@ function ajaxPageList(dynamic_id,baidu_template_page,ajax_url,is_read_page,frm_i
     htmlStr = resolve_baidu_template(baidu_template_loding,{},'');
     //更新新的内容
     $("#"+body_data_id).html(htmlStr);
-
     //移除上下的row -- 翻页代码
     $('#'+dynamic_id).parent().find('.row').remove();
     //$("#"+body_data_id).html(htmlStr);
@@ -218,7 +217,8 @@ function alert_modal_cancel(modal_id){
 //参数 err_msg 错误信息
 function err_alert(err_msg){
     // countdown_alert(err_msg,3,5); // 以前弹出倒记时的方式
-    layer_alert(err_msg,5,0);
+    // layer_alert(err_msg,5,0);
+    layer_alert(err_msg,3,0);
     //var err_data ={};
     //err_data['content'] = err_msg;//
     //var nr_html = resolve_baidu_template('baidu_template_error',err_data,'');

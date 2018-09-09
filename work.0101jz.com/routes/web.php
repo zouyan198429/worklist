@@ -105,9 +105,9 @@ Route::get('manage/customer/index', 'manage\CustomerController@index');//m_custo
 //反馈
 Route::get('manage/problem/index', 'manage\ProblemController@index');//m_problem.html 反馈问题
 //同事
-Route::get('manage/staff/list', 'manage\StaffController@list');//m_staff.html 我的同事
-Route::get('manage/staff/index', 'manage\StaffController@index');//colleague.html 我的同事
-Route::get('manage/staff/add', 'manage\StaffController@add');//m_staff_add.html 添加员工
+Route::get('manage/staff/list', 'manage\StaffController@list');//m_staff.html 我的同事--管理
+Route::get('manage/staff/index', 'manage\StaffController@index');//colleague.html 我的同事--列表
+Route::get('manage/staff/add/{id}', 'manage\StaffController@add');//m_staff_add.html 添加员工
 //工单
 Route::get('manage/work/index', 'manage\WorkController@index');//m_work_monitor.html 工单管理
 Route::get('manage/work/list', 'manage\WorkController@list');//Repair_list.html 我的工单

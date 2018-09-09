@@ -13,8 +13,8 @@ class IndexController extends WorksController
     /**
      * 登陆
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function login(Request $request)
@@ -26,8 +26,8 @@ class IndexController extends WorksController
     /**
      * 显示
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function info(Request $request)
@@ -41,50 +41,29 @@ class IndexController extends WorksController
     /**
      * ajax保存数据
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function ajax_login(Request $request)
     {
         // $this->InitParams($request);
         // $company_id = $this->company_id;
-        $admin_username = Common::get($request, 'admin_username');
-        $admin_password = Common::get($request, 'admin_password');
-        $preKey = Common::get($request, 'preKey');// 0 小程序 1后台
-        if(!is_numeric($preKey)){
-            $preKey = 1;
-        }
-        // 数据验证 TODO
-        $userInfo = CompanyStaff::login($admin_username,$admin_password,$preKey);
-        // 保存session
-        // 存储数据到session...
-        if (!session_id()) session_start(); // 初始化session
-        // $_SESSION['userInfo'] = $userInfo; //保存某个session信息
-        $redisKey = $this->setUserInfo($userInfo, $preKey);
-        $userInfo['redisKey'] = $redisKey;
-        return ajaxDataArr(1, $userInfo, '');
+
+        return CompanyStaff::login($request, $this);
     }
 
     /**
      * 注销
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function logout(Request $request)
     {
         $reDataArr = $this->reDataArr;
-        // $this->InitParams($request);
-        // session_start(); // 初始化session
-        //$userInfo = $_SESSION['userInfo'] ?? [];
-        /*
-        if(isset($_SESSION['userInfo'])){
-            unset($_SESSION['userInfo']); //保存某个session信息
-        }
-        */
-        $resDel = $this->delUserInfo();
+        $resDel = CompanyStaff::loginOut($request, $this);
         // return ajaxDataArr(1, $resDel, '');
         return redirect('app/login');
     }
@@ -92,8 +71,8 @@ class IndexController extends WorksController
     /**
      * err404
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function err404(Request $request)

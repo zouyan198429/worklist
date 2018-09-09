@@ -10,8 +10,8 @@ class WorkController extends WorksController
     /**
      * 首页
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function index(Request $request)
@@ -24,8 +24,8 @@ class WorkController extends WorksController
     /**
      * 列表
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function list(Request $request)
@@ -38,8 +38,8 @@ class WorkController extends WorksController
     /**
      * history
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function history(Request $request)
@@ -52,8 +52,8 @@ class WorkController extends WorksController
     /**
      * hot
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function hot(Request $request)
@@ -66,8 +66,8 @@ class WorkController extends WorksController
     /**
      * re_list
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function re_list(Request $request)
@@ -81,8 +81,8 @@ class WorkController extends WorksController
     /**
      * 添加
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function add(Request $request)

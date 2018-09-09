@@ -18,8 +18,8 @@ class UploadController extends WorksController
     /**
      * 文件上传
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function index(Request $request)
@@ -111,8 +111,8 @@ class UploadController extends WorksController
     /**
      * 根据资源id，删除资源[删除文件和数据记录]
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function ajax_del(Request $request)
@@ -130,8 +130,8 @@ class UploadController extends WorksController
     /**
      * 文件上传
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
 //    public function index(Request $request)

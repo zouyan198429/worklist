@@ -10,8 +10,8 @@ class ExamController extends WorksController
     /**
      * 首页
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function index(Request $request)
@@ -24,8 +24,8 @@ class ExamController extends WorksController
     /**
      * 在线考试
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function doing(Request $request)
@@ -38,8 +38,8 @@ class ExamController extends WorksController
     /**
      * 在线考试完成
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public function win(Request $request)
