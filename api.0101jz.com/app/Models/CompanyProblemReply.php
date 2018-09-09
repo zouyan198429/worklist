@@ -13,4 +13,11 @@ class CompanyProblemReply extends BaseModel
      */
     protected $table = 'company_problem_reply';
 
+    /**
+     * 获取问题回复对应的反馈问题--一维
+     */
+    public function replyProblem()
+    {
+        return $this->belongsTo('App\Models\CompanyProblem', 'problem_id', 'id');
+    }
 }

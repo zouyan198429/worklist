@@ -13,4 +13,44 @@ class CompanyProblem extends BaseModel
      */
     protected $table = 'company_problem';
 
+    /**
+     * 获取问题的回复-二维
+     */
+    public function problemReply()
+    {
+        return $this->hasMany('App\Models\CompanyProblemReply', 'problem_id', 'id');
+    }
+
+    /**
+     * 获取反馈问题对应的业务分类[第一级分类]--一维
+     */
+    public function problemTypeId()
+    {
+        return $this->belongsTo('App\Models\CompanyWorkType', 'work_type_id', 'id');
+    }
+
+    /**
+     * 获取反馈问题对应的业务分类[第二级分类]--一维
+     */
+    public function problemBusinessId()
+    {
+        return $this->belongsTo('App\Models\CompanyWorkType', 'business_id', 'id');
+    }
+
+    /**
+     * 获取反馈问题对应的地区--一维
+     */
+    public function problemCity()
+    {
+        return $this->belongsTo('App\Models\CompanyArea', 'city_id', 'id');
+    }
+
+    /**
+     * 获取反馈问题对应的街道--一维
+     */
+    public function problemArea()
+    {
+        return $this->belongsTo('App\Models\CompanyArea', 'area_id', 'id');
+    }
+
 }

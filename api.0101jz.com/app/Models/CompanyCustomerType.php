@@ -13,4 +13,11 @@ class CompanyCustomerType extends BaseModel
      */
     protected $table = 'company_customer_type';
 
+    /**
+     * 获取客户类型下的客户-二维
+     */
+    public function typeCustomer()
+    {
+        return $this->hasMany('App\Models\CompanyCustomer', 'type_id', 'id');
+    }
 }
