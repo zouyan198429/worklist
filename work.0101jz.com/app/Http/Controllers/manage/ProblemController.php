@@ -21,5 +21,45 @@ class ProblemController extends AdminController
         return view('manage.problem.index', $reDataArr);
     }
 
+    /**
+     * ajax获得列表数据
+     *
+     * @param Request $request
+     * @return mixed
+     * @author liuxin
+     */
+    public function ajax_alist(Request $request){
+        $this->InitParams($request);
+        return  CompanyStaff::getList($request, $this);
+    }
 
+
+
+    /**
+     * 子帐号管理-删除
+     *
+     * @param Request $request
+     * @return mixed
+     * @author liuxin
+     */
+    public function ajax_del(Request $request)
+    {
+        $this->InitParams($request);
+        return CompanyStaff::delAjax($request, $this);
+    }
+
+
+
+    /**
+     * 反馈问题的回复
+     *
+     * @param Request $request
+     * @return mixed
+     * @author liuxin
+     */
+    public function return_send(Request $request)
+    {
+        $this->InitParams($request);
+        return view('manage.problem.return_send');
+    }
 }

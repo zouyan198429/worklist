@@ -103,7 +103,8 @@ Route::get('manage/lore/info', 'manage\LoreController@info');//know_view.html �
 //客户
 Route::get('manage/customer/index', 'manage\CustomerController@index');//m_customer_all.html 客户管理
 //反馈
-Route::get('manage/problem/index', 'manage\ProblemController@index');//m_problem.html 反馈问题
+Route::get('manage/problem/index', 'manage\ProblemController@index');//m_problem.html 反馈问题 - 列表 /该模块的首页
+Route::get('manage/problem/return_send/{id}', 'manage\ProblemController@return_send');//m_problem.html 反馈问题 - 回复
 //同事
 Route::get('manage/staff/list', 'manage\StaffController@list');//m_staff.html 我的同事--管理
 Route::get('manage/staff/index', 'manage\StaffController@index');//colleague.html 我的同事--列表
