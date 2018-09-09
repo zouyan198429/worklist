@@ -53,7 +53,9 @@ Route::get('admin/staff', 'admin\StaffController@index');//Colleague.html 我的
 //客户
 Route::get('admin/customer/index', 'admin\CustomerController@index');//customer_all.html 客户管理
 Route::get('admin/customer/dayCount', 'admin\CustomerController@dayCount');//achievement.html  我的客户-按日统计--*
+//客户类型
 Route::get('admin/customer_type/index', 'admin\CustomerTypeController@index');//class_kehu.html 客户分类
+Route::get('admin/customer_type/add/{id}', 'admin\CustomerTypeController@add');//class_kehu.html 客户分类
 
 //工单
 Route::get('admin/work_type/index', 'admin\WorkTypeController@index');//class_order.html 工单分类

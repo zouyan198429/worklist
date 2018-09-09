@@ -10,7 +10,7 @@ use App\Http\Controllers\BaseController as Controller;
 /**
  *
  */
-class SiteAdmin
+class SiteAdmin extends BaseBusiness
 {
     /**
      * 登录

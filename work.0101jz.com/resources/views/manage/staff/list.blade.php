@@ -10,11 +10,7 @@
 	<div class="mm">
 		<div class="mmhead" id="mywork">
 
-			<!-- PAGE CONTENT BEGINS -->
-			<input type="hidden" value="1" id="page"/><!--当前页号-->
-			<input type="hidden" value="10" id="pagesize"/><!--每页显示数量-->
-			<input type="hidden" value="-1" id="total"/><!--总记录数量,小于0重新获取-->
-
+			@include('common.pageParams')
 
 			<div class="tabbox" >
 				<a href="javascript:void(0);" class="on " onclick="action.add()">添加员工</a>
@@ -33,11 +29,13 @@
 			</div>
 			</form>
 		</div>
+		{{--
 		<div class="table-header">
 			<button class="btn btn-danger  btn-xs batch_del"  onclick="action.batchDel(this)">批量删除</button>
 			<button class="btn btn-success  btn-xs export_excel"  onclick="action.exportExcel(this)" >导出EXCEL</button>
 			<button class="btn btn-success  btn-xs import_excel"  onclick="action.importExcel(this)">导入EXCEL</button>
 		</div>
+		--}}
 		<table  id="dynamic-table"  class="table2">
 			<thead>
 			<tr>
@@ -166,7 +164,8 @@
 		var item = data_list[i];
         {{--var account_status = item.account_status; --}}
 		var can_modify = false;
-		if( item.account_issuper==0 ){ //&& (item.supplier_status & (1+8))>0
+		{{--//&& (item.supplier_status & (1+8))>0--}}
+		if( item.issuper==0 ){
 		can_modify = true;
 		}
 		%>
@@ -195,7 +194,7 @@
                 <a href="javascript:void(0);" class="btn btn-mini btn-info" onclick="action.edit(<%=item.id%>)">
                     <i class="ace-icon fa fa-pencil bigger-60"> 编辑</i>
                 </a>
-                <%if( true){%>
+                <%if( can_modify){%>
                 <a href="javascript:void(0);" class="btn btn-mini btn-info" onclick="action.del(<%=item.id%>)">
                     <i class="ace-icon fa fa-trash-o bigger-60"> 删除</i>
                 </a>
@@ -207,5 +206,5 @@
 </script>
 <!-- 列表模板部分 结束-->
 <!-- 前端模板结束 -->
-{{--<script src="{{ asset('/js/lanmu/account.js') }}"  type="text/javascript"></script>--}}
+{{--<script src="{{ asset('/js/lanmu/aaaa.js') }}"  type="text/javascript"></script>--}}
 @endpush

@@ -9,10 +9,7 @@
 	<div id="crumb"><i class="fa fa-reorder fa-fw" aria-hidden="true"></i> 反馈问题</div>
 	<div class="mm">
 		<div class="mmhead" id="mywork">
-			<!-- PAGE CONTENT BEGINS -->
-			<input type="hidden" value="1" id="page"/><!--当前页号-->
-			<input type="hidden" value="10" id="pagesize"/><!--每页显示数量-->
-			<input type="hidden" value="-1" id="total"/><!--总记录数量,小于0重新获取-->
+			@include('common.pageParams')
 			<div class="tabbox" >
 			</div>
 			<form onsubmit="return false;" class="form-horizontal" role="form" method="post" id="search_frm" action="#">

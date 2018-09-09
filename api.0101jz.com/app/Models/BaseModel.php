@@ -211,43 +211,43 @@ class BaseModel extends Model
      * 获取**模块[如家事记录]所属的生产单元 - 一维
      * 生产单元对其它，1：n的反向
      */
-    public function companyProUnit()
-    {
-        return $this->belongsTo('App\Models\CompanyProUnit', 'pro_unit_id', 'id');
-    }
+//    public function companyProUnit()
+//    {
+//        return $this->belongsTo('App\Models\CompanyProUnit', 'pro_unit_id', 'id');
+//    }
 
     /**
      * 获取**模块的操作人员所属的帐号 - 一维
      * 帐号对其它模块操作人，1：n的反向
      */
-    public function companyAccount()
-    {
-        return $this->belongsTo('App\Models\CompanyAccounts', 'account_id', 'id');
-    }
+//    public function companyAccount()
+//    {
+//        return $this->belongsTo('App\Models\CompanyAccounts', 'account_id', 'id');
+//    }
 
     /**
      * 获取**模块province_id 对应的省
      */
-    public function modelAreaProvince()
-    {
-        return $this->belongsTo('App\Models\AreaProvince', 'province_id', 'area_code');
-    }
+//    public function modelAreaProvince()
+//    {
+//        return $this->belongsTo('App\Models\AreaProvince', 'province_id', 'area_code');
+//    }
 
     /**
      * 获取**模块city_id 对应的市
      */
-    public function modelAreaCity()
-    {
-        return $this->belongsTo('App\Models\AreaCity', 'city_id', 'area_code');
-    }
+//    public function modelAreaCity()
+//    {
+//        return $this->belongsTo('App\Models\AreaCity', 'city_id', 'area_code');
+//    }
 
     /**
      * 获取**模块area_id 对应的城市[包括县乡]
      */
-    public function modelArea()
-    {
-        return $this->belongsTo('App\Models\AreaCity', 'area_id', 'area_code');
-    }
+//    public function modelArea()
+//    {
+//        return $this->belongsTo('App\Models\AreaCity', 'area_id', 'area_code');
+//    }
 
     //---------一对多--------结束----------
 

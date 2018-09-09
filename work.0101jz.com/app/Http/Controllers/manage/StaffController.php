@@ -4,7 +4,6 @@ namespace App\Http\Controllers\manage;
 
 use App\Business\CompanyStaff;
 use App\Http\Controllers\AdminController;
-use App\Services\Common;
 use Illuminate\Http\Request;
 
 class StaffController extends AdminController

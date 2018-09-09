@@ -17,7 +17,7 @@
 			<h1>欢迎登录<h1>
 			<ul>
 				<li><input type="text"   name="admin_username"  placeholder="用户名"  /></li>
-				<li><input type="text" name="admin_password"   placeholder="密码"/></li>
+				<li><input type="password" name="admin_password"   placeholder="密码"/></li>
 				<li><button type="submit"  id="submitBtn"  {{--onClick="window.open('index.html')"--}} >登录</button></li>
 			</ul>
 	</section>

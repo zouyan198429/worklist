@@ -22,6 +22,9 @@ Route::any('upload/ajax_del', 'UploadController@ajax_del');// 根据id删除文�
 // admin
 // 登陆
 Route::any('admin/ajax_login', 'admin\IndexController@ajax_login');// 登陆
+// 客户分类
+Route::any('admin/customer_type/ajax_alist', 'admin\CustomerTypeController@ajax_alist');//ajax获得列表数据
+Route::any('admin/customer_type/ajax_del', 'admin\CustomerTypeController@ajax_del');// 删除
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -31,6 +34,7 @@ Route::any('manage/ajax_login', 'manage\IndexController@ajax_login');// 登陆
 //同事
 Route::any('manage/staff/ajax_alist', 'manage\StaffController@ajax_alist');//ajax获得列表数据
 Route::any('manage/staff/ajax_del', 'manage\StaffController@ajax_del');// 删除
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //反馈问题 （liuxin）
 Route::any('manage/problem/ajax_alist', 'manage\ProblemController@ajax_alist');//ajax获得反馈问题的列表数据
