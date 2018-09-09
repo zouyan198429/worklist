@@ -26,6 +26,11 @@ class CompanyStaff
                 ['admin_username',$admin_username],
                 ['admin_password',md5($admin_password)],
             ],
+            'select' => [
+                'id','company_id','real_name','issuper','account_status','work_num',
+                'department_id','group_id','position_id','sex'
+                ,'tel','mobile','qq_number','lastlogintime'
+            ],
 //            'orWhere' => [
 //                ['mobile',$admin_username],
 //                ['admin_password',md5($admin_password)],
@@ -42,7 +47,7 @@ class CompanyStaff
         $relations = '';//['CompanyInfo.CompanyRank'];
         //}
         $resultDatas = CommonBusiness::ajaxGetList($modelName, $pageParams, 0,$queryParams ,$relations, 1);
-
+pr($resultDatas);
         $dataList = $resultDatas['dataList'] ?? [];
         $userInfo = $dataList[0] ?? [];
         if(empty($dataList) || count($dataList) <= 0 || empty($userInfo)) {

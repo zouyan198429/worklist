@@ -89,7 +89,7 @@ class IndexController extends WorksController
         // $_SESSION['userInfo'] = $userInfo; //保存某个session信息
         $redisKey = $this->setUserInfo($userInfo, $preKey);
         $userInfo['redisKey'] = $redisKey;
-        return ajaxDataArr(1, [], '');
+        return ajaxDataArr(1, $userInfo, '');
     }
 
     /**
@@ -112,7 +112,7 @@ class IndexController extends WorksController
         */
         $resDel = $this->delUserInfo();
         // return ajaxDataArr(1, $resDel, '');
-        return redirect('weixiu/login', $reDataArr);
+        return redirect('weixiu/login');
     }
 
     /**

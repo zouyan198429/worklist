@@ -3,7 +3,7 @@
     <div id="logo">工单管理及业务培训系统</div>
     <div id="userinfo">
         <div class="dropdown">
-            <span><i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i> 欢迎您：赵小旺 <i class="fa fa-angle-down fa-fw" aria-hidden="true"></i>  </span>
+            <span><i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i> 欢迎您：{{ $real_name or '' }} <i class="fa fa-angle-down fa-fw" aria-hidden="true"></i>  </span>
             <ul class="dropdown-content">
                 <li><a href="{{ url('huawu/info') }}" >我的帐号</a></li>
                 <li><a href="{{ url('huawu/password') }}" >修改密码</a></li>
