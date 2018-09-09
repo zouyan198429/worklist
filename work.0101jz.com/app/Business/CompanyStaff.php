@@ -47,7 +47,7 @@ class CompanyStaff
         $relations = '';//['CompanyInfo.CompanyRank'];
         //}
         $resultDatas = CommonBusiness::ajaxGetList($modelName, $pageParams, 0,$queryParams ,$relations, 1);
-pr($resultDatas);
+
         $dataList = $resultDatas['dataList'] ?? [];
         $userInfo = $dataList[0] ?? [];
         if(empty($dataList) || count($dataList) <= 0 || empty($userInfo)) {
