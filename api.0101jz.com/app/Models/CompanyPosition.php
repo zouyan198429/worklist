@@ -13,4 +13,11 @@ class CompanyPosition extends BaseModel
      */
     protected $table = 'company_position';
 
+    /**
+     * 获取职位的员工-二维
+     */
+    public function positionStaff()
+    {
+        return $this->hasMany('App\Models\CompanyStaff', 'position_id', 'id');
+    }
 }

@@ -83,7 +83,7 @@ class CompanyStaff extends BaseModel
     }
 
     /**
-     * 获取员工对应的部门
+     * 获取员工对应的部门--一维
      */
     public function staffDepartment()
     {
@@ -91,7 +91,7 @@ class CompanyStaff extends BaseModel
     }
 
     /**
-     * 获取员工对应的小组
+     * 获取员工对应的小组--一维
      */
     public function staffGroup()
     {
@@ -100,7 +100,7 @@ class CompanyStaff extends BaseModel
 
 
     /**
-     * 获取员工对应的职位
+     * 获取员工对应的职位- 一维
      */
     public function staffPosition()
     {

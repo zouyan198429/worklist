@@ -14,7 +14,7 @@ class CompanyDepartment extends BaseModel
     protected $table = 'company_department';
 
     /**
-     * 获取部门的员工
+     * 获取部门的员工-二维
      */
     public function departmentStaff()
     {
@@ -22,7 +22,7 @@ class CompanyDepartment extends BaseModel
     }
 
     /**
-     * 获取小组的员工
+     * 获取小组的员工-二维
      */
     public function groupStaff()
     {
