@@ -15,7 +15,7 @@
 			<form onsubmit="return false;" class="form-horizontal" role="form" method="post" id="search_frm" action="#">
 				<div class="msearch fr">
 
-					<select class="wmini">
+					<select name="filename" class="wmini">
 						<option value="a01">全部</option>
 						<option value="a02">维修部</option>
 						<option value="a03">话务部</option>
@@ -114,10 +114,10 @@
 		{{--<span class="lbl"></span>--}}
 		{{--</label>--}}
 		{{--</td>--}}
-		<td><%=item.type_id%></td>
+		<td><%=item.type_name%></td>
 		<td><%=item.content%></td>
 		<td><%=item.call_number%></td>
-		<td><%=item.address%></td>
+		<td><%=item.city_name%><%=item.area_name%><%=item.address%></td>
 		<td><%=item.customer_name%></td>
 		<td><%=item.call_number%></td>
 		<td><%=item.created_at%></td>

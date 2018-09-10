@@ -33,14 +33,14 @@ class CompanyProblem extends BaseBusiness
                 //['mobile', $keyword],
             ],
             'select' => [
-                'id','company_id','type_id','customer_id','customer_name'
-                ,'content','call_number','created_at','address','city_id'
+                'id', 'company_id','type_id','customer_id','customer_name'
+                ,'content','call_number','created_at','address','city_id','area_id'
             ],
 //            'orderBy' => ['sort_num'=>'desc','id'=>'desc'],
             'orderBy' => ['id'=>'desc'],
         ];// 查询条件参数
         // $relations = ['CompanyInfo'];// 关系
-        $relations = ['problemCity', 'problemCustomer.customerType', 'problemCustomerType'];//['CompanyInfo'];// 关系
+        $relations = ['problemCity', 'problemArea', 'problemCustomerType'];//['CompanyInfo'];// 关系
         $result = self::getBaseListData($request, $controller, self::$model_name, $queryParams,$relations , $oprateBit, $notLog);
 
         // 格式化数据
@@ -49,6 +49,12 @@ class CompanyProblem extends BaseBusiness
             // 公司名称
 //            $data_list[$k]['company_name'] = $v['company_info']['company_name'] ?? '';
 //            if(isset($data_list[$k]['company_info'])) unset($data_list[$k]['company_info']);
+            // 城市名称
+            $data_list[$k]['city_name'] = $v['problem_city']['area_name'] ?? '';
+            if(isset($data_list[$k]['problem_city'])) unset($data_list[$k]['problem_city']);
+            // 区域名称
+            $data_list[$k]['area_name'] = $v['problem_area']['area_name'] ?? '';
+            if(isset($data_list[$k]['problem_area'])) unset($data_list[$k]['problem_area']);
             // 类型名称
             $data_list[$k]['type_name'] = $v['problem_customer_type']['type_name'] ?? '';
             if(isset($data_list[$k]['problem_customer_type'])) unset($data_list[$k]['problem_customer_type']);

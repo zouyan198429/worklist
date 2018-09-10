@@ -159,7 +159,7 @@
 		<td><%=item.type_name%></td>
 		<td><%=item.content%></td>
 		<td><%=item.call_number%></td>
-		<td><%=item.address%></td>
+		<td><%=item.city_name%><%=item.area_name%><%=item.address%></td>
 		<td><%=item.customer_name%></td>
 		<td><%=item.call_number%></td>
 		<td><%=item.created_at%></td>
