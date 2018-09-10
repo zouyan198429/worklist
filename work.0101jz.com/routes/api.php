@@ -26,6 +26,64 @@ Route::any('admin/ajax_login', 'admin\IndexController@ajax_login');// 登陆
 Route::any('admin/customer_type/ajax_alist', 'admin\CustomerTypeController@ajax_alist');//ajax获得列表数据
 Route::any('admin/customer_type/ajax_del', 'admin\CustomerTypeController@ajax_del');// 删除
 Route::any('admin/customer_type/ajax_save', 'admin\CustomerTypeController@ajax_save');// 新加/修改
+// 业务标签
+Route::any('admin/tags/ajax_alist', 'admin\TagsController@ajax_alist');//ajax获得列表数据
+Route::any('admin/tags/ajax_del', 'admin\TagsController@ajax_del');// 删除
+Route::any('admin/tags/ajax_save', 'admin\TagsController@ajax_save');// 新加/修改
+// 业务时间
+Route::any('admin/serviceTime/ajax_alist', 'admin\ServiceTimeController@ajax_alist');//ajax获得列表数据
+Route::any('admin/serviceTime/ajax_del', 'admin\ServiceTimeController@ajax_del');// 删除
+Route::any('admin/serviceTime/ajax_save', 'admin\ServiceTimeController@ajax_save');// 新加/修改
+
+// 工单分类
+Route::any('admin/work_type/ajax_alist', 'admin\WorkTypeController@ajax_alist');//ajax获得列表数据
+Route::any('admin/work_type/ajax_del', 'admin\WorkTypeController@ajax_del');// 删除
+Route::any('admin/work_type/ajax_save', 'admin\WorkTypeController@ajax_save');// 新加/修改
+
+// 来电分类
+Route::any('admin/workCallerType/ajax_alist', 'admin\WorkCallerTypeController@ajax_alist');//ajax获得列表数据
+Route::any('admin/workCallerType/ajax_del', 'admin\WorkCallerTypeController@ajax_del');// 删除
+Route::any('admin/workCallerType/ajax_save', 'admin\WorkCallerTypeController@ajax_save');// 新加/修改
+
+// 系统
+Route::any('admin/system/ajax_alist', 'admin\SystemController@ajax_alist');//ajax获得列表数据
+Route::any('admin/system/ajax_del', 'admin\SystemController@ajax_del');// 删除
+Route::any('admin/system/ajax_save', 'admin\SystemController@ajax_save');// 新加/修改
+
+// 系统模块
+Route::any('admin/systemModule/ajax_alist', 'admin\SystemModuleController@ajax_alist');//ajax获得列表数据
+Route::any('admin/systemModule/ajax_del', 'admin\SystemModuleController@ajax_del');// 删除
+Route::any('admin/systemModule/ajax_save', 'admin\SystemModuleController@ajax_save');// 新加/修改
+
+// 角色
+Route::any('admin/roles/ajax_alist', 'admin\RolesController@ajax_alist');//ajax获得列表数据
+Route::any('admin/roles/ajax_del', 'admin\RolesController@ajax_del');// 删除
+Route::any('admin/roles/ajax_save', 'admin\RolesController@ajax_save');// 新加/修改
+
+// 区域
+Route::any('admin/area/ajax_alist', 'admin\AreaController@ajax_alist');//ajax获得列表数据
+Route::any('admin/area/ajax_del', 'admin\AreaController@ajax_del');// 删除
+Route::any('admin/area/ajax_save', 'admin\AreaController@ajax_save');// 新加/修改
+
+// 部门
+Route::any('admin/department/ajax_alist', 'admin\DepartmentController@ajax_alist');//ajax获得列表数据
+Route::any('admin/department/ajax_del', 'admin\DepartmentController@ajax_del');// 删除
+Route::any('admin/department/ajax_save', 'admin\DepartmentController@ajax_save');// 新加/修改
+
+// 职位
+Route::any('admin/position/ajax_alist', 'admin\PositionController@ajax_alist');//ajax获得列表数据
+Route::any('admin/position/ajax_del', 'admin\PositionController@ajax_del');// 删除
+Route::any('admin/position/ajax_save', 'admin\PositionController@ajax_save');// 新加/修改
+
+// 知识分类
+Route::any('admin/lore_type/ajax_alist', 'admin\LoreTypeController@ajax_alist');//ajax获得列表数据
+Route::any('admin/lore_type/ajax_del', 'admin\LoreTypeController@ajax_del');// 删除
+Route::any('admin/lore_type/ajax_save', 'admin\LoreTypeController@ajax_save');// 新加/修改
+
+// 试题分类
+Route::any('admin/subject_type/ajax_alist', 'admin\subject_type@ajax_alist');//ajax获得列表数据
+Route::any('admin/subject_type/ajax_del', 'admin\subject_type@ajax_del');// 删除
+Route::any('admin/subject_type/ajax_save', 'admin\subject_type@ajax_save');// 新加/修改
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //web-manage

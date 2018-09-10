@@ -37,15 +37,40 @@ Route::get('admin/info', 'admin\IndexController@info');//myinfo.html 个人信�
 Route::get('admin/siteAdmin', 'admin\SiteAdminController@index');//class_admin.html  管理员管理
 
 // 系统基本设置
+// 来电分类
 Route::get('admin/workCallerType', 'admin\WorkCallerTypeController@index');//class_call.html 来电分类
+Route::get('admin/workCallerType/add/{id}', 'admin\WorkCallerTypeController@add');// 来电分类--添加
+// 区域
 Route::get('admin/area', 'admin\AreaController@index');//class_quyu.html  区域管理
+Route::get('admin/area/add/{id}', 'admin\AreaController@add');// 区域管理--添加
+
+//业务标签
 Route::get('admin/tags', 'admin\TagsController@index');//class_tags.html  业务标签
+Route::get('admin/tags/add/{id}', 'admin\TagsController@add');//业务标签--添加
+//业务时间
+Route::get('admin/serviceTime', 'admin\ServiceTimeController@index');//  业务时间
+Route::get('admin/serviceTime/add/{id}', 'admin\ServiceTimeController@add');//业务时间--添加
+
+// 系统
+Route::get('admin/system', 'admin\SystemController@index');//  系统管理
+Route::get('admin/system/add/{id}', 'admin\SystemController@add');// 系统管理--添加
+
+// 系统模块
+Route::get('admin/systemModule', 'admin\SystemModuleController@index');//  系统模块
+Route::get('admin/systemModule/add/{id}', 'admin\SystemModuleController@add');// 系统模块--添加
+
 
 // 角色/权限
 Route::get('admin/roles', 'admin\RolesController@index');//class_jiaose.html 角色/权限管理//
+Route::get('admin/roles/add/{id}', 'admin\RolesController@add');// 系统模块--添加
 
 // 部门
 Route::get('admin/department', 'admin\DepartmentController@index');//class_bumen.html  部门管理
+Route::get('admin/department/add/{id}', 'admin\DepartmentController@add');// 部门管理--添加
+
+// 职位
+Route::get('admin/position', 'admin\PositionController@index');//  职位管理
+Route::get('admin/position/add/{id}', 'admin\PositionController@add');// 职位管理--添加
 
 // 员工
 Route::get('admin/staff', 'admin\StaffController@index');//Colleague.html 我的同事
@@ -55,10 +80,13 @@ Route::get('admin/customer/index', 'admin\CustomerController@index');//customer_
 Route::get('admin/customer/dayCount', 'admin\CustomerController@dayCount');//achievement.html  我的客户-按日统计--*
 //客户类型
 Route::get('admin/customer_type/index', 'admin\CustomerTypeController@index');//class_kehu.html 客户分类
-Route::get('admin/customer_type/add/{id}', 'admin\CustomerTypeController@add');//class_kehu.html 客户分类
+Route::get('admin/customer_type/add/{id}', 'admin\CustomerTypeController@add');// 客户分类--添加
 
 //工单
+// 工单分类
 Route::get('admin/work_type/index', 'admin\WorkTypeController@index');//class_order.html 工单分类
+Route::get('admin/work_type/add/{id}', 'admin\WorkTypeController@add');// 工单分类--添加
+
 Route::get('admin/work/index', 'admin\WorkController@index');//work_monitor.html 工单管理
 
 //统计
@@ -67,7 +95,10 @@ Route::get('admin/count_customer/index', 'admin\CountCustomerController@index');
 Route::get('admin/count_repair/index', 'admin\CountRepairController@index');//count_Repair.html 来电统计-维修改数量
 
 //知识
+// 知识分类
 Route::get('admin/lore_type/index', 'admin\LoreTypeController@index');//know_class.html 知识分类
+Route::get('admin/lore_type/add/{id}', 'admin\LoreTypeController@add');// 知识分类--添加
+
 Route::get('admin/lore/index', 'admin\LoreController@index');//know_list.html 在线学习
 
 //反馈
@@ -78,7 +109,9 @@ Route::get('admin/exam/add', 'admin\ExamController@add');//x_examination_add.htm
 //试题
 Route::get('admin/subject/index', 'admin\SubjectController@index');//x_questions.html  试题管理
 Route::get('admin/subject/add', 'admin\SubjectController@add');//x_questions_add.html  试题添加
+// 试题分类
 Route::get('admin/subject_type/index', 'admin\SubjectTypeController@index');//x_questions_class.html 试题分类
+Route::get('admin/subject_type/add/{id}', 'admin\SubjectTypeController@add');// 试题分类--添加
 
 // 试卷
 Route::get('admin/paper/add', 'admin\PaperController@add');//x_testpaper_add.html 试题添加
