@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Business\CompanyCustomerType;
 use App\Http\Controllers\AdminController;
+use App\Services\Common;
 use Illuminate\Http\Request;
 
 class CustomerTypeController extends AdminController
@@ -34,23 +35,16 @@ class CustomerTypeController extends AdminController
     {
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
-//        $resultDatas = [
-//            'id' => 0,
-//            'account_issuper' =>0,
-//            'account_status' => 0,
-//
-//        ];
-//        if ($id > 0) { // 获得详情数据
-//            $resultDatas = $this->getinfoApi($this->model_name, '', $this->company_id , $id);
-//            // 判断权限
-//            $judgeData = [
-//                'company_id' => $this->company_id,
-//            ];
-//            $this->judgePowerByObj($request,$resultDatas, $judgeData );
-//        }
-//        $remarks = $resultDatas['remarks'] ?? '';
-//        $resultDatas['remarks'] = replace_enter_char($remarks,2);
 
+        $resultDatas = [
+            'id'=>$id,
+        ];
+
+        if ($id > 0) { // 获得详情数据
+            $resultDatas = CompanyCustomerType::getInfoData($request, $this, $id);
+        }
+
+        $reDataArr = array_merge($reDataArr, $resultDatas);
         return view('admin.customer_type.add', $reDataArr);
     }
 
@@ -63,7 +57,38 @@ class CustomerTypeController extends AdminController
      */
     public function ajax_alist(Request $request){
         $this->InitParams($request);
-        return  CompanyCustomerType::getAllList($request, $this);
+        return  CompanyCustomerType::getList($request, $this, 1 + 0);
+    }
+
+    /**
+     * ajax保存数据
+     *
+     * @param int $id
+     * @return Response
+     * @author zouyan(305463219@qq.com)
+     */
+    public function ajax_save(Request $request)
+    {
+        $this->InitParams($request);
+        $id = Common::getInt($request, 'id');
+        // Common::judgeEmptyParams($request, 'id', $id);
+        $company_id = $this->company_id;
+        $type_name = Common::get($request, 'type_name');
+        $sort_num = Common::getInt($request, 'sort_num');
+
+        $saveData = [
+            'type_name' => $type_name,
+            'sort_num' => $sort_num,
+        ];
+//        if($id <= 0) {// 新加;要加入的特别字段
+//            $addNewData = [
+//                // 'account_password' => $account_password,
+//            ];
+//            $saveData = array_merge($saveData, $addNewData);
+//        }
+
+        $resultDatas = CompanyCustomerType::replaceById($request, $this, $saveData, $id);
+        return ajaxDataArr(1, $resultDatas, '');
     }
 
     /**

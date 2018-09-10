@@ -159,10 +159,12 @@ class CompanyStaff extends BaseBusiness
      *
      * @param Request $request 请求信息
      * @param Controller $controller 控制对象
+     * @param int $oprateBit 操作类型位 1:获得所有的; 2 分页获取[同时有1和2，2优先]；4 返回分页html翻页代码
+     * @param int $notLog 是否需要登陆 0需要1不需要
      * @return  array 列表数据
      * @author zouyan(305463219@qq.com)
      */
-    public static function getList(Request $request, Controller $controller){
+    public static function getList(Request $request, Controller $controller, $oprateBit = 2 + 4 , $notLog = 0){
         $company_id = $controller->company_id;
         // 获得数据
         $queryParams = [
@@ -180,7 +182,7 @@ class CompanyStaff extends BaseBusiness
         // $relations = ['CompanyInfo'];// 关系
         // $relations = '';//['CompanyInfo'];// 关系
         $relations = ['staffDepartment','staffGroup','staffPosition'];// 关系
-        $result = self::getBaseListData($request, $controller, self::$model_name, $queryParams,$relations , 1 + 4);
+        $result = self::getBaseListData($request, $controller, self::$model_name, $queryParams,$relations , $oprateBit, $notLog);
 
         // 格式化数据
         $data_list = $result['data_list'] ?? [];

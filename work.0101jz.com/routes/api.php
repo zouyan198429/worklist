@@ -25,7 +25,7 @@ Route::any('admin/ajax_login', 'admin\IndexController@ajax_login');// 登陆
 // 客户分类
 Route::any('admin/customer_type/ajax_alist', 'admin\CustomerTypeController@ajax_alist');//ajax获得列表数据
 Route::any('admin/customer_type/ajax_del', 'admin\CustomerTypeController@ajax_del');// 删除
-
+Route::any('admin/customer_type/ajax_save', 'admin\CustomerTypeController@ajax_save');// 新加/修改
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //web-manage

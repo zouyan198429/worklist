@@ -81,7 +81,7 @@ class StaffController extends AdminController
      */
     public function ajax_alist(Request $request){
         $this->InitParams($request);
-        return  CompanyStaff::getList($request, $this);
+        return  CompanyStaff::getList($request, $this, 2 + 4);
     }
 
     /**

@@ -50,7 +50,7 @@ class WorksController extends BaseController
         if(empty($real_name)){
             $real_name = $mobile;
         }
-        $this->reDataArr['real_name'] = $real_name;
+        $this->reDataArr['baseArr']['real_name'] = $real_name;
         // 每*分钟，自动更新一下左则
 //        $recordTime  = time();
 //        $difTime = 60 * 5 ;// 5分钟

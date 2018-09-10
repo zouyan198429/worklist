@@ -35,7 +35,7 @@ class AdminController extends BaseController
         $this->company_id =  $company_id;//'99999';//
 
         $real_name = $userInfo['real_name'] ?? '';
-        $this->reDataArr['real_name'] = $real_name;
+        $this->reDataArr['baseArr']['real_name'] = $real_name;
     }
 
 }

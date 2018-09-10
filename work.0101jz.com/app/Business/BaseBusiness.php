@@ -34,7 +34,7 @@ class BaseBusiness
         ];
      * @author zouyan(305463219@qq.com)
      */
-    public static function getBaseListData(Request $request, Controller $controller, $model_name, $queryParams = '',$relations = '', $oprateBit = 6,  $notLog = 0){
+    public static function getBaseListData(Request $request, Controller $controller, $model_name, $queryParams = '',$relations = '', $oprateBit = 2 + 4,  $notLog = 0){
         $company_id = $controller->company_id;
         // 获得翻页的三个关键参数
         $pageParams = Common::getPageParams($request);
@@ -150,4 +150,47 @@ class BaseBusiness
 
         return ajaxDataArr(1, $resultDatas, '');
     }
+
+    /**
+     * 根据id获得单条数据
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param string $model_name 模型名称
+     * @param int $id id
+     * @param json/array $relations 要查询的与其它表的关系
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @return  array 列表数据
+     * @author zouyan(305463219@qq.com)
+     */
+//    public static function getInfoDataBase(Request $request, Controller $controller, $model_name, $id, $relations = '', $notLog = 0){
+//        $company_id = $controller->company_id;
+//        // $relations = '';
+//        return CommonBusiness::getinfoApi($model_name, $relations, $company_id , $id, $notLog);
+//    }
+
+
+    /**
+     * 根据id新加或修改单条数据-id 为0 新加，返回新的对象数组[-维],  > 0 ：修改对应的记录，返回true
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param string $model_name 模型名称
+     * @param array $saveData 要保存或修改的数组
+     * @param int $id id
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @return  mixed 单条数据 - -维数组 为0 新加，返回新的对象数组[-维],  > 0 ：修改对应的记录，返回true
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function replaceByIdBase(Request $request, Controller $controller, $model_name, $saveData, &$id, $notLog = 0){
+        $company_id = $controller->company_id;
+        if($id <= 0){// 新加
+            $resultDatas = CommonBusiness::createApi($model_name, $saveData, $company_id, $notLog);
+            $id = $resultDatas['id'] ?? 0;
+        }else{// 修改
+            $resultDatas = CommonBusiness::saveByIdApi($model_name, $id, $saveData, $company_id, $notLog);
+        }
+        return $resultDatas;
+    }
+
 }
