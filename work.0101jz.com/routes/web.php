@@ -108,6 +108,8 @@ Route::get('admin/lore', 'admin\LoreController@index');//know_list.html 在线�
 
 //反馈
 Route::get('admin/problem', 'admin\ProblemController@index');//problem.html 反馈问题
+Route::get('admin/problem/return_send/{id}', 'manage\ProblemController@return_send');//m_problem.html 反馈问题 - 回复
+
 //考次试卷
 Route::get('admin/exam', 'admin\ExamController@index');//x_examination_list.html 试次管理
 Route::get('admin/exam/add', 'admin\ExamController@add');//x_examination_add.html  试次添加

@@ -100,7 +100,7 @@ Route::any('manage/staff/ajax_del', 'manage\StaffController@ajax_del');// 删除
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //反馈问题 （liuxin）
 Route::any('manage/problem/ajax_alist', 'manage\ProblemController@ajax_alist');//ajax获得反馈问题的列表数据
-Route::any('manage/problem/ajax_del', 'manage\ProblemController@ajax_del');// 删除反馈问题
+Route::any('admin/problem/ajax_alist', 'admin\ProblemController@ajax_alist');// 删除反馈问题
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //web-huawu 客服
 Route::any('huawu/ajax_login', 'huawu\IndexController@ajax_login');// 登陆
