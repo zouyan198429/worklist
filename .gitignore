@@ -25,6 +25,7 @@ piwik/misc/GeoLite2-City.mmdb
 /api.0101jz.com/config/public.php
 /api.0101jz.com/.env
 /api.0101jz.com/resources/views/piwik.blade.php
+/api.0101jz.com/app/Exceptions/ExportException.php
 
 /work.0101jz.com/.idea
 /work.0101jz.com/public/resource
@@ -37,6 +38,7 @@ piwik/misc/GeoLite2-City.mmdb
 /work.0101jz.com/.env
 /work.0101jz.com/resources/views/piwik.blade.php
 /work.0101jz.com/public/2018/
+/work.0101jz.com/app/Exceptions/ExportException.php
 
 /app.0101jz.com
 /app.0101jz.com/.idea
