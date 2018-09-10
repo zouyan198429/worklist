@@ -53,4 +53,12 @@ class CompanyProblem extends BaseModel
         return $this->belongsTo('App\Models\CompanyArea', 'area_id', 'id');
     }
 
+    /**
+     * 获取反馈问题对应的客户 --一维
+     */
+    public function problemCustomer()
+    {
+        return $this->belongsTo('App\Models\CompanyCustomer', 'customer_id', 'id');
+    }
+
 }

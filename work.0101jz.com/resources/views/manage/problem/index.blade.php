@@ -26,10 +26,10 @@
 				</div>
 			</form>
 		</div>
-		<table class="table2">
+		<table   id="dynamic-table" class="table2">
 			<thead>
 			<tr>
-				<th></th>
+				{{--<th></th>--}}
 				<th>类型</th>
 				<th>内容</th>
 				<th>客户电话</th>
@@ -124,14 +124,14 @@
 @push('footlast')
 <script type="text/javascript">
 	var OPERATE_TYPE = <?php echo isset($operate_type)?$operate_type:0; ?>;
-	const AJAX_URL = "{{ url('api/manage/staff/ajax_alist') }}";//ajax请求的url
-	const ADD_URL = "{{ url('manage/staff/add/0') }}"; //添加url
-	const SHOW_URL = "{{url('accounts/info/')}}/";//显示页面地址前缀 + id
-	const EDIT_URL = "{{url('manage/staff/add/')}}/";//修改页面地址前缀 + id
-	const DEL_URL = "{{ url('api/manage/staff/ajax_del') }}";//删除页面地址
-	const BATCH_DEL_URL = "{{ url('api/manage/staff/ajax_del') }}";//批量删除页面地址
-	const EXPORT_EXCEL_URL = "{{ url('manage/staff/add/0') }}"; //"{{ url('api/manage/staff/export') }}";//导出EXCEL地址
-	const IMPORT_EXCEL_URL = "{{ url('manage/staff/add/0') }}"; //"{{ url('api/manage/staff/import') }}";//导入EXCEL地址
+	const AJAX_URL = "{{ url('api/manage/problem/ajax_alist') }}";//ajax请求的url
+	const ADD_URL = ""; // {{ url('manage/staff/add/0') }} //添加url
+	const SHOW_URL = "";//{{url('accounts/info/')}}/ //显示页面地址前缀 + id
+	const EDIT_URL = "";//{{url('manage/staff/add/')}}/  //修改页面地址前缀 + id
+	const DEL_URL = "";  //{{ url('api/manage/problem/ajax_del') }}  //删除页面地址
+	const BATCH_DEL_URL = ""; //{{ url('api/manage/staff/ajax_del') }}  //批量删除页面地址
+	const EXPORT_EXCEL_URL = ""; //{{ url('manage/staff/add/0') }}  "{{ url('api/manage/staff/export') }}";//导出EXCEL地址
+	const IMPORT_EXCEL_URL = ""; //{{ url('manage/staff/add/0') }}"{{ url('api/manage/staff/import') }}";//导入EXCEL地址
 
 </script>
 <script src="{{asset('js/common/list.js')}}"></script>
@@ -150,20 +150,20 @@
 	%>
 
 	<tr>
-		<td>
-			<label class="pos-rel">
-				<input  onclick="action.seledSingle(this)" type="checkbox" class="ace check_item" <%if( false &&  !can_modify){%> disabled <%}%>  value="<%=item.id%>"/>
-                  <span class="lbl"></span>
-                </label>
-			</td>
-		<td><%=item.work_num%></td>
-		<td><%=item.work_num%>一个问题的内容</td>
-		<td><%=item.work_num%>张兰兰</td>
-		<td><%=item.work_num%>15699888555</td>
-		<td><%=item.work_num%>雷小明</td>
-		<td><%=item.work_num%>18955263568</td>
-		<td><%=item.work_num%>2018-05-25 14:22</td>
-		<td><a href="" class="btn btn-mini" >回复</a></td>
+		{{--<td>--}}
+			{{--<label class="pos-rel">--}}
+				{{--<input  onclick="action.seledSingle(this)" type="checkbox" class="ace check_item" <%if( false &&  !can_modify){%> disabled <%}%>  value="<%=item.id%>"/>--}}
+                  {{--<span class="lbl"></span>--}}
+                {{--</label>--}}
+			{{--</td>--}}
+		<td><%=item.type_id%></td>
+		<td><%=item.content%></td>
+		<td><%=item.call_number%></td>
+		<td><%=item.address%></td>
+		<td><%=item.customer_name%></td>
+		<td><%=item.call_number%></td>
+		<td><%=item.created_at%></td>
+		<td><a href="{{url('manage/problem/return_send')}}/<%=item.id%>" class="btn btn-mini" >回复</a></td>
 	</tr> <%}%>
 </script>
 <!-- 列表模板部分 结束-->

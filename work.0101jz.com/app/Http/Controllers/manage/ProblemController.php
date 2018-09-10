@@ -4,6 +4,7 @@ namespace App\Http\Controllers\manage;
 
 use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
+use App\Business\CompanyProblem;
 
 class ProblemController extends AdminController
 {
@@ -30,7 +31,7 @@ class ProblemController extends AdminController
      */
     public function ajax_alist(Request $request){
         $this->InitParams($request);
-        return  CompanyStaff::getList($request, $this);
+        return  CompanyProblem::getList($request, $this);
     }
 
 
@@ -45,7 +46,7 @@ class ProblemController extends AdminController
     public function ajax_del(Request $request)
     {
         $this->InitParams($request);
-        return CompanyStaff::delAjax($request, $this);
+        return CompanyProblem::delAjax($request, $this);
     }
 
 

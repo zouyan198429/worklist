@@ -36,4 +36,12 @@ class CompanyCustomer extends BaseModel
     {
         return $this->belongsTo('App\Models\CompanyArea', 'area_id', 'id');
     }
+
+    /**
+     * 获取客户的反馈-二维
+     */
+    public function customerProblem()
+    {
+        return $this->hasMany('App\Models\CompanyProblem', 'customer_id', 'id');
+    }
 }

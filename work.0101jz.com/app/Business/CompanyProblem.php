@@ -32,16 +32,15 @@ class CompanyProblem extends BaseBusiness
                 ['company_id', $company_id],
                 //['mobile', $keyword],
             ],
-//            'select' => [
-//                'id','company_id','type_name','sort_num'
-//                //,'operate_staff_id','operate_staff_history_id'
-//                ,'created_at'
-//            ],
+            'select' => [
+                'id','company_id','type_id','customer_id','customer_name'
+                ,'content','call_number','created_at','address'
+            ],
 //            'orderBy' => ['sort_num'=>'desc','id'=>'desc'],
             'orderBy' => ['id'=>'desc'],
         ];// 查询条件参数
         // $relations = ['CompanyInfo'];// 关系
-        $relations = '';//['CompanyInfo'];// 关系
+        $relations = ['problemCity'];//['CompanyInfo'];// 关系
         $result = self::getBaseListData($request, $controller, self::$model_name, $queryParams,$relations , $oprateBit, $notLog);
 
         // 格式化数据
