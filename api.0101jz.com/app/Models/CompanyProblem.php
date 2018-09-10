@@ -60,5 +60,12 @@ class CompanyProblem extends BaseModel
     {
         return $this->belongsTo('App\Models\CompanyCustomer', 'customer_id', 'id');
     }
+    /**
+     * 获取客户对应的类型 --一维
+     */
+    public function problemCustomerType()
+    {
+        return $this->belongsTo('App\Models\CompanyCustomerType', 'type_id', 'id');
+    }
 
 }

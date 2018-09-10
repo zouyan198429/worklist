@@ -20,4 +20,12 @@ class CompanyCustomerType extends BaseModel
     {
         return $this->hasMany('App\Models\CompanyCustomer', 'type_id', 'id');
     }
+
+    /**
+     * 获取客户类型下的反馈问题-二维
+     */
+    public function typeProblem()
+    {
+        return $this->hasMany('App\Models\CompanyProblem', 'type_id', 'id');
+    }
 }

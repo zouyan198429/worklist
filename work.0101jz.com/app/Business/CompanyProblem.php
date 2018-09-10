@@ -34,23 +34,26 @@ class CompanyProblem extends BaseBusiness
             ],
             'select' => [
                 'id','company_id','type_id','customer_id','customer_name'
-                ,'content','call_number','created_at','address'
+                ,'content','call_number','created_at','address','city_id'
             ],
 //            'orderBy' => ['sort_num'=>'desc','id'=>'desc'],
             'orderBy' => ['id'=>'desc'],
         ];// 查询条件参数
         // $relations = ['CompanyInfo'];// 关系
-        $relations = ['problemCity'];//['CompanyInfo'];// 关系
+        $relations = ['problemCity', 'problemCustomer.customerType', 'problemCustomerType'];//['CompanyInfo'];// 关系
         $result = self::getBaseListData($request, $controller, self::$model_name, $queryParams,$relations , $oprateBit, $notLog);
 
         // 格式化数据
-//        $data_list = $result['data_list'] ?? [];
-//        foreach($data_list as $k => $v){
-//            // 公司名称
+        $data_list = $result['data_list'] ?? [];
+        foreach($data_list as $k => $v){
+            // 公司名称
 //            $data_list[$k]['company_name'] = $v['company_info']['company_name'] ?? '';
 //            if(isset($data_list[$k]['company_info'])) unset($data_list[$k]['company_info']);
-//        }
-//        $result['data_list'] = $data_list;
+            // 类型名称
+            $data_list[$k]['type_name'] = $v['problem_customer_type']['type_name'] ?? '';
+            if(isset($data_list[$k]['problem_customer_type'])) unset($data_list[$k]['problem_customer_type']);
+        }
+        $result['data_list'] = $data_list;
         return ajaxDataArr(1, $result, '');
     }
 

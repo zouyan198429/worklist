@@ -156,7 +156,7 @@
                   {{--<span class="lbl"></span>--}}
                 {{--</label>--}}
 			{{--</td>--}}
-		<td><%=item.type_id%></td>
+		<td><%=item.type_name%></td>
 		<td><%=item.content%></td>
 		<td><%=item.call_number%></td>
 		<td><%=item.address%></td>

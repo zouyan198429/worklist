@@ -61,6 +61,8 @@ function ajaxPageList(dynamic_id,baidu_template_page,ajax_url,is_read_page,frm_i
 //		if (data['type']) { if (!data['keywords']) { alert("搜索关键词不能为空"); return false; } }
 //		if (data['type'] == "1") { if (isNaN(data['keywords'])) { alert("搜索关键词必须为数字"); return false; } }
     var layer_index = layer.load();//layer.msg('加载中', {icon: 16});
+    console.log(ajax_url);
+    console.log(data);
     $.ajax({
         'type' : 'POST',
         'url' : ajax_url,//'/pms/Supplier/ajax_alist',
