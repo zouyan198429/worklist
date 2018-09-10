@@ -11,7 +11,7 @@
 
 		<div class="mmhead" id="mywork">
 			<div class="tabbox" >
-				<a href="{{ url('manage/work/index') }}" class="on">全部工单</a> <a href="{{ url('manage/index_hot') }}" >重点关注</a>
+				<a href="{{ url('manage/work') }}" class="on">全部工单</a> <a href="{{ url('manage/hot') }}" >重点关注</a>
 			</div>
 			<div class="msearch fr">
 				<select style="width:80px; height:28px;">

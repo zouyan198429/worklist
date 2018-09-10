@@ -1,3 +1,3 @@
 
 @include('public.dynamic_list_foot')
-<script src="{{asset('admin/js/menu.js')}}"></script>
+<script src="{{asset('staticadmin/js/menu.js')}}"></script>

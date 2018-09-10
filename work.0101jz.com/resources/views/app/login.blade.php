@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<title>维修APP</title>
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<link rel="stylesheet" href="{{asset('app/css/style.css')}}">
+	<link rel="stylesheet" href="{{asset('staticapp/css/style.css')}}">
  	<link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css">	
 </head>
 <body>
@@ -26,7 +26,7 @@
 	 
 </body>
 </html>
-<script src="{{asset('app/js/jquery-2.1.1.min.js')}}" type="text/javascript"></script>
+<script src="{{asset('staticapp/js/jquery-2.1.1.min.js')}}" type="text/javascript"></script>
 <!-- 弹出层-->
 <script src="{{ asset('/static/js/custom/layer/layer.js') }}"></script>
 <!-- 公共方法-->

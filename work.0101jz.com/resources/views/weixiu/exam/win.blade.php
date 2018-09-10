@@ -23,7 +23,7 @@
 		</div>
 
 		<div class="mmfoot tc">
-			<a href="{{ url('weixiu/exam/index') }}" class="btn" > 返回  </a>
+			<a href="{{ url('weixiu/exam') }}" class="btn" > 返回  </a>
 		</div>
 
 	</div>

@@ -6,7 +6,7 @@
 
 @section('content')
 
-	<div id="crumb"><a href="{{ url('app/lore/index') }}" class="btn" ><i class="fa fa-reorder fa-fw" aria-hidden="true"></i>  返回</a></div>
+	<div id="crumb"><a href="{{ url('app/lore') }}" class="btn" ><i class="fa fa-reorder fa-fw" aria-hidden="true"></i>  返回</a></div>
 	<section class="main" id="know-view" >
 		<h1>企业品牌推广战略存在的问题?</h1>
 		<div class="content">

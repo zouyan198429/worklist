@@ -94,7 +94,7 @@
 @endpush
 
 @push('footlast')
-	<script src="{{asset('app/js/sidebar-menu.js')}}"></script>
+	<script src="{{asset('staticapp/js/sidebar-menu.js')}}"></script>
 	<script>
         $.sidebarMenu($('.sidebar-menu'))
 	</script>

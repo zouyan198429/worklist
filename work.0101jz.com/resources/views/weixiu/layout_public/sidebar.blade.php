@@ -3,7 +3,7 @@
     <section  class="sidebar">
         <ul class="sidebar-menu" id="subnav">
             <li>
-                <a href="{{ url('weixiu/index') }}"><i class="fa fa-home fa-fw" aria-hidden="true"></i> 首页</a>
+                <a href="{{ url('weixiu') }}"><i class="fa fa-home fa-fw" aria-hidden="true"></i> 首页</a>
             </li>
             <li>
                 <a href="{{ url('weixiu/problem/add') }}">
@@ -19,7 +19,7 @@
             </li>
 
             <li>
-                <a href="{{ url('weixiu/customer/index') }}">
+                <a href="{{ url('weixiu/customer') }}">
                     <i class="fa fa-star-o fa-fw" aria-hidden="true"></i>
                     <span>我的客户</span>
                 </a>
@@ -31,19 +31,19 @@
                 </a>
             </li>
             <li>
-                <a href="{{ url('weixiu/staff/index') }}">
+                <a href="{{ url('weixiu/staff') }}">
                     <i class="fa fa-address-book-o fa-fw" aria-hidden="true"></i>
                     <span>我的同事</span>
                 </a>
             </li>
             <li>
-                <a href="{{ url('weixiu/lore/index') }}">
+                <a href="{{ url('weixiu/lore') }}">
                     <i class="fa fa-battery-3 fa-fw" aria-hidden="true"></i>
                     <span>在线学习</span>
                 </a>
             </li>
             <li>
-                <a href="{{ url('weixiu/exam/index') }}">
+                <a href="{{ url('weixiu/exam') }}">
                     <i class="fa fa-clock-o fa-fw" aria-hidden="true"></i>
                     <span>在线考试</span>
                 </a>

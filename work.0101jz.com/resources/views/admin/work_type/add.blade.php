@@ -40,7 +40,7 @@
 @push('footlast')
 	<script type="text/javascript">
         const SAVE_URL = "{{ url('api/admin/customer_type/ajax_save') }}";// ajax保存记录地址
-        const LIST_URL = "{{url('admin/customer_type/index')}}";//保存成功后跳转到的地址
+        const LIST_URL = "{{url('admin/customer_type')}}";//保存成功后跳转到的地址
 	</script>
 	<script src="{{ asset('/js/admin/lanmu/customer_type_edit.js') }}"  type="text/javascript"></script>
 @endpush

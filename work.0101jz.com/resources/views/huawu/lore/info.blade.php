@@ -6,7 +6,7 @@
 
 @section('content')
 
-	<div id="crumb"><i class="fa fa-reorder fa-fw" aria-hidden="true"></i> 在线学习 <a href="{{ url('huawu/lore/index') }}" class="btn" >返回</a></div>
+	<div id="crumb"><i class="fa fa-reorder fa-fw" aria-hidden="true"></i> 在线学习 <a href="{{ url('huawu/lore') }}" class="btn" >返回</a></div>
 	<div class="mm" id="know_view">
 
 		<h1>企业品牌推广战略存在的问题?</h1>

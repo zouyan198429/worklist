@@ -12,15 +12,15 @@
 
 			<p>客户组成表(企业、个人、...)</p>
 
-			<img src="{{asset('admin/images/tb2.png')}}" />
+			<img src="{{asset('staticadmin/images/tb2.png')}}" />
 
 			<p>客户区域分布表(区域)</p>
-			<img src="{{asset('admin/images/tb1.png')}}" />
+			<img src="{{asset('staticadmin/images/tb1.png')}}" />
 
 
 			<p>工单类型表</p>
 
-			<img src="{{asset('admin/images/tb3.png')}}" />
+			<img src="{{asset('staticadmin/images/tb3.png')}}" />
 
 		</div>
 

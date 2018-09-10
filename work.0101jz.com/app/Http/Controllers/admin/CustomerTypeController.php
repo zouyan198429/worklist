@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Business\CompanyCustomerType;
-use App\Http\Controllers\AdminController;
 use App\Services\Common;
+use App\Business\CompanyCustomerType;
 use Illuminate\Http\Request;
+use App\Http\Controllers\AdminController;
 
 class CustomerTypeController extends AdminController
 {

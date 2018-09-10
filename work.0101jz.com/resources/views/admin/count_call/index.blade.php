@@ -15,7 +15,7 @@
 			</div>
 		</div>
 		<div class="tubiao">
-			<img src="{{asset('admin/images/tb1.png')}}" />
+			<img src="{{asset('staticadmin/images/tb1.png')}}" />
 
 			<p>2018-05-01--- 2018-05-28(今天)</p>
 		</div>

@@ -3,7 +3,7 @@
     <section  class="sidebar">
         <ul class="sidebar-menu">
             <li>
-                <a href="{{ url('huawu/index') }}"><i class="fa fa-home fa-fw" aria-hidden="true"></i> 首页</a>
+                <a href="{{ url('huawu') }}"><i class="fa fa-home fa-fw" aria-hidden="true"></i> 首页</a>
             </li>
             <li>
                 <a href="{{ url('huawu/work/add') }}">
@@ -25,7 +25,7 @@
                 </ul>
             </li>
             <li>
-                <a href="{{ url('huawu/customer/index') }}">
+                <a href="{{ url('huawu/customer') }}">
                     <i class="fa fa-star-o fa-fw" aria-hidden="true"></i>
                     <span>我的客户</span>
                 </a>
@@ -43,13 +43,13 @@
                 </a>
             </li>
             <li>
-                <a href="{{ url('huawu/lore/index') }}">
+                <a href="{{ url('huawu/lore') }}">
                     <i class="fa fa-battery-3 fa-fw" aria-hidden="true"></i>
                     <span>在线学习</span>
                 </a>
             </li>
             <li>
-                <a href="{{ url('huawu/exam/index') }}">
+                <a href="{{ url('huawu/exam') }}">
                     <i class="fa fa-clock-o fa-fw" aria-hidden="true"></i>
                     <span>在线考试</span>
                 </a>

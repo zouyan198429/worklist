@@ -62,7 +62,7 @@
 				<td>90分钟</td>
 				<td>话务</td>
 				<td>完成</td>
-				<td><a href="{{ url('manage/exam_score/index') }}" class="btn" >查看成绩</a></td>
+				<td><a href="{{ url('manage/exam_score') }}" class="btn" >查看成绩</a></td>
 			</tr>
 
 			<tr>
@@ -75,7 +75,7 @@
 				<td>90分钟</td>
 				<td>话务</td>
 				<td>完成</td>
-				<td><a href="{{ url('manage/exam_score/index') }}" class="btn" >查看成绩</a></td>
+				<td><a href="{{ url('manage/exam_score') }}" class="btn" >查看成绩</a></td>
 			</tr>
 
 
@@ -89,7 +89,7 @@
 				<td>90分钟</td>
 				<td>话务</td>
 				<td>完成</td>
-				<td><a href="{{ url('manage/exam_score/index') }}" class="btn" >查看成绩</a></td>
+				<td><a href="{{ url('manage/exam_score') }}" class="btn" >查看成绩</a></td>
 			</tr>
 
 			<tr>
@@ -102,7 +102,7 @@
 				<td>90分钟</td>
 				<td>话务</td>
 				<td>完成</td>
-				<td><a href="{{ url('manage/exam_score/index') }}" class="btn" >查看成绩</a></td>
+				<td><a href="{{ url('manage/exam_score') }}" class="btn" >查看成绩</a></td>
 			</tr>
 			</tbody>
 		</table>

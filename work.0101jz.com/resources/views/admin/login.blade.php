@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>员工登录</title>
-	<link rel="stylesheet" type="text/css" href="{{asset('admin/css/style.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{asset('staticadmin/css/style.css')}}">
 </head>
 <body id="body-login">
 	<form class="am-form" action="#"  method="post"  id="addForm">
@@ -12,7 +12,7 @@
 			<ul>
 				<li><input type="text"  name="admin_username"   placeholder="用户名" /></li>
 				<li><input type="password"  name="admin_password"  placeholder="密码" /></li>
-				<li><input type="submit" id="submitBtn"  {{--onClick="window.open('{{ url('admin/index') }}')"--}} value="登录" class="btn" /></li>
+				<li><input type="submit" id="submitBtn"  {{--onClick="window.open('{{ url('admin') }}')"--}} value="登录" class="btn" /></li>
 			</ul>
 		</div>
 	</form>
@@ -29,7 +29,7 @@
 <!-- 新加入 end-->
 <script>
     const LOGIN_URL = "{{ url('api/admin/ajax_login') }}";
-    const INDEX_URL = "{{url('admin/index')}}";
+    const INDEX_URL = "{{url('admin')}}";
 
 </script>
 <script src="{{ asset('/js/common/login.js') }}"  type="text/javascript"></script>

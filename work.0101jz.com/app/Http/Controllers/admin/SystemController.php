@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Business\CompanyRoles;
+use App\Business\SiteSystem;
 use App\Http\Controllers\AdminController;
 use App\Services\Common;
 use Illuminate\Http\Request;
 
-class RolesController extends AdminController
+class SystemController extends AdminController
 {
     /**
      * 首页
@@ -20,7 +20,7 @@ class RolesController extends AdminController
     {
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
-        return view('admin.roles.index', $reDataArr);
+        return view('admin.system.index', $reDataArr);
     }
 
     /**
@@ -41,12 +41,11 @@ class RolesController extends AdminController
         ];
 
         if ($id > 0) { // 获得详情数据
-            $resultDatas = CompanyRoles::getInfoData($request, $this, $id);
-
+            $resultDatas = SiteSystem::getInfoData($request, $this, $id);
         }
 
         $reDataArr = array_merge($reDataArr, $resultDatas);
-        return view('admin.roles.add', $reDataArr);
+        return view('admin.system.add', $reDataArr);
     }
 
     /**
@@ -58,7 +57,7 @@ class RolesController extends AdminController
      */
     public function ajax_alist(Request $request){
         $this->InitParams($request);
-        return  CompanyRoles::getList($request, $this, 1 + 0);
+        return  SiteSystem::getList($request, $this, 1 + 0);
     }
 
     /**
@@ -88,7 +87,7 @@ class RolesController extends AdminController
 //            $saveData = array_merge($saveData, $addNewData);
 //        }
 
-        $resultDatas = CompanyRoles::replaceById($request, $this, $saveData, $id);
+        $resultDatas = SiteSystem::replaceById($request, $this, $saveData, $id);
         return ajaxDataArr(1, $resultDatas, '');
     }
 
@@ -102,7 +101,6 @@ class RolesController extends AdminController
     public function ajax_del(Request $request)
     {
         $this->InitParams($request);
-        return CompanyRoles::delAjax($request, $this);
+        return SiteSystem::delAjax($request, $this);
     }
-
 }

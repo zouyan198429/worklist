@@ -24,7 +24,7 @@
 		</div>
 
 		<div class="mmfoot tc">
-			<a href="{{ url('huawu/exam/index') }}" class="btn" > 返回  </a>
+			<a href="{{ url('huawu/exam') }}" class="btn" > 返回  </a>
 		</div>
 
 	</div>
