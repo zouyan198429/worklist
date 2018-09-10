@@ -1,5 +1,5 @@
 <?php
-// 客户分类
+// 业务标签
 namespace App\Business;
 
 use App\Services\CommonBusiness;
@@ -9,9 +9,9 @@ use App\Http\Controllers\BaseController as Controller;
 /**
  *
  */
-class CompanyCustomerType extends BaseBusiness
+class CompanyServiceTags extends BaseBusiness
 {
-    protected static $model_name = 'CompanyCustomerType';
+    protected static $model_name = 'CompanyServiceTags';
 
     /**
      * 获得列表数据--所有数据

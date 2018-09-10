@@ -1,5 +1,5 @@
 <?php
-// 客户分类
+// 知识分类[一级分类]
 namespace App\Business;
 
 use App\Services\CommonBusiness;
@@ -9,7 +9,7 @@ use App\Http\Controllers\BaseController as Controller;
 /**
  *
  */
-class CompanyCustomerType extends BaseBusiness
+class CompanyLoreType extends BaseBusiness
 {
     protected static $model_name = 'CompanyCustomerType';
 

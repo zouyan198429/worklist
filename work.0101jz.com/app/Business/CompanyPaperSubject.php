@@ -1,5 +1,5 @@
 <?php
-// 客户分类
+// 试卷试题
 namespace App\Business;
 
 use App\Services\CommonBusiness;
@@ -9,9 +9,9 @@ use App\Http\Controllers\BaseController as Controller;
 /**
  *
  */
-class CompanyCustomerType extends BaseBusiness
+class CompanyPaperSubject extends BaseBusiness
 {
-    protected static $model_name = 'CompanyCustomerType';
+    protected static $model_name = 'CompanyPaperSubject';
 
     /**
      * 获得列表数据--所有数据
@@ -32,12 +32,13 @@ class CompanyCustomerType extends BaseBusiness
                 ['company_id', $company_id],
                 //['mobile', $keyword],
             ],
-            'select' => [
-                'id','company_id','type_name','sort_num'
-                //,'operate_staff_id','operate_staff_history_id'
-                ,'created_at'
-            ],
-            'orderBy' => ['sort_num'=>'desc','id'=>'desc'],
+//            'select' => [
+//                'id','company_id','type_name','sort_num'
+//                //,'operate_staff_id','operate_staff_history_id'
+//                ,'created_at'
+//            ],
+//            'orderBy' => ['sort_num'=>'desc','id'=>'desc'],
+            'orderBy' => ['id'=>'desc'],
         ];// 查询条件参数
         // $relations = ['CompanyInfo'];// 关系
         $relations = '';//['CompanyInfo'];// 关系

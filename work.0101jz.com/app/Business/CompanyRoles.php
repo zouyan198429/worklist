@@ -1,5 +1,5 @@
 <?php
-// 客户分类
+// 角色[一级分类]
 namespace App\Business;
 
 use App\Services\CommonBusiness;
@@ -9,9 +9,9 @@ use App\Http\Controllers\BaseController as Controller;
 /**
  *
  */
-class CompanyCustomerType extends BaseBusiness
+class CompanyRoles extends BaseBusiness
 {
-    protected static $model_name = 'CompanyCustomerType';
+    protected static $model_name = 'CompanyRoles';
 
     /**
      * 获得列表数据--所有数据

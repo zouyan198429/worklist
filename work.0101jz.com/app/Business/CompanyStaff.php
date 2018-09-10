@@ -1,5 +1,5 @@
 <?php
-
+// 同事/员工
 namespace App\Business;
 
 use App\Services\Common;

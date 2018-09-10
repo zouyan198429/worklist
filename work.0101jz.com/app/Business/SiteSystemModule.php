@@ -1,5 +1,5 @@
 <?php
-// 客户分类
+// 系统模块[二级分类]
 namespace App\Business;
 
 use App\Services\CommonBusiness;
@@ -9,9 +9,9 @@ use App\Http\Controllers\BaseController as Controller;
 /**
  *
  */
-class CompanyCustomerType extends BaseBusiness
+class SiteSystemModule extends BaseBusiness
 {
-    protected static $model_name = 'CompanyCustomerType';
+    protected static $model_name = 'SiteSystemModule';
 
     /**
      * 获得列表数据--所有数据
