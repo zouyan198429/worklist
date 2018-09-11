@@ -13,4 +13,11 @@ class CompanyPositionHistory extends BaseModel
      */
     protected $table = 'company_position_history';
 
+    /**
+     * 获取历史记录对应的职位--一维
+     */
+    public function historyPosition()
+    {
+        return $this->belongsTo('App\Models\CompanyPosition', 'position_id', 'id');
+    }
 }

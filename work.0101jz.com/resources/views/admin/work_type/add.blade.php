@@ -12,6 +12,18 @@
 			<input type="hidden" name="id" value="{{ $id or 0 }}"/>
 		<table class="table1">
 			<tr>
+				<th>分类<span class="must">*</span></th>
+				<td>
+					<select class="wnormal" name="type_parent_id">
+						<option value="">请选择分类</option>
+						<option value="0"  @if ( 0 == $type_parent_id ) selected @endif>父级分类</option>
+						@foreach ($parent_list as $item)
+							<option value="{{ $item['id'] }}"  @if ( $item['id'] == $type_parent_id ) selected @endif>{{ $item['type_name'] }}</option>
+						@endforeach
+					</select>
+				</td>
+			</tr>
+			<tr>
 				<th>名称<span class="must">*</span></th>
 				<td>
 					<input type="text" class="inp wnormal" name="type_name" value="{{ $type_name or '' }}" placeholder="分类名称" autofocus  required />

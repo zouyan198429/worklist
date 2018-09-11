@@ -13,4 +13,12 @@ class CompanySystem extends BaseModel
      */
     protected $table = 'company_system';
 
+    /**
+     * 获取企业系统对应的系统--一维
+     */
+    public function companySysSystem()
+    {
+        return $this->belongsTo('App\Models\SiteSystem', 'system_id', 'id');
+    }
+
 }

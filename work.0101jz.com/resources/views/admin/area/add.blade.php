@@ -12,6 +12,18 @@
 			<input type="hidden" name="id" value="{{ $id or 0 }}"/>
 		<table class="table1">
 			<tr>
+				<th>所属区县<span class="must">*</span></th>
+				<td>
+					<select class="wnormal" name="area_parent_id">
+						<option value="">请选择区县</option>
+						<option value="0"  @if ( 0 == $area_parent_id ) selected @endif>父级区县</option>
+						@foreach ($parent_list as $item)
+							<option value="{{ $item['id'] }}"  @if ( $item['id'] == $area_parent_id ) selected @endif>{{ $item['area_name'] }}</option>
+						@endforeach
+					</select>
+				</td>
+			</tr>
+			<tr>
 				<th>区县/街道名称<span class="must">*</span></th>
 				<td>
 					<input type="text" class="inp wnormal" name="area_name" value="{{ $area_name or '' }}" placeholder="区县/街道名称"  autofocus  required />

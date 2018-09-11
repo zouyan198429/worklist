@@ -155,7 +155,7 @@ class BaseModel extends Model
         // ,'module_id' // 关系表中的与新闻表主键对应的字段
         // ,'id'// 资源对象主键字段名
         // ,'id'// 主表新闻主键字段名
-        )->withTimestamps();// ->withPivot('notice', 'id')
+        )->withPivot('id', 'company_id', 'operate_staff_id', 'operate_staff_history_id' )->withTimestamps();
     }
 
     // _________自己编写的通过__call或 __get 调用的方法_____结束____________
@@ -177,7 +177,7 @@ class BaseModel extends Model
         // ,'id'// 主表新闻主键字段名
         // ,'id'// 资源对象主键字段名
         // ,$inverse 参数 flase[默认]，module_type 可以在 AppServiceProvider 中指定段名; true： 必须用App\Models\Resource
-        )->withTimestamps();// ->withPivot('notice', 'id')
+        )->withPivot('id', 'company_id', 'operate_staff_id', 'operate_staff_history_id' )->withTimestamps();// ->withPivot('notice', 'id')
     }
 
     // 同步修改图片资源关系-
@@ -205,6 +205,22 @@ class BaseModel extends Model
     public function CompanyInfo()
     {
         return $this->belongsTo('App\Models\Company', 'company_id', 'id');
+    }
+
+    /**
+     * 获取操作***表的员工-一维
+     */
+    public function oprateStaff()
+    {
+        return $this->belongsTo('App\Models\CompanyStaff', 'operate_staff_id', 'id');
+    }
+
+    /**
+     * 获取操作***表员工的历史-一维
+     */
+    public function oprateStaffHistory()
+    {
+        return $this->belongsTo('App\Models\CompanyStaffHistory', 'operate_staff_history_id', 'id');
     }
 
     /**

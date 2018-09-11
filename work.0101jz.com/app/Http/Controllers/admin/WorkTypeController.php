@@ -39,6 +39,7 @@ class WorkTypeController extends AdminController
 
         $resultDatas = [
             'id'=>$id,
+            'type_parent_id' => -1,
         ];
 
         if ($id > 0) { // 获得详情数据
@@ -46,6 +47,11 @@ class WorkTypeController extends AdminController
         }
 
         $reDataArr = array_merge($reDataArr, $resultDatas);
+
+        // 获得第一级分类
+        $parentData = CompanyWorkType::getChildList($request, $this, 0, 1 + 0);
+        $reDataArr['parent_list'] = $parentData['result']['data_list'] ?? [];
+
         return view('admin.work_type.add', $reDataArr);
     }
 
@@ -76,10 +82,12 @@ class WorkTypeController extends AdminController
         $company_id = $this->company_id;
         $type_name = Common::get($request, 'type_name');
         $sort_num = Common::getInt($request, 'sort_num');
+        $type_parent_id = Common::getInt($request, 'type_parent_id');
 
         $saveData = [
             'type_name' => $type_name,
             'sort_num' => $sort_num,
+            'type_parent_id' => $type_parent_id,
         ];
 //        if($id <= 0) {// 新加;要加入的特别字段
 //            $addNewData = [

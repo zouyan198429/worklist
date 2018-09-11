@@ -38,13 +38,19 @@ class AreaController extends AdminController
 
         $resultDatas = [
             'id'=>$id,
+            'area_parent_id' => -1,
         ];
 
         if ($id > 0) { // 获得详情数据
             $resultDatas = CompanyArea::getInfoData($request, $this, $id);
         }
-
         $reDataArr = array_merge($reDataArr, $resultDatas);
+
+        // 获得第一级分类
+        $parentData = CompanyArea::getChildList($request, $this, 0, 1 + 0);
+        $reDataArr['parent_list'] = $parentData['result']['data_list'] ?? [];
+
+
         return view('admin.area.add', $reDataArr);
     }
 
@@ -75,10 +81,12 @@ class AreaController extends AdminController
         $company_id = $this->company_id;
         $area_name = Common::get($request, 'area_name');
         $sort_num = Common::getInt($request, 'sort_num');
+        $area_parent_id = Common::getInt($request, 'area_parent_id');
 
         $saveData = [
             'area_name' => $area_name,
             'sort_num' => $sort_num,
+            'area_parent_id' => $area_parent_id,
         ];
 //        if($id <= 0) {// 新加;要加入的特别字段
 //            $addNewData = [

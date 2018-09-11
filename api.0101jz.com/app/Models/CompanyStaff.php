@@ -83,6 +83,15 @@ class CompanyStaff extends BaseModel
     }
 
     /**
+     * 获取员工的历史-二维
+     */
+
+    public function staffHistory()
+    {
+        return $this->hasMany('App\Models\CompanyStaffHistory', 'staff_id', 'id');
+    }
+
+    /**
      * 获取员工对应的部门--一维
      */
     public function staffDepartment()
@@ -106,5 +115,22 @@ class CompanyStaff extends BaseModel
     {
         return $this->belongsTo('App\Models\CompanyPosition', 'position_id', 'id');
     }
+
+    /**
+     * 员工的角色[通过中间表company_staff_roles 多对多]
+     */
+    public function staffRoles()
+    {
+        // return $this->belongsToMany('App\Models\test\Role')->withPivot('notice', 'id')->withTimestamps();
+        // return $this->belongsToMany('App\Models\test\Role', 'user_roles');// 重写-关联关系连接表的表名
+        // 自定义该表中字段的列名;第三个参数是你定义关联关系模型的外键名称，第四个参数你要连接到的模型的外键名称
+        return $this->belongsToMany(
+            'App\Models\CompanyRoles'
+            , 'company_staff_roles'
+            , 'staff_id'
+            , 'role_id'
+        )->withPivot('id', 'company_id', 'operate_staff_id', 'operate_staff_history_id')->withTimestamps();
+    }
+
 
 }

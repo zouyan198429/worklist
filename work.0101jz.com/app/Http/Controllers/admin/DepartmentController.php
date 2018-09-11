@@ -38,13 +38,19 @@ class DepartmentController extends AdminController
 
         $resultDatas = [
             'id'=>$id,
+            'department_parent_id' => -1,
         ];
 
         if ($id > 0) { // 获得详情数据
             $resultDatas = CompanyDepartment::getInfoData($request, $this, $id);
         }
-
         $reDataArr = array_merge($reDataArr, $resultDatas);
+
+
+        // 获得第一级分类
+        $parentData = CompanyDepartment::getChildList($request, $this, 0, 1 + 0);
+        $reDataArr['parent_list'] = $parentData['result']['data_list'] ?? [];
+
         return view('admin.department.add', $reDataArr);
     }
 
@@ -75,10 +81,12 @@ class DepartmentController extends AdminController
         $company_id = $this->company_id;
         $department_name = Common::get($request, 'department_name');
         $sort_num = Common::getInt($request, 'sort_num');
+        $department_parent_id = Common::getInt($request, 'department_parent_id');
 
         $saveData = [
             'department_name' => $department_name,
             'sort_num' => $sort_num,
+            'department_parent_id' => $department_parent_id,
         ];
 //        if($id <= 0) {// 新加;要加入的特别字段
 //            $addNewData = [

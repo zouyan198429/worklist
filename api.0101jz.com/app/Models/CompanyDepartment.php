@@ -26,7 +26,31 @@ class CompanyDepartment extends BaseModel
      */
     public function groupStaff()
     {
-        return $this->hasMany('App\Models\CompanyStaff', 'group_id', 'id');
+        return $this->hasMany('App\Models\CompanyDepartment', 'group_id', 'id');
     }
 
+    /**
+     * 获取部门/小组的历史-二维
+     */
+    public function departmentHistory()
+    {
+        return $this->hasMany('App\Models\CompanyDepartmentHistory', 'department_id', 'id');
+    }
+
+    /**
+     * 获取部门的小组[子对象]-二维
+     */
+    public function departmentGroup()
+    {
+        return $this->hasMany('App\Models\CompanyDepartment', 'department_parent_id', 'id');
+    }
+
+
+    /**
+     * 获取小组对应的小组--一维
+     */
+    public function groupDepartment()
+    {
+        return $this->belongsTo('App\Models\CompanyDepartment', 'department_parent_id', 'id');
+    }
 }

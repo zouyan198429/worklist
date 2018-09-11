@@ -25,6 +25,15 @@ function ajax_form(){
         return false;
     }
 
+
+    var area_parent_id = $('select[name=area_parent_id]').val();
+    var judge_seled = judge_validate(1,'所属区县',area_parent_id,true,'digit','','');
+    if(judge_seled != ''){
+        layer_alert("请选择所属所属区县",3,0);
+        //err_alert('<font color="#000000">' + judge_seled + '</font>');
+        return false;
+    }
+
     var area_name = $('input[name=area_name]').val();
     if(!judge_validate(4,'区县/街道名称',area_name,true,'length',2,40)){
         return false;

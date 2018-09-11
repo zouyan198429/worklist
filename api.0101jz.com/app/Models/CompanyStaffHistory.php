@@ -13,4 +13,11 @@ class CompanyStaffHistory extends BaseModel
      */
     protected $table = 'company_staff_history';
 
+    /**
+     * 获取历史记录对应的员工--一维
+     */
+    public function historyStaff()
+    {
+        return $this->belongsTo('App\Models\CompanyStaff', 'staff_id', 'id');
+    }
 }

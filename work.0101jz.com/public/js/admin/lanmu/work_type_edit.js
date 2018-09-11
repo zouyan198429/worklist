@@ -25,6 +25,14 @@ function ajax_form(){
         return false;
     }
 
+    var type_parent_id = $('select[name=type_parent_id]').val();
+    var judge_seled = judge_validate(1,'所属分类',type_parent_id,true,'digit','','');
+    if(judge_seled != ''){
+        layer_alert("请选择所属分类",3,0);
+        //err_alert('<font color="#000000">' + judge_seled + '</font>');
+        return false;
+    }
+
     var type_name = $('input[name=type_name]').val();
     if(!judge_validate(4,'名称',type_name,true,'length',2,40)){
         return false;

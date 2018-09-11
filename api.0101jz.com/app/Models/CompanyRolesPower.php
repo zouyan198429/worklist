@@ -13,4 +13,20 @@ class CompanyRolesPower extends BaseModel
      */
     protected $table = 'company_roles_power';
 
+    /**
+     * 获取角色权限对应的统功能操作--一维
+     */
+    public function powerSysOperate()
+    {
+        return $this->belongsTo('App\Models\SiteSystemOperate', 'operate_id', 'id');
+    }
+
+    /**
+     * 获取角色权限对应的角色--一维
+     */
+    public function powerSysRole()
+    {
+        return $this->belongsTo('App\Models\CompanyRoles', 'role_id', 'id');
+    }
+
 }

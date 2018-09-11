@@ -9,6 +9,7 @@
     document.write("    %>");
     document.write("    <tr>");
     document.write("        <td><%=item.area_name%><\/td>");
+    document.write("        <td><%=item.street_name%><\/td>");
     document.write("        <td><%=item.sort_num%><\/td>");
     document.write("        <td>");
     document.write("            <a href=\"javascript:void(0);\" class=\"btn btn-mini btn-info\" onclick=\"action.edit(<%=item.id%>)\">");

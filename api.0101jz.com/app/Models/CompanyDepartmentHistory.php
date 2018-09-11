@@ -13,4 +13,11 @@ class CompanyDepartmentHistory extends BaseModel
      */
     protected $table = 'company_department_history';
 
+    /**
+     * 获取历史记录对应的部门/小组--一维
+     */
+    public function historyDepartment()
+    {
+        return $this->belongsTo('App\Models\CompanyDepartment', 'department_id', 'id');
+    }
 }

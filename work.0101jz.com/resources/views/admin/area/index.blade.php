@@ -23,40 +23,9 @@
 			</tr>
 			</thead>
 			<tbody id="data_list">
-			{{--
-			<tr>
-				<td>秦州区</td>
-				<td>新华路</td>
-				<td>10</td>
-				<td><a href="" class="btn" >修改</a>  <a href=""  class="btn btn-red">删除</a> </td>
-			</tr>
-			<tr>
-				<td></td>
-				<td>成纪大道</td>
-				<td>10</td>
-				<td><a href="" class="btn" >修改</a>  <a href=""  class="btn btn-red">删除</a> </td>
-			</tr>
-			<tr>
-				<td></td>
-				<td>民主路</td>
-				<td>10</td>
-				<td><a href="" class="btn" >修改</a>  <a href=""  class="btn btn-red">删除</a> </td>
-			</tr>
-			<tr>
-				<td>麦积区</td>
-				<td>某某路</td>
-				<td>10</td>
-				<td><a href="" class="btn" >修改</a>  <a href=""  class="btn btn-red">删除</a> </td>
-			</tr>
-			<tr>
-				<td>甘谷县</td>
-				<td></td>
-				<td>10</td>
-				<td><a href="" class="btn" >修改</a>  <a href=""  class="btn btn-red">删除</a> </td>
-			</tr>
-			--}}
 			</tbody>
 		</table>
+		{{--
 		<div class="mmfoot">
 			<div class="mmfleft"></div>
 			<div class="mmfright pages">
@@ -68,6 +37,7 @@
 				<a href=""> > </a>
 			</div>
 		</div>
+		--}}
 
 	</div>
 @endsection

@@ -2,6 +2,7 @@
 // 工单类型[二级分类]
 namespace App\Business;
 
+use App\Services\Common;
 use App\Services\CommonBusiness;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as Controller;
@@ -13,6 +14,73 @@ class CompanyWorkType extends BaseBusiness
 {
     protected static $model_name = 'CompanyWorkType';
 
+    /**
+     * 获得列表数据--所有数据
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param int $id 当前记录id
+     * @param int $oprateBit 操作类型位 1:获得所有的; 2 分页获取[同时有1和2，2优先]；4 返回分页html翻页代码
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @return  array 列表数据
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function getChildList(Request $request, Controller $controller, $id, $oprateBit = 2 + 4, $notLog = 0){
+        $company_id = $controller->company_id;
+
+        // 获得数据
+        $queryParams = [
+            'where' => [
+                ['company_id', $company_id],
+                ['type_parent_id', $id],
+            ],
+            'select' => [
+                'id', 'company_id', 'type_name', 'sort_num', 'type_parent_id'
+                //,'operate_staff_id','operate_staff_history_id'
+                ,'created_at'
+            ],
+            'orderBy' => ['sort_num'=>'desc','id'=>'desc'],
+        ];// 查询条件参数
+        // $relations = ['CompanyInfo'];// 关系
+        $relations = '';//['CompanyInfo'];// 关系
+        $result = self::getBaseListData($request, $controller, self::$model_name, $queryParams,$relations , $oprateBit, $notLog);
+
+        // 格式化数据
+//        $data_list = $result['data_list'] ?? [];
+//        foreach($data_list as $k => $v){
+//            // 公司名称
+//            $data_list[$k]['company_name'] = $v['company_info']['company_name'] ?? '';
+//            if(isset($data_list[$k]['company_info'])) unset($data_list[$k]['company_info']);
+//        }
+//        $result['data_list'] = $data_list;
+//        $resultDatas = $result['data_list'] ?? [];
+//        $format_data_list = [];
+//        foreach($resultDatas as $v){
+//            $parent_id = $v['type_parent_id'];
+//            if($parent_id > 0 ){
+//                $v['business_name'] =  $v['type_name'];
+//                $v['type_name'] = "";
+//            }else{
+//                $v['business_name']  = "";
+//            }
+//            $format_data_list[$parent_id][] = $v;
+//        }
+//
+//        $first_list = $format_data_list[0] ?? [];
+//
+//        $data_list = [];
+//        foreach($first_list as $v){
+//            $data_list[] = $v;
+//            $id = $v['id'];
+//            $tem_arr = $format_data_list[$id] ?? [];
+//            if(empty($tem_arr)){
+//                continue;
+//            }
+//            $data_list = array_merge($data_list, $tem_arr);
+//        }
+//        $result['data_list'] = $data_list;
+        return ajaxDataArr(1, $result, '');
+    }
     /**
      * 获得列表数据--所有数据
      *
@@ -51,6 +119,33 @@ class CompanyWorkType extends BaseBusiness
 //            if(isset($data_list[$k]['company_info'])) unset($data_list[$k]['company_info']);
 //        }
 //        $result['data_list'] = $data_list;
+        $resultDatas = $result['data_list'] ?? [];
+        $format_data_list = [];
+        foreach($resultDatas as $v){
+            $parent_id = $v['type_parent_id'];
+            if($parent_id > 0 ){
+                $v['business_name'] =  $v['type_name'];
+                $v['type_name'] = "";
+            }else{
+                $v['business_name']  = "";
+            }
+            $format_data_list[$parent_id][] = $v;
+        }
+
+        $first_list = $format_data_list[0] ?? [];
+
+        $data_list = [];
+        foreach($first_list as $v){
+            $data_list[] = $v;
+            $id = $v['id'];
+            $tem_arr = $format_data_list[$id] ?? [];
+            if(empty($tem_arr)){
+                continue;
+            }
+            $data_list = array_merge($data_list, $tem_arr);
+        }
+        $result['data_list'] = $data_list;
+
         return ajaxDataArr(1, $result, '');
     }
 
@@ -64,7 +159,36 @@ class CompanyWorkType extends BaseBusiness
      */
     public static function delAjax(Request $request, Controller $controller)
     {
-        return self::delAjaxBase($request, $controller, self::$model_name);
+        $id = Common::getInt($request, 'id');
+        $company_id = $controller->company_id;
+
+        // 判断权限
+        $judgeData = [
+            'company_id' => $company_id,
+        ];
+        $relations = '';
+        CommonBusiness::judgePower($id, $judgeData, self::$model_name, $company_id, $relations);
+
+        // 删除当前记录
+        $queryParams =[// 查询条件参数
+            'where' => [
+                ['id', $id],
+                ['company_id', $company_id]
+            ]
+        ];
+
+        $resultDatas = CommonBusiness::ajaxDelApi(self::$model_name, $company_id , $queryParams);
+
+        // 删除子分类
+        $queryParams =[// 查询条件参数
+            'where' => [
+                ['type_parent_id', $id],
+                ['company_id', $company_id]
+            ]
+        ];
+        CommonBusiness::ajaxDelApi(self::$model_name, $company_id , $queryParams);
+
+        return ajaxDataArr(1, $resultDatas, '');;
 
     }
 

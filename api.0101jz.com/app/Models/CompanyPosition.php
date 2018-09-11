@@ -20,4 +20,13 @@ class CompanyPosition extends BaseModel
     {
         return $this->hasMany('App\Models\CompanyStaff', 'position_id', 'id');
     }
+
+    /**
+     * 获取职位的历史-二维
+     */
+
+    public function positionHistory()
+    {
+        return $this->hasMany('App\Models\CompanyPositionHistory', 'position_id', 'id');
+    }
 }

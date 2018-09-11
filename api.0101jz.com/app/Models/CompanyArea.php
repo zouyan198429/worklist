@@ -62,4 +62,22 @@ class CompanyArea extends BaseModel
     {
         return $this->hasMany('App\Models\CompanyWork', 'area_id', 'id');
     }
+
+    /**
+     * 获取地区的街道[子对象]-二维
+     */
+    public function cityArea()
+    {
+        return $this->hasMany('App\Models\CompanyArea', 'area_parent_id', 'id');
+    }
+
+
+    /**
+     * 获取街道对应的地区--一维
+     */
+    public function areaCity()
+    {
+        return $this->belongsTo('App\Models\CompanyArea', 'area_parent_id', 'id');
+    }
+
 }

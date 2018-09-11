@@ -12,6 +12,18 @@
 			<input type="hidden" name="id" value="{{ $id or 0 }}"/>
 		<table class="table1">
 			<tr>
+				<th>所属部门<span class="must">*</span></th>
+				<td>
+					<select class="wnormal" name="department_parent_id">
+						<option value="">请选择部门</option>
+						<option value="0"  @if ( 0 == $department_parent_id ) selected @endif>父级部门</option>
+						@foreach ($parent_list as $item)
+							<option value="{{ $item['id'] }}"  @if ( $item['id'] == $department_parent_id ) selected @endif>{{ $item['department_name'] }}</option>
+						@endforeach
+					</select>
+				</td>
+			</tr>
+			<tr>
 				<th>部门/小组名称<span class="must">*</span></th>
 				<td>
 					<input type="text" class="inp wnormal" name="department_name" value="{{ $department_name or '' }}" placeholder="部门/小组名称" autofocus  required />

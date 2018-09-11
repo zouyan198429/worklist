@@ -25,6 +25,7 @@
 			<tbody  id="data_list">
 			</tbody>
 		</table>
+		{{--
 		<div class="mmfoot">
 			<div class="mmfleft"></div>
 			<div class="mmfright pages">
@@ -36,6 +37,7 @@
 				<a href=""> > </a>
 			</div>
 		</div>
+		--}}
 
 	</div>
 @endsection
