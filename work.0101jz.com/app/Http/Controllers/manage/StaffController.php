@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\manage;
 
+use App\Business\CompanyDepartment;
 use App\Business\CompanyStaff;
 use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 
 class StaffController extends AdminController
 {
-    public $aaa = '123456';
     /**
      * 列表
      *
@@ -20,6 +20,9 @@ class StaffController extends AdminController
     {
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
+        // 获得第一级分类
+        $parentData = CompanyDepartment::getChildList($request, $this, 0, 1 + 0);
+        $reDataArr['parent_list'] = $parentData['result']['data_list'] ?? [];
 
         return view('manage.staff.index', $reDataArr);
     }
@@ -36,6 +39,9 @@ class StaffController extends AdminController
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
 
+        // 获得第一级分类
+        $parentData = CompanyDepartment::getChildList($request, $this, 0, 1 + 0);
+        $reDataArr['parent_list'] = $parentData['result']['data_list'] ?? [];
         return view('manage.staff.list', $reDataArr);
     }
 

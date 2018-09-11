@@ -20,10 +20,10 @@
     document.write("                <\/label>");
     document.write("            <\/td>");
     document.write("            <td><%=item.work_num%><\/td>");
-    document.write("            <td>话务1组<\/td>");
+    document.write("            <td><%=item.department_name%>/<%=item.group_name%><\/td>");
     document.write("            <td><%=item.real_name%><\/td>");
     document.write("            <td><%=item.sex_text%><\/td>");
-    document.write("            <td>组长<\/td>");
+    document.write("            <td><%=item.position_name%><\/td>");
     document.write("            <td><%=item.tel%><\/td>");
     document.write("            <td><%=item.mobile%><\/td>");
     document.write("            <td><%=item.qq_number%><\/td>");

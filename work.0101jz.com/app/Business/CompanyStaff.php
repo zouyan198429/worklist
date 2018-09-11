@@ -166,7 +166,7 @@ class CompanyStaff extends BaseBusiness
      */
     public static function getList(Request $request, Controller $controller, $oprateBit = 2 + 4 , $notLog = 0){
         $company_id = $controller->company_id;
-        // 获得数据
+          // 获得数据
         $queryParams = [
             'where' => [
                 ['company_id', $company_id],
@@ -179,9 +179,19 @@ class CompanyStaff extends BaseBusiness
 //            ],
             'orderBy' => ['id'=>'desc'],
         ];// 查询条件参数
+        $department_id = Common::getInt($request, 'department_id');
+        $keyword = Common::get($request, 'keyword');
+
+        if($department_id > 0){
+            array_push($queryParams['where'],['department_id', $department_id]);
+        }
+        if(!empty($keyword)){
+            array_push($queryParams['where'],['real_name', 'like' , '%' . $keyword . '%']);
+        }
         // $relations = ['CompanyInfo'];// 关系
         // $relations = '';//['CompanyInfo'];// 关系
         $relations = ['staffDepartment','staffGroup','staffPosition'];// 关系
+        //pr($queryParams);
         $result = self::getBaseListData($request, $controller, self::$model_name, $queryParams,$relations , $oprateBit, $notLog);
 
         // 格式化数据

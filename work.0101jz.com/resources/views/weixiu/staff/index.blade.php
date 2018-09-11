@@ -9,18 +9,29 @@
 	<div id="crumb"><i class="fa fa-reorder fa-fw" aria-hidden="true"></i> 我的同事</div>
 	<div class="mm">
 		<div class="mmhead" id="mywork">
+
+			@include('common.pageParams')
+			<form onsubmit="return false;" class="form-horizontal" role="form" method="post" id="search_frm" action="#">
 			<div class="tabbox" >
-				<select class="wnormal">
-					<option value="a01">全部</option>
-					<option value="a02">维修部</option>
-					<option value="a03">话务部</option>
-					<option value="a04">行政部</option>
+				<select class="wnormal" name="department_id">
+					<option value="">全部</option>
+					@foreach ($parent_list as $item)
+						<option value="{{ $item['id'] }}"  >{{ $item['department_name'] }}</option>
+					@endforeach
 				</select>
 			</div>
 
-			<div class="msearch fr"> <input type="text" value=""  /> <button class="btn btn-normal">搜索</button> </div>
+			<div class="msearch fr"> <input type="text" value=""  name="keyword"  /> <button class="btn btn-normal  search_frm" >搜索</button> </div>
+			</form>
 		</div>
-		<table class="table2">
+		{{--
+		<div class="table-header">
+			<button class="btn btn-danger  btn-xs batch_del"  onclick="action.batchDel(this)">批量删除</button>
+			<button class="btn btn-success  btn-xs export_excel"  onclick="action.exportExcel(this)" >导出EXCEL</button>
+			<button class="btn btn-success  btn-xs import_excel"  onclick="action.importExcel(this)">导入EXCEL</button>
+		</div>
+		--}}
+		<table  id="dynamic-table"  class="table2">
 			<thead>
 			<tr>
 				<th>工号</th>
@@ -33,69 +44,12 @@
 				<th>QQ</th>
 			</tr>
 			</thead>
-			<tbody>
-			<tr>
-				<td>113</td>
-				<td>话务1组</td>
-				<td>张兰兰</td>
-				<td>女</td>
-				<td>组长</td>
-				<td>5854455</td>
-				<td>18984684825</td>
-				<td>23452345</td>
-			</tr>
-			<tr>
-				<td>113</td>
-				<td>话务1组</td>
-				<td>张兰兰</td>
-				<td>女</td>
-				<td>组长</td>
-				<td>5854455</td>
-				<td>18984684825</td>
-				<td>23452345</td>
-			</tr>
-			<tr>
-				<td>113</td>
-				<td>话务1组</td>
-				<td>张兰兰</td>
-				<td>女</td>
-				<td>组长</td>
-				<td>5854455</td>
-				<td>18984684825</td>
-				<td>23452345</td>
-			</tr>
-			<tr>
-				<td>113</td>
-				<td>话务1组</td>
-				<td>张兰兰</td>
-				<td>女</td>
-				<td>组长</td>
-				<td>5854455</td>
-				<td>18984684825</td>
-				<td>23452345</td>
-			</tr>
-			<tr>
-				<td>113</td>
-				<td>话务1组</td>
-				<td>张兰兰</td>
-				<td>女</td>
-				<td>组长</td>
-				<td>5854455</td>
-				<td>18984684825</td>
-				<td>23452345</td>
-			</tr>
-
+			<tbody  id="data_list">
 			</tbody>
 		</table>
 		<div class="mmfoot">
 			<div class="mmfleft"></div>
-			<div class="mmfright pages">
-				<a href="" class="on" > - </a>
-				<a href="" > 1 </a>
-				<a href=""> 2 </a>
-				<a href=""> 4 </a>
-				<a href=""> 5 </a>
-				<a href=""> > </a>
+			<div class="  pagination">
 			</div>
 		</div>
 
@@ -107,4 +61,18 @@
 @endpush
 
 @push('footlast')
+	<script type="text/javascript">
+        var OPERATE_TYPE = <?php echo isset($operate_type)?$operate_type:0; ?>;
+        const AJAX_URL = "{{ url('api/weixiu/staff/ajax_alist') }}";//ajax请求的url
+        const ADD_URL = "{{ url('weixiu/staff/add/0') }}"; //添加url
+        const SHOW_URL = "{{url('accounts/info/')}}/";//显示页面地址前缀 + id
+        const EDIT_URL = "{{url('weixiu/staff/add/')}}/";//修改页面地址前缀 + id
+        const DEL_URL = "{{ url('api/weixiu/staff/ajax_del') }}";//删除页面地址
+        const BATCH_DEL_URL = "{{ url('api/weixiu/staff/ajax_del') }}";//批量删除页面地址
+        const EXPORT_EXCEL_URL = "{{ url('weixiu/staff/add/0') }}"; //"{{ url('api/weixiu/staff/export') }}";//导出EXCEL地址
+        const IMPORT_EXCEL_URL = "{{ url('weixiu/staff/add/0') }}"; //"{{ url('api/weixiu/staff/import') }}";//导入EXCEL地址
+
+	</script>
+	<script src="{{asset('js/common/list.js')}}"></script>
+	<script src="{{ asset('js/weixiu/lanmu/staff.js') }}"  type="text/javascript"></script>
 @endpush

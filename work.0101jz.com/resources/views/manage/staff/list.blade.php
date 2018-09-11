@@ -18,11 +18,11 @@
 			<form onsubmit="return false;" class="form-horizontal" role="form" method="post" id="search_frm" action="#">
 			<div class="msearch fr">
 
-				<select class="wmini">
-					<option value="a01">全部</option>
-					<option value="a02">维修部</option>
-					<option value="a03">话务部</option>
-					<option value="a04">行政部</option>
+				<select class="wmini" name="department_id">
+					<option value="">全部</option>
+					@foreach ($parent_list as $item)
+						<option value="{{ $item['id'] }}"  >{{ $item['department_name'] }}</option>
+					@endforeach
 				</select>
 				<input type="text" value=""  name="keyword" />
 				<button class="btn btn-normal search_frm " >搜索</button>
@@ -57,81 +57,11 @@
 			</tr>
 			</thead>
 			<tbody  id="data_list">
-			{{--
-			<tr>
-				<td><input type="checkbox" name="vehicle" value="11" /></td>
-				<td>113</td>
-				<td>话务1组</td>
-				<td>张兰兰</td>
-				<td>女</td>
-				<td>组长</td>
-				<td>5854455</td>
-				<td>18984684825</td>
-				<td>23452345</td>
-				<td><a href="{{ url('manage/staff/add') }}" class="btn btn-mini" >修改</a></td>
-			</tr>
-			<tr>
-				<td><input type="checkbox" name="vehicle" value="11" /></td>
-				<td>113</td>
-				<td>话务1组</td>
-				<td>张兰兰</td>
-				<td>女</td>
-				<td>组长</td>
-				<td>5854455</td>
-				<td>18984684825</td>
-				<td>23452345</td>
-				<td><a href="{{ url('manage/staff/add') }}" class="btn btn-mini" >修改</a></td>
-			</tr>
-			<tr>
-				<td><input type="checkbox" name="vehicle" value="11" /></td>
-				<td>113</td>
-				<td>话务1组</td>
-				<td>张兰兰</td>
-				<td>女</td>
-				<td>组长</td>
-				<td>5854455</td>
-				<td>18984684825</td>
-				<td>23452345</td>
-				<td><a href="{{ url('manage/staff/add') }}" class="btn btn-mini" >修改</a></td>
-			</tr>
-			<tr>
-				<td><input type="checkbox" name="vehicle" value="11" /></td>
-				<td>113</td>
-				<td>话务1组</td>
-				<td>张兰兰</td>
-				<td>女</td>
-				<td>组长</td>
-				<td>5854455</td>
-				<td>18984684825</td>
-				<td>23452345</td>
-				<td><a href="{{ url('manage/staff/add') }}" class="btn btn-mini" >修改</a></td>
-			</tr>
-			<tr>
-				<td><input type="checkbox" name="vehicle" value="11" /></td>
-				<td>113</td>
-				<td>话务1组</td>
-				<td>张兰兰</td>
-				<td>女</td>
-				<td>组长</td>
-				<td>5854455</td>
-				<td>18984684825</td>
-				<td>23452345</td>
-				<td><a href="{{ url('manage/staff/add') }}" class="btn btn-mini" >修改</a></td>
-			</tr>
-			--}}
 			</tbody>
 		</table>
 		<div class="mmfoot">
 			<div class="mmfleft"></div>
-			<div class="mmfright pagination">
-				{{--
-				<a href="" class="on" > - </a>
-				<a href="" > 1 </a>
-				<a href=""> 2 </a>
-				<a href=""> 4 </a>
-				<a href=""> 5 </a>
-				<a href=""> > </a>
-				--}}
+			<div class=" pagination">
 			</div>
 		</div>
 
