@@ -28,19 +28,18 @@ Route::get('/', 'IndexController@index');// 首页
 
 // admin
 Route::get('admin', 'admin\IndexController@index');//index.html  首页
-Route::get('admin/index', 'admin\IndexController@index');//index.html  首页[兼容以前的]
 Route::get('admin/login', 'admin\IndexController@login');//login.html 登录
 Route::get('admin/logout', 'admin\IndexController@logout');// 注销
 Route::get('admin/password', 'admin\IndexController@password');//psdmodify.html 个人信息-修改密码
 Route::get('admin/info', 'admin\IndexController@info');//myinfo.html 个人信息--显示
 
   //管理员
-Route::get('admin/siteAdmin', 'admin\SiteAdminController@index');//class_admin.html  管理员管理
+Route::get('admin/site_admin', 'admin\SiteAdminController@index');//class_admin.html  管理员管理
 
 // 系统基本设置
 // 来电分类
-Route::get('admin/workCallerType', 'admin\WorkCallerTypeController@index');//class_call.html 来电分类
-Route::get('admin/workCallerType/add/{id}', 'admin\WorkCallerTypeController@add');// 来电分类--添加
+Route::get('admin/work_caller_type', 'admin\WorkCallerTypeController@index');//class_call.html 来电分类
+Route::get('admin/work_caller_type/add/{id}', 'admin\WorkCallerTypeController@add');// 来电分类--添加
 // 区域
 Route::get('admin/area', 'admin\AreaController@index');//class_quyu.html  区域管理
 Route::get('admin/area/add/{id}', 'admin\AreaController@add');// 区域管理--添加
@@ -49,20 +48,20 @@ Route::get('admin/area/add/{id}', 'admin\AreaController@add');// 区域管理--�
 Route::get('admin/tags', 'admin\TagsController@index');//class_tags.html  业务标签
 Route::get('admin/tags/add/{id}', 'admin\TagsController@add');//业务标签--添加
 //业务时间
-Route::get('admin/serviceTime', 'admin\ServiceTimeController@index');//  业务时间
-Route::get('admin/serviceTime/add/{id}', 'admin\ServiceTimeController@add');//业务时间--添加
+Route::get('admin/service_time', 'admin\ServiceTimeController@index');//  业务时间
+Route::get('admin/service_time/add/{id}', 'admin\ServiceTimeController@add');//业务时间--添加
 
 // 分数等级
-Route::get('admin/coreGrade', 'admin\CoreGradeController@index');//  分数等级管理
-Route::get('admin/coreGrade/add/{id}', 'admin\CoreGradeController@add');// 分数等级管理--添加
+Route::get('admin/core_grade', 'admin\CoreGradeController@index');//  分数等级管理
+Route::get('admin/core_grade/add/{id}', 'admin\CoreGradeController@add');// 分数等级管理--添加
 
 // 系统
 Route::get('admin/system', 'admin\SystemController@index');//  系统管理
 Route::get('admin/system/add/{id}', 'admin\SystemController@add');// 系统管理--添加
 
 // 系统模块
-Route::get('admin/systemModule', 'admin\SystemModuleController@index');//  系统模块
-Route::get('admin/systemModule/add/{id}', 'admin\SystemModuleController@add');// 系统模块--添加
+Route::get('admin/system_module', 'admin\SystemModuleController@index');//  系统模块
+Route::get('admin/system_module/add/{id}', 'admin\SystemModuleController@add');// 系统模块--添加
 
 
 // 角色/权限
@@ -82,7 +81,7 @@ Route::get('admin/staff', 'admin\StaffController@index');//Colleague.html 我的
 
 //客户
 Route::get('admin/customer', 'admin\CustomerController@index');//customer_all.html 客户管理
-Route::get('admin/customer/dayCount', 'admin\CustomerController@dayCount');//achievement.html  我的客户-按日统计--*
+Route::get('admin/customer/day_count', 'admin\CustomerController@dayCount');//achievement.html  我的客户-按日统计--*
 //客户类型
 Route::get('admin/customer_type', 'admin\CustomerTypeController@index');//class_kehu.html 客户分类
 Route::get('admin/customer_type/add/{id}', 'admin\CustomerTypeController@add');// 客户分类--添加
@@ -127,7 +126,6 @@ Route::get('admin/paper', 'admin\PaperController@index');//x_testpaper_list.html
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //web-manage
 Route::get('manage', 'manage\IndexController@index');//main_admin.html -首页
-Route::get('manage/index', 'manage\IndexController@index');//main_admin.html -首页 [兼容以前的]
 Route::get('manage/login', 'manage\IndexController@login');//login.html 登陆
 Route::get('manage/logout', 'manage\IndexController@logout');// 注销
 Route::get('manage/hot', 'manage\IndexController@index_hot');//work_hot.html 首页
@@ -172,14 +170,13 @@ Route::get('manage/exam_score', 'manage\ExamScoreController@index');//examin_cj.
 
 //web-huawu 客服
 Route::get('huawu', 'huawu\IndexController@index');//main.html 首页
-Route::get('huawu/index', 'huawu\IndexController@index');//main.html 首页[兼容以前的]
 Route::get('huawu/login', 'huawu\IndexController@login');//login.html 登录
 Route::get('huawu/logout', 'huawu\IndexController@logout');// 注销
    Route::get('huawu/info', 'huawu\IndexController@info');//myinfo.html  个人信息
    Route::get('huawu/password', 'huawu\IndexController@password');//psdmodify.html 个人信息-修改密码
 //客户
    Route::get('huawu/customer', 'huawu\CustomerController@index');//customer.html 我的客户
-   Route::get('huawu/customer/dayCount', 'huawu\CustomerController@dayCount');//achievement.html 我的客户
+   Route::get('huawu/customer/day_count', 'huawu\CustomerController@dayCount');//achievement.html 我的客户
 //同事
    Route::get('huawu/staff', 'huawu\StaffController@index');//colleague.html  我的同事
 //在线考试
@@ -203,14 +200,13 @@ Route::get('huawu/work/re_list', 'huawu\WorkController@re_list');//work_Return.h
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //web-weixiu 维修
 Route::get('weixiu', 'weixiu\IndexController@index');//main_wx.html  -首页
-Route::get('weixiu/index', 'weixiu\IndexController@index');//main_wx.html  -首页 [兼容以前的]
 Route::get('weixiu/login', 'weixiu\IndexController@login');///login.html 登陆
 Route::get('weixiu/logout', 'weixiu\IndexController@logout');// 注销
 Route::get('weixiu/info', 'weixiu\IndexController@info');//myinfo.html 个人信息
 Route::get('weixiu/password', 'weixiu\IndexController@password');//psdmodify.html- 修改密码
 //客户
 Route::get('weixiu/customer', 'weixiu\CustomerController@index');//customer.html  我的客户
-Route::get('weixiu/customer/dayCount', 'weixiu\CustomerController@dayCount');//achievement.html 我的业绩
+Route::get('weixiu/customer/day_count', 'weixiu\CustomerController@dayCount');//achievement.html 我的业绩
 //同事
 Route::get('weixiu/staff', 'weixiu\StaffController@index');//colleague.html 我的同事
 //在线考试

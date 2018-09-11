@@ -25,7 +25,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ url('weixiu/customer/dayCount') }}">
+                <a href="{{ url('weixiu/customer/day_count') }}">
                     <i class="fa fa-bar-chart fa-fw" aria-hidden="true"></i>
                     <span>我的业绩</span>
                 </a>

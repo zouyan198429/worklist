@@ -25,8 +25,13 @@ function ajax_form(){
         return false;
     }
 
-    var type_name = $('input[name=type_name]').val();
-    if(!judge_validate(4,'名称',type_name,true,'length',2,40)){
+    var time_name = $('input[name=time_name]').val();
+    if(!judge_validate(4,'名称',time_name,true,'length',2,40)){
+        return false;
+    }
+
+    var second_num = $('input[name=second_num]').val();
+    if(!judge_validate(4,'时间秒数',second_num,true,'digit','','')){
         return false;
     }
 

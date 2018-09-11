@@ -42,12 +42,12 @@
                 <ul class="submenu">
                     <li><a href="{{ url('admin/department') }}">部门管理</a></li>
                     <li><a href="{{ url('admin/customer_type') }}">客户分类</a></li>
-                    <li><a href="{{ url('admin/workCallerType') }}">来电分类</a></li>
+                    <li><a href="{{ url('admin/work_caller_type') }}">来电分类</a></li>
                     <li><a href="{{ url('admin/work_type') }}">工单分类</a></li>
                     <li><a href="{{ url('admin/tags') }}">业务标签</a></li>
                     <li><a href="{{ url('admin/area') }}">区域设置</a></li>
                     <li><a href="{{ url('admin/roles') }}">角色权限</a></li>
-                    <li><a href="{{ url('admin/siteAdmin') }}">管理员</a></li>
+                    <li><a href="{{ url('admin/site_admin') }}">管理员</a></li>
                 </ul>
             </li>
         </ul>

@@ -73,12 +73,12 @@ class CoreGradeController extends AdminController
         $id = Common::getInt($request, 'id');
         // Common::judgeEmptyParams($request, 'id', $id);
         $company_id = $this->company_id;
-        $type_name = Common::get($request, 'type_name');
-        $sort_num = Common::getInt($request, 'sort_num');
+        $grade_name = Common::get($request, 'grade_name');
+        $max_score = Common::getInt($request, 'max_score');
 
         $saveData = [
-            'type_name' => $type_name,
-            'sort_num' => $sort_num,
+            'grade_name' => $grade_name,
+            'max_score' => $max_score,
         ];
 //        if($id <= 0) {// 新加;要加入的特别字段
 //            $addNewData = [

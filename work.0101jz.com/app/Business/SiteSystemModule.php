@@ -28,12 +28,12 @@ class SiteSystemModule extends BaseBusiness
 
         // 获得数据
         $queryParams = [
-            'where' => [
-                ['company_id', $company_id],
-                //['mobile', $keyword],
-            ],
+//            'where' => [
+//                ['company_id', $company_id],
+//                //['mobile', $keyword],
+//            ],
             'select' => [
-                'id','company_id','type_name','sort_num'
+                'id', 'system_id', 'module_parent_id' ,'module_name','sort_num' , 'ids' , 'module_type', 'module_url'
                 //,'operate_staff_id','operate_staff_history_id'
                 ,'created_at'
             ],
@@ -64,7 +64,7 @@ class SiteSystemModule extends BaseBusiness
      */
     public static function delAjax(Request $request, Controller $controller)
     {
-        return self::delAjaxBase($request, $controller, self::$model_name);
+        return self::delSysAjaxBase($request, $controller, self::$model_name);
 
     }
 
@@ -83,10 +83,10 @@ class SiteSystemModule extends BaseBusiness
         $resultDatas = CommonBusiness::getinfoApi(self::$model_name, $relations, $company_id , $id);
         // $resultDatas = self::getInfoDataBase($request, $controller, self::$model_name, $id, $relations);
         // 判断权限
-        $judgeData = [
-            'company_id' => $company_id,
-        ];
-        CommonBusiness::judgePowerByObj($resultDatas, $judgeData );
+//        $judgeData = [
+//            'company_id' => $company_id,
+//        ];
+//        CommonBusiness::judgePowerByObj($resultDatas, $judgeData );
         return $resultDatas;
     }
 
@@ -105,20 +105,20 @@ class SiteSystemModule extends BaseBusiness
         $company_id = $controller->company_id;
         if($id > 0){
             // 判断权限
-            $judgeData = [
-                'company_id' => $company_id,
-            ];
-            $relations = '';
-            CommonBusiness::judgePower($id, $judgeData, self::$model_name, $company_id, $relations, $notLog);
+//            $judgeData = [
+//                'company_id' => $company_id,
+//            ];
+//            $relations = '';
+//            CommonBusiness::judgePower($id, $judgeData, self::$model_name, $company_id, $relations, $notLog);
 
-            if($id <= 0) {// 新加;要加入的特别字段
-            }
         }else {// 新加;要加入的特别字段
-            $addNewData = [
-                'company_id' => $company_id,
-            ];
-            $saveData = array_merge($saveData, $addNewData);
+//            $addNewData = [
+//                'company_id' => $company_id,
+//            ];
+//            $saveData = array_merge($saveData, $addNewData);
         }
+        // 加入操作人员信息
+        // self::addOprate($request, $controller, $saveData);
         // 新加或修改
         return self::replaceByIdBase($request, $controller, self::$model_name, $saveData, $id, $notLog);
     }

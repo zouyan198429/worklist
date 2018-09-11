@@ -25,8 +25,8 @@ function ajax_form(){
         return false;
     }
 
-    var type_name = $('input[name=type_name]').val();
-    if(!judge_validate(4,'名称',type_name,true,'length',2,40)){
+    var department_name = $('input[name=department_name]').val();
+    if(!judge_validate(4,'部门/小组名称',department_name,true,'length',2,40)){
         return false;
     }
 

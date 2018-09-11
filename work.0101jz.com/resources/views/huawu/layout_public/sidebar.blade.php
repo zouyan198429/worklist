@@ -31,7 +31,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ url('huawu/customer/dayCount') }}">
+                <a href="{{ url('huawu/customer/day_count') }}">
                     <i class="fa fa-bar-chart fa-fw" aria-hidden="true"></i>
                     <span>我的业绩</span>
                 </a>

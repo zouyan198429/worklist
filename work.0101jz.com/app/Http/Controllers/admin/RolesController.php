@@ -74,11 +74,11 @@ class RolesController extends AdminController
         $id = Common::getInt($request, 'id');
         // Common::judgeEmptyParams($request, 'id', $id);
         $company_id = $this->company_id;
-        $type_name = Common::get($request, 'type_name');
+        $role_name = Common::get($request, 'role_name');
         $sort_num = Common::getInt($request, 'sort_num');
 
         $saveData = [
-            'type_name' => $type_name,
+            'role_name' => $role_name,
             'sort_num' => $sort_num,
         ];
 //        if($id <= 0) {// 新加;要加入的特别字段

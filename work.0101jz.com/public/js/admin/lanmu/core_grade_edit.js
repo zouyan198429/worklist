@@ -25,13 +25,13 @@ function ajax_form(){
         return false;
     }
 
-    var type_name = $('input[name=type_name]').val();
-    if(!judge_validate(4,'名称',type_name,true,'length',2,40)){
+    var grade_name = $('input[name=grade_name]').val();
+    if(!judge_validate(4,'名称',grade_name,true,'length',2,40)){
         return false;
     }
 
-    var sort_num = $('input[name=sort_num]').val();
-    if(!judge_validate(4,'排序',sort_num,false,'digit','','')){
+    var max_score = $('input[name=max_score]').val();
+    if(!judge_validate(4,'结束分数',max_score,false,'digit','','')){
         return false;
     }
 

@@ -12,6 +12,8 @@ class BaseController extends Controller
     public $model_name = null;
     public $user_info = [];
     public $user_id = null;
+    public $operate_staff_id = 0; // 操作人员id
+    public $operate_staff_history_id = 0;// 操作人员历史id
     public $source = -1;// 来源-1网站页面，2ajax；3小程序
     // 是否从小程序来的请求
     public $redisKey = null;

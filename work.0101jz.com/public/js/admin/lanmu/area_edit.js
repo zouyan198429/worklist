@@ -25,8 +25,8 @@ function ajax_form(){
         return false;
     }
 
-    var type_name = $('input[name=type_name]').val();
-    if(!judge_validate(4,'名称',type_name,true,'length',2,40)){
+    var area_name = $('input[name=area_name]').val();
+    if(!judge_validate(4,'区县/街道名称',area_name,true,'length',2,40)){
         return false;
     }
 

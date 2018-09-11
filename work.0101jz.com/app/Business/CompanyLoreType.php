@@ -11,7 +11,7 @@ use App\Http\Controllers\BaseController as Controller;
  */
 class CompanyLoreType extends BaseBusiness
 {
-    protected static $model_name = 'CompanyCustomerType';
+    protected static $model_name = 'CompanyLoreType';
 
     /**
      * 获得列表数据--所有数据
@@ -111,14 +111,14 @@ class CompanyLoreType extends BaseBusiness
             $relations = '';
             CommonBusiness::judgePower($id, $judgeData, self::$model_name, $company_id, $relations, $notLog);
 
-            if($id <= 0) {// 新加;要加入的特别字段
-            }
         }else {// 新加;要加入的特别字段
             $addNewData = [
                 'company_id' => $company_id,
             ];
             $saveData = array_merge($saveData, $addNewData);
         }
+        // 加入操作人员信息
+        self::addOprate($request, $controller, $saveData);
         // 新加或修改
         return self::replaceByIdBase($request, $controller, self::$model_name, $saveData, $id, $notLog);
     }

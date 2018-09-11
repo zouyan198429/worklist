@@ -152,6 +152,39 @@ class BaseBusiness
     }
 
     /**
+     * 删除单条数据---总系统类表
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param string $model_name 模型名称
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @return  array 列表数据
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function delSysAjaxBase(Request $request, Controller $controller, $model_name, $notLog = 0){
+
+        $id = Common::getInt($request, 'id');
+        $company_id = $controller->company_id;
+
+        // 判断权限
+//        $judgeData = [
+//            'company_id' => $company_id,
+//        ];
+//        $relations = '';
+//        CommonBusiness::judgePower($id, $judgeData, $model_name, $company_id, $relations, $notLog);
+
+        $queryParams =[// 查询条件参数
+            'where' => [
+                ['id', $id],
+//                ['company_id', $company_id]
+            ]
+        ];
+        $resultDatas = CommonBusiness::ajaxDelApi($model_name, $company_id , $queryParams, $notLog);
+
+        return ajaxDataArr(1, $resultDatas, '');
+    }
+
+    /**
      * 根据id获得单条数据
      *
      * @param Request $request 请求信息
@@ -191,6 +224,40 @@ class BaseBusiness
             $resultDatas = CommonBusiness::saveByIdApi($model_name, $id, $saveData, $company_id, $notLog);
         }
         return $resultDatas;
+    }
+
+    /**
+     * 根据id新加或修改单条数据-id 为0 新加，返回新的对象数组[-维],  > 0 ：修改对应的记录，返回true
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param array $saveData 需要操作的数组 [一维或二维数组]
+     * @return  mixed 单条数据 - -维数组 为0 新加，返回新的对象数组[-维],  > 0 ：修改对应的记录，返回true
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function addOprate(Request $request, Controller $controller, &$saveData){
+        // 加入操作人员信息
+        $oprateArr = [
+            'operate_staff_id' => $controller->operate_staff_id,
+            'operate_staff_history_id' => $controller->operate_staff_history_id,
+        ];
+        $isMultiArr = false; // true:二维;false:一维
+        foreach($saveData as $k => $v){
+            if(is_array($v)){
+                $isMultiArr = true;
+            }
+            break;
+        }
+        if($isMultiArr){ //二维
+
+            foreach($saveData as $k => $v){
+                $v = array_merge($v, $oprateArr);
+                $saveData[$k] = $v;
+            }
+        }else{// 一维
+            $saveData = array_merge($saveData, $oprateArr);
+        }
+        return $saveData;
     }
 
 }

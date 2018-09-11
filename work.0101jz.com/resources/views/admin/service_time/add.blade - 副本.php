@@ -6,17 +6,18 @@
 
 @section('content')
 
-	<div id="crumb"><i class="fa fa-reorder fa-fw" aria-hidden="true"></i> 添加角色</div>
+	<div id="crumb"><i class="fa fa-reorder fa-fw" aria-hidden="true"></i> 添加业务时间</div>
 	<div class="mm">
 		<form class="am-form am-form-horizontal" method="post"  id="addForm">
 			<input type="hidden" name="id" value="{{ $id or 0 }}"/>
 		<table class="table1">
 			<tr>
-				<th>角色<span class="must">*</span></th>
+				<th>名称<span class="must">*</span></th>
 				<td>
-					<input type="text" class="inp wnormal" name="role_name" value="{{ $role_name or '' }}" placeholder="角色名称"  autofocus  required />
+					<input type="text" class="inp wnormal" name="time_name" value="{{ $time_name or '' }}" placeholder="名称" placeholder=" " autofocus  required />
 				</td>
 			</tr>
+
 			<tr>
 				<th>排序[降序]</th>
 				<td>
@@ -39,8 +40,8 @@
 
 @push('footlast')
 	<script type="text/javascript">
-        const SAVE_URL = "{{ url('api/admin/roles/ajax_save') }}";// ajax保存记录地址
-        const LIST_URL = "{{url('admin/roles')}}";//保存成功后跳转到的地址
+        const SAVE_URL = "{{ url('api/admin/service_time/ajax_save') }}";// ajax保存记录地址
+        const LIST_URL = "{{url('admin/service_time')}}";//保存成功后跳转到的地址
 	</script>
-	<script src="{{ asset('/js/admin/lanmu/roles_edit.js') }}"  type="text/javascript"></script>
+	<script src="{{ asset('/js/admin/lanmu/service_time_edit.js') }}"  type="text/javascript"></script>
 @endpush

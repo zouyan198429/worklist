@@ -25,8 +25,8 @@ function ajax_form(){
         return false;
     }
 
-    var type_name = $('input[name=type_name]').val();
-    if(!judge_validate(4,'名称',type_name,true,'length',2,40)){
+    var module_name = $('input[name=module_name]').val();
+    if(!judge_validate(4,'模块名称',module_name,true,'length',2,40)){
         return false;
     }
 

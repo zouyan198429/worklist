@@ -32,13 +32,13 @@ class CompanyCoreGrade extends BaseBusiness
                 ['company_id', $company_id],
                 //['mobile', $keyword],
             ],
-//            'select' => [
-//                'id','company_id','type_name','sort_num'
-//                //,'operate_staff_id','operate_staff_history_id'
-//                ,'created_at'
-//            ],
-//            'orderBy' => ['sort_num'=>'desc','id'=>'desc'],
-            'orderBy' => ['id'=>'desc'],
+            'select' => [
+                'id','company_id','grade_name','min_score', 'max_score', 'is_default'
+                //,'operate_staff_id','operate_staff_history_id'
+                ,'created_at'
+            ],
+            'orderBy' => ['max_score'=>'desc','id'=>'desc'],
+//            'orderBy' => ['id'=>'desc'],
         ];// 查询条件参数
         // $relations = ['CompanyInfo'];// 关系
         $relations = '';//['CompanyInfo'];// 关系
@@ -112,14 +112,14 @@ class CompanyCoreGrade extends BaseBusiness
             $relations = '';
             CommonBusiness::judgePower($id, $judgeData, self::$model_name, $company_id, $relations, $notLog);
 
-            if($id <= 0) {// 新加;要加入的特别字段
-            }
         }else {// 新加;要加入的特别字段
             $addNewData = [
                 'company_id' => $company_id,
             ];
             $saveData = array_merge($saveData, $addNewData);
         }
+        // 加入操作人员信息
+        self::addOprate($request, $controller, $saveData);
         // 新加或修改
         return self::replaceByIdBase($request, $controller, self::$model_name, $saveData, $id, $notLog);
     }

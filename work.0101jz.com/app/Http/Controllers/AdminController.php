@@ -31,6 +31,8 @@ class AdminController extends BaseController
         // Common::judgeInitParams($request, 'company_id', $company_id);
         $this->user_info =$userInfo;
         $this->user_id = $userInfo['id'] ?? '';
+        $this->operate_staff_id = $this->user_id;
+        $this->operate_staff_history_id = $this->user_id;
         $company_id = config('public.company_id');
         $this->company_id =  $company_id;//'99999';//
 

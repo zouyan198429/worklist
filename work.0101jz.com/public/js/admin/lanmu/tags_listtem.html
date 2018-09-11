@@ -1,13 +1,14 @@
 
 <!-- 前端模板部分 -->
 <!-- 列表模板部分 开始  <! -- 模板中可以用HTML注释 -- >  或  <%* 这是模板自带注释格式 *%> -->
-<script type="text/template"  id="baidu_template_data_list">
+<script src="tags.js"></script>
+<script type="text/template" id="baidu_template_data_list">
 
     <%for(var i = 0; i<data_list.length;i++){
     var item = data_list[i];
     %>
     <tr>
-        <td><%=item.type_name%></td>
+        <td><%=item.tag_name%></td>
         <td><%=item.sort_num%></td>
         <td>
             <a href="javascript:void(0);" class="btn btn-mini btn-info" onclick="action.edit(<%=item.id%>)">

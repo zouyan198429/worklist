@@ -44,6 +44,8 @@ class WorksController extends BaseController
         // Common::judgeInitParams($request, 'company_id', $company_id);
         $this->user_info =$userInfo;
         $this->user_id = $userInfo['id'] ?? '';
+        $this->operate_staff_id = $this->user_id;
+        $this->operate_staff_history_id = $this->user_id;
         $this->company_id = $company_id;
         $real_name = $userInfo['real_name'] ?? '';
         $mobile = $userInfo['mobile'] ?? '';

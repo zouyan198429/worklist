@@ -8,8 +8,8 @@
     document.write("    var item = data_list[i];");
     document.write("    %>");
     document.write("    <tr>");
-    document.write("        <td><%=item.type_name%><\/td>");
-    document.write("        <td><%=item.sort_num%><\/td>");
+    document.write("        <td><%=item.grade_name%><\/td>");
+    document.write("        <td><%=item.max_score%><\/td>");
     document.write("        <td>");
     document.write("            <a href=\"javascript:void(0);\" class=\"btn btn-mini btn-info\" onclick=\"action.edit(<%=item.id%>)\">");
     document.write("                <i class=\"ace-icon fa fa-pencil bigger-60\"> 编辑<\/i>");
