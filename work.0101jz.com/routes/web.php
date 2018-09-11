@@ -236,3 +236,23 @@ Route::get('app/lore/info', 'app\LoreController@info');//know_view.html 知识�
 Route::get('app/problem/add', 'app\ProblemController@add');//problem.html 反馈问题
 //工单
 Route::get('app/work', 'app\WorkController@index');//work_monitor.html 工单
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//m
+Route::get('m', 'm\IndexController@index');//index.html  首页
+Route::get('m/index_back', 'm\IndexController@indexBack');// index-bk.html 首页
+Route::get('m/login', 'm\IndexController@login');//login.html 员工登录
+
+Route::get('m/staff', 'm\StaffController@index');//myindex.html 个人中心--个人主页
+Route::get('m/staff/info', 'm\StaffController@info');//myinfo.html 我的帐号--帐号信息
+Route::get('m/staff/list', 'm\StaffController@list');//mycolleague.html 我的同事--同事列表
+//客户
+Route::get('m/customer', 'm\CustomerController@index');//customer_all.html 我的客户-列表
+//反馈
+Route::get('m/problem/add', 'm\ProblemController@add');//feedback.html 问题反馈-提交问题
+Route::get('m/exam', 'm\ExamController@index');//kaoshi.html 在线考试 --考试列表
+Route::get('m/exam_score', 'm\ExamController@score');//kaoshi-cj.html 考试成绩-成绩列表
+Route::get('m/exam_search', 'm\ExamController@search');//kaoshi-cj-view.html  考试成绩-维修业务知识测评--成绩查询
+Route::get('m/lore', 'm\LoreController@index');//study.html 学习中心--知识列表
+Route::get('m/lore/info', 'm\LoreController@info');//study_view.html 学习中心-知识详情页

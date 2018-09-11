@@ -121,6 +121,10 @@ Route::any('weixiu/staff/ajax_alist', 'weixiu\StaffController@ajax_alist');//aja
 //app
 Route::any('app/ajax_login', 'app\IndexController@ajax_login');// 登陆
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//m
+Route::any('m/ajax_login', 'm\IndexController@ajax_login');// 登陆
+
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
