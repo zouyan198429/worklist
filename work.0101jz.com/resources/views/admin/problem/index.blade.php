@@ -15,7 +15,7 @@
 			<form onsubmit="return false;" class="form-horizontal" role="form" method="post" id="search_frm" action="#">
 				<div class="msearch fr">
 
-					<select name="filename" class="wmini">
+					<select name="aaabbb" class="wmini">
 						<option value="a01">全部</option>
 						<option value="a02">维修部</option>
 						<option value="a03">话务部</option>
