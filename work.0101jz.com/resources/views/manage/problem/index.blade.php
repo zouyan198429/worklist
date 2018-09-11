@@ -15,7 +15,7 @@
 			<form onsubmit="return false;" class="form-horizontal" role="form" method="post" id="search_frm" action="#">
 				<div class="msearch fr">
 
-					<select class="wmini">
+					<select class="wmini" name="aaabbbb">
 						<option value="a01">全部</option>
 						<option value="a02">客户姓名</option>
 						<option value="a03">客户电话</option>
@@ -156,15 +156,7 @@
                   {{--<span class="lbl"></span>--}}
                 {{--</label>--}}
 			{{--</td>--}}
-		<td><%=item.type_name%></td>
-		<td><%=item.content%></td>
-		<td><%=item.call_number%></td>
-		<td><%=item.city_name%><%=item.area_name%><%=item.address%></td>
-		<td><%=item.customer_name%></td>
-		<td><%=item.call_number%></td>
-		<td><%=item.created_at%></td>
-		<td><a href="{{url('manage/problem/return_send')}}/<%=item.id%>" class="btn btn-mini" >回复</a></td>
-	</tr> <%}%>
+	xxx
 </script>
 <!-- 列表模板部分 结束-->
 <!-- 前端模板结束 -->
