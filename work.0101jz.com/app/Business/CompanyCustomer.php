@@ -41,17 +41,17 @@ class CompanyCustomer extends BaseBusiness
             'orderBy' => ['id'=>'desc'],
         ];// 查询条件参数
         // $relations = ['CompanyInfo'];// 关系
-        $relations = '';//['CompanyInfo'];// 关系
+        $relations = ['customerType'];//['CompanyInfo'];// 关系
         $result = self::getBaseListData($request, $controller, self::$model_name, $queryParams,$relations , $oprateBit, $notLog);
 
         // 格式化数据
-//        $data_list = $result['data_list'] ?? [];
-//        foreach($data_list as $k => $v){
-//            // 公司名称
-//            $data_list[$k]['company_name'] = $v['company_info']['company_name'] ?? '';
-//            if(isset($data_list[$k]['company_info'])) unset($data_list[$k]['company_info']);
-//        }
-//        $result['data_list'] = $data_list;
+        $data_list = $result['data_list'] ?? [];
+        foreach($data_list as $k => $v){
+            // 公司名称
+            $data_list[$k]['type_name'] = $v['customer_type']['type_name'] ?? '';
+            if(isset($data_list[$k]['customer_type'])) unset($data_list[$k]['customer_type']);
+        }
+        $result['data_list'] = $data_list;
         return ajaxDataArr(1, $result, '');
     }
 
