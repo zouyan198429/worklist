@@ -88,7 +88,9 @@ Route::any('admin/lore_type/ajax_save', 'admin\LoreTypeController@ajax_save');//
 Route::any('admin/subject_type/ajax_alist', 'admin\SubjectTypeController@ajax_alist');//ajax获得列表数据
 Route::any('admin/subject_type/ajax_del', 'admin\SubjectTypeController@ajax_del');// 删除
 Route::any('admin/subject_type/ajax_save', 'admin\SubjectTypeController@ajax_save');// 新加/修改
-
+//同事
+Route::any('admin/staff/ajax_alist', 'admin\StaffController@ajax_alist');//ajax获得列表数据
+Route::any('admin/staff/ajax_del', 'admin\StaffController@ajax_del');// 删除
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //web-manage
 // 登陆

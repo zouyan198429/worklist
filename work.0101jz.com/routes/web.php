@@ -78,6 +78,7 @@ Route::get('admin/position/add/{id}', 'admin\PositionController@add');// 职位�
 
 // 员工
 Route::get('admin/staff', 'admin\StaffController@index');//Colleague.html 我的同事
+Route::get('admin/staff/add/{id}', 'admin\StaffController@add');//m_staff_add.html 添加员工
 
 //客户
 Route::get('admin/customer', 'admin\CustomerController@index');//customer_all.html 客户管理
