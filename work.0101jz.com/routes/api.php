@@ -23,6 +23,10 @@ Route::any('upload/ajax_del', 'UploadController@ajax_del');// 根据id删除文�
 // 登陆
 Route::any('admin/ajax_login', 'admin\IndexController@ajax_login');// 登陆
 Route::any('admin/ajax_password_save', 'admin\IndexController@ajax_password_save');// 修改密码
+// 管理员
+Route::any('admin/site_admin/ajax_alist', 'admin\SiteAdminController@ajax_alist');//ajax获得列表数据
+Route::any('admin/site_admin/ajax_del', 'admin\SiteAdminController@ajax_del');// 删除
+Route::any('admin/site_admin/ajax_save', 'admin\SiteAdminController@ajax_save');// 新加/修改
 // 客户分类
 Route::any('admin/customer_type/ajax_alist', 'admin\CustomerTypeController@ajax_alist');//ajax获得列表数据
 Route::any('admin/customer_type/ajax_del', 'admin\CustomerTypeController@ajax_del');// 删除

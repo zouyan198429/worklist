@@ -35,6 +35,7 @@ Route::get('admin/info', 'admin\IndexController@info');//myinfo.html 个人信�
 
   //管理员
 Route::get('admin/site_admin', 'admin\SiteAdminController@index');//class_admin.html  管理员管理
+Route::get('admin/site_admin/add/{id}', 'admin\SiteAdminController@add');// 管理员管理--添加
 
 // 系统基本设置
 // 来电分类
