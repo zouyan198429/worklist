@@ -35,7 +35,7 @@ class SiteAdmin extends BaseBusiness
                 ['admin_username',$admin_username],
                 ['admin_password',md5($admin_password)],
             ],
-            'select' => ['id','company_id','real_name','admin_type'],
+            'select' => ['id','company_id','admin_username','real_name','admin_type'],
             // 'limit' => 1
         ];
         $pageParams = [

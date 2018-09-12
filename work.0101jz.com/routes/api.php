@@ -137,7 +137,8 @@ Route::any('app/ajax_login', 'app\IndexController@ajax_login');// 登陆
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //m
 Route::any('m/ajax_login', 'm\IndexController@ajax_login');// 登陆
-
+//同事
+Route::any('m/staff/ajax_alist', 'm\StaffController@ajax_alist');//ajax获得列表数据
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

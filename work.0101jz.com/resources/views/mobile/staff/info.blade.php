@@ -7,59 +7,62 @@
 @section('content')
 
 	<div class="page">
-
 		<div id="header">
-			<div class="top-title">个人中心</div>
+			<div class="top-back"><a href="javascript:history.go(-1)">返回</a></div>
+			<div class="top-title">我的帐号</div>
 		</div>
-		<div class="infohd">
-			<div id="infotx"><i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i> </div>
-			<div id="infoname">
-				<h2>李元元 <span> 工号：105245</span></h2>
-				<h4>部门：客服部/接线组</h4>
-			</div>
-			<div class="c"></div>
-		</div>
-		<section class="wrap" id="study" >
-			<div class="myachieve">
+		<section class="main" >
+			<div class="dlbox">
+
+
 				<dl>
-					<dt>今日工单</dt>
-					<dd>6</dd>
+					<dt>工号</dt>
+					<dd>
+						{{ $work_num or '' }}
+					</dd>
 				</dl>
 				<dl>
-					<dt>本周工单</dt>
-					<dd>66</dd>
+					<dt>姓名</dt>
+					<dd>
+						{{ $real_name or '' }}
+					</dd>
 				</dl>
 				<dl>
-					<dt>本月工单</dt>
-					<dd>211</dd>
+					<dt>部门</dt>
+					<dd>
+						{{ $department_name or '' }}/
+						{{ $group_name or '' }}
+					</dd>
 				</dl>
-				<div class="c"></div>
+				<dl>
+					<dt>职务</dt>
+					<dd>
+						{{ $position_name or '' }}
+					</dd>
+				</dl>
+				<dl>
+					<dt>电话</dt>
+					<dd>
+						{{ $tel or '' }}
+					</dd>
+				</dl>
+				<dl>
+					<dt>手机</dt>
+					<dd>
+						{{ $mobile or '' }}
+					</dd>
+				</dl>
+				<dl>
+					<dt>QQ</dt>
+					<dd>
+						{{ $qq_number or '' }}
+					</dd>
+				</dl>
 
-			</div>
 
 
-			<div class="mynav">
-				<ul>
-					<li>
-						<a href="{{ url('m/staff/list') }}">
-							<span>我的同事</span>
-							<i class="fa fa-angle-right fa-fw" aria-hidden="true"></i>
-						</a>
-						<div class="c"></div>
-					</li>
-					<li>
-						<a href="{{ url('m/login') }}"><span>退出</span></a>
-						<div class="c"></div>
-					</li>
-
-				</ul>
 			</div>
 		</section>
-
-		@include('mobile.layout_public.menu', ['menu_id' => 5])
-
-
-
 	</div>
 @endsection
 

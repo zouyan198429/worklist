@@ -61,6 +61,7 @@ class ProblemController extends AdminController
     public function return_send(Request $request)
     {
         $this->InitParams($request);
-        return view('manage.problem.return_send');
+        $reDataArr = $this->reDataArr;
+        return view('manage.problem.return_send', $reDataArr);
     }
 }

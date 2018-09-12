@@ -32,7 +32,8 @@ class ExamController extends AdminController
     public function add(Request $request)
     {
         $this->InitParams($request);
-        return view('manage.exam.add',[]);
+        $reDataArr = $this->reDataArr;
+        return view('manage.exam.add',$reDataArr);
     }
 
 

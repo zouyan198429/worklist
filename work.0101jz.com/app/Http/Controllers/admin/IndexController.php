@@ -61,6 +61,8 @@ class IndexController extends AdminController
     {
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
+        $user_info = $this->user_info;
+        $reDataArr = array_merge($reDataArr, $user_info);
         return view('admin.admin.info', $reDataArr);
     }
 

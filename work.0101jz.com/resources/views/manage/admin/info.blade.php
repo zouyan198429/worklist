@@ -13,6 +13,19 @@
 		<table class="table1">
 
 			<tr>
+				<th>用户名</th>
+				<td>
+					{{ $admin_username or '' }}
+				</td>
+			</tr>
+			<tr>
+				<th>真实姓名</th>
+				<td>
+					{{ $real_name or '' }}
+				</td>
+			</tr>
+			{{--
+			<tr>
 				<th>工号</th>
 				<td>
 					345245
@@ -57,9 +70,7 @@
 					46554686
 				</td>
 			</tr>
-
-
-
+			--}}
 		</table>
 	</div>
 @endsection

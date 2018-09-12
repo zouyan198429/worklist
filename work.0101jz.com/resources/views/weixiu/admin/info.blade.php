@@ -15,26 +15,29 @@
 			<tr>
 				<th>工号</th>
 				<td>
-					345245
+					{{ $work_num or '' }}
 				</td>
 			</tr>
 
 			<tr>
 				<th>姓名</th>
 				<td>
-					李元元
+					{{ $real_name or '' }}
 				</td>
 			</tr>
 			<tr>
 				<th>部门</th>
 				<td>
-					客服部/接线组
+
+					{{ $department_name or '' }}/
+					{{ $group_name or '' }}
 				</td>
 			</tr>
 			<tr>
 				<th>职务</th>
 				<td>
-					客服
+
+					{{ $position_name or '' }}
 				</td>
 			</tr>
 
@@ -42,19 +45,22 @@
 			<tr>
 				<th>电话</th>
 				<td>
-					0938-4555744
+
+					{{ $tel or '' }}
 				</td>
 			</tr>
 			<tr>
 				<th>手机</th>
 				<td>
-					18955854452
+
+					{{ $mobile or '' }}
 				</td>
 			</tr>
 			<tr>
 				<th>QQ</th>
 				<td>
-					46554686
+
+					{{ $qq_number or '' }}
 				</td>
 			</tr>
 

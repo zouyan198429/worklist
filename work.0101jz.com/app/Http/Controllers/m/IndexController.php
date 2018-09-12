@@ -89,7 +89,6 @@ class IndexController extends WorksController
      */
     public function logout(Request $request)
     {
-        $reDataArr = $this->reDataArr;
         $resDel = CompanyStaff::loginOut($request, $this);
         // return ajaxDataArr(1, $resDel, '');
         return redirect('m/login');

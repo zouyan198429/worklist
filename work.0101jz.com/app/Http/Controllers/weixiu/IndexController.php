@@ -47,6 +47,8 @@ class IndexController extends WorksController
     {
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
+        $user_info = $this->user_info;
+        $reDataArr = array_merge($reDataArr, $user_info);
         return view('weixiu.admin.info', $reDataArr);
     }
 
@@ -75,7 +77,6 @@ class IndexController extends WorksController
     {
         // $this->InitParams($request);
         // $company_id = $this->company_id;
-
         return CompanyStaff::login($request, $this);
     }
 

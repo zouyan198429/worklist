@@ -33,7 +33,8 @@ class IndexController extends AdminController
     public function index_hot(Request $request)
     {
         $this->InitParams($request);
-        return view('manage.index_hot',[]);
+        $reDataArr = $this->reDataArr;
+        return view('manage.index_hot',$reDataArr);
     }
 
     /**
@@ -45,7 +46,8 @@ class IndexController extends AdminController
      */
     public function login(Request $request)
     {
-        return view('manage.login',[]);
+        $reDataArr = $this->reDataArr;
+        return view('manage.login',$reDataArr);
     }
 
     /**
@@ -58,7 +60,8 @@ class IndexController extends AdminController
     public function password(Request $request)
     {
         $this->InitParams($request);
-        return view('manage.admin.password',[]);
+        $reDataArr = $this->reDataArr;
+        return view('manage.admin.password',$reDataArr);
     }
 
     /**
@@ -71,7 +74,10 @@ class IndexController extends AdminController
     public function info(Request $request)
     {
         $this->InitParams($request);
-        return view('manage.admin.info',[]);
+        $reDataArr = $this->reDataArr;
+        $user_info = $this->user_info;
+        $reDataArr = array_merge($reDataArr, $user_info);
+        return view('manage.admin.info',$reDataArr);
     }
 
 

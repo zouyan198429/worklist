@@ -40,7 +40,7 @@ class CompanyStaff extends BaseBusiness
                 ['admin_password',md5($admin_password)],
             ],
             'select' => [
-                'id','company_id','real_name','issuper','account_status','work_num',
+                'id','company_id','admin_username','real_name','issuper','account_status','work_num',
                 'department_id','group_id','position_id','sex'
                 ,'tel','mobile','qq_number','lastlogintime'
             ],
@@ -55,9 +55,9 @@ class CompanyStaff extends BaseBusiness
             'pagesize' => 1,
             'total' => 1,
         ];
-        //$relations = "";
+        $relations = ['staffDepartment', 'staffGroup', 'staffPosition' ];// , 'staffRoles'
         //if($preKey == 0) {
-        $relations = '';//['CompanyInfo.CompanyRank'];
+        //$relations = '';//['CompanyInfo.CompanyRank'];
         //}
         $resultDatas = CommonBusiness::ajaxGetList($modelName, $pageParams, 0,$queryParams ,$relations, 1);
 
@@ -97,6 +97,20 @@ class CompanyStaff extends BaseBusiness
             throws('账号已冻结！');
             //return ajaxDataArr(0, null, '账号已冻结！');
         }
+        // 部门
+        $userInfo['department_name'] = $userInfo['staff_department']['department_name'] ?? '';
+        if(isset($userInfo['staff_department'])) unset($userInfo['staff_department']);
+
+        // 小组
+        $userInfo['group_name'] = $userInfo['staff_group']['department_name'] ?? '';
+        if(isset($userInfo['staff_group'])) unset($userInfo['staff_group']);
+
+        // 职位
+        $userInfo['position_name'] = $userInfo['staff_position']['position_name'] ?? '';
+        if(isset($userInfo['staff_position'])) unset($userInfo['staff_position']);
+
+
+
         //开始时间
 //        $company_vipbegin = $userInfo['company_info']['company_vipbegin'] ?? '';
 //        $company_vipbegin = judgeDate($company_vipbegin,"Y-m-d");
@@ -228,5 +242,44 @@ class CompanyStaff extends BaseBusiness
     {
         return self::delAjaxBase($request, $controller, self::$model_name);
 
+    }
+
+    /**
+     * 按部门分组同事/员工数据
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @return  array 列表数据
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function staffGroupDepartment(Request $request, Controller $controller){
+        $department_list = [];
+        // 获得第一级分类
+        $parentData = CompanyDepartment::getChildList($request, $controller, 0, 1 + 0);
+        $tem_department_list = $parentData['result']['data_list'] ?? [];
+        foreach($tem_department_list as $k=> $v){
+            $v['staff'] = [];
+            $department_list[$v['id']] = $v;
+        }
+        $departmentIds = array_column($department_list, 'id');
+
+        // 获得所有同事
+        $staffData = self::getList($request, $controller, 1 + 0);
+        $staff_list = $staffData['result']['data_list'] ?? [];
+        foreach($staff_list as $v){
+            $department_id = $v['department_id'] ?? 0;
+            if(in_array($department_id ,$departmentIds)){
+                $department_list[$department_id]['staff'][] = $v;
+            }else{
+                $department_list[0]['staff'][] = $v;
+            }
+        }
+
+        if(isset($department_list[0])){
+            $department_list[0]['id'] = 0;
+            $department_list[0]['department_name'] = '未指定部门';
+        }
+
+        return $department_list;
     }
 }

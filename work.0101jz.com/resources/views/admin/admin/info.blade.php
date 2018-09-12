@@ -8,9 +8,21 @@
 	<div id="crumb"><i class="fa fa-reorder fa-fw" aria-hidden="true"></i> 个人信息</div>
 	<div class="mm">
 
-
 		<table class="table1">
 
+			<tr>
+				<th>用户名</th>
+				<td>
+					{{ $admin_username or '' }}
+				</td>
+			</tr>
+			<tr>
+				<th>真实姓名</th>
+				<td>
+					{{ $real_name or '' }}
+				</td>
+			</tr>
+           {{--
 			<tr>
 				<th>工号</th>
 				<td>
@@ -56,9 +68,7 @@
 					46554686
 				</td>
 			</tr>
-
-
-
+			--}}
 		</table>
 	</div>
 @endsection

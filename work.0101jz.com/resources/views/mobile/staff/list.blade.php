@@ -12,89 +12,23 @@
 			<div class="top-title">我的同事</div>
 		</div>
 		<section class="main" id="tongshi" >
+			@foreach ($department_list as $department)
 			<div class="hd">
-				<h4><i class="fa fa-bars  fa-fw" aria-hidden="true"></i> 话务组</h4>
+				<h4><i class="fa fa-bars  fa-fw" aria-hidden="true"></i> {{ $department['department_name'] or '' }}</h4>
 			</div>
 			<ul class="listtext3">
+				@foreach ($department['staff'] as $staff)
 				<li>
 					<div class="name" >
-						<i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i>  刘小娟
+						<i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i>  {{ $staff['real_name'] or '' }}
 					</div>
-					<div class="tell"><a href="tel:15366658554" class="btn" ><i class="fa fa-phone-square fa-fw" aria-hidden="true"></i> 15366658554  </a></div>
+					<div class="tell"><a href="tel:{{ $staff['mobile'] or '' }}" class="btn" ><i class="fa fa-phone-square fa-fw" aria-hidden="true"></i> {{ $staff['mobile'] or '' }}  </a></div>
 					<div class="c"></div>
 				</li>
-				<li>
-					<div class="name" >
-						<i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i>  刘小娟
-					</div>
-					<div class="tell"><a href="tel:15366658554" class="btn" ><i class="fa fa-phone-square fa-fw" aria-hidden="true"></i> 15366658554  </a></div>
-					<div class="c"></div>
-				</li>
-				<li>
-					<div class="name" >
-						<i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i>  刘小娟
-					</div>
-					<div class="tell"><a href="tel:15366658554" class="btn" ><i class="fa fa-phone-square fa-fw" aria-hidden="true"></i> 15366658554  </a></div>
-					<div class="c"></div>
-				</li>
+				@endforeach
 
 			</ul>
-			<div class="hd">
-				<h4><i class="fa fa-bars  fa-fw" aria-hidden="true"></i> 话务组</h4>
-			</div>
-			<ul class="listtext3">
-				<li>
-					<div class="name" >
-						<i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i>  刘小娟
-					</div>
-					<div class="tell"><a href="tel:15366658554" class="btn" ><i class="fa fa-phone-square fa-fw" aria-hidden="true"></i> 15366658554  </a></div>
-					<div class="c"></div>
-				</li>
-				<li>
-					<div class="name" >
-						<i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i>  刘小娟
-					</div>
-					<div class="tell"><a href="tel:15366658554" class="btn" ><i class="fa fa-phone-square fa-fw" aria-hidden="true"></i> 15366658554  </a></div>
-					<div class="c"></div>
-				</li>
-				<li>
-					<div class="name" >
-						<i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i>  刘小娟
-					</div>
-					<div class="tell"><a href="tel:15366658554" class="btn" ><i class="fa fa-phone-square fa-fw" aria-hidden="true"></i> 15366658554  </a></div>
-					<div class="c"></div>
-				</li>
-
-			</ul>
-			<div class="hd">
-				<h4><i class="fa fa-bars  fa-fw" aria-hidden="true"></i> 话务组</h4>
-			</div>
-			<ul class="listtext3">
-				<li>
-					<div class="name" >
-						<i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i>  刘小娟
-					</div>
-					<div class="tell"><a href="tel:15366658554" class="btn" ><i class="fa fa-phone-square fa-fw" aria-hidden="true"></i> 15366658554  </a></div>
-					<div class="c"></div>
-				</li>
-				<li>
-					<div class="name" >
-						<i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i>  刘小娟
-					</div>
-					<div class="tell"><a href="tel:15366658554" class="btn" ><i class="fa fa-phone-square fa-fw" aria-hidden="true"></i> 15366658554  </a></div>
-					<div class="c"></div>
-				</li>
-				<li>
-					<div class="name" >
-						<i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i>  刘小娟
-					</div>
-					<div class="tell"><a href="tel:15366658554" class="btn" ><i class="fa fa-phone-square fa-fw" aria-hidden="true"></i> 15366658554  </a></div>
-					<div class="c"></div>
-				</li>
-
-			</ul>
-
-
+			@endforeach
 	</div>
 	</div>
 @endsection
