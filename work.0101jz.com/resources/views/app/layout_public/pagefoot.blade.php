@@ -1,1 +1,0 @@
-@include('public.dynamic_list_foot')
