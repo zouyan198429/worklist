@@ -244,6 +244,7 @@ Route::get('m', 'm\IndexController@index');//index.html  首页
 Route::get('m/index_back', 'm\IndexController@indexBack');// index-bk.html 首页
 Route::get('m/login', 'm\IndexController@login');//login.html 员工登录
 Route::get('m/logout', 'm\IndexController@logout');// 注销
+Route::get('m/password', 'm\IndexController@password');//login.html 修改密码
 
 Route::get('m/staff', 'm\StaffController@index');//myindex.html 个人中心--个人主页
 Route::get('m/staff/info', 'm\StaffController@info');//myinfo.html 我的帐号--帐号信息

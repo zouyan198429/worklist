@@ -61,7 +61,22 @@ class IndexController extends AdminController
     {
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
+        $user_info = $this->user_info;
+        $reDataArr = array_merge($reDataArr, $user_info);
         return view('manage.admin.password',$reDataArr);
+    }
+
+    /**
+     * ajax修改密码
+     *
+     * @param int $id
+     * @return Response
+     * @author zouyan(305463219@qq.com)
+     */
+    public function ajax_password_save(Request $request)
+    {
+        $this->InitParams($request);
+        return SiteAdmin::modifyPassWord($request, $this);
     }
 
     /**

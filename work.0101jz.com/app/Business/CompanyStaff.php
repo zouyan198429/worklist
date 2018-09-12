@@ -282,4 +282,56 @@ class CompanyStaff extends BaseBusiness
 
         return $department_list;
     }
+
+
+    /**
+     * 修改密码
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function modifyPassWord(Request $request, Controller $controller){
+
+        // $id = Common::getInt($request, 'id');
+        // Common::judgeEmptyParams($request, 'id', $id);
+        $id = $controller->user_id;
+        $company_id = $controller->company_id;
+        $old_password = Common::get($request, 'old_password');// 旧密码，如果为空，则不校验
+        $admin_password = Common::get($request, 'admin_password');
+        $sure_password = Common::get($request, 'sure_password');
+
+        if (empty($admin_password) || $admin_password != $sure_password){
+            return ajaxDataArr(0, null, '密码和确定密码不一致！!');
+        }
+
+        $saveData = [
+            'admin_password' => $admin_password,
+        ];
+
+        // 修改
+        // 判断权限
+        $judgeData = [
+            'company_id' => $company_id,
+        ];
+        $relations = '';
+        CommonBusiness::judgePower($id, $judgeData, self::$model_name, $company_id,$relations);
+        // 如果有旧密码，则验证旧密码是否正确
+        if(!empty($old_password)){
+            $queryParams = [
+                'where' => [
+                    ['id',$id],
+                    ['admin_password',md5($old_password)],
+                ],
+                // 'limit' => 1
+            ];
+            $relations = '';
+            $infoData = CommonBusiness::getInfoByQuery(self::$model_name, $company_id, $queryParams, $relations);
+            if(empty($infoData)){
+                return ajaxDataArr(0, null, '原始密码不正确！');
+            }
+        }
+        $resultDatas = CommonBusiness::saveByIdApi(self::$model_name, $id, $saveData, $company_id);
+
+        return ajaxDataArr(1, $resultDatas, '');
+    }
 }

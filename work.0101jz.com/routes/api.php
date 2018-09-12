@@ -22,6 +22,7 @@ Route::any('upload/ajax_del', 'UploadController@ajax_del');// 根据id删除文�
 // admin
 // 登陆
 Route::any('admin/ajax_login', 'admin\IndexController@ajax_login');// 登陆
+Route::any('admin/ajax_password_save', 'admin\IndexController@ajax_password_save');// 修改密码
 // 客户分类
 Route::any('admin/customer_type/ajax_alist', 'admin\CustomerTypeController@ajax_alist');//ajax获得列表数据
 Route::any('admin/customer_type/ajax_del', 'admin\CustomerTypeController@ajax_del');// 删除
@@ -91,21 +92,30 @@ Route::any('admin/subject_type/ajax_save', 'admin\SubjectTypeController@ajax_sav
 //同事
 Route::any('admin/staff/ajax_alist', 'admin\StaffController@ajax_alist');//ajax获得列表数据
 Route::any('admin/staff/ajax_del', 'admin\StaffController@ajax_del');// 删除
+
+//反馈问题
+Route::any('admin/problem/ajax_alist', 'admin\ProblemController@ajax_alist');// 大后台反馈问题
+
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //web-manage
 // 登陆
 Route::any('manage/ajax_login', 'manage\IndexController@ajax_login');// 登陆
+Route::any('manage/ajax_password_save', 'manage\IndexController@ajax_password_save');// 修改密码
 //同事
 Route::any('manage/staff/ajax_alist', 'manage\StaffController@ajax_alist');//ajax获得列表数据
 Route::any('manage/staff/ajax_del', 'manage\StaffController@ajax_del');// 删除
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //反馈问题 （liuxin）
 Route::any('manage/problem/ajax_alist', 'manage\ProblemController@ajax_alist');//ajax获得反馈问题的列表数据
-Route::any('admin/problem/ajax_alist', 'admin\ProblemController@ajax_alist');// 大后台反馈问题
+
+
+
+
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //web-huawu 客服
 Route::any('huawu/ajax_login', 'huawu\IndexController@ajax_login');// 登陆
+Route::any('huawu/ajax_password_save', 'huawu\IndexController@ajax_password_save');// 修改密码
 //同事
 Route::any('huawu/staff/ajax_alist', 'huawu\StaffController@ajax_alist');//ajax获得列表数据
 
@@ -114,11 +124,9 @@ Route::any('huawu/staff/ajax_alist', 'huawu\StaffController@ajax_alist');//ajax�
 //web-weixiu 维修
 // 登陆
 Route::any('weixiu/ajax_login', 'weixiu\IndexController@ajax_login');// 登陆
+Route::any('weixiu/ajax_password_save', 'weixiu\IndexController@ajax_password_save');// 修改密码
 //同事
 Route::any('weixiu/staff/ajax_alist', 'weixiu\StaffController@ajax_alist');//ajax获得列表数据
-
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 //客户
     // piwik.com
@@ -130,13 +138,19 @@ Route::any('admin/customer/ajax_biaoji', 'admin\CustomerController@ajax_biaoji')
     //work.com
 Route::any('huawu/customer/ajax_alist', 'huawu\CustomerController@ajax_alist');//ajax获得列表数据
 Route::any('huawu/customer/ajax_biaoji', 'huawu\CustomerController@ajax_biaoji');//ajax标记
+
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //app
 Route::any('app/ajax_login', 'app\IndexController@ajax_login');// 登陆
 
+
+
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //m
 Route::any('m/ajax_login', 'm\IndexController@ajax_login');// 登陆
+Route::any('m/ajax_password_save', 'm\IndexController@ajax_password_save');// 修改密码
 //同事
 Route::any('m/staff/ajax_alist', 'm\StaffController@ajax_alist');//ajax获得列表数据
 

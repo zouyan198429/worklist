@@ -42,6 +42,17 @@ class CompanyStaff extends BaseModel
     protected $appends = ['account_statu_text', 'issuper_text', 'sex_text'];
 
     /**
+     * 设置帐号的密码md5加密
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function setAdminPasswordAttribute($value)
+    {
+        $this->attributes['admin_password'] = md5($value);
+    }
+
+    /**
      * 获取用户的状态文字
      *
      * @return string

@@ -42,6 +42,13 @@
 			<div class="mynav">
 				<ul>
 					<li>
+						<a href="{{ url('m/password') }}">
+							<span>修改密码</span>
+							<i class="fa fa-angle-right fa-fw" aria-hidden="true"></i>
+						</a>
+						<div class="c"></div>
+					</li>
+					<li>
 						<a href="{{ url('m/staff/list') }}">
 							<span>我的同事</span>
 							<i class="fa fa-angle-right fa-fw" aria-hidden="true"></i>
