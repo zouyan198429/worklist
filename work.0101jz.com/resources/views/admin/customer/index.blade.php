@@ -14,7 +14,7 @@
 			<form onsubmit="return false;" class="form-horizontal" role="form" method="post" id="search_frm" action="#">
 				<div class="msearch fr">
 					<select class="wmini" name="file">
-						<option value="a01">全部</option>
+						<option value="">全部</option>
 						<option value="customer_name">客户姓名</option>
 						<option value="call_number">来电电话</option>
 					</select>

@@ -100,6 +100,9 @@ Route::any('admin/staff/ajax_del', 'admin\StaffController@ajax_del');// 删除
 //反馈问题
 Route::any('admin/problem/ajax_alist', 'admin\ProblemController@ajax_alist');// 大后台反馈问题
 
+//客户
+Route::any('admin/customer/ajax_alist', 'admin\CustomerController@ajax_alist');//ajax获得列表数据
+Route::any('admin/customer/ajax_biaoji', 'admin\CustomerController@ajax_biaoji');//ajax标记
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //web-manage
@@ -112,6 +115,9 @@ Route::any('manage/staff/ajax_del', 'manage\StaffController@ajax_del');// 删除
 //反馈问题 （liuxin）
 Route::any('manage/problem/ajax_alist', 'manage\ProblemController@ajax_alist');//ajax获得反馈问题的列表数据
 
+//客户
+Route::any('manage/customer/ajax_alist', 'manage\CustomerController@ajax_alist');//ajax获得列表数据
+Route::any('manage/customer/ajax_biaoji', 'manage\CustomerController@ajax_biaoji');//ajax标记
 
 
 
@@ -123,6 +129,9 @@ Route::any('huawu/ajax_password_save', 'huawu\IndexController@ajax_password_save
 //同事
 Route::any('huawu/staff/ajax_alist', 'huawu\StaffController@ajax_alist');//ajax获得列表数据
 
+//客户
+Route::any('huawu/customer/ajax_alist', 'huawu\CustomerController@ajax_alist');//ajax获得列表数据
+Route::any('huawu/customer/ajax_biaoji', 'huawu\CustomerController@ajax_biaoji');//ajax标记
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //web-weixiu 维修
@@ -136,12 +145,6 @@ Route::any('weixiu/staff/ajax_alist', 'weixiu\StaffController@ajax_alist');//aja
     // piwik.com
 Route::any('weixiu/customer/ajax_alist', 'weixiu\CustomerController@ajax_alist');//ajax获得列表数据
 Route::any('weixiu/customer/ajax_biaoji', 'weixiu\CustomerController@ajax_biaoji');//ajax标记
-    // admin.com
-Route::any('admin/customer/ajax_alist', 'admin\CustomerController@ajax_alist');//ajax获得列表数据
-Route::any('admin/customer/ajax_biaoji', 'admin\CustomerController@ajax_biaoji');//ajax标记
-    //work.com
-Route::any('huawu/customer/ajax_alist', 'huawu\CustomerController@ajax_alist');//ajax获得列表数据
-Route::any('huawu/customer/ajax_biaoji', 'huawu\CustomerController@ajax_biaoji');//ajax标记
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
