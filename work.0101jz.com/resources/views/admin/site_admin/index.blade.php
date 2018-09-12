@@ -32,20 +32,6 @@
 			</tr>
 			</thead>
 			<tbody  id="data_list">
-			{{--
-			<tr>
-				<td>admin</td>
-				<td>刘达轩</td>
-				<td>超级管理员</td>
-				<td><a href="" class="btn" >修改</a>  <a href=""  class="btn btn-red">删除</a>  </td>
-			</tr>
-			<tr>
-				<td>guanli</td>
-				<td>李三级</td>
-				<td>管理员</td>
-				<td><a href="" class="btn" >修改</a>  <a href=""  class="btn btn-red">删除</a>  </td>
-			</tr>
-			--}}
 			</tbody>
 		</table>
 	</div>

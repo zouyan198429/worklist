@@ -7,9 +7,9 @@
     document.write("    <%for(var i = 0; i<data_list.length;i++){");
     document.write("    var item = data_list[i];");
     document.write("    var can_modify = true;");
-    document.write("    if( item.admin_type ==2 ){");
-    document.write("    can_modify = false;");
-    document.write("    }");
+   // document.write("    if( item.admin_type ==2 ){");
+  //  document.write("    can_modify = false;");
+  //  document.write("    }");
     document.write("    %>");
     document.write("");
     document.write("    <tr>");

@@ -45,6 +45,8 @@ class SiteAdminController extends AdminController
         }
 
         $reDataArr = array_merge($reDataArr, $resultDatas);
+
+        $reDataArr['admin_types'] = SiteAdmin::$admin_types;
         return view('admin.site_admin.add', $reDataArr);
     }
 
@@ -72,14 +74,29 @@ class SiteAdminController extends AdminController
         $this->InitParams($request);
         $id = Common::getInt($request, 'id');
         // Common::judgeEmptyParams($request, 'id', $id);
-        $company_id = $this->company_id;
-        $type_name = Common::get($request, 'type_name');
-        $sort_num = Common::getInt($request, 'sort_num');
+        $admin_type = Common::getInt($request, 'admin_type');
+        $admin_username = Common::get($request, 'admin_username');
+        $admin_password = Common::get($request, 'admin_password');
+        $sure_password = Common::get($request, 'sure_password');
+        $real_name = Common::get($request, 'real_name');
+
+        // 判断用户名是否已经存在
+        if(SiteAdmin::existUsername($request, $this, $admin_username, $id)){
+            return ajaxDataArr(0, null, '用户名已存在！');
+        }
 
         $saveData = [
-            'type_name' => $type_name,
-            'sort_num' => $sort_num,
+            'admin_type' => $admin_type,
+            'admin_username' => $admin_username,
+            'real_name' => $real_name,
         ];
+        if($admin_password != '' || $sure_password != ''){
+            if ($admin_password != $sure_password){
+                return ajaxDataArr(0, null, '密码和确定密码不一致！');
+            }
+            $saveData['admin_password'] = $admin_password;
+        }
+
 //        if($id <= 0) {// 新加;要加入的特别字段
 //            $addNewData = [
 //                // 'account_password' => $account_password,

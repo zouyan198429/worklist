@@ -14,6 +14,11 @@ class SiteAdmin extends BaseBusiness
 {
     protected static $model_name = 'SiteAdmin';
 
+    public static $admin_types = [
+       // '0' => '客服',
+        '1' => '管理员',
+        '2' => '超级管理员',
+    ];
 
     /**
      * 登录
@@ -233,5 +238,40 @@ class SiteAdmin extends BaseBusiness
         self::addOprate($request, $controller, $saveData);
         // 新加或修改
         return self::replaceByIdBase($request, $controller, self::$model_name, $saveData, $id, $notLog);
+    }
+
+    /**
+     * 判断用户名是否已经存在 true:已存在;false：不存在
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param string $username 用户
+     * @param int $id id
+     * @return  array 单条数据 - -维数组
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function existUsername(Request $request, Controller $controller, $username, $id){
+        $company_id = $controller->company_id;
+        $queryParams = [
+            'where' => [
+                ['company_id', $company_id],
+                ['admin_username',$username],
+            ],
+            // 'limit' => 1
+        ];
+        if( is_numeric($id) && $id >0){
+            array_push($queryParams['where'],['id', '<>' ,$id]);
+        }
+        $pageParams = [
+            'page' =>1,
+            'pagesize' => 1,
+            'total' => 1,
+        ];
+        $resultDatas = CommonBusiness::ajaxGetList(self::$model_name, $pageParams, $company_id,$queryParams ,'');
+        $dataList = $resultDatas['dataList'] ?? [];
+        if(empty($dataList) || count($dataList)<=0){
+            return false;
+        }
+        return true;
     }
 }
