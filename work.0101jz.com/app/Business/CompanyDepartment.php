@@ -4,6 +4,7 @@ namespace App\Business;
 
 use App\Services\Common;
 use App\Services\CommonBusiness;
+use App\Services\Tool;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as Controller;
 
@@ -14,6 +15,22 @@ class CompanyDepartment extends BaseBusiness
 {
     protected static $model_name = 'CompanyDepartment';
 
+    /**
+     * 获得列表数据--所有数据
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param int $id 当前记录id
+     * @param int $oprateBit 操作类型位 1:获得所有的; 2 分页获取[同时有1和2，2优先]；4 返回分页html翻页代码
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @return  array 列表数据[一维的键=>值数组]
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function getChildListKeyVal(Request $request, Controller $controller, $id, $oprateBit = 2 + 4, $notLog = 0){
+        $parentData = self::getChildList($request, $controller, $id, $oprateBit, $notLog);
+        $department_list = $parentData['result']['data_list'] ?? [];
+        return Tool::formatArrKeyVal($department_list, 'id', 'department_name');
+    }
     /**
      * 获得列表数据--所有数据
      *

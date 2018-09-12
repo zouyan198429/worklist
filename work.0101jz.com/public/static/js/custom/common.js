@@ -1671,6 +1671,59 @@ function get_list_checked(body_data_id,ele_type,check_type){
     return seled_ids;
 }
 
+// 下拉框选择事件[二级分类的，第一级点击，ajax更新第二级下拉框]
+// config 配置对象
+/*
+{
+        'child_sel_name': 'group_id',// 第二级下拉框的name
+        'child_sel_txt': {'': "请选择小组" },// 第二级下拉框的{值:请选择文字名称}
+        'change_ajax_url': "{{ url('api/manage/staff/ajax_get_child') }}",// 获取下级的ajax地址
+        'parent_param_name': 'parent_id',// ajax调用时传递的参数名
+        'other_params':{'aaa':123,'ccd':'dfasfs'},//其它参数
+    }
+ */
+// first_seled_val 第一级下拉框选中的值
+// group_id 第二级下拉框选中的值 [修改页面初始化时使用]
+function changeFirstSel(config, first_seled_val, second_seled_val){
+    var obj =$('select[name=' + config.child_sel_name + ']');
+    var empty_option_json = config.child_sel_txt;// {"": "请选择" + config.child_sel_txt};
+    var empty_option_html = reset_sel_option(empty_option_json);//请选择省
+    obj.empty();//清空下拉
+    obj.append(empty_option_html);
+
+    var option_html = "";
+    if(first_seled_val != "" ){ //first_seled_val >0
+        var layer_index = layer.load();//layer.msg('加载中', {icon: 16});
+        //ajax请求银行信息
+        var data = config.other_params;//{};
+        data[config.parent_param_name] = first_seled_val;
+        console.log(config.change_ajax_url);
+        console.log(data);
+        $.ajax({
+            'async': true,//false:同步;true:异步
+            'type' : 'POST',
+            'url' : config.change_ajax_url,
+            'data' : data,
+            'dataType' : 'json',
+            'success' : function(ret){
+                if(!ret.apistatus){//失败
+                    //alert('失败');
+                    err_alert(ret.errorMsg);
+                }else{//成功
+                    //alert('成功');
+                    option_html = reset_sel_option(ret.result);
+                    obj.append(option_html);
+                    console.log('加载成功');
+                    if(second_seled_val != ""){ // second_seled_val > 0
+                        obj.val(second_seled_val);
+                    }
+                }
+                layer.close(layer_index);//手动关闭
+            }
+        });
+    }
+}
+
 (function() {
     document.write("<!-- 前端模板开始 -->");
     document.write("    <!-- 加载中模板部分 开始-->");

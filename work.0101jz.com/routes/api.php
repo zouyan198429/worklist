@@ -76,6 +76,7 @@ Route::any('admin/area/ajax_save', 'admin\AreaController@ajax_save');// 新加/�
 
 // 部门
 Route::any('admin/department/ajax_alist', 'admin\DepartmentController@ajax_alist');//ajax获得列表数据
+Route::any('admin/department/ajax_get_child', 'admin\DepartmentController@ajax_get_child');// 获得子类部门数组[kv一维数组]
 Route::any('admin/department/ajax_del', 'admin\DepartmentController@ajax_del');// 删除
 Route::any('admin/department/ajax_save', 'admin\DepartmentController@ajax_save');// 新加/修改
 
@@ -109,6 +110,10 @@ Route::any('manage/ajax_password_save', 'manage\IndexController@ajax_password_sa
 //同事
 Route::any('manage/staff/ajax_alist', 'manage\StaffController@ajax_alist');//ajax获得列表数据
 Route::any('manage/staff/ajax_del', 'manage\StaffController@ajax_del');// 删除
+Route::any('manage/staff/ajax_save', 'manage\StaffController@ajax_save');// 新加/修改
+// 部门
+Route::any('manage/staff/ajax_get_child', 'manage\DepartmentController@ajax_get_child');// 获得子类部门数组[kv一维数组]
+
 //反馈问题 （liuxin）
 Route::any('manage/problem/ajax_alist', 'manage\ProblemController@ajax_alist');//ajax获得反馈问题的列表数据
 
