@@ -11,6 +11,6 @@
     {{--<script src="{{asset('staticmobile/js/app.js')}}"></script>--}}
     {{-- 本页单独head使用 --}}
     @stack('headscripts')
-    @include('app.layout_public.piwik')
+    @include('mobile.layout_public.piwik')
 
 </head>
