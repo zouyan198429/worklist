@@ -46,10 +46,7 @@ class DepartmentController extends AdminController
         }
         $reDataArr = array_merge($reDataArr, $resultDatas);
 
-
-        // 获得第一级分类
-        $parentData = CompanyDepartment::getChildList($request, $this, 0, 1 + 0);
-        $reDataArr['parent_list'] = $parentData['result']['data_list'] ?? [];
+        $reDataArr['department_kv'] = CompanyDepartment::getChildListKeyVal($request, $this, 0, 1 + 0);
 
         return view('admin.department.add', $reDataArr);
     }

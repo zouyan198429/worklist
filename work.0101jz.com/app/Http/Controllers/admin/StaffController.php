@@ -20,31 +20,11 @@ class StaffController extends AdminController
     {
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
-        // 获得第一级分类
-        $parentData = CompanyDepartment::getChildList($request, $this, 0, 1 + 0);
-        $reDataArr['parent_list'] = $parentData['result']['data_list'] ?? [];
-
+        // 获得第一级部门分类一维数组[$k=>$v]
+        $reDataArr['department_kv'] = CompanyDepartment::getChildListKeyVal($request, $this, 0, 1 + 0);
         return view('admin.staff.index', $reDataArr);
     }
 
-
-    /**
-     * 列表
-     *
-     * @param Request $request
-     * @return mixed
-     * @author zouyan(305463219@qq.com)
-     */
-    public function list(Request $request)
-    {
-        $this->InitParams($request);
-        $reDataArr = $this->reDataArr;
-
-        // 获得第一级分类
-        $parentData = CompanyDepartment::getChildList($request, $this, 0, 1 + 0);
-        $reDataArr['parent_list'] = $parentData['result']['data_list'] ?? [];
-        return view('manage.staff.list', $reDataArr);
-    }
 
     /**
      * 添加
@@ -75,7 +55,7 @@ class StaffController extends AdminController
 //        $remarks = $resultDatas['remarks'] ?? '';
 //        $resultDatas['remarks'] = replace_enter_char($remarks,2);
 
-        return view('manage.staff.add', $reDataArr);
+        return view('admin.staff.add', $reDataArr);
     }
 
 

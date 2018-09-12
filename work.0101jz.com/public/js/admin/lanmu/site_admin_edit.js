@@ -40,7 +40,7 @@ function ajax_form(){
 
     var admin_password = $('input[name=admin_password]').val();
     var sure_password = $('input[name=sure_password]').val();
-    if(true || admin_password != '' || sure_password != ''){
+    if(id <= 0 || admin_password != '' || sure_password != ''){
 
         // var admin_password = $('input[name=admin_password]').val();
         if(!judge_validate(4,'密码',admin_password,true,'length',6,20)){

@@ -220,6 +220,22 @@ class SiteAdmin extends BaseBusiness
      */
     public static function replaceById(Request $request, Controller $controller, $saveData, &$id, $notLog = 0){
         $company_id = $controller->company_id;
+
+        $admin_username = $saveData['admin_username'] ?? '';
+        // 新加时
+        if( $id <= 0 &&  empty($admin_username)){
+            throws('用户名不能为空！');
+        }
+
+        if(isset($saveData['admin_username']) && empty($saveData['admin_username'])  ){
+            throws('用户名不能为空！');
+        }
+
+        // 判断用户名是否已经存在
+        if(isset($saveData['admin_username']) && self::existUsername($request, $controller, $saveData['admin_username'], $id)){
+            // return ajaxDataArr(0, null, '用户名已存在！');
+            throws('用户名已存在！');
+        }
         if($id > 0){
             // 判断权限
             $judgeData = [

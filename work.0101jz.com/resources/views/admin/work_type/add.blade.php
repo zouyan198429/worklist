@@ -17,8 +17,8 @@
 					<select class="wnormal" name="type_parent_id">
 						<option value="">请选择分类</option>
 						<option value="0"  @if ( 0 == $type_parent_id ) selected @endif>父级分类</option>
-						@foreach ($parent_list as $item)
-							<option value="{{ $item['id'] }}"  @if ( $item['id'] == $type_parent_id ) selected @endif>{{ $item['type_name'] }}</option>
+						@foreach ($work_type_kv as $k=>$txt)
+							<option value="{{ $k }}"  @if(isset($type_parent_id) && $type_parent_id == $k) selected @endif >{{ $txt }}</option>
 						@endforeach
 					</select>
 				</td>

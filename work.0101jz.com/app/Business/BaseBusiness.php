@@ -54,6 +54,7 @@ class BaseBusiness
         ];// 查询条件参数
         $relations = ['CompanyInfo'];// 关系
         */
+        $result = [];
         if(  ($oprateBit & 2) == 2 ){ //2 分页获取[同时有1和2，2优先]；
             $result = CommonBusiness::ajaxGetList($model_name, $pageParams, $company_id,$queryParams ,$relations, $notLog);
         }else if(  ($oprateBit & 1) == 1 ){ //1:获得所有的;

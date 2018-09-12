@@ -25,11 +25,64 @@ function ajax_form(){
         return false;
     }
 
-    var admin_type = $('select[name=admin_type]').val();
-    var judge_seled = judge_validate(1,'职位/角色',admin_type,true,'digit','','');
+
+
+
+    var work_num = $('input[name=work_num]').val();
+    if(!judge_validate(4,'工号',work_num,true,'length',1,30)){
+        return false;
+    }
+
+    var department_id = $('select[name=department_id]').val();
+    var judge_seled = judge_validate(1,'部门',department_id,true,'digit','','');
     if(judge_seled != ''){
-        layer_alert("请选择职位/角色",3,0);
+        layer_alert("请选择部门",3,0);
         //err_alert('<font color="#000000">' + judge_seled + '</font>');
+        return false;
+    }
+
+    var group_id = $('select[name=group_id]').val();
+    var judge_seled = judge_validate(1,'部门',group_id,true,'digit','','');
+    if(judge_seled != ''){
+        layer_alert("请选择班组",3,0);
+        //err_alert('<font color="#000000">' + judge_seled + '</font>');
+        return false;
+    }
+
+    var position_id = $('select[name=position_id]').val();
+    var judge_seled = judge_validate(1,'职务',position_id,true,'digit','','');
+    if(judge_seled != ''){
+        layer_alert("请选择职务",3,0);
+        //err_alert('<font color="#000000">' + judge_seled + '</font>');
+        return false;
+    }
+
+    var real_name = $('input[name=real_name]').val();
+    if(!judge_validate(4,'姓名',real_name,true,'length',1,20)){
+        return false;
+    }
+
+    var sex = $('input[name=sex]:checked').val() || '';
+    var judge_seled = judge_validate(1,'性别',sex,true,'custom',/^[12]$/,"");
+    if(judge_seled != ''){
+        layer_alert("请选择性别",3,0);
+        //err_alert('<font color="#000000">' + judge_seled + '</font>');
+        return false;
+    }
+
+    var mobile = $('input[name=mobile]').val();
+    if(!judge_validate(4,'手机',mobile,true,'mobile','','')){
+        return false;
+    }
+
+    var tel = $('input[name=tel]').val();
+    if(!judge_validate(4,'座机电话',tel,false,'length',1,20)){
+        return false;
+    }
+
+
+    var qq_number = $('input[name=qq_number]').val();
+    if(!judge_validate(4,'QQ',qq_number,false,'length',1,20)){
         return false;
     }
 
@@ -37,10 +90,9 @@ function ajax_form(){
     if(!judge_validate(4,'用户名',admin_username,true,'length',6,20)){
         return false;
     }
-
     var admin_password = $('input[name=admin_password]').val();
     var sure_password = $('input[name=sure_password]').val();
-    if(true || admin_password != '' || sure_password != ''){
+    if( id<=0 || admin_password != '' || sure_password != ''){
 
         // var admin_password = $('input[name=admin_password]').val();
         if(!judge_validate(4,'密码',admin_password,true,'length',6,20)){
@@ -55,11 +107,6 @@ function ajax_form(){
             layer_alert('确认密码和密码不一致！',5,0);
             return false;
         }
-    }
-
-    var real_name = $('input[name=real_name]').val();
-    if(!judge_validate(4,'真实姓名',real_name,false,'length',1,20)){
-        return false;
     }
 
 

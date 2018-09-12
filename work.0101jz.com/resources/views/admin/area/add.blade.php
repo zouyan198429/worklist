@@ -17,8 +17,8 @@
 					<select class="wnormal" name="area_parent_id">
 						<option value="">请选择区县</option>
 						<option value="0"  @if ( 0 == $area_parent_id ) selected @endif>父级区县</option>
-						@foreach ($parent_list as $item)
-							<option value="{{ $item['id'] }}"  @if ( $item['id'] == $area_parent_id ) selected @endif>{{ $item['area_name'] }}</option>
+						@foreach ($area_kv as $k=>$txt)
+							<option value="{{ $k }}"  @if(isset($area_parent_id) && $area_parent_id == $k) selected @endif >{{ $txt }}</option>
 						@endforeach
 					</select>
 				</td>

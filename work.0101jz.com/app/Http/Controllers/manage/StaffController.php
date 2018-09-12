@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\manage;
 
 use App\Business\CompanyDepartment;
+use App\Business\CompanyPosition;
 use App\Business\CompanyStaff;
 use App\Http\Controllers\AdminController;
+use App\Services\Common;
 use Illuminate\Http\Request;
 
 class StaffController extends AdminController
@@ -20,9 +22,8 @@ class StaffController extends AdminController
     {
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
-        // 获得第一级分类
-        $parentData = CompanyDepartment::getChildList($request, $this, 0, 1 + 0);
-        $reDataArr['parent_list'] = $parentData['result']['data_list'] ?? [];
+        // 获得第一级部门分类一维数组[$k=>$v]
+        $reDataArr['department_kv'] = CompanyDepartment::getChildListKeyVal($request, $this, 0, 1 + 0);
 
         return view('manage.staff.index', $reDataArr);
     }
@@ -38,10 +39,8 @@ class StaffController extends AdminController
     {
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
-
-        // 获得第一级分类
-        $parentData = CompanyDepartment::getChildList($request, $this, 0, 1 + 0);
-        $reDataArr['parent_list'] = $parentData['result']['data_list'] ?? [];
+        // 获得第一级部门分类一维数组[$k=>$v]
+        $reDataArr['department_kv'] = CompanyDepartment::getChildListKeyVal($request, $this, 0, 1 + 0);
         return view('manage.staff.list', $reDataArr);
     }
 
@@ -69,6 +68,8 @@ class StaffController extends AdminController
 
         // 获得第一级部门分类一维数组[$k=>$v]
         $reDataArr['department_kv'] = CompanyDepartment::getChildListKeyVal($request, $this, 0, 1 + 0);
+        // 获得第一级职位分类一维数组[$k=>$v]
+        $reDataArr['position_kv'] = CompanyPosition::getListKeyVal($request, $this, 1 + 0);
         return view('manage.staff.add', $reDataArr);
     }
 
@@ -110,21 +111,30 @@ class StaffController extends AdminController
         $this->InitParams($request);
         $id = Common::getInt($request, 'id');
         // Common::judgeEmptyParams($request, 'id', $id);
-        $admin_type = Common::getInt($request, 'admin_type');
+        $work_num = Common::get($request, 'work_num');
+        $department_id = Common::getInt($request, 'department_id');
+        $group_id = Common::getInt($request, 'group_id');
+        $position_id = Common::getInt($request, 'position_id');
+        $real_name = Common::get($request, 'real_name');
+        $sex = Common::getInt($request, 'sex');
+        $mobile = Common::get($request, 'mobile');
+        $tel = Common::get($request, 'tel');
+        $qq_number = Common::get($request, 'qq_number');
         $admin_username = Common::get($request, 'admin_username');
         $admin_password = Common::get($request, 'admin_password');
         $sure_password = Common::get($request, 'sure_password');
-        $real_name = Common::get($request, 'real_name');
-
-        // 判断用户名是否已经存在
-        if(SiteAdmin::existUsername($request, $this, $admin_username, $id)){
-            return ajaxDataArr(0, null, '用户名已存在！');
-        }
 
         $saveData = [
-            'admin_type' => $admin_type,
-            'admin_username' => $admin_username,
+            'work_num' => $work_num,
+            'department_id' => $department_id,
+            'group_id' => $group_id,
+            'position_id' => $position_id,
             'real_name' => $real_name,
+            'sex' => $sex,
+            'mobile' => $mobile,
+            'tel' => $tel,
+            'qq_number' => $qq_number,
+            'admin_username' => $admin_username,
         ];
         if($admin_password != '' || $sure_password != ''){
             if ($admin_password != $sure_password){
@@ -140,7 +150,7 @@ class StaffController extends AdminController
 //            $saveData = array_merge($saveData, $addNewData);
 //        }
 
-        $resultDatas = SiteAdmin::replaceById($request, $this, $saveData, $id);
+        $resultDatas = CompanyStaff::replaceById($request, $this, $saveData, $id);
         return ajaxDataArr(1, $resultDatas, '');
     }
 

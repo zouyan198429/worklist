@@ -18,7 +18,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th>部门/班组</th>
+				<th>部门/班组<span class="must">*</span></th>
 				<td>
 
 					<select class="wnormal" name="department_id">
@@ -28,18 +28,18 @@
 						@endforeach
 					</select>
 					<select class="wnormal" name="group_id">
-						<option value="">请选择</option>
+						<option value="">请选择班组</option>
 					</select>
 				</td>
 			</tr>
 			<tr>
-				<th>职务</th>
+				<th>职务<span class="must">*</span></th>
 				<td>
-					<select class="wnormal">
-						<option value="a01">部门</option>
-						<option value="a02">宽带业务</option>
-						<option value="a03">手机业务</option>
-						<option value="a04">其他</option>
+					<select class="wnormal" name="position_id">
+						<option value="">请选择职务</option>
+						@foreach ($position_kv as $k=>$txt)
+							<option value="{{ $k }}"  @if(isset($position_id) && $position_id == $k) selected @endif >{{ $txt }}</option>
+						@endforeach
 					</select>
 				</td>
 			</tr>
@@ -50,10 +50,16 @@
 				</td>
 			</tr>
 			<tr>
-				<th>性别</th>
+				<th>性别<span class="must">*</span></th>
 				<td>
-					<input type="radio" name="sex" value="1" @if (isset($real_name) && $real_name == 1 ) checked @endif>男&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="radio" name="sex" value="2" @if (isset($real_name) && $real_name == 2 ) checked @endif>女
+					<input type="radio" name="sex" value="1" @if (isset($sex) && $sex == 1 ) checked @endif>男&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="radio" name="sex" value="2" @if (isset($sex) && $sex == 2 ) checked @endif>女
+				</td>
+			</tr>
+			<tr>
+				<th>手机<span class="must">*</span></th>
+				<td>
+					<input type="number" class="inp wnormal"  name="mobile" value="{{ $mobile or '' }}" placeholder="请输入手机" autofocus  required />
 				</td>
 			</tr>
 			<tr>
@@ -63,15 +69,27 @@
 				</td>
 			</tr>
 			<tr>
-				<th>手机</th>
-				<td>
-					<input type="number" class="inp wnormal"  name="mobile" value="{{ $mobile or '' }}" placeholder="请输入手机" autofocus  required />
-				</td>
-			</tr>
-			<tr>
 				<th>QQ</th>
 				<td>
 					<input type="number" class="inp wnormal"  name="qq_number" value="{{ $qq_number or '' }}" placeholder="请输入QQ" autofocus  required />
+				</td>
+			</tr>
+			<tr>
+				<th>用户名<span class="must">*</span></th>
+				<td>
+					<input type="text" class="inp wnormal"  name="admin_username" value="{{ $admin_username or '' }}" placeholder="用户名"  autofocus  required />
+				</td>
+			</tr>
+			<tr>
+				<th>登录密码<span class="must">*</span></th>
+				<td>
+					<input type="password"  class="inp wnormal"   name="admin_password" placeholder="登录密码" autofocus  required />修改时，可为空，不修改密码。
+				</td>
+			</tr>
+			<tr>
+				<th>确认密码<span class="must">*</span></th>
+				<td>
+					<input type="password" class="inp wnormal"     name="sure_password"  placeholder="确认密码" autofocus  required />修改时，可为空，不修改密码。
 				</td>
 			</tr>
 			<tr>
@@ -90,12 +108,12 @@
 @push('footlast')
 
 	<script type="text/javascript">
-        const SAVE_URL = "{{ url('api/manage/stall/ajax_save') }}";// ajax保存记录地址
-        const LIST_URL = "{{url('manage/stall/list')}}";//保存成功后跳转到的地址
+        const SAVE_URL = "{{ url('api/manage/staff/ajax_save') }}";// ajax保存记录地址
+        const LIST_URL = "{{url('manage/staff/list')}}";//保存成功后跳转到的地址
 		const REL_CHANGE = {
 		    'department':{
 		        'child_sel_name': 'group_id',// 第二级下拉框的name
-                'child_sel_txt': {'': "请选择小组" },// 第二级下拉框的{值:请选择文字名称}
+                'child_sel_txt': {'': "请选择班组" },// 第二级下拉框的{值:请选择文字名称}
                 'change_ajax_url': "{{ url('api/manage/staff/ajax_get_child') }}",// 获取下级的ajax地址
 				'parent_param_name': 'parent_id',// ajax调用时传递的参数名
 				'other_params':{},//其它参数 {'aaa':123,'ccd':'dfasfs'}

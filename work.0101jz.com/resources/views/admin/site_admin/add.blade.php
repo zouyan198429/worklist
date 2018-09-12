@@ -31,13 +31,13 @@
 			<tr>
 				<th>登录密码<span class="must">*</span></th>
 				<td>
-					<input type="password"  class="inp wnormal"   name="admin_password" placeholder="登录密码" autofocus  required />
+					<input type="password"  class="inp wnormal"   name="admin_password" placeholder="登录密码" autofocus  required />修改时，可为空，不修改密码。
 				</td>
 			</tr>
 			<tr>
 				<th>确认密码<span class="must">*</span></th>
 				<td>
-					<input type="password" class="inp wnormal"     name="sure_password"  placeholder="确认密码" autofocus  required />
+					<input type="password" class="inp wnormal"     name="sure_password"  placeholder="确认密码" autofocus  required />修改时，可为空，不修改密码。
 				</td>
 			</tr>
 			<tr>

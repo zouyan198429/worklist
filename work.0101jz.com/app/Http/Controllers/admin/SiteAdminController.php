@@ -80,11 +80,6 @@ class SiteAdminController extends AdminController
         $sure_password = Common::get($request, 'sure_password');
         $real_name = Common::get($request, 'real_name');
 
-        // 判断用户名是否已经存在
-        if(SiteAdmin::existUsername($request, $this, $admin_username, $id)){
-            return ajaxDataArr(0, null, '用户名已存在！');
-        }
-
         $saveData = [
             'admin_type' => $admin_type,
             'admin_username' => $admin_username,
