@@ -48,10 +48,8 @@ class WorkTypeController extends AdminController
 
         $reDataArr = array_merge($reDataArr, $resultDatas);
 
-        // 获得第一级分类
-        $parentData = CompanyWorkType::getChildList($request, $this, 0, 1 + 0);
-        $reDataArr['parent_list'] = $parentData['result']['data_list'] ?? [];
-
+        // 获得第一级部门分类一维数组[$k=>$v]
+        $reDataArr['work_type_kv'] = CompanyWorkType::getChildListKeyVal($request, $this, 0, 1 + 0);
         return view('admin.work_type.add', $reDataArr);
     }
 

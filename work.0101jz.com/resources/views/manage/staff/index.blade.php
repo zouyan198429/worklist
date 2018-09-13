@@ -15,8 +15,8 @@
 			<div class="tabbox" >
 				<select class="wnormal" name="department_id">
 					<option value="">全部</option>
-					@foreach ($parent_list as $item)
-						<option value="{{ $item['id'] }}"  >{{ $item['department_name'] }}</option>
+					@foreach ($department_kv as $k=>$txt)
+						<option value="{{ $k }}"  @if(isset($department_id) && $department_id == $k) selected @endif >{{ $txt }}</option>
 					@endforeach
 				</select>
 			</div>

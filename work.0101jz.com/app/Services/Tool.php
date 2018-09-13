@@ -474,6 +474,49 @@ class Tool
 
     // 资源操作
 
+    // 数组操作
 
+    /**
+     * 返回以原数组某个值为下标的新数组
+     *
+     * @param array $array
+     * @param string $key
+     * @param int $type 1一维数组2二维数组
+     * @return array
+     */
+    public static function arrUnderReset($array, $key, $type=1){
+        if (is_array($array)){
+            $tmp = [];
+            foreach ($array as $v) {
+                if ($type === 1){
+                    $tmp[$v[$key]] = $v;
+                }elseif($type === 2){
+                    $tmp[$v[$key]][] = $v;
+                }
+            }
+            return $tmp;
+        }else{
+            return $array;
+        }
+    }
+
+
+    /**
+     * 二维数组指定下标的值为下标,指定下标的值为值，的一维数组
+     *
+     * @param array $array 二维数组
+     * @param string $uboundkey 值做为新数组的键的下标
+     * @param string $uboundValKey 值做为新数组的键的下标
+     * @return array 一维数组
+     */
+    public static function formatArrKeyVal($array, $keyUbound, $valUbound){
+        $reArr = [];
+        if (! is_array($array)) return $reArr;
+        foreach ($array as $v) {
+            if( !isset($v[$keyUbound]) || !isset($v[$valUbound])) continue;
+            $reArr[$v[$keyUbound]] = $v[$valUbound];
+        };
+        return $reArr;
+    }
 
 }

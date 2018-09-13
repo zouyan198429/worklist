@@ -13,6 +13,7 @@ class CompanyLore extends BaseBusiness
 {
     protected static $model_name = 'CompanyLore';
 
+
     /**
      * 获得列表数据--所有数据
      *

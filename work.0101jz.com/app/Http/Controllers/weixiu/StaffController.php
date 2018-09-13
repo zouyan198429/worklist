@@ -20,9 +20,8 @@ class StaffController extends WorksController
     {
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
-        // 获得第一级分类
-        $parentData = CompanyDepartment::getChildList($request, $this, 0, 1 + 0);
-        $reDataArr['parent_list'] = $parentData['result']['data_list'] ?? [];
+        // 获得第一级部门分类一维数组[$k=>$v]
+        $reDataArr['department_kv'] = CompanyDepartment::getChildListKeyVal($request, $this, 0, 1 + 0);
         return view('weixiu.staff.index', $reDataArr);
     }
 

@@ -6,10 +6,10 @@
     document.write("");
     document.write("        <%for(var i = 0; i<data_list.length;i++){");
     document.write("        var item = data_list[i];");
-    document.write("        var can_modify = false;");
-    document.write("        if( item.issuper==0 ){");
+    //document.write("        var can_modify = false;");
+   // document.write("        if( item.issuper==0 ){");
     document.write("        can_modify = true;");
-    document.write("        }");
+    //document.write("        }");
     document.write("        %>");
     document.write("");
     document.write("        <tr>");

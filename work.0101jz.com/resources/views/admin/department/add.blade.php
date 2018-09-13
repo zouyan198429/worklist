@@ -17,8 +17,8 @@
 					<select class="wnormal" name="department_parent_id">
 						<option value="">请选择部门</option>
 						<option value="0"  @if ( 0 == $department_parent_id ) selected @endif>父级部门</option>
-						@foreach ($parent_list as $item)
-							<option value="{{ $item['id'] }}"  @if ( $item['id'] == $department_parent_id ) selected @endif>{{ $item['department_name'] }}</option>
+						@foreach ($department_kv as $k=>$txt)
+							<option value="{{ $k }}"  @if(isset($department_parent_id) && $department_parent_id == $k) selected @endif >{{ $txt }}</option>
 						@endforeach
 					</select>
 				</td>

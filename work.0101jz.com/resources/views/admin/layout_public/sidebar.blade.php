@@ -41,6 +41,7 @@
             <li><div class="link"><i class="fa fa-globe"></i>系统设置<i class="fa fa-chevron-down"></i></div>
                 <ul class="submenu">
                     <li><a href="{{ url('admin/department') }}">部门管理</a></li>
+                    <li><a href="{{ url('admin/position') }}">职位</a></li>
                     <li><a href="{{ url('admin/customer_type') }}">客户分类</a></li>
                     <li><a href="{{ url('admin/work_caller_type') }}">来电分类</a></li>
                     <li><a href="{{ url('admin/work_type') }}">工单分类</a></li>
