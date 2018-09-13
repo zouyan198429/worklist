@@ -82,7 +82,8 @@ class CompanyWorkController extends CompController
                     ['company_id', '=', $company_id],
                 ])
                 ->get()->toArray();
-            $listData['serviceTimeList'] = $serviceTimeList;// Tool::formatArrKeyVal($serviceTimeList, 'id', 'time_name');
+            $listData['serviceTimeList'] = Tool::formatArrKeyVal($serviceTimeList, 'id', 'time_name');
+            $listData['serviceTimeMinList'] = Tool::formatArrKeyVal($serviceTimeList, 'id', 'second_num');
         }
 
         // 客户类型 16
@@ -133,7 +134,6 @@ class CompanyWorkController extends CompController
         if( ($this->cache_sel & 2) == 2) {
             $this->setCacheData($cachePre, $cacheKey, $resultData, 60, 1);
         }
-
         return $resultData;
     }
 }

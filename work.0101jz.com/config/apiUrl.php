@@ -18,6 +18,6 @@ return [
             'detachApi' => 'comp/detach',//移除关系
         ],
         'apiPath' => [
-
+            'workAddInit' => 'work/add_init',// 工单添加页初始数据
         ],
     ];

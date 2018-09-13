@@ -52,8 +52,8 @@
 			<tr>
 				<th>性别<span class="must">*</span></th>
 				<td>
-					<input type="radio" name="sex" value="1" @if (isset($sex) && $sex == 1 ) checked @endif>男&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="radio" name="sex" value="2" @if (isset($sex) && $sex == 2 ) checked @endif>女
+					<label><input type="radio" name="sex" value="1" @if (isset($sex) && $sex == 1 ) checked @endif>男</label>&nbsp;&nbsp;&nbsp;&nbsp;
+					<label><input type="radio" name="sex" value="2" @if (isset($sex) && $sex == 2 ) checked @endif>女</label>
 				</td>
 			</tr>
 			<tr>
@@ -122,11 +122,11 @@
         $(function(){
             //当前部门小组
 			@if ($department_id >0 )
-              changeFirstSel(REL_CHANGE.department,"{{ $department_id or 0}}","{{ $group_id or 0 }}");
+              changeFirstSel(REL_CHANGE.department,"{{ $department_id or 0}}","{{ $group_id or 0 }}", true);
 			@endif
             //部门值变动
             $(document).on("change",'select[name=department_id]',function(){
-                changeFirstSel(REL_CHANGE.department, $(this).val(), 0);
+                changeFirstSel(REL_CHANGE.department, $(this).val(), 0, true);
                 return false;
             });
         });

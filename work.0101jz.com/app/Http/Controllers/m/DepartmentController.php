@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\manage;
+namespace App\Http\Controllers\m;
 
 use App\Business\CompanyDepartment;
 use App\Http\Controllers\WorksController;

@@ -91,8 +91,8 @@ class WorkController extends WorksController
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
         // 初始化数据
-        CompanyWork::addInitData( $request, $this);
-
+        $arrList = CompanyWork::addInitData( $request, $this);
+        $reDataArr = array_merge($reDataArr, $arrList);
         return view('huawu.work.add', $reDataArr);
     }
 
