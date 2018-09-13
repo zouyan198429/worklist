@@ -108,13 +108,13 @@
 @push('footlast')
 
 	<script type="text/javascript">
-        const SAVE_URL = "{{ url('api/manage/staff/ajax_save') }}";// ajax保存记录地址
-        const LIST_URL = "{{url('manage/staff/list')}}";//保存成功后跳转到的地址
+        const SAVE_URL = "{{ url('api/admin/staff/ajax_save') }}";// ajax保存记录地址
+        const LIST_URL = "{{url('admin/staff')}}";//保存成功后跳转到的地址
 		const REL_CHANGE = {
 		    'department':{
 		        'child_sel_name': 'group_id',// 第二级下拉框的name
                 'child_sel_txt': {'': "请选择班组" },// 第二级下拉框的{值:请选择文字名称}
-                'change_ajax_url': "{{ url('api/manage/department/ajax_get_child') }}",// 获取下级的ajax地址
+                'change_ajax_url': "{{ url('api/admin/department/ajax_get_child') }}",// 获取下级的ajax地址
 				'parent_param_name': 'parent_id',// ajax调用时传递的参数名
 				'other_params':{},//其它参数 {'aaa':123,'ccd':'dfasfs'}
 			}
@@ -131,5 +131,5 @@
             });
         });
 	</script>
-	<script src="{{ asset('/js/manage/lanmu/stall_edit.js') }}"  type="text/javascript"></script>
+	<script src="{{ asset('/js/admin/lanmu/stall_edit.js') }}"  type="text/javascript"></script>
 @endpush
