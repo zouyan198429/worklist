@@ -337,12 +337,15 @@ class Tool
      * 获得key的redis值
      * @param string $key 键
      * @param int 选填 $operate 操作 1 转为json 2 序列化
-     * @return $value
+     * @return $value ; false失败
      * @author zouyan(305463219@qq.com)
      */
     public static function getRedis($key, $operate = 1)
     {
         $value = Redis::get($key);
+        if(is_bool($value) || is_null($value)){//string或BOOL 如果键不存在，则返回 FALSE。否则，返回指定键对应的value值。
+            return false;
+        }
         switch($operate){
             case 1:
                 if (!self::isNotJson($value)) {
@@ -472,8 +475,6 @@ class Tool
         return self::delRedis($redisKey); // 删除redis中的值
     }
 
-    // 资源操作
-
     // 数组操作
 
     /**
@@ -518,5 +519,54 @@ class Tool
         };
         return $reArr;
     }
+
+    /**
+     * 获得当前的路由和方法
+     *
+     * @return string 当前的路由和方法  App\Http\Controllers\CompanyWorkController@addInit
+     */
+    public static function getActionMethod(){
+        return \Route::current()->getActionName();
+    }
+
+    /**
+     * 获得缓存数据
+     * @param string $pre 键前缀 __FUNCTION__
+     * @param string $cacheKey 键
+     * @param array $paramKeyValArr 会作为键的关键参数值数组 --一维数组
+     * @param int 选填 $operate 操作 1 转为json 2 序列化 ;
+     * @return mixed ;; false失败
+     */
+    public static function getCacheData($pre, &$cacheKey, $paramKeyValArr, $operate){
+        $actionMethod = self::getActionMethod();// 当前控制器方法名
+        array_push($paramKeyValArr, $pre);
+        array_push($paramKeyValArr, $actionMethod);
+        $temArr = [];
+        foreach ( $paramKeyValArr as $k => $v) {
+            if(! is_string($v) && ! is_numeric($v)){
+                $v = serialize($v);
+            }
+            array_push($temArr, $k . '$@' . $v);
+        }
+        $cacheKey = md5(implode("#!%", $temArr));
+        return self::getRedis($pre .$cacheKey, $operate);
+    }
+
+    /**
+     * 保存redis值-json/序列化保存
+     * @param string 必填 $pre 前缀
+     * @param string $key 键 null 自动生成
+     * @param string 选填 $value 需要保存的值，如果是对象或数组，则序列化
+     * @param int 选填 $expire 有效期 秒 <=0 长期有效
+     * @param int 选填 $operate 操作 1 转为json 2 序列化
+     * @return string $key [含前缀]
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function cacheData($pre = '', $key = null, $value = '', $expire = 0, $operate = 1)
+    {
+        // 缓存数据
+        return self::setRedis($pre, $key, $value, $expire , $operate); // 1天
+    }
+
 
 }

@@ -123,4 +123,19 @@ class CompanyWork extends BaseBusiness
         // 新加或修改
         return self::replaceByIdBase($request, $controller, self::$model_name, $saveData, $id, $notLog);
     }
+
+    /**
+     * 添加页面初始化要填充的数据
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @return  array 列表数据
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function addInitData(Request $request, Controller $controller)
+    {
+        // return self::delAjaxBase($request, $controller, self::$model_name);
+
+    }
+
 }
