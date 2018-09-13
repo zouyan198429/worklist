@@ -66,28 +66,57 @@ function ajax_form(){
     });
     return false;
 }
-
-
+/*
+* 通过用户选择的一级问题类型的id获取二级问题类型的值
+* 2018.9.13 liuxin
+* */
 function getTwoType() {
-    var parent_id = $("select[name=parent]").val();
+    var parent_id = $("select[name=work_type_id]").val();
     $.ajax({
         'type' : 'POST',
-        'url' : url,
+        'url' : TYPE_URL,
         'data' : {'id':parent_id},
         'dataType' : 'json',
         'success' : function(ret){
+            var option = '<option value="">请选择</option>';
             if (ret){
-               var length = ret.length;
-            var option = '';
+            var length = ret.length;
             for(var i = 0; i<length;i++) {
                 var item = ret[i];
                 option  += "<option value='"+item['id']+"'>"+item['type_name']+"</option>"
             }
-            $('select[name=twoparent]').html(option);
             }else{
                 err_alert('该分类没有二级分类');
             }
-
+            $('select[name=business_id]').empty();
+            $('select[name=business_id]').append(option);
+        }
+    })
+}
+/*
+ * 通过用户选择的一级地址的id获取二级地址的值
+ * 2018.9.13 liuxin
+ * */
+function getAreaArr() {
+    var parent_id = $("select[name=city_id]").val();
+    $.ajax({
+        'type' : 'POST',
+        'url' : ADDRESS_URL,
+        'data' : {'id':parent_id},
+        'dataType' : 'json',
+        'success' : function(ret){
+            var option = '<option value="">请选择</option>';
+            if (ret){
+                var length = ret.length;
+                for(var i = 0; i<length;i++) {
+                    var item = ret[i];
+                    option  += "<option value='"+item['id']+"'>"+item['area_name']+"</option>"
+                }
+            }else{
+                err_alert('该分类没有二级分类');
+            }
+            $('select[name=area_id]').empty();
+            $('select[name=area_id]').append(option);
         }
     })
 }
