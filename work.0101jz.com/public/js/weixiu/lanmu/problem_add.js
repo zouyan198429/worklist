@@ -20,26 +20,41 @@ function ajax_form(){
     if (!SUBMIT_FORM) return false;//false，则返回
 
     // 验证信息
-    var id = $('input[name=id]').val();
-    if(!judge_validate(4,'记录id',id,true,'digit','','')){
+    var work_type_id = $('select[name=work_type_id]').val();
+    if(!judge_validate(4,'问题类型一級',work_type_id,true,'positive_int','','')){
         return false;
     }
 
-    var type_name = $('input[name=type_name]').val();
-    if(!judge_validate(4,'名称',type_name,true,'length',2,40)){
+    // 验证信息
+    var business_id = $('select[name=business_id]').val();
+    if(!judge_validate(4,'问题类型二級',business_id,true,'positive_int','','')){
+        return false;
+    }
+    var content = $('textarea[name=content]').val();
+    if(!judge_validate(4,'反馈内容',content,true,'length',2,998)){
         return false;
     }
 
-    var sort_num = $('input[name=sort_num]').val();
-    if(!judge_validate(4,'排序',sort_num,false,'digit','','')){
+    var call_number = $('input[name=call_number]').val();
+    if(!judge_validate(4,'客戶电话',call_number,true,'mobile','','')){
         return false;
     }
 
+    var city_id = $('select[name=city_id]').val();
+    if(!judge_validate(4,'客户地址一级',city_id,true,'positive_int','','')){
+        return false;
+    }
+    var area_id = $('select[name=area_id]').val();
+    if(!judge_validate(4,'客户地址二级',area_id,true,'positive_int','','')){
+        return false;
+    }
+    var address = $('input[name=address]').val();
+    if(!judge_validate(4,'客户地址详情',address,true,'length',2,46)){
+        return false;
+    }
     // 验证通过
     SUBMIT_FORM = false;//标记为已经提交过
     var data = $("#addForm").serialize();
-    console.log(SAVE_URL);
-    console.log(data);
     var layer_index = layer.load();
     $.ajax({
         'type' : 'POST',
@@ -48,12 +63,13 @@ function ajax_form(){
         'dataType' : 'json',
         'success' : function(ret){
             console.log(ret);
-            if(!ret.apistatus){//失败
+            if(ret.status == 'error'){//失败
                 SUBMIT_FORM = true;//标记为未提交过
                 //alert('失败');
-                err_alert(ret.errorMsg);
+                err_alert(ret.msg);
             }else{//成功
-                go(LIST_URL);
+                err_alert(ret.msg);
+                go(GO_URL);
                 // var supplier_id = ret.result['supplier_id'];
                 //if(SUPPLIER_ID_VAL <= 0 && judge_integerpositive(supplier_id)){
                 //    SUPPLIER_ID_VAL = supplier_id;
@@ -72,6 +88,7 @@ function ajax_form(){
 * */
 function getTwoType() {
     var parent_id = $("select[name=work_type_id]").val();
+    var layer_index = layer.load();
     $.ajax({
         'type' : 'POST',
         'url' : TYPE_URL,
@@ -90,6 +107,8 @@ function getTwoType() {
             }
             $('select[name=business_id]').empty();
             $('select[name=business_id]').append(option);
+            layer.close(layer_index)//手动关闭
+
         }
     })
 }
@@ -99,6 +118,7 @@ function getTwoType() {
  * */
 function getAreaArr() {
     var parent_id = $("select[name=city_id]").val();
+    var layer_index = layer.load();
     $.ajax({
         'type' : 'POST',
         'url' : ADDRESS_URL,
@@ -117,6 +137,8 @@ function getAreaArr() {
             }
             $('select[name=area_id]').empty();
             $('select[name=area_id]').append(option);
+            layer.close(layer_index)//手动关闭
+
         }
     })
 }

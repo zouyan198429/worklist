@@ -62,7 +62,7 @@
 
 		<tr>
 			<th> </th>
-			<td><button class="btn btn-l wnormal" id="#submitBtn" >提交</button></td>
+			<td><button class="btn btn-l wnormal" id="submitBtn" >提交</button></td>
 		</tr>
 
 		</table>
@@ -78,6 +78,8 @@
 <script type="text/javascript">
 	const TYPE_URL = "{{url('api/weixiu/problem/ajax_gettype')}}";//获取二级分类的url
 	const ADDRESS_URL = "{{url('api/weixiu/problem/ajax_getarea')}}";//获取二级地址的url
+	const SAVE_URL = "{{url('api/weixiu/problem/ajax_problem_add')}}";//保存地址的url
+	const GO_URL = "{{url('weixiu/problem/add')}}";//跳转地址的url
 </script>
 <script src="{{asset('js/weixiu/lanmu/problem_add.js')}}" type="text/javascript"></script>
 @endpush

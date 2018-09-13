@@ -52,4 +52,18 @@ class ProblemController extends WorksController
         $this->InitParams($request);
         return CompanyProblem::getAreaArr($this, $parent_id);
     }
+
+
+    /**
+     * 获取二级地址
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function ajax_problem_add(Request $request)
+    {
+        $this->InitParams($request);
+        return CompanyProblem::problemAdd($request,$this);
+    }
 }

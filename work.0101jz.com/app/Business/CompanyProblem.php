@@ -164,4 +164,56 @@ class CompanyProblem extends BaseBusiness
             ->get(['id', 'area_name']);
         return  $arr;
     }
+
+
+    /*
+     *添加问题反馈提交过来的数据
+     * */
+    public static function problemAdd(Request $request, Controller $controller){
+        $compay_id = $controller->company_id;
+        $arr = $request->all();
+        $arr['company_id'] = $compay_id;
+        $res = DB::table('company_customer')
+            ->whereRaw('call_number = ? and company_id = ?',[$arr['call_number'], $compay_id])
+            ->select('id','customer_name')
+            ->first();
+        if($res){
+            DB::table('company_customer')->where(['id'=>$res->id])->increment('call_num',1,['updated_at'=>date("Y-m-d H:i:s",time()), 'last_call_date'=>date("Y-m-d H:i:s",time())]);
+            $arr['customer_id']=$res->id;
+            $arr['customer_name']=$res->customer_name;
+            $raw = DB::table('company_problem')->insert($arr);
+            if($raw){
+                return array('status'=>'success','msg'=>'添加成功');
+            }else{
+                return array('status'=>'error','msg'=>'添加失败');
+            }
+        }else{
+            $newarr = [
+              'company_id'=>$compay_id,
+              'call_number'=>$arr['call_number'],
+              'city_id'=>$arr['city_id'],
+              'area_id'=>$arr['area_id'],
+              'address'=>$arr['address'],
+              'call_num'=>1,
+              'operate_staff_id'=>$controller->user_id,
+              'operate_staff_history_id'=>$controller->user_id,
+              'last_call_date'=>date("Y-m-d H:i:s",time()),
+            ];
+            $newId = DB::table('company_customer')->insertGetId($newarr);
+            if($newId){
+                $arr['customer_id']=$newId;
+                $raw = DB::table('company_problem')->insert($arr);
+                if($raw){
+                    return array('status'=>'success','msg'=>'添加成功');
+                }else{
+                    return array('status'=>'error','msg'=>'添加失败');
+                }
+            }else{
+                return array('status'=>'error','msg'=>'参数错误，添加失败');
+            }
+
+        }
+
+
+    }
 }
