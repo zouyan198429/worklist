@@ -1671,6 +1671,17 @@ function get_list_checked(body_data_id,ele_type,check_type){
     return seled_ids;
 }
 
+// 初始化下拉框
+// select_name 下接框 name 名称
+// empty_option_json  初始对象 {"": "请选择" + config.child_sel_txt};
+function initSelect(select_name ,empty_option_json) {
+    var obj =$('select[name=' + select_name + ']');
+    // var empty_option_json = config.child_sel_txt;// {"": "请选择" + config.child_sel_txt};
+    var empty_option_html = reset_sel_option(empty_option_json);//请选择省
+    obj.empty();//清空下拉
+    obj.append(empty_option_html);
+}
+
 // 下拉框选择事件[二级分类的，第一级点击，ajax更新第二级下拉框]
 // config 配置对象
 /*
@@ -1684,7 +1695,8 @@ function get_list_checked(body_data_id,ele_type,check_type){
  */
 // first_seled_val 第一级下拉框选中的值
 // group_id 第二级下拉框选中的值 [修改页面初始化时使用]
-function changeFirstSel(config, first_seled_val, second_seled_val){
+// ajax_async ajax 同步/导步执行 //false:同步;true:异步
+function changeFirstSel(config, first_seled_val, second_seled_val, ajax_async){
     var obj =$('select[name=' + config.child_sel_name + ']');
     var empty_option_json = config.child_sel_txt;// {"": "请选择" + config.child_sel_txt};
     var empty_option_html = reset_sel_option(empty_option_json);//请选择省
@@ -1700,7 +1712,7 @@ function changeFirstSel(config, first_seled_val, second_seled_val){
         console.log(config.change_ajax_url);
         console.log(data);
         $.ajax({
-            'async': true,//false:同步;true:异步
+            'async': ajax_async,// true,//false:同步;true:异步
             'type' : 'POST',
             'url' : config.change_ajax_url,
             'data' : data,

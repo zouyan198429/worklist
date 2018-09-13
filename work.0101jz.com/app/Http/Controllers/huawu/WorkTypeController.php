@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers\huawu;
 
 use App\Business\CompanyWorkType;
 use App\Http\Controllers\WorksController;

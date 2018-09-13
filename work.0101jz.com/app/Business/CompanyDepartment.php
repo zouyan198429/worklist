@@ -31,6 +31,7 @@ class CompanyDepartment extends BaseBusiness
         $department_list = $parentData['result']['data_list'] ?? [];
         return Tool::formatArrKeyVal($department_list, 'id', 'department_name');
     }
+
     /**
      * 获得列表数据--所有数据
      *

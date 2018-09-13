@@ -3,6 +3,7 @@
 namespace App\Business;
 
 use App\Services\CommonBusiness;
+use App\Services\HttpRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as Controller;
 
@@ -129,13 +130,30 @@ class CompanyWork extends BaseBusiness
      *
      * @param Request $request 请求信息
      * @param Controller $controller 控制对象
-     * @return  array 列表数据
+     * @return  array 数据
+    //        $listData = [
+    //            'workFirstList' => $workFirstList,// 工单分类第一级
+    //            'workCallTypeList' => $page,// 工单来电类型
+    //            'serviceTagList' => $total,//业务标签
+    //            'serviceTimeList' => $aaa,// 业务时间
+    //            'customerTypeList' => $requestData,// 客户类型
+    //            'areaCityList' => $requestData,// 客户地区
+    //            'departmentFirstList' => $requestData,// 部门信息
+    //        ];
      * @author zouyan(305463219@qq.com)
      */
     public static function addInitData(Request $request, Controller $controller)
     {
-        // return self::delAjaxBase($request, $controller, self::$model_name);
-
+        $company_id = $controller->company_id;
+        // 参数
+        $requestData = [
+            'company_id' => $company_id,
+            'operate_no' => 1 + 2 + 4 + 8 + 16 + 32 + 64 ,
+        ];
+        $url = config('public.apiUrl') . config('apiUrl.apiPath.workAddInit');
+        // 生成带参数的测试get请求
+        $requestTesUrl = splicQuestAPI($url , $requestData);
+        return HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
     }
 
 }

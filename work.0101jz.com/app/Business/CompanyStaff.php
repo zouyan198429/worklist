@@ -4,6 +4,7 @@ namespace App\Business;
 
 use App\Services\Common;
 use App\Services\CommonBusiness;
+use App\Services\Tool;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as Controller;
 
@@ -166,6 +167,122 @@ class CompanyStaff extends BaseBusiness
         }
         */
         return $controller->delUserInfo();
+    }
+
+    /**
+     * 获得列表数据--所有数据[根据区域]
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param int $city_id 区县id
+     * @param int $area_id 街道id
+     * @param int $oprateBit 操作类型位 1:获得所有的; 2 分页获取[同时有1和2，2优先]；4 返回分页html翻页代码
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @return  array 列表数据[一维的键=>值数组]
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function getChildListKeyValByArea(Request $request, Controller $controller, $city_id, $area_id, $oprateBit = 2 + 4, $notLog = 0){
+        $parentData = self::getChildListByArea($request, $controller, $city_id, $area_id, $oprateBit, $notLog);
+        $department_list = $parentData['result']['data_list'] ?? [];
+        foreach($department_list as $k => $v){
+            $department_list[$k]['real_name'] = $v['real_name'] . '[' . $v['work_num'] . ']';
+        }
+        return Tool::formatArrKeyVal($department_list, 'id', 'real_name');
+    }
+
+    /**
+     * 获得列表数据--所有数据[根据区域]
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param int $city_id 区县id
+     * @param int $area_id 街道id
+     * @param int $oprateBit 操作类型位 1:获得所有的; 2 分页获取[同时有1和2，2优先]；4 返回分页html翻页代码
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @return  array 列表数据
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function getChildListByArea(Request $request, Controller $controller, $city_id, $area_id, $oprateBit = 2 + 4, $notLog = 0){
+        $company_id = $controller->company_id;
+        // 获得数据
+        $queryParams = [
+            'where' => [
+                ['company_id', $company_id],
+                ['city_id', $city_id],
+            ],
+//            'select' => [
+//                'id','company_id', 'admin_username', 'real_name','mobile'
+//                //,'operate_staff_id','operate_staff_history_id'
+//                ,'created_at'
+//            ],
+            //'orderBy' => ['sort_num'=>'desc','id'=>'desc'],
+            'orderBy' => ['id'=>'desc'],
+        ];// 查询条件参数
+        if(is_numeric($area_id) && $area_id > 0){
+            array_push($queryParams['where'],['area_id', $area_id]);
+        }
+        // $relations = ['CompanyInfo'];// 关系
+        $relations = '';//['CompanyInfo'];// 关系
+        $result = self::getBaseListData($request, $controller, self::$model_name, $queryParams,$relations , $oprateBit, $notLog);
+        return ajaxDataArr(1, $result, '');
+    }
+
+    /**
+     * 获得列表数据--所有数据[根据部门小组]
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param int $department_id 部门id
+     * @param int $group_id 小组id
+     * @param int $oprateBit 操作类型位 1:获得所有的; 2 分页获取[同时有1和2，2优先]；4 返回分页html翻页代码
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @return  array 列表数据[一维的键=>值数组]
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function getChildListKeyValByDepartment(Request $request, Controller $controller, $department_id, $group_id, $oprateBit = 2 + 4, $notLog = 0){
+        $parentData = self::getChildListByDepartment($request, $controller, $department_id, $group_id, $oprateBit, $notLog);
+        $department_list = $parentData['result']['data_list'] ?? [];
+        foreach($department_list as $k => $v){
+            $department_list[$k]['real_name'] = $v['real_name'] . '[' . $v['work_num'] . ']';
+        }
+        return Tool::formatArrKeyVal($department_list, 'id', 'real_name');
+    }
+
+    /**
+     * 获得列表数据--所有数据[根据部门小组]
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param int $department_id 部门id
+     * @param int $group_id 小组id
+     * @param int $oprateBit 操作类型位 1:获得所有的; 2 分页获取[同时有1和2，2优先]；4 返回分页html翻页代码
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @return  array 列表数据
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function getChildListByDepartment(Request $request, Controller $controller, $department_id, $group_id, $oprateBit = 2 + 4, $notLog = 0){
+        $company_id = $controller->company_id;
+        // 获得数据
+        $queryParams = [
+            'where' => [
+                ['company_id', $company_id],
+                ['department_id', $department_id],
+            ],
+//            'select' => [
+//                'id','company_id', 'admin_username', 'real_name','mobile'
+//                //,'operate_staff_id','operate_staff_history_id'
+//                ,'created_at'
+//            ],
+            //'orderBy' => ['sort_num'=>'desc','id'=>'desc'],
+            'orderBy' => ['id'=>'desc'],
+        ];// 查询条件参数
+        if(is_numeric($group_id) && $group_id > 0){
+            array_push($queryParams['where'],['group_id', $group_id]);
+        }
+        // $relations = ['CompanyInfo'];// 关系
+        $relations = '';//['CompanyInfo'];// 关系
+        $result = self::getBaseListData($request, $controller, self::$model_name, $queryParams,$relations , $oprateBit, $notLog);
+        return ajaxDataArr(1, $result, '');
     }
 
     /**

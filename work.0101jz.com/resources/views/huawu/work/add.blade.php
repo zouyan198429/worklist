@@ -8,20 +8,20 @@
 
 	<div id="crumb"><i class="fa fa-reorder fa-fw" aria-hidden="true"></i> 我的客户</div>
 	<div class="mm">
-
-
+		<form class="am-form am-form-horizontal" method="post"  id="addForm">
+			<input type="hidden" name="id" value="{{ $id or 0 }}"/>
 		<table class="table1">
 
 			<tr>
 				<th>来源/号码<span class="must">*</span></th>
 				<td>
-					<select class="wmini">
-						<option value="a01">客户来电</option>
-						<option value="a02">销售采集</option>
-						<option value="a03">代理商反馈</option>
-						<option value="a04">其他</option>
+					<select class="wmini" name="caller_type_id">
+						<option value="">请选择来电类型</option>
+						@foreach ($workCallTypeList as $k=>$txt)
+							<option value="{{ $k }}"  @if(isset($caller_type_id) && $caller_type_id == $k) selected @endif >{{ $txt }}</option>
+						@endforeach
 					</select>
-					<input type="number" class="inp wnormal" value="" placeholder="来电号码" autofocus  required />
+					<input type="number" class="inp wnormal" name="call_number" value="" placeholder="来电号码" autofocus  required />
 				</td>
 			</tr>
 
@@ -29,55 +29,53 @@
 				<th>维修类型</th>
 				<td>
 
-					<select class="wnormal">
-						<option value="a01">固定电话</option>
-						<option value="a02">宽带业务</option>
-						<option value="a03">手机业务</option>
-						<option value="a04">其他</option>
+					<select class="wnormal" name="work_type_id">
+						<option value="">请选择业务类型</option>
+						@foreach ($workFirstList as $k=>$txt)
+							<option value="{{ $k }}"  @if(isset($type_id) && $type_id == $k) selected @endif >{{ $txt }}</option>
+						@endforeach
 					</select>
-					<select class="wnormal">
-						<option value="a01">新装</option>
-						<option value="a02">断网</option>
-						<option value="a03">迁移</option>
-						<option value="a04">其他</option>
+					<select class="wnormal" name="business_id">
+						<option value="">请选择业务</option>
 					</select>
 				</td>
 			</tr>
 			<tr>
 				<th>工单内容<span class="must">*</span></th>
 				<td>
-					<textarea type="text" class="inptext wlong" /></textarea>
+					<textarea type="text" class="inptext wlong" name="content" /></textarea>
 					<p class="tip">根据客户描述，进行记录或备注。</p>
 				</td>
 			</tr>
 			<tr >
 				<th> </th>
 				<td>
-					<a class="tags">标签1 </a> <a class="tags">标签1 </a> <a class="tags">标签1 </a> <a class="tags">标签1 </a>
+					@foreach ($serviceTagList as $k=>$txt)
+						<a class="tags"><label><input type="radio" name="tag_id" value="{{ $k }}">{{ $txt }} </label></a>
+					@endforeach
+
 				</td>
 			</tr>
 
 			<tr >
 				<th></th>
 				<td>
-					<label><input type="radio" name="jinji" value="1" checked="checked" />2小时 </label>
-					<label><input type="radio" name="jinji" value="2">4小时 </label>
-					<label><input type="radio" name="jinji" value="3">8小时 </label>
-					<label><input type="radio" name="jinji" value="3">12小时 </label>
-					<label><input type="radio" name="jinji" value="3">24小时 </label>
-					<label><input type="radio" name="jinji" value="3">48小时 </label>
-					<label><input type="radio" name="jinji" value="3">72小时 </label>
+					@foreach ($serviceTimeList as $k=>$txt)
+						<label><input type="radio"  name="time_id"  value="{{ $k }}"  @if(isset($time_id) && $time_id == $k) checked="checked"  @endif />{{ $txt }} </label>
+					@endforeach
 				</td>
 			</tr>
 			<tr>
 				<th>预约处理时间</th>
 				<td>
 					<input type="text" id="yuyuetime" class="inp wlong" />
+					{{--
 					<datalist id="yuyuetime" style="display:none" >
 						<option value="今天">今天</option>
 						<option value="明天">明天</option>
 						<option value="后天">后天</option>
 					</datalist>
+					--}}
 				</td>
 			</tr>
 		</table>
@@ -86,24 +84,22 @@
 			<tr>
 				<th>客户姓名</th>
 				<td>
-					<input type="text" class="inp wlong" />
+					<input type="text" class="inp wlong" name="customer_name" value="{{ $customer_name or '' }}"/>
 				</td>
 			</tr>
 			<tr>
 				<th>客户性别</th>
 				<td>
-					<label><input type="radio" name="sex" value="2"  checked="checked" />男 </label>
-					<label><input type="radio" name="sex" value="3"  >女 </label>
+					<label><input type="radio" name="sex" value="1" @if (isset($sex) && $sex == 1 ) checked @endif>男</label>&nbsp;&nbsp;&nbsp;&nbsp;
+					<label><input type="radio" name="sex" value="2" @if (isset($sex) && $sex == 2 ) checked @endif>女</label>
 				</td>
 			</tr>
 			<tr>
 				<th>客户类别</th>
 				<td>
-					<label><input type="radio" name="kehu"  value="1" checked>未知 </label>
-					<label><input type="radio" name="kehu"  value="2">个人 </label>
-					<label><input type="radio" name="kehu"  value="3">企业 </label>
-					<label><input type="radio" name="kehu"  value="4">政府 </label>
-					<label><input type="radio" name="kehu"  value="5">学校 </label>
+					@foreach ($customerTypeList as $k=>$txt)
+						<label><input type="radio"  name="type_id"  value="{{ $k }}"  @if(isset($type_id) && $type_id == $k) checked="checked"  @endif />{{ $txt }} </label>
+					@endforeach
 				</td>
 			</tr>
 		</table>
@@ -113,43 +109,40 @@
 			<tr>
 				<th>客户地址</th>
 				<td>
-					<select class="wmini">
-						<option value="a01">区</option>
-						<option value="a02">宽带业务</option>
-						<option value="a03">手机业务</option>
-						<option value="a04">其他</option>
+					<select class="wmini" name="city_id">
+						<option value="">请选择区县</option>
+						@foreach ($areaCityList as $k=>$txt)
+							<option value="{{ $k }}"  @if(isset($city_id) && $city_id == $k) selected @endif >{{ $txt }}</option>
+						@endforeach
 					</select>
-					<select class="wmini">
-						<option value="a01">街道</option>
-						<option value="a02">宽带业务</option>
-						<option value="a03">手机业务</option>
-						<option value="a04">其他</option>
+					<select class="wmini" name="area_id">
+						<option value="">请选择街道</option>
 					</select>
-					<input type="text" class="inp wnormal" />
+					<input type="text" class="inp wnormal"  name="address" value="{{ $address or '' }}"/>
 				</td>
 			</tr>
 			<tr>
 				<th>派发到</th>
 				<td>
-					<select class="wnormal">
-						<option value="a01">部门</option>
-						<option value="a02">宽带业务</option>
-						<option value="a03">手机业务</option>
-						<option value="a04">其他</option>
+					<select class="wnormal" name="send_department_id">
+						<option value="">请选择部门</option>
+						@foreach ($departmentFirstList as $k=>$txt)
+							<option value="{{ $k }}"  @if(isset($send_department_id) && $send_department_id == $k) selected @endif >{{ $txt }}</option>
+						@endforeach
 					</select>
-					<select class="wnormal">
-						<option value="a01">员工</option>
-						<option value="a02">宽带业务</option>
-						<option value="a03">手机业务</option>
-						<option value="a04">其他</option>
+					<select class="wnormal" name="send_group_id">
+						<option value="">请选择小组</option>
 					</select>
-					<p class="tip">客户所在区街道和责任员工相对应</p>
+					<select class="wnormal" name="send_staff_id">
+						<option value="">请选择员工</option>
+					</select>
+					{{--<p class="tip">客户所在区街道和责任员工相对应</p>---}}
 				</td>
 			</tr>
 
 			<tr>
 				<th> </th>
-				<td><button class="btn btn-l wnormal" >提交</button></td>
+				<td><button class="btn btn-l wnormal"   id="submitBtn">提交</button></td>
 			</tr>
 
 		</table>
@@ -161,4 +154,71 @@
 @endpush
 
 @push('footlast')
+
+	<script type="text/javascript">
+        const SAVE_URL = "{{ url('api/huawu/work/ajax_save') }}";// ajax保存记录地址
+        const LIST_URL = "{{url('huawu/work/history')}}";//保存成功后跳转到的地址
+        const REL_CHANGE = {
+            'department':{// 部门二级分类
+                'child_sel_name': 'send_group_id',// 第二级下拉框的name
+                'child_sel_txt': {'': "请选择班组" },// 第二级下拉框的{值:请选择文字名称}
+                'change_ajax_url': "{{ url('api/huawu/department/ajax_get_child') }}",// 获取下级的ajax地址
+                'parent_param_name': 'parent_id',// ajax调用时传递的参数名
+                'other_params':{},//其它参数 {'aaa':123,'ccd':'dfasfs'}
+            },
+            'staff_department':{// 部门组获得员工---二级分类
+                'child_sel_name': 'send_staff_id',// 第二级下拉框的name
+                'child_sel_txt': {'': "请选择员工" },// 第二级下拉框的{值:请选择文字名称}
+                'change_ajax_url': "{{ url('api/huawu/staff/ajax_get_child') }}",// 获取下级的ajax地址
+                'parent_param_name': 'group_id',// ajax调用时传递的参数名
+                'other_params':{'department_id':0},//其它参数 {'aaa':123,'ccd':'dfasfs'}
+            },
+            'work_type':{// 维修类型二级分类
+                'child_sel_name': 'business_id',// 第二级下拉框的name
+                'child_sel_txt': {'': "请选择业务" },// 第二级下拉框的{值:请选择文字名称}
+                'change_ajax_url': "{{ url('api/weixiu/work_type/ajax_get_child') }}",// 获取下级的ajax地址
+                'parent_param_name': 'parent_id',// ajax调用时传递的参数名
+                'other_params':{},//其它参数 {'aaa':123,'ccd':'dfasfs'}
+            },
+            'area_city':{// 区县二级分类
+                'child_sel_name': 'area_id',// 第二级下拉框的name
+                'child_sel_txt': {'': "请选择街道" },// 第二级下拉框的{值:请选择文字名称}
+                'change_ajax_url': "{{ url('api/weixiu/area/ajax_get_child') }}",// 获取下级的ajax地址
+                'parent_param_name': 'parent_id',// ajax调用时传递的参数名
+                'other_params':{},//其它参数 {'aaa':123,'ccd':'dfasfs'}
+            }
+        };
+        $(function(){
+            //当前部门小组
+			@if (isset($send_department_id) && $send_department_id >0 )
+            changeFirstSel(REL_CHANGE.department,"{{ $send_department_id or 0}}","{{ $send_group_id or 0 }}", true);
+			@endif
+            //维修类型值变动
+            $(document).on("change",'select[name=work_type_id]',function(){
+                changeFirstSel(REL_CHANGE.work_type, $(this).val(), 0, true);
+                return false;
+            });
+            //区县值变动
+            $(document).on("change",'select[name=city_id]',function(){
+                changeFirstSel(REL_CHANGE.area_city, $(this).val(), 0, true);
+                return false;
+            });
+            //部门值变动
+            $(document).on("change",'select[name=send_department_id]',function(){
+                // 初始化员工下拉框
+                initSelect('send_staff_id' ,{"": "请选择员工"});
+                changeFirstSel(REL_CHANGE.department, $(this).val(), 0, true);
+                return false;
+            });
+            //小组值变动
+            $(document).on("change",'select[name=send_group_id]',function(){
+                var send_department_id = $('select[name=send_department_id]').val();
+                var tem_config = REL_CHANGE.staff_department;
+                tem_config.other_params = {'department_id':send_department_id};
+                changeFirstSel(REL_CHANGE.staff_department, $(this).val(), 0, true);
+                return false;
+            });
+        });
+	</script>
+	<script src="{{ asset('/js/huawu/lanmu/work_edit.js') }}"  type="text/javascript"></script>
 @endpush
