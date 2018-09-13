@@ -14,17 +14,13 @@
 				<th>问题类型</th>
 				<td>
 
-					<select class="wnormal">
-						<option value="a01">固定电话</option>
-						<option value="a02">宽带业务</option>
-						<option value="a03">手机业务</option>
-						<option value="a04">其他</option>
+					<select class="wnormal" name="parent">
+						@foreach ($arr as  $k=>$v)
+						<option  value="{{$v->id}}">{{$v->type_name}}</option>
+						@endforeach
 					</select>
-					<select class="wnormal">
-						<option value="a01">新装</option>
-						<option value="a02">断网</option>
-						<option value="a03">迁移</option>
-						<option value="a04">其他</option>
+					<select class="wnormal" name="twoparent" onclick="getTwoType()">
+						<option value="">请选择 </option>
 					</select>
 				</td>
 			</tr>
@@ -81,4 +77,12 @@
 @endpush
 
 @push('footlast')
+<script type="text/javascript">
+	var OPERATE_TYPE = <?php echo isset($operate_type)?$operate_type:0; ?>;
+	const url = "{{url('api/weixiu/problem/ajax_gettype')}}";//获取二级分类的url
+
+</script>
+<script src="{{asset('js/weixiu/lanmu/problem_add.js')}}"></script>
+
+
 @endpush

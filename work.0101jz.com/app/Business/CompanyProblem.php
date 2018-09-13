@@ -5,6 +5,7 @@ namespace App\Business;
 use App\Services\CommonBusiness;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as Controller;
+use Illuminate\Support\Facades\DB;
 
 /**
  *
@@ -130,5 +131,21 @@ class CompanyProblem extends BaseBusiness
         self::addOprate($request, $controller, $saveData);
         // 新加或修改
         return self::replaceByIdBase($request, $controller, self::$model_name, $saveData, $id, $notLog);
+    }
+
+    /**
+     * 根据父级id查询 工作类型
+     *
+     * @param Request $parent_id 父级id
+     * @param Request $table 表名
+     * @author liuxin
+     */
+    public static function getWorkTypeArr(Controller $controller, $table, $parent_id = 0){
+        $company_id = $controller->company_id;
+        // 获得数据      $users =
+        $arr = DB::table($table)
+                ->where([['type_parent_id',  $parent_id], ['company_id', $company_id]])
+                ->get(['id', 'type_parent_id', 'type_name']);
+        return  $arr;
     }
 }
