@@ -19,14 +19,15 @@ class SiteSystemModule extends BaseBusiness
      *
      * @param Request $request 请求信息
      * @param Controller $controller 控制对象
+     * @param int $system_id 系统id
      * @param int $id 当前记录id
      * @param int $oprateBit 操作类型位 1:获得所有的; 2 分页获取[同时有1和2，2优先]；4 返回分页html翻页代码
      * @param int $notLog 是否需要登陆 0需要1不需要
      * @return  array 列表数据[一维的键=>值数组]
      * @author zouyan(305463219@qq.com)
      */
-    public static function getChildListKeyVal(Request $request, Controller $controller, $id, $oprateBit = 2 + 4, $notLog = 0){
-        $parentData = self::getChildList($request, $controller, $id, $oprateBit, $notLog);
+    public static function getChildListKeyVal(Request $request, Controller $controller, $system_id, $id, $oprateBit = 2 + 4, $notLog = 0){
+        $parentData = self::getChildList($request, $controller, $system_id, $id, $oprateBit, $notLog);
         $department_list = $parentData['result']['data_list'] ?? [];
         return Tool::formatArrKeyVal($department_list, 'id', 'module_name');
     }
@@ -36,19 +37,21 @@ class SiteSystemModule extends BaseBusiness
      *
      * @param Request $request 请求信息
      * @param Controller $controller 控制对象
+     * @param int $system_id 系统id
      * @param int $id 当前记录id
      * @param int $oprateBit 操作类型位 1:获得所有的; 2 分页获取[同时有1和2，2优先]；4 返回分页html翻页代码
      * @param int $notLog 是否需要登陆 0需要1不需要
      * @return  array 列表数据
      * @author zouyan(305463219@qq.com)
      */
-    public static function getChildList(Request $request, Controller $controller, $id, $oprateBit = 2 + 4, $notLog = 0){
+    public static function getChildList(Request $request, Controller $controller, $system_id, $id, $oprateBit = 2 + 4, $notLog = 0){
         $company_id = $controller->company_id;
 
         // 获得数据
         $queryParams = [
             'where' => [
                // ['company_id', $company_id],
+                ['system_id', $system_id],
                 ['module_parent_id', $id],
             ],
             'select' => [

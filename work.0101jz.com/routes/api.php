@@ -46,6 +46,7 @@ Route::any('admin/service_time/ajax_save', 'admin\ServiceTimeController@ajax_sav
 
 // 工单分类
 Route::any('admin/work_type/ajax_alist', 'admin\WorkTypeController@ajax_alist');//ajax获得列表数据
+Route::any('admin/work_type/ajax_get_child', 'admin\WorkTypeController@ajax_get_child');// 获得子类部门数组[kv一维数组]
 Route::any('admin/work_type/ajax_del', 'admin\WorkTypeController@ajax_del');// 删除
 Route::any('admin/work_type/ajax_save', 'admin\WorkTypeController@ajax_save');// 新加/修改
 
@@ -61,6 +62,7 @@ Route::any('admin/system/ajax_save', 'admin\SystemController@ajax_save');// 新�
 
 // 系统模块
 Route::any('admin/system_module/ajax_alist', 'admin\SystemModuleController@ajax_alist');//ajax获得列表数据
+Route::any('admin/system_module/ajax_get_child', 'admin\SystemModuleController@ajax_get_child');// 获得子类部门数组[kv一维数组]
 Route::any('admin/system_module/ajax_del', 'admin\SystemModuleController@ajax_del');// 删除
 Route::any('admin/system_module/ajax_save', 'admin\SystemModuleController@ajax_save');// 新加/修改
 
@@ -71,6 +73,7 @@ Route::any('admin/roles/ajax_save', 'admin\RolesController@ajax_save');// 新加
 
 // 区域
 Route::any('admin/area/ajax_alist', 'admin\AreaController@ajax_alist');//ajax获得列表数据
+Route::any('admin/area/ajax_get_child', 'admin\AreaController@ajax_get_child');// 获得子类部门数组[kv一维数组]
 Route::any('admin/area/ajax_del', 'admin\AreaController@ajax_del');// 删除
 Route::any('admin/area/ajax_save', 'admin\AreaController@ajax_save');// 新加/修改
 
@@ -125,8 +128,12 @@ Route::any('manage/problem/ajax_alist', 'manage\ProblemController@ajax_alist');/
 Route::any('manage/customer/ajax_alist', 'manage\CustomerController@ajax_alist');//ajax获得列表数据
 Route::any('manage/customer/ajax_biaoji', 'manage\CustomerController@ajax_biaoji');//ajax标记
 
-
-
+// 区域
+Route::any('manage/area/ajax_get_child', 'manage\AreaController@ajax_get_child');// 获得子类部门数组[kv一维数组]
+// 工单分类
+Route::any('manage/work_type/ajax_get_child', 'manage\WorkTypeController@ajax_get_child');// 获得子类部门数组[kv一维数组]
+// 系统模块
+Route::any('manage/system_module/ajax_get_child', 'manage\SystemModuleController@ajax_get_child');// 获得子类部门数组[kv一维数组]
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //web-huawu 客服
@@ -135,9 +142,22 @@ Route::any('huawu/ajax_password_save', 'huawu\IndexController@ajax_password_save
 //同事
 Route::any('huawu/staff/ajax_alist', 'huawu\StaffController@ajax_alist');//ajax获得列表数据
 
+// 部门
+Route::any('huawu/department/ajax_get_child', 'huawu\DepartmentController@ajax_get_child');// 获得子类部门数组[kv一维数组]
+
 //客户
 Route::any('huawu/customer/ajax_alist', 'huawu\CustomerController@ajax_alist');//ajax获得列表数据
 Route::any('huawu/customer/ajax_biaoji', 'huawu\CustomerController@ajax_biaoji');//ajax标记
+
+// 区域
+Route::any('huawu/area/ajax_get_child', 'huawu\AreaController@ajax_get_child');// 获得子类部门数组[kv一维数组]
+
+// 工单分类
+Route::any('huawu/work_type/ajax_get_child', 'huawu\WorkTypeController@ajax_get_child');// 获得子类部门数组[kv一维数组]
+
+// 系统模块
+Route::any('huawu/system_module/ajax_get_child', 'huawu\SystemModuleController@ajax_get_child');// 获得子类部门数组[kv一维数组]
+
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //web-weixiu 维修
@@ -147,11 +167,22 @@ Route::any('weixiu/ajax_password_save', 'weixiu\IndexController@ajax_password_sa
 //同事
 Route::any('weixiu/staff/ajax_alist', 'weixiu\StaffController@ajax_alist');//ajax获得列表数据
 
+// 部门
+Route::any('weixiu/department/ajax_get_child', 'weixiu\DepartmentController@ajax_get_child');// 获得子类部门数组[kv一维数组]
+
 //客户
     // piwik.com
 Route::any('weixiu/customer/ajax_alist', 'weixiu\CustomerController@ajax_alist');//ajax获得列表数据
 Route::any('weixiu/customer/ajax_biaoji', 'weixiu\CustomerController@ajax_biaoji');//ajax标记
 
+// 区域
+Route::any('weixiu/area/ajax_get_child', 'weixiu\AreaController@ajax_get_child');// 获得子类部门数组[kv一维数组]
+
+// 工单分类
+Route::any('weixiu/work_type/ajax_get_child', 'weixiu\WorkTypeController@ajax_get_child');// 获得子类部门数组[kv一维数组]
+
+// 系统模块
+Route::any('weixiu/system_module/ajax_get_child', 'weixiu\SystemModuleController@ajax_get_child');// 获得子类部门数组[kv一维数组]
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //app
@@ -166,6 +197,23 @@ Route::any('m/ajax_login', 'm\IndexController@ajax_login');// 登陆
 Route::any('m/ajax_password_save', 'm\IndexController@ajax_password_save');// 修改密码
 //同事
 Route::any('m/staff/ajax_alist', 'm\StaffController@ajax_alist');//ajax获得列表数据
+
+// 部门
+Route::any('m/department/ajax_get_child', 'm\DepartmentController@ajax_get_child');// 获得子类部门数组[kv一维数组]
+
+// 区域
+Route::any('m/area/ajax_get_child', 'm\AreaController@ajax_get_child');// 获得子类部门数组[kv一维数组]
+
+// 工单分类
+Route::any('m/work_type/ajax_get_child', 'm\WorkTypeController@ajax_get_child');// 获得子类部门数组[kv一维数组]
+
+// 系统模块
+Route::any('m/system_module/ajax_get_child', 'm\SystemModuleController@ajax_get_child');// 获得子类部门数组[kv一维数组]
+
+
+
+
+
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

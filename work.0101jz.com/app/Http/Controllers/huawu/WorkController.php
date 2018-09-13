@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\huawu;
 
+use App\Business\CompanyWork;
 use App\Http\Controllers\WorksController;
 use Illuminate\Http\Request;
 
@@ -89,6 +90,9 @@ class WorkController extends WorksController
     {
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
+        // 初始化数据
+        CompanyWork::addInitData( $request, $this);
+
         return view('huawu.work.add', $reDataArr);
     }
 
