@@ -175,6 +175,7 @@ Route::any('weixiu/department/ajax_get_child', 'weixiu\DepartmentController@ajax
 Route::any('weixiu/customer/ajax_alist', 'weixiu\CustomerController@ajax_alist');//ajax获得列表数据
 Route::any('weixiu/customer/ajax_biaoji', 'weixiu\CustomerController@ajax_biaoji');//ajax标记
 
+
 // 区域
 Route::any('weixiu/area/ajax_get_child', 'weixiu\AreaController@ajax_get_child');// 获得子类部门数组[kv一维数组]
 
@@ -183,6 +184,10 @@ Route::any('weixiu/work_type/ajax_get_child', 'weixiu\WorkTypeController@ajax_ge
 
 // 系统模块
 Route::any('weixiu/system_module/ajax_get_child', 'weixiu\SystemModuleController@ajax_get_child');// 获得子类部门数组[kv一维数组]
+
+//问题
+Route::any('weixiu/problem/ajax_gettype', 'weixiu\ProblemController@ajax_gettype');//ajax获得二级分类数据
+
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //app
