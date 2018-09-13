@@ -19,8 +19,10 @@ class ProblemController extends WorksController
     {
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
-        $arr = CompanyProblem::getWorkTypeArr($this, 'company_work_type');
-        return view('weixiu.problem.add', ['arr'=>$arr]);
+        $typeArr = CompanyProblem::getWorkTypeArr($this);
+        $arrArr = CompanyProblem::getAreaArr($this);
+        $new_arr = array_merge($reDataArr,array('typearr'=>$typeArr),array('addarr'=>$arrArr));
+        return view('weixiu.problem.add', ['arr'=>$new_arr]);
     }
 
     /**
@@ -34,8 +36,20 @@ class ProblemController extends WorksController
     {
         $parent_id = $_POST['id'];
         $this->InitParams($request);
-        return CompanyProblem::getWorkTypeArr($this, 'company_work_type', $parent_id);
+        return CompanyProblem::getWorkTypeArr($this, $parent_id);
     }
 
-
+    /**
+     * 获取二级地址
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function ajax_getarea(Request $request)
+    {
+        $parent_id = $_POST['id'];
+        $this->InitParams($request);
+        return CompanyProblem::getAreaArr($this, $parent_id);
+    }
 }

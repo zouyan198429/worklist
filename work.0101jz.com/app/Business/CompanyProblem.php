@@ -140,12 +140,28 @@ class CompanyProblem extends BaseBusiness
      * @param Request $table 表名
      * @author liuxin
      */
-    public static function getWorkTypeArr(Controller $controller, $table, $parent_id = 0){
+    public static function getWorkTypeArr(Controller $controller, $parent_id = 0){
         $company_id = $controller->company_id;
-        // 获得数据      $users =
-        $arr = DB::table($table)
+        // 获得数据
+        $arr = DB::table('company_work_type')
                 ->where([['type_parent_id',  $parent_id], ['company_id', $company_id]])
-                ->get(['id', 'type_parent_id', 'type_name']);
+                ->get(['id', 'type_name']);
+        return  $arr;
+    }
+
+    /**
+     * 根据父级id查询 工作类型
+     *
+     * @param Request $parent_id 父级id
+     * @param Request $table 表名
+     * @author liuxin
+     */
+    public static function getAreaArr(Controller $controller, $parent_id = 0){
+        $company_id = $controller->company_id;
+        // 获得数据
+        $arr = DB::table('company_area')
+            ->where([['area_parent_id',  $parent_id], ['company_id', $company_id]])
+            ->get(['id', 'area_name']);
         return  $arr;
     }
 }
