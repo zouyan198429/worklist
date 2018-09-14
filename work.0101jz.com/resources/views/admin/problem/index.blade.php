@@ -68,7 +68,7 @@
 
 		<div class="mmfoot">
 			<div class="mmfleft"></div>
-			<div class="mmfright pagination"></div>
+			<div class="pagination"></div>
 		</div>
 
 	</div>

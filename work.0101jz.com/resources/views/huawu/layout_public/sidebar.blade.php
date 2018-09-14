@@ -12,6 +12,13 @@
                     <small class="label pull-right label-info">HOT</small>
                 </a>
             </li>
+            <li>
+                <a href="{{ url('huawu/work/history') }}">
+                    <i class="fa fa-check-square fa-fw" aria-hidden="true"></i>
+                    <span>工单管理</span>
+                </a>
+            </li>
+            {{--
             <li class="treeview">
                 <a href="" >
                     <i class="fa fa-check-square fa-fw" aria-hidden="true"></i>
@@ -24,6 +31,7 @@
                     <li><a href="{{ url('huawu/work/re_list') }}"><i class="fa fa-circle-o"></i> 客户回访</a></li>
                 </ul>
             </li>
+            --}}
             <li>
                 <a href="{{ url('huawu/customer') }}">
                     <i class="fa fa-star-o fa-fw" aria-hidden="true"></i>
