@@ -361,4 +361,175 @@ class CommonController extends CompController
         return Common::requestDetach($request);
     }
 
+    /**
+     * 根据主表id，获得对应的历史表id
+     *
+     * @param Request $request
+     * @param string $mainObj 主表对象名称
+     * @param mixed $primaryVal 主表对象主键值
+     * @param string $historyObj 历史表对象名称
+     * @param string $historyTable 历史表名字
+     * @param array $historySearch 历史表查询字段[一维数组][一定要包含主表id的] +  版本号(不用传，自动会加上)
+     * @param array $ignoreFields 忽略都有的字段中，忽略主表中的记录 [一维数组]
+     * @return int 历史表id
+     * @author zouyan(305463219@qq.com)
+     */
+    public function getHistoryId(Request $request)
+    {
+        $this->InitParams($request);
+
+        // 主表
+        $mainObj = null;
+        $mainObjName = Common::get($request, 'mainObj');//主表对象名称
+        Common::getObjByModelName($mainObjName, $mainObj);
+
+        //主表对象主键值
+        $primaryVal = Common::get($request, 'primaryVal');
+        Common::judgeEmptyParams($request, 'primaryVal', $primaryVal);
+
+        // 历史表
+        $historyObj = null;
+        $historyObjName = Common::get($request, 'historyObj');//历史表对象名称
+        Common::getObjByModelName($historyObjName, $historyObj);
+
+        // 历史表名字
+        $historyTableName = Common::get($request, 'historyTable');//历史表名称
+        Common::judgeEmptyParams($request, 'historyTable', $historyTableName);
+
+        //  历史表查询字段[一维数组][一定要包含主表id的] +  版本号(不用传，自动会加上)
+        $historySearch = Common::get($request, 'historySearch');
+        Common::judgeEmptyParams($request, 'historySearch', $historySearch);
+        // json 转成数组
+        jsonStrToArr($historySearch , 1, '参数[historySearch]格式有误!');
+
+        // 忽略都有的字段中，忽略主表中的记录 [一维数组]
+        $ignoreFields = Common::get($request, 'ignoreFields');
+        //Common::judgeEmptyParams($request, 'ignoreFields', $ignoreFields);
+        // json 转成数组
+        jsonStrToArr($ignoreFields , 1, '参数[ignoreFields]格式有误!');
+
+
+        Common::getHistory($mainObj, $primaryVal, $historyObj,$historyTableName, $historySearch, $ignoreFields);
+
+        return  okArray($historyObj->id);
+    }
+
+    /**
+     * 对比主表和历史表是否相同，相同：不更新版本号，不同：版本号+1
+     *
+     * @param obj $mainObj 主表对象
+     * @param mixed $primaryVal 主表对象主键值
+     * @param obj $historyObj 历史表对象
+     * @param string $historyTable 历史表名字
+     * @param array $historySearch 历史表查询字段[一维数组][一定要包含主表id的] +  版本号(不用传，自动会加上)
+     * @param array $ignoreFields 忽略都有的字段中，忽略主表中的记录 [一维数组] - 一般会有 [历史表中对应主表的id字段]
+     * @param int $forceIncVersion 如果需要主表版本号+1,是否更新主表 1 更新 ;0 不更新
+     * @return array 不同字段的内容 数组 [ '字段名' => ['原表中的值','历史表中的值']]; 空数组：不用版本号+1;非空数组：版本号+1
+     * @author zouyan(305463219@qq.com)
+     */
+    public function compareHistoryOrUpdateVersion(Request $request)
+    {
+        $this->InitParams($request);
+
+        // 主表
+        $mainObj = null;
+        $mainObjName = Common::get($request, 'mainObj');//主表对象名称
+        Common::getObjByModelName($mainObjName, $mainObj);
+
+        //主表对象主键值
+        $primaryVal = Common::get($request, 'primaryVal');
+        Common::judgeEmptyParams($request, 'primaryVal', $primaryVal);
+
+        // 历史表
+        $historyObj = null;
+        $historyObjName = Common::get($request, 'historyObj');//历史表对象名称
+        Common::getObjByModelName($historyObjName, $historyObj);
+
+        // 历史表名字
+        $historyTableName = Common::get($request, 'historyTable');//历史表名称
+        Common::judgeEmptyParams($request, 'historyTable', $historyTableName);
+
+        //  历史表查询字段[一维数组][一定要包含主表id的] +  版本号(不用传，自动会加上)
+        $historySearch = Common::get($request, 'historySearch');
+        Common::judgeEmptyParams($request, 'historySearch', $historySearch);
+        // json 转成数组
+        jsonStrToArr($historySearch , 1, '参数[historySearch]格式有误!');
+
+        // 忽略都有的字段中，忽略主表中的记录 [一维数组]
+        $ignoreFields = Common::get($request, 'ignoreFields');
+        //Common::judgeEmptyParams($request, 'ignoreFields', $ignoreFields);
+        // json 转成数组
+        jsonStrToArr($ignoreFields , 1, '参数[ignoreFields]格式有误!');
+
+
+        $forceIncVersion =  Common::getInt($request, 'forceIncVersion');
+
+        $diffDataArr = Common::compareHistoryOrUpdateVersion($mainObj, $primaryVal, $historyObj,$historyTableName, $historySearch, $ignoreFields, $forceIncVersion);
+
+        return  okArray($diffDataArr);
+    }
+
+    /**
+     * 查找记录,或创建新记录[没有找到] - $searchConditon +  $updateFields 的字段,
+     *
+     * @param obj $mainObj 主表对象
+     * @param array $searchConditon 查询字段[一维数组]
+     * @param array $updateFields 表中还需要保存的记录 [一维数组] -- 新建表时会用
+     * @return obj $mainObj 表对象[一维]
+     * @author zouyan(305463219@qq.com)
+     */
+    public function firstOrCreate(Request $request)
+    {
+        $this->InitParams($request);
+
+        // 主表
+        $mainObj = null;
+        $mainObjName = Common::get($request, 'mainObj');//主表对象名称
+        Common::getObjByModelName($mainObjName, $mainObj);
+
+        $searchConditon = Common::get($request, 'searchConditon');
+        Common::judgeEmptyParams($request, 'searchConditon', $searchConditon);
+        // json 转成数组
+        jsonStrToArr($searchConditon , 1, '参数[searchConditon]格式有误!');
+
+        $updateFields = Common::get($request, 'updateFields');
+        Common::judgeEmptyParams($request, 'updateFields', $updateFields);
+        // json 转成数组
+        jsonStrToArr($updateFields , 1, '参数[updateFields]格式有误!');
+
+        Common::firstOrCreate($mainObj, $searchConditon, $updateFields );
+        return  okArray($mainObj);
+    }
+
+    /**
+     * 已存在则更新，否则创建新模型--持久化模型，所以无需调用 save()-- $searchConditon +  $updateFields 的字段,
+     *
+     * @param obj $mainObj 主表对象
+     * @param array $searchConditon 查询字段[一维数组]
+     * @param array $updateFields 表中还需要保存的记录 [一维数组] -- 新建表时会用
+     * @return obj $mainObj 表对象[一维]
+     * @author zouyan(305463219@qq.com)
+     */
+    public function updateOrCreate(Request $request)
+    {
+        $this->InitParams($request);
+
+        // 主表
+        $mainObj = null;
+        $mainObjName = Common::get($request, 'mainObj');//主表对象名称
+        Common::getObjByModelName($mainObjName, $mainObj);
+
+        $searchConditon = Common::get($request, 'searchConditon');
+        Common::judgeEmptyParams($request, 'searchConditon', $searchConditon);
+        // json 转成数组
+        jsonStrToArr($searchConditon , 1, '参数[searchConditon]格式有误!');
+
+        $updateFields = Common::get($request, 'updateFields');
+        Common::judgeEmptyParams($request, 'updateFields', $updateFields);
+        // json 转成数组
+        jsonStrToArr($updateFields , 1, '参数[updateFields]格式有误!');
+
+        Common::updateOrCreate($mainObj, $searchConditon, $updateFields );
+        return  okArray($mainObj);
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Services;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 /**
  * 通用工具服务类
@@ -633,8 +634,14 @@ class Common
 
         // json 转成数组
         jsonStrToArr($dataParams , 1, '参数[dataParams]格式有误!');
-        $requestData =$modelObj->create($dataParams);
+        // $requestData = $modelObj->create($dataParams);
+        $requestData = self::create($modelObj, $dataParams);
         return okArray($requestData);
+    }
+
+    //创建对象
+    public  static function create(&$modelObj, $dataParams){
+        return $modelObj->create($dataParams);
     }
 
     //批量新加-data只能返回成功true:失败:false
@@ -928,15 +935,25 @@ class Common
             $modelName = self::get($request, 'Model_name');
             self::judgeEmptyParams($request, 'Model_name', $modelName);
 
-            $className = "App\\Models\\" .$modelName;
-            if (! class_exists($className )) {
-                throws('参数[Model_name]不正确！');
-            }
-            $modelObj = new $className();
-
+//            $className = "App\\Models\\" .$modelName;
+//            if (! class_exists($className )) {
+//                throws('参数[Model_name]不正确！');
+//            }
+//            $modelObj = new $className();
+            self::getObjByModelName($modelName, $modelObj );
         }
         return $modelObj;
 
+    }
+
+    // 根据数据模型名称，反回对象
+    public static function getObjByModelName($modelName, &$modelObj = null){
+        $className = "App\\Models\\" .$modelName;
+        if (! class_exists($className )) {
+            throws('参数[Model_name]不正确！');
+        }
+        $modelObj = new $className();
+        return $modelObj;
     }
 
     // 先从get获取，没有再从post获取
@@ -1096,4 +1113,149 @@ class Common
         return $suffix;
     }
 
+    /**
+     * 需要使用历史字段时，获得历史id
+     *
+     * @param obj $mainObj 主表对象
+     * @param mixed $primaryVal 主表对象主键值
+     * @param obj $historyObj 历史表对象
+     * @param string $historyTable 历史表名字
+     * @param array $historySearch 历史表查询字段[一维数组][一定要包含主表id的] +  版本号(不用传，自动会加上)
+     * @param array $ignoreFields 忽略都有的字段中，忽略主表中的记录 [一维数组]
+     * @return int 历史表id
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function getHistory(&$mainObj, $primaryVal, &$historyObj, $HistoryTableName, $historySearch, $ignoreFields ){
+        // 获得员操作员工信息
+        $mainObj = $mainObj::find($primaryVal);
+        if(empty($mainObj)){
+            throws("原记录[" . $primaryVal  . "] 不存在");
+        }
+        $versionNum = $mainObj->version_num;
+        // 获得所有字段
+        $historyColumns = Schema::getColumnListing($HistoryTableName);
+
+        // 历史表需要保存的字段
+        $historyData = [];
+        $historySearchConditon = [];
+        $ignoreFields = array_merge($ignoreFields,['id','updated_at']);
+        foreach($historyColumns as $field){
+            if(isset($mainObj->$field) && !in_array($field,$ignoreFields) ){
+                $historyData[$field] = $mainObj->$field;
+            }
+            // 去掉不在历史表中的历史表查询字段
+            if(isset($historySearch[$field])){
+                $historySearchConditon[$field] = $historySearch[$field] ;
+            }
+        }
+        if(isset($mainObj->updated_at)){// 记录历史表记录是主表的修改时间
+            $historyData['created_at'] = $mainObj->updated_at;
+        }
+
+
+        $historySearchConditon["version_num"] = $versionNum;
+        // 查找历史表当前版本
+        self::firstOrCreate($historyObj, $historySearchConditon, $historyData );
+        // $historyObj = $historyObj::firstOrCreate($historySearchConditon, $historyData);
+        return $historyObj->id ;
+    }
+
+    /**
+     * 对比主表和历史表是否相同，相同：不更新版本号，不同：版本号+1
+     *
+     * @param obj $mainObj 主表对象
+     * @param mixed $primaryVal 主表对象主键值
+     * @param obj $historyObj 历史表对象
+     * @param string $historyTable 历史表名字
+     * @param array $historySearch 历史表查询字段[一维数组][一定要包含主表id的] +  版本号(不用传，自动会加上)
+     * @param array $ignoreFields 忽略都有的字段中，忽略主表中的记录 [一维数组] - 一般会有 [历史表中对应主表的id字段]
+     * @param int $forceIncVersion 如果需要主表版本号+1,是否更新主表 1 更新 ;0 不更新
+     * @return array 不同字段的内容 数组 [ '字段名' => ['原表中的值','历史表中的值']]; 空数组：不用版本号+1;非空数组：版本号+1
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function compareHistoryOrUpdateVersion(&$mainObj, $primaryVal, &$historyObj, $HistoryTableName, $historySearch, $ignoreFields, $forceIncVersion = 1)
+    {
+        $diffArr = []; // 记录不同的字段及值
+
+        // 获得员操作员工信息
+        $mainObj = $mainObj::find($primaryVal);
+        if(empty($mainObj)){
+            throws("原记录[" . $primaryVal  . "] 不存在");
+        }
+        $versionNum = $mainObj->version_num;
+
+        // 获得所有字段-历史表
+        $historyColumns = Schema::getColumnListing($HistoryTableName);
+
+        // 过滤查询条件中不在字段中的
+        $historySearchConditon = [];
+        // 去掉不在历史表中的历史表查询字段
+        foreach($historyColumns as $field){
+            if(isset($historySearch[$field])){
+                $historySearchConditon[$field] = $historySearch[$field] ;
+            }
+        }
+        // 查询条件加上版本号
+        $historySearchConditon["version_num"] = $versionNum;
+
+        // 查询条件转为二维数组
+        $where = [];
+        foreach($historySearchConditon as $k => $v){
+            $where[] = [$k ,"=" , $v];
+        }
+
+        // 查找当前版本在历史表中的记录
+        $historyObj = $historyObj::where($where)->limit(1)->get();
+        $historyInfoObj = $historyObj[0] ?? [] ;
+        if(empty($historyInfoObj)) return $diffArr;// 没有历史记录,不用更新版本
+
+        // 忽略的比较字段
+        $ignoreFields = array_merge($ignoreFields,['id', 'created_at', 'updated_at', 'version_num', 'staff_id', 'operate_staff_history_id']);
+
+        // 比较字段
+        foreach($historyColumns as $field){
+            if( in_array($field,$ignoreFields) ) continue;
+            if($mainObj->$field != $historyInfoObj->$field){ // 字段值不同
+                $diffArr[$field] = [$mainObj->$field,$historyInfoObj->$field];
+            }
+        }
+        if(!empty($diffArr)){// 有不同的值，则需要版本号+1
+            if ($forceIncVersion) {
+                $mainObj->version_num++;
+                $mainObj->save();
+            }
+            return $diffArr;
+        }
+        return $diffArr;
+    }
+
+   /**
+     * 查找记录,或创建新记录[没有找到] - $searchConditon +  $updateFields 的字段,
+     *
+     * @param obj $mainObj 主表对象
+     * @param array $searchConditon 查询字段[一维数组]
+     * @param array $updateFields 表中还需要保存的记录 [一维数组] -- 新建表时会用
+     * @return obj $mainObj 表对象[一维]
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function firstOrCreate(&$mainObj, $searchConditon, $updateFields )
+    {
+        $mainObj = $mainObj::firstOrCreate($searchConditon, $updateFields);
+        return $mainObj;
+    }
+
+    /**
+     * 已存在则更新，否则创建新模型--持久化模型，所以无需调用 save()- $searchConditon +  $updateFields 的字段,
+     *
+     * @param obj $mainObj 主表对象
+     * @param array $searchConditon 查询字段[一维数组]
+     * @param array $updateFields 表中还需要保存的记录 [一维数组] -- 新建表时会用
+     * @return obj $mainObj 表对象[一维]
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function updateOrCreate(&$mainObj, $searchConditon, $updateFields )
+    {
+        $mainObj = $mainObj::updateOrCreate($searchConditon, $updateFields);
+        return $mainObj;
+    }
 }

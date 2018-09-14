@@ -5,6 +5,7 @@ namespace App\Http\Controllers\huawu;
 use App\Business\CompanyStaff;
 use App\Http\Controllers\WorksController;
 use App\Services\Common;
+use App\Services\CommonBusiness;
 use Illuminate\Http\Request;
 
 class IndexController extends WorksController
@@ -21,6 +22,39 @@ class IndexController extends WorksController
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
         return view('huawu.index', $reDataArr);
+    }
+
+    /**
+     * 测试
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function getHistoryIdTest(Request $request)
+    {
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        // 获得历史记录表id
+        $company_id = 1;
+        $staff_id = 1;
+
+        $mainObj = "CompanyStaff";
+        $primaryVal = $staff_id;
+        $historyObj = "CompanyStaffHistory";
+        $HistoryTableName = "company_staff_history";
+        $historySearch = [
+            'company_id' => $company_id,
+            'staff_id' => $staff_id,
+        ];
+        // 获得历史表id
+         $resultDatas =  CommonBusiness::getHistoryIdApi($mainObj, $primaryVal, $historyObj, $HistoryTableName, $historySearch, [], $company_id , 0);
+        // 版本号是否自加1
+        //$ignoreFields = ['lastlogintime'];
+        // $resultDatas =  CommonBusiness::compareHistoryOrUpdateVersionApi($mainObj, $primaryVal, $historyObj, $HistoryTableName, $historySearch, $ignoreFields, 1, $company_id , 0);
+
+        pr($resultDatas);
+        // return view('huawu.admin.test', $reDataArr);
     }
 
     /**

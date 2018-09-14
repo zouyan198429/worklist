@@ -1,11 +1,10 @@
 @extends('layouts.huawu')
 
 @push('headscripts')
-{{--  本页单独使用 --}}
+	{{--  本页单独使用 --}}
 @endpush
 
 @section('content')
-
 	<div id="crumb"><i class="fa fa-reorder fa-fw" aria-hidden="true"></i> 我的客户</div>
 	<div class="mm">
 		<form class="am-form am-form-horizontal" method="post"  id="addForm">
@@ -43,7 +42,7 @@
 			<tr>
 				<th>工单内容<span class="must">*</span></th>
 				<td>
-					<textarea type="text" class="inptext wlong" name="content" /></textarea>
+					<textarea type="text" class="inptext wlong" name="content" />{{ $content or '' }}</textarea>
 					<p class="tip">根据客户描述，进行记录或备注。</p>
 				</td>
 			</tr>
@@ -68,7 +67,7 @@
 			<tr>
 				<th>预约处理时间</th>
 				<td>
-					<input type="text" id="yuyuetime" class="inp wlong" />
+					<input type="text" id="yuyuetime" name="book_time" class="inp wlong form-date" value="{{ $book_time or '' }}" />
 					{{--
 					<datalist id="yuyuetime" style="display:none" >
 						<option value="今天">今天</option>
@@ -154,70 +153,45 @@
 @endpush
 
 @push('footlast')
-
+    <script type="text/javascript" src="{{asset('laydate/laydate.js')}}"></script>
 	<script type="text/javascript">
+
         const SAVE_URL = "{{ url('api/huawu/work/ajax_save') }}";// ajax保存记录地址
         const LIST_URL = "{{url('huawu/work/history')}}";//保存成功后跳转到的地址
-        const REL_CHANGE = {
-            'department':{// 部门二级分类
-                'child_sel_name': 'send_group_id',// 第二级下拉框的name
-                'child_sel_txt': {'': "请选择班组" },// 第二级下拉框的{值:请选择文字名称}
-                'change_ajax_url': "{{ url('api/huawu/department/ajax_get_child') }}",// 获取下级的ajax地址
-                'parent_param_name': 'parent_id',// ajax调用时传递的参数名
-                'other_params':{},//其它参数 {'aaa':123,'ccd':'dfasfs'}
-            },
-            'staff_department':{// 部门组获得员工---二级分类
-                'child_sel_name': 'send_staff_id',// 第二级下拉框的name
-                'child_sel_txt': {'': "请选择员工" },// 第二级下拉框的{值:请选择文字名称}
-                'change_ajax_url': "{{ url('api/huawu/staff/ajax_get_child') }}",// 获取下级的ajax地址
-                'parent_param_name': 'group_id',// ajax调用时传递的参数名
-                'other_params':{'department_id':0},//其它参数 {'aaa':123,'ccd':'dfasfs'}
-            },
-            'work_type':{// 维修类型二级分类
-                'child_sel_name': 'business_id',// 第二级下拉框的name
-                'child_sel_txt': {'': "请选择业务" },// 第二级下拉框的{值:请选择文字名称}
-                'change_ajax_url': "{{ url('api/weixiu/work_type/ajax_get_child') }}",// 获取下级的ajax地址
-                'parent_param_name': 'parent_id',// ajax调用时传递的参数名
-                'other_params':{},//其它参数 {'aaa':123,'ccd':'dfasfs'}
-            },
-            'area_city':{// 区县二级分类
-                'child_sel_name': 'area_id',// 第二级下拉框的name
-                'child_sel_txt': {'': "请选择街道" },// 第二级下拉框的{值:请选择文字名称}
-                'change_ajax_url': "{{ url('api/weixiu/area/ajax_get_child') }}",// 获取下级的ajax地址
-                'parent_param_name': 'parent_id',// ajax调用时传递的参数名
-                'other_params':{},//其它参数 {'aaa':123,'ccd':'dfasfs'}
-            }
-        };
+        const DEPARTMENT_CHILD_URL = "{{ url('api/huawu/department/ajax_get_child') }}";// 部门二级分类请求地址
+        const GROUP_CHILD_URL = "{{ url('api/huawu/staff/ajax_get_child') }}";// 部门组获得员工---二级分类请求地址
+        const WORKTYPE_CHILD_URL = "{{ url('api/weixiu/work_type/ajax_get_child') }}";// 维修类型二级分类请求地址
+        const AREA_CHILD_URL = "{{ url('api/weixiu/area/ajax_get_child') }}";// 区县二级分类请求地址
+        const BOOK_TIME = "{{ $book_time or '' }}" ;//预约处理时间
+        const WORK_TYPE_ID = "{{ $work_type_id or 0}}";// 维修类型-默认值
+        const BUSINESS_ID = "{{ $business_id or 0 }}";// 维修类型二级--默认值
+        const CITY_ID = "{{ $city_id or 0}}";// 县区id默认值
+        const AREA_ID = "{{ $area_id or 0 }}";// 街道默认值
+        const SEND_DEPARTMENT_ID = "{{ $send_department_id or 0}}";// 部门默认值
+        const SEND_GROUP_ID = "{{ $send_group_id or 0 }}";// 小组默认值
+        const SEND_STAFF_ID = "{{ $send_staff_id or 0 }}";// 指派员工默认值
+
         $(function(){
+            // 当前的维修类型
+            @if (isset($work_type_id) && $work_type_id >0 )
+                changeFirstSel(REL_CHANGE.work_type,WORK_TYPE_ID,BUSINESS_ID, false);
+            @endif
+
+            // 当前的客户地址
+            @if (isset($city_id) && $city_id >0 )
+                changeFirstSel(REL_CHANGE.area_city,CITY_ID,AREA_ID, false);
+            @endif
+
             //当前部门小组
-			@if (isset($send_department_id) && $send_department_id >0 )
-            changeFirstSel(REL_CHANGE.department,"{{ $send_department_id or 0}}","{{ $send_group_id or 0 }}", true);
-			@endif
-            //维修类型值变动
-            $(document).on("change",'select[name=work_type_id]',function(){
-                changeFirstSel(REL_CHANGE.work_type, $(this).val(), 0, true);
-                return false;
-            });
-            //区县值变动
-            $(document).on("change",'select[name=city_id]',function(){
-                changeFirstSel(REL_CHANGE.area_city, $(this).val(), 0, true);
-                return false;
-            });
-            //部门值变动
-            $(document).on("change",'select[name=send_department_id]',function(){
-                // 初始化员工下拉框
-                initSelect('send_staff_id' ,{"": "请选择员工"});
-                changeFirstSel(REL_CHANGE.department, $(this).val(), 0, true);
-                return false;
-            });
-            //小组值变动
-            $(document).on("change",'select[name=send_group_id]',function(){
-                var send_department_id = $('select[name=send_department_id]').val();
-                var tem_config = REL_CHANGE.staff_department;
-                tem_config.other_params = {'department_id':send_department_id};
-                changeFirstSel(REL_CHANGE.staff_department, $(this).val(), 0, true);
-                return false;
-            });
+            @if (isset($send_department_id) && $send_department_id >0 )
+                changeFirstSel(REL_CHANGE.department,SEND_DEPARTMENT_ID,SEND_GROUP_ID, false);
+
+                // 当前的员工
+                @if (isset($send_group_id) && $send_group_id >0 )
+                    changeFirstSel(REL_CHANGE.staff_department,SEND_GROUP_ID,SEND_STAFF_ID, false);
+                @endif
+            @endif
+
         });
 	</script>
 	<script src="{{ asset('/js/huawu/lanmu/work_edit.js') }}"  type="text/javascript"></script>

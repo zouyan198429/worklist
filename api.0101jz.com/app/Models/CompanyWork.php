@@ -63,6 +63,14 @@ class CompanyWork extends BaseModel
     }
 
     /**
+     * 获取工单对应的标签--一维
+     */
+    public function workTag()
+    {
+        return $this->belongsTo('App\Models\CompanyServiceTags', 'tag_id', 'id');
+    }
+
+    /**
      * 工单的标簦[通过中间表company_work_tags 多对多]
      */
     public function workTags()

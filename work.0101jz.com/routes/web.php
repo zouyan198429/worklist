@@ -172,6 +172,7 @@ Route::get('manage/exam_score', 'manage\ExamScoreController@index');//examin_cj.
 
 //web-huawu 客服
 Route::get('huawu', 'huawu\IndexController@index');//main.html 首页
+Route::get('huawu/getHistoryIdTest', 'huawu\IndexController@getHistoryIdTest');// 测试：根据主表id，获得对应的历史表id
 Route::get('huawu/login', 'huawu\IndexController@login');//login.html 登录
 Route::get('huawu/logout', 'huawu\IndexController@logout');// 注销
    Route::get('huawu/info', 'huawu\IndexController@info');//myinfo.html  个人信息

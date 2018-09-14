@@ -7,6 +7,134 @@ namespace App\Services;
  */
 class CommonBusiness
 {
+
+    /**
+     * 根据主表id，获得对应的历史表id
+     *
+     * @param string $mainObj 主表对象名称
+     * @param mixed $primaryVal 主表对象主键值
+     * @param string $historyObj 历史表对象名称
+     * @param obj $HistoryTableName 历史表名字
+     * @param array $historySearch 历史表查询字段[一维数组][一定要包含主表id的] +  版本号(不用传，自动会加上)
+     * @param array $ignoreFields 忽略都有的字段中，忽略主表中的记录 [一维数组]
+     * @param int $forceIncVersion 如果需要主表版本号+1,是否更新主表 1 更新 ;0 不更新
+     * @param int $companyId 企业id
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @return  int 历史记录表id
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function compareHistoryOrUpdateVersionApi($mainObj, $primaryVal, $historyObj, $HistoryTableName, $historySearch, $ignoreFields = [], $forceIncVersion= 1, $companyId = null , $notLog = 0){
+        $url = config('public.apiUrl') . config('apiUrl.common.compareHistoryOrUpdateVersionApi');
+        $requestData = [
+            'mainObj' => $mainObj,
+            'primaryVal' => $primaryVal,
+            'historyObj' => $historyObj,
+            'historyTable' => $HistoryTableName,
+            'historySearch' => $historySearch,
+            'ignoreFields' => $ignoreFields,
+            'forceIncVersion' => $forceIncVersion ,
+            'not_log' => $notLog,
+            // 'relations' => '', // 查询关系参数
+        ];
+        if (is_numeric($companyId) && $companyId > 0) {
+            $requestData['company_id'] = $companyId ;
+        }
+        // 生成带参数的测试get请求
+        // $requestTesUrl = splicQuestAPI($url , $requestData);
+        return HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
+    }
+
+
+    /**
+     * 根据主表id，获得对应的历史表id
+     *
+     * @param string $mainObj 主表对象名称
+     * @param mixed $primaryVal 主表对象主键值
+     * @param string $historyObj 历史表对象名称
+     * @param obj $HistoryTableName 历史表名字
+     * @param array $historySearch 历史表查询字段[一维数组][一定要包含主表id的] +  版本号(不用传，自动会加上)
+     * @param array $ignoreFields 忽略都有的字段中，忽略主表中的记录 [一维数组]
+     * @param int $companyId 企业id
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @return  int 历史记录表id
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function getHistoryIdApi($mainObj, $primaryVal, $historyObj, $HistoryTableName, $historySearch, $ignoreFields = [], $companyId = null , $notLog = 0){
+        $url = config('public.apiUrl') . config('apiUrl.common.getHistoryIdApi');
+        $requestData = [
+            'mainObj' => $mainObj,
+            'primaryVal' => $primaryVal,
+            'historyObj' => $historyObj,
+            'historyTable' => $HistoryTableName,
+            'historySearch' => $historySearch,
+            'ignoreFields' => $ignoreFields,
+            'not_log' => $notLog,
+            // 'relations' => '', // 查询关系参数
+        ];
+        if (is_numeric($companyId) && $companyId > 0) {
+            $requestData['company_id'] = $companyId ;
+        }
+        // 生成带参数的测试get请求
+        // $requestTesUrl = splicQuestAPI($url , $requestData);
+        return HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
+    }
+
+    /**
+     * 查找记录,或创建新记录[没有找到] - $searchConditon +  $updateFields 的字段,
+     *
+     * @param obj $mainObj 主表对象
+     * @param array $searchConditon 查询字段[一维数组]
+     * @param array $updateFields 表中还需要保存的记录 [一维数组] -- 新建表时会用
+     * @param int $companyId 企业id
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @return array $mainObj 表对象[一维]
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function firstOrCreateApi($mainObj, $searchConditon, $updateFields, $companyId = null , $notLog = 0){
+        $url = config('public.apiUrl') . config('apiUrl.common.firstOrCreateApi');
+        $requestData = [
+            'mainObj' => $mainObj,
+            'searchConditon' => $searchConditon,
+            'updateFields' => $updateFields,
+            'not_log' => $notLog,
+            // 'relations' => '', // 查询关系参数
+        ];
+        if (is_numeric($companyId) && $companyId > 0) {
+            $requestData['company_id'] = $companyId ;
+        }
+        // 生成带参数的测试get请求
+        // $requestTesUrl = splicQuestAPI($url , $requestData);
+        return HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
+    }
+
+    /**
+     * 查找记录,或创建新记录[没有找到] - $searchConditon +  $updateFields 的字段,
+     *
+     * @param obj $mainObj 主表对象
+     * @param array $searchConditon 查询字段[一维数组]
+     * @param array $updateFields 表中还需要保存的记录 [一维数组] -- 新建表时会用
+     * @param int $companyId 企业id
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @return array $mainObj 表对象[一维]
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function updateOrCreateApi($mainObj, $searchConditon, $updateFields, $companyId = null , $notLog = 0){
+        $url = config('public.apiUrl') . config('apiUrl.common.updateOrCreateApi');
+        $requestData = [
+            'mainObj' => $mainObj,
+            'searchConditon' => $searchConditon,
+            'updateFields' => $updateFields,
+            'not_log' => $notLog,
+            // 'relations' => '', // 查询关系参数
+        ];
+        if (is_numeric($companyId) && $companyId > 0) {
+            $requestData['company_id'] = $companyId ;
+        }
+        // 生成带参数的测试get请求
+        // $requestTesUrl = splicQuestAPI($url , $requestData);
+        return HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
+    }
+
     /**
      * 根据model的id获得详情记录
      *

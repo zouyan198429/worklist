@@ -44,9 +44,15 @@ Route::any('comp/saveBathById', 'Comp\CommonController@saveBathById');// 通过�
 Route::any('comp/del', 'Comp\CommonController@del');// 根据条件删除接口
 Route::any('comp/sync', 'Comp\CommonController@sync');// 同步修改关系接口
 Route::any('comp/detach', 'Comp\CommonController@detach');// 移除关系接口
+Route::any('comp/getHistoryId', 'Comp\CommonController@getHistoryId');// 根据主表id，获得对应的历史表id
+Route::any('comp/firstOrCreate', 'Comp\CommonController@firstOrCreate');//查找记录,或创建新记录[没有找到]
+Route::any('comp/updateOrCreate', 'Comp\CommonController@updateOrCreate');//已存在则更新，否则创建新模型--持久化模型，所以无需调用 save()
+Route::any('comp/compareHistoryOrUpdateVersion', 'Comp\CommonController@compareHistoryOrUpdateVersion');// 对比主表和历史表是否相同，相同：不更新版本号，不同：版本号+1
 
 // 大后台
+Route::any('work/test', 'CompanyWorkController@test');//测试
 Route::any('work/add_init', 'CompanyWorkController@addInit');//工单添加页初始数据
+Route::any('work/add_save', 'CompanyWorkController@add_save');//工单添加/修改
 
 Route::any('proUnit/countLabels', 'CompanyProUnitController@countLabels');// 统计生产单元下的标签
 

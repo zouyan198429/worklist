@@ -126,6 +126,55 @@ class CompanyWork extends BaseBusiness
     }
 
     /**
+     * 根据id新加或修改单条数据-id 为0 新加，返回新的对象数组[-维],  > 0 ：修改对应的记录，返回true
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param array $saveData 要保存或修改的数组
+     * @param int $id id
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @return  array 单条数据 - -维数组 为0 新加，返回新的对象数组[-维],  > 0 ：修改对应的记录，返回true
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function saveById(Request $request, Controller $controller, $saveData, &$id, $notLog = 0){
+        $company_id = $controller->company_id;
+        if($id > 0){
+            // 判断权限
+            $judgeData = [
+                'company_id' => $company_id,
+            ];
+            $relations = '';
+            CommonBusiness::judgePower($id, $judgeData, self::$model_name, $company_id, $relations, $notLog);
+
+        }else {// 新加;要加入的特别字段
+            $addNewData = [
+                'company_id' => $company_id,
+            ];
+            $saveData = array_merge($saveData, $addNewData);
+        }
+        // 加入操作人员信息
+        // self::addOprate($request, $controller, $saveData);
+        // 新加或修改
+        // return self::replaceByIdBase($request, $controller, self::$model_name, $saveData, $id, $notLog);
+
+        // 参数
+        $requestData = [
+            'id' => $id,
+            'company_id' => $company_id,
+            'staff_id' =>  $controller->user_id,
+            'save_data' => $saveData,
+        ];
+        $url = config('public.apiUrl') . config('apiUrl.apiPath.saveWork');
+        // 生成带参数的测试get请求
+        // $requestTesUrl = splicQuestAPI($url , $requestData);
+        $result = HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
+        if($id <= 0){
+            $id = $result['id'] ?? 0;
+        }
+        return $result;
+    }
+
+    /**
      * 添加页面初始化要填充的数据
      *
      * @param Request $request 请求信息

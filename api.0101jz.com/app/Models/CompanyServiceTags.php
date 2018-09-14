@@ -14,6 +14,13 @@ class CompanyServiceTags extends BaseModel
     protected $table = 'company_service_tags';
 
     /**
+     * 获取业务标签的工单-二维
+     */
+    public function tagWork()
+    {
+        return $this->hasMany('App\Models\CompanyWork', 'tag_id', 'id');
+    }
+    /**
      * 标簦的工单[通过中间表company_work_tags 多对多]
      */
     public function tagWorks()

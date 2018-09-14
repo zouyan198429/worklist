@@ -16,8 +16,13 @@ return [
             'saveDecIncByArrApi' => 'comp/saveDecIncByArr',//批量自增自减接口,通过数组[二维]-data操作的行数数组
             'delApi' => 'comp/del',//删除记录
             'detachApi' => 'comp/detach',//移除关系
+            'getHistoryIdApi' => 'comp/getHistoryId',//根据主表id，获得对应的历史表id
+            'firstOrCreateApi' => 'comp/firstOrCreate',// 查找记录,或创建新记录[没有找到]
+            'updateOrCreateApi' => 'comp/updateOrCreate',//已存在则更新，否则创建新模型--持久化模型，所以无需调用 save()
+            'compareHistoryOrUpdateVersionApi' => 'comp/compareHistoryOrUpdateVersion',// 对比主表和历史表是否相同，相同：不更新版本号，不同：版本号+1
         ],
         'apiPath' => [
             'workAddInit' => 'work/add_init',// 工单添加页初始数据
+            'saveWork' => 'work/add_save',// 工单添加/修改
         ],
     ];

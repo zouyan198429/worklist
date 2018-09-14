@@ -61,7 +61,7 @@ class HttpRequest
      * @param array/object $params 参数数组/对象
      * @param array $urlParams url地址后面的参数数组 数据最终转换成-如:'?id='
      * @param string $type 请求类型 'GET'、'POST'、'PUT'、'PATCH'、'DELETE'
-     * @return array array 正常数据
+     * @return mixed array 正常数据
      */
     public static function HttpRequestApi($url, $params = [], $urlParams = [], $type = 'POST')
     {
