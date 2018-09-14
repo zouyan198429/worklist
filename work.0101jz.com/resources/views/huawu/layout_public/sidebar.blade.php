@@ -13,7 +13,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ url('huawu/work/history') }}">
+                <a href="{{ url('huawu/work') }}">
                     <i class="fa fa-check-square fa-fw" aria-hidden="true"></i>
                     <span>工单管理</span>
                 </a>

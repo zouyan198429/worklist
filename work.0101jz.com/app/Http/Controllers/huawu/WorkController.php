@@ -20,6 +20,7 @@ class WorkController extends WorksController
     {
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
+        $reDataArr['status'] =  CompanyWork::$status_arr;
         return view('huawu.work.index', $reDataArr);
     }
 
@@ -34,6 +35,7 @@ class WorkController extends WorksController
     {
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
+        $reDataArr['status'] =  CompanyWork::$status_arr;
         return view('huawu.work.list', $reDataArr);
     }
 
@@ -48,6 +50,7 @@ class WorkController extends WorksController
     {
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
+        $reDataArr['status'] =  CompanyWork::$status_arr;
         return view('huawu.work.history', $reDataArr);
     }
 
@@ -62,6 +65,7 @@ class WorkController extends WorksController
     {
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
+        $reDataArr['status'] =  CompanyWork::$status_arr;
         return view('huawu.work.hot', $reDataArr);
     }
 
@@ -76,6 +80,7 @@ class WorkController extends WorksController
     {
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
+        $reDataArr['status'] =  CompanyWork::$status_arr;
         return view('huawu.work.re_list', $reDataArr);
     }
 
@@ -174,5 +179,30 @@ class WorkController extends WorksController
         $resultDatas = CompanyWork::saveById($request, $this, $saveData, $id);
         return ajaxDataArr(1, $resultDatas, '');
     }
+
+    /**
+     * ajax获得列表数据
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function ajax_alist(Request $request){
+        $this->InitParams($request);
+        return  CompanyWork::getList($request, $this, 2 + 4);
+    }
+
+    /**
+     * 子帐号管理-删除
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+//    public function ajax_del(Request $request)
+//    {
+//        $this->InitParams($request);
+//        return CompanyWork::delAjax($request, $this);
+//    }
 
 }

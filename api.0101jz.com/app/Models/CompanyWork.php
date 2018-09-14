@@ -13,6 +13,45 @@ class CompanyWork extends BaseModel
      */
     protected $table = 'company_work';
 
+    // 性别
+    protected $sex_arr = [
+        '0' => '未知',
+        '1' => '男',
+        '2' => '女',
+    ];
+
+    // 状态 0新工单2待反馈工单[处理中];4待回访工单;8已完成工单
+    protected $status_arr = [
+        '0' => '新工单',
+        '2' => '处理中',
+        '4' => '待回访',
+        '8' => '已完成',
+    ];
+
+    // 表里没有的字段
+    protected $appends = ['status_text', 'sex_text'];
+
+    /**
+     * 获取状态文字
+     *
+     * @return string
+     */
+    public function getStatusTextAttribute()
+    {
+        return $this->status_arr[$this->status] ?? '';
+    }
+
+    /**
+     * 获取性别文字
+     *
+     * @return string
+     */
+    public function getSexTextAttribute()
+    {
+        return $this->sex_arr[$this->sex] ?? '';
+    }
+
+
     /**
      * 获取工单对应的业务分类[第一级分类]--一维
      */
@@ -68,6 +107,30 @@ class CompanyWork extends BaseModel
     public function workTag()
     {
         return $this->belongsTo('App\Models\CompanyServiceTags', 'tag_id', 'id');
+    }
+
+    /**
+     * 获取工单对应的历史员工[添加者]--一维
+     */
+    public function workHistoryStaffCreate()
+    {
+        return $this->belongsTo('App\Models\CompanyStaffHistory', 'operate_staff_history_id', 'id');
+    }
+
+    /**
+     * 获取工单对应的历史员工[添加者]--一维
+     */
+    public function workHistoryStaffSend()
+    {
+        return $this->belongsTo('App\Models\CompanyStaffHistory', 'send_staff_history_id', 'id');
+    }
+
+    /**
+     * 获取工单对应的客户--一维
+     */
+    public function workCustomer()
+    {
+        return $this->belongsTo('App\Models\CompanyCustomer', 'customer_id', 'id');
     }
 
     /**

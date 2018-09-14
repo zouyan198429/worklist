@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\weixiu;
+namespace App\Http\Controllers\m;
 
 use App\Business\CompanyWork;
 use App\Http\Controllers\WorksController;
@@ -16,13 +16,13 @@ class WorkController extends WorksController
      * @return mixed
      * @author zouyan(305463219@qq.com)
      */
-    public function list(Request $request)
-    {
-        $this->InitParams($request);
-        $reDataArr = $this->reDataArr;
-        $reDataArr['status'] =  CompanyWork::$status_arr;
-        return view('weixiu.work.list', $reDataArr);
-    }
+//    public function list(Request $request)
+//    {
+//        $this->InitParams($request);
+//        $reDataArr = $this->reDataArr;
+//        $reDataArr['status'] =  CompanyWork::$status_arr;
+//        return view('m.work.list', $reDataArr);
+//    }
 
     /**
      * ajax获得列表数据

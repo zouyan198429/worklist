@@ -5,7 +5,12 @@
 
     <%for(var i = 0; i<data_list.length;i++){
     var item = data_list[i];
+    {{--var account_status = item.account_status; --}}
+    {{--var can_modify = false; --}}
+    {{--//&& (item.supplier_status & (1+8))>0--}}
+    {{--if( item.issuper==0 ){--}}
     can_modify = false;
+    {{--}--}}
     %>
 
     <tr>

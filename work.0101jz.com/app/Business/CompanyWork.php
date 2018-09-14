@@ -2,6 +2,7 @@
 // 工单
 namespace App\Business;
 
+use App\Services\Common;
 use App\Services\CommonBusiness;
 use App\Services\HttpRequest;
 use Illuminate\Http\Request;
@@ -13,6 +14,14 @@ use App\Http\Controllers\BaseController as Controller;
 class CompanyWork extends BaseBusiness
 {
     protected static $model_name = 'CompanyWork';
+
+    // 状态 0新工单2待反馈工单[处理中];4待回访工单;8已完成工单
+    public static  $status_arr = [
+        '0' => '新工单',
+        '2' => '处理中',
+        '4' => '待回访',
+        '8' => '已完成',
+    ];
 
     /**
      * 获得列表数据--所有数据
@@ -41,18 +50,41 @@ class CompanyWork extends BaseBusiness
 //            'orderBy' => ['sort_num'=>'desc','id'=>'desc'],
             'orderBy' => ['id'=>'desc'],
         ];// 查询条件参数
+        $status = Common::get($request, 'status');
+        $field = Common::get($request, 'field');
+        $keyWord = Common::get($request, 'keyWord');
+
+        if(!empty($status)){
+            array_push($queryParams['where'],['status', $status]);
+        }
+
+        if(!empty($field) && !empty($keyWord)){
+            array_push($queryParams['where'],[$field, 'like' , '%' . $keyWord . '%']);
+        }
         // $relations = ['CompanyInfo'];// 关系
-        $relations = '';//['CompanyInfo'];// 关系
+        $relations = ['workHistoryStaffCreate', 'workHistoryStaffSend','workCustomer'];//['CompanyInfo'];// 关系
         $result = self::getBaseListData($request, $controller, self::$model_name, $queryParams,$relations , $oprateBit, $notLog);
 
         // 格式化数据
-//        $data_list = $result['data_list'] ?? [];
-//        foreach($data_list as $k => $v){
-//            // 公司名称
-//            $data_list[$k]['company_name'] = $v['company_info']['company_name'] ?? '';
-//            if(isset($data_list[$k]['company_info'])) unset($data_list[$k]['company_info']);
-//        }
-//        $result['data_list'] = $data_list;
+        $data_list = $result['data_list'] ?? [];
+        foreach($data_list as $k => $v){
+            // 去掉内容
+            if(isset($data_list[$k]['content'])) unset($data_list[$k]['content']);
+
+            // 添加员工名称
+            $data_list[$k]['real_name'] = ($v['work_history_staff_create']['real_name'] ?? '') . '[' .  ($v['work_history_staff_create']['work_num'] ?? '') . ']';
+            if(isset($data_list[$k]['work_history_staff_create'])) unset($data_list[$k]['work_history_staff_create']);
+            // 指派员工名称
+            $data_list[$k]['send_real_name'] = ($v['work_history_staff_send']['real_name'] ?? '') . '[' .  ($v['work_history_staff_send']['work_num'] ?? '') . ']';
+            if(isset($data_list[$k]['work_history_staff_send'])) unset($data_list[$k]['work_history_staff_send']);
+
+            // 最后来电时间
+            $data_list[$k]['last_call_date'] = $v['work_customer']['last_call_date'] ?? '' ;
+            $data_list[$k]['call_num'] = $v['work_customer']['call_num'] ?? '' ;
+            if(isset($data_list[$k]['work_customer'])) unset($data_list[$k]['work_customer']);
+
+        }
+        $result['data_list'] = $data_list;
         return ajaxDataArr(1, $result, '');
     }
 

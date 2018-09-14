@@ -13,6 +13,26 @@ class CompanyCustomer extends BaseModel
      */
     protected $table = 'company_customer';
 
+    // 性别
+    protected $sex_arr = [
+        '0' => '未知',
+        '1' => '男',
+        '2' => '女',
+    ];
+
+    // 表里没有的字段
+    protected $appends = ['sex_text'];
+
+    /**
+     * 获取性别文字
+     *
+     * @return string
+     */
+    public function getSexTextAttribute()
+    {
+        return $this->sex_arr[$this->sex] ?? '';
+    }
+
     /**
      * 获取客户对应的类型 --一维
      */

@@ -247,6 +247,35 @@ class CompanyWorkController extends CompController
         $save_data['second_num'] = $second_num;
         $save_data['expiry_time']  = Carbon::now()->addMinute($second_num);
 
+        //客户类型[分类一级]
+        $type_id = $save_data['type_id'] ?? 0;
+        Common::judgeInitParams($request, 'type_id', $type_id);
+        $customerTypeObj = CompanyCustomerType::select(['id', 'type_name'])->find($type_id);
+        if(empty($customerTypeObj)){
+            throws("没有客户类型信息");
+        }
+        $save_data['customer_type_name'] = $customerTypeObj->type_name ?? '';
+
+
+        //县/区id[分类一级]
+        $city_id = $save_data['city_id'] ?? 0;
+        Common::judgeInitParams($request, 'city_id', $city_id);
+        $cityObj = CompanyArea::select(['id', 'area_name'])->find($city_id);
+        if(empty($cityObj)){
+            throws("没有区/县信息");
+        }
+        $save_data['city_name'] = $cityObj->area_name ?? '';
+
+        //街道id[分类二级]
+        $area_id = $save_data['area_id'] ?? 0;
+        Common::judgeInitParams($request, 'area_id', $area_id);
+        $areaObj = CompanyWorkType::select(['id', 'area_name'])->find($area_id);
+        if(empty($areaObj)){
+            throws("没有街道信息");
+        }
+        $save_data['area_name'] = $areaObj->area_name ?? '';
+
+
         //业务分类id[分类一级]
         $work_type_id = $save_data['work_type_id'] ?? 0;
         Common::judgeInitParams($request, 'work_type_id', $work_type_id);
