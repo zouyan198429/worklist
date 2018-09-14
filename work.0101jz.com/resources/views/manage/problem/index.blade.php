@@ -104,7 +104,7 @@
 		</table>
 		<div class="mmfoot">
 			<div class="mmfleft"></div>
-			<div class="mmfright pagination">
+			<div class=" pagination">
 				{{--<a href="" class="on" > - </a>--}}
 				{{--<a href="" > 1 </a>--}}
 				{{--<a href=""> 2 </a>--}}
@@ -156,6 +156,15 @@
                   {{--<span class="lbl"></span>--}}
                 {{--</label>--}}
 			{{--</td>--}}
+		<td><%=item.type_name%></td>
+		<td><%=item.content%></td>
+		<td><%=item.call_number%></td>
+		<td><%=item.city_name%><%=item.area_name%><%=item.address%></td>
+		<td><%=item.customer_name%></td>
+		<td><%=item.call_number%></td>
+		<td><%=item.created_at%></td>
+		<td><a href="{{url('manage/problem/return_send')}}/<%=item.id%>" class="btn btn-mini" >回复</a></td>
+	</tr> <%}%>
 </script>
 <!-- 列表模板部分 结束-->
 <!-- 前端模板结束 -->
