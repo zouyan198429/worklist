@@ -231,6 +231,10 @@ Route::any('m/work_type/ajax_get_child', 'm\WorkTypeController@ajax_get_child');
 // 系统模块
 Route::any('m/system_module/ajax_get_child', 'm\SystemModuleController@ajax_get_child');// 获得子类部门数组[kv一维数组]
 
+//问题
+Route::any('m/problem/ajax_gettype', 'm\ProblemController@ajax_gettype');//ajax获得二级分类（类型）数据
+Route::any('m/problem/ajax_getarea', 'm\ProblemController@ajax_getarea');//ajax获得二级地址数据
+Route::any('m/problem/ajax_problem_add', 'm\ProblemController@ajax_problem_add');//ajax获得二级地址数据
 
 
 
