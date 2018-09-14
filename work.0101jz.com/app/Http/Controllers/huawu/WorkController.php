@@ -90,6 +90,7 @@ class WorkController extends WorksController
     public function add(Request $request,$id = 0)
     {
         $this->InitParams($request);
+
         $reDataArr = $this->reDataArr;
         $resultDatas = [
             'id'=>$id,

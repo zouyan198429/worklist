@@ -194,7 +194,7 @@ Route::get('huawu/lore/info', 'huawu\LoreController@info');//know_view.html 在�
 //工单
 Route::get('huawu/work', 'huawu\WorkController@index');//m_work_monitor.html 工单管理
 Route::get('huawu/work/list', 'huawu\WorkController@list');///Repair_list.html 我的工单///
-Route::get('huawu/work/add', 'huawu\WorkController@add');//work_add.html 我的客户-增加工单
+Route::get('huawu/work/add/{id}', 'huawu\WorkController@add');//work_add.html 我的客户-增加工单
 Route::get('huawu/work/history', 'huawu\WorkController@history');//work_history.html 工单-历史
 Route::get('huawu/work/hot', 'huawu\WorkController@hot');//work_hot.html 工单- 热点
 Route::get('huawu/work/re_list', 'huawu\WorkController@re_list');//work_Return.html  工单- 重新指派

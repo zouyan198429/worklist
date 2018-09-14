@@ -314,7 +314,7 @@ class CompanyWorkController extends CompController
         $call_number = $save_data['call_number'] ?? '';
         // 获得客户信息:没有新建，有则更新来电次数
         $customer = [
-            'company_id' => $save_data['company_id'] ?? '',
+            'company_id' => $company_id,// $save_data['company_id'] ?? '',
             'call_number' => $save_data['call_number'] ?? '',// 来电号码
             'type_id' => $save_data['type_id'] ?? '',// 客户类别id
             'customer_name' => $save_data['customer_name'] ?? '',// 客户姓名
@@ -340,9 +340,11 @@ class CompanyWorkController extends CompController
         $customer_id = $customerObj->id;
         $save_data['customer_id'] = $customer_id;
 
-         // 来电次数加1
-        $customerObj->call_num++;
-        $customerObj->save();
+         // 来电次数加1;;修改也算
+        //if($work_id <=0 ){
+            $customerObj->call_num++;
+            $customerObj->save();
+        //}
 
         // 判断版本号是否要+1
 

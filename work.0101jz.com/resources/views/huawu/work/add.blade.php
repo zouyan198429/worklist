@@ -20,7 +20,7 @@
 							<option value="{{ $k }}"  @if(isset($caller_type_id) && $caller_type_id == $k) selected @endif >{{ $txt }}</option>
 						@endforeach
 					</select>
-					<input type="number" class="inp wnormal" name="call_number" value="" placeholder="来电号码" autofocus  required />
+					<input type="number" class="inp wnormal" name="call_number" value="{{ $call_number or '' }}" placeholder="来电号码" autofocus  required />
 				</td>
 			</tr>
 
@@ -31,7 +31,7 @@
 					<select class="wnormal" name="work_type_id">
 						<option value="">请选择业务类型</option>
 						@foreach ($workFirstList as $k=>$txt)
-							<option value="{{ $k }}"  @if(isset($type_id) && $type_id == $k) selected @endif >{{ $txt }}</option>
+							<option value="{{ $k }}"  @if(isset($work_type_id) && $work_type_id == $k) selected @endif >{{ $txt }}</option>
 						@endforeach
 					</select>
 					<select class="wnormal" name="business_id">
@@ -50,7 +50,7 @@
 				<th> </th>
 				<td>
 					@foreach ($serviceTagList as $k=>$txt)
-						<a class="tags"><label><input type="radio" name="tag_id" value="{{ $k }}">{{ $txt }} </label></a>
+						<a class="tags"><label><input type="radio" name="tag_id" value="{{ $k }}"  @if(isset($tag_id) && $tag_id == $k) checked="checked"  @endif>{{ $txt }} </label></a>
 					@endforeach
 
 				</td>
@@ -188,7 +188,10 @@
 
                 // 当前的员工
                 @if (isset($send_group_id) && $send_group_id >0 )
-                    changeFirstSel(REL_CHANGE.staff_department,SEND_GROUP_ID,SEND_STAFF_ID, false);
+					var send_department_id = $('select[name=send_department_id]').val();
+					var tem_config = REL_CHANGE.staff_department;
+					tem_config.other_params = {'department_id':send_department_id};
+                    changeFirstSel(tem_config,SEND_GROUP_ID,SEND_STAFF_ID, false);
                 @endif
             @endif
 
