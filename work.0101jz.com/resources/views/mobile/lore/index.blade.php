@@ -11,15 +11,12 @@
 		<div id="header">
 			<div class="top-title">学习中心</div>
 		</div>
-		<section class="main" id="study" >
-
-
-
-			<div class="hd tab">
+		<div class="tab">
 				<a href="work_monitor.html" class="on">全部</a>
 				<a href="#">产品营销</a>
 				<a href="#">技术文档</a>
-			</div>
+		</div>
+		<section class="main" id="study" >
 			<ul class="listtext">
 				<li>
 					<a href="{{ url('m/lore/info') }}" >
@@ -156,20 +153,19 @@
 						<div class="view"><i class="fa fa-eye fa-fw" aria-hidden="true"></i> 123</div>
 					</a>
 				</li>
-				</tbody>
-				</table>
-				<div class="mmfoot">
-					<div class="mmfleft"></div>
-					<div class="mmfright pages">
-						<a href="" class="on" > < </a>
-						<a href="" > 1 </a>
-						<a href="" > 2 </a>
-						<a href=""> 3 </a>
-						<a href=""> 4 </a>
-						<a href=""> 5 </a>
-						<a href=""> > </a>
-					</div>
+			</ul>				
 		</section>
+		<div class="fd">
+				<div class="pages">
+					<a href="" class="on" > < </a> 
+					<a href="" > 1 </a> 
+					<a href="" > 2 </a> 
+					<a href=""> 3 </a> 
+					<a href=""> 4 </a> 
+					<a href=""> 5 </a> 
+					<a href=""> > </a> 
+				</div>
+		</div>
 		@include('mobile.layout_public.menu', ['menu_id' => 2])
 
 

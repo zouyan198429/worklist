@@ -22,7 +22,9 @@
 				<li><button type="submit" id="submitBtn"  {{-- onClick="window.open('{{ url('m') }}')" --}} >登录</button></li>
 			</ul>
 	</section>
-	</form>
+	</form> 
+
+
  
 </div>
 </body>
