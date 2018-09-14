@@ -6,7 +6,7 @@
                 <a href="{{ url('huawu') }}"><i class="fa fa-home fa-fw" aria-hidden="true"></i> 首页</a>
             </li>
             <li>
-                <a href="{{ url('huawu/work/add') }}">
+                <a href="{{ url('huawu/work/add/0') }}">
                     <i class="fa fa-phone-square fa-fw" aria-hidden="true"></i>
                     <span>来电记录</span>
                     <small class="label pull-right label-info">HOT</small>
