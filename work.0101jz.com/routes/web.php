@@ -94,6 +94,7 @@ Route::get('admin/work_type', 'admin\WorkTypeController@index');//class_order.ht
 Route::get('admin/work_type/add/{id}', 'admin\WorkTypeController@add');// 工单分类--添加
 
 Route::get('admin/work', 'admin\WorkController@index');//work_monitor.html 工单管理
+Route::get('admin/work/info/{id}', 'admin\WorkController@info');//work_add.html 工单--详情
 
 //统计
 Route::get('admin/count_call', 'admin\CountCallController@index');//count_call.html  来电统计//
@@ -155,6 +156,7 @@ Route::get('manage/staff/add/{id}', 'manage\StaffController@add');//m_staff_add.
 //工单
 Route::get('manage/work', 'manage\WorkController@index');//m_work_monitor.html 工单管理
 Route::get('manage/work/list', 'manage\WorkController@list');//Repair_list.html 我的工单
+Route::get('manage/work/info/{id}', 'manage\WorkController@info');//work_add.html 工单--详情
 //考次试卷
 Route::get('manage/exam/add', 'manage\ExamController@add');//x_examination_add.html 试题添加
 Route::get('manage/exam', 'manage\ExamController@index');//x_examination_list.html 试题管理
@@ -193,11 +195,12 @@ Route::get('huawu/lore', 'huawu\LoreController@index');//study.html 在线学习
 Route::get('huawu/lore/info', 'huawu\LoreController@info');//know_view.html 在线学习
 //工单
 Route::get('huawu/work', 'huawu\WorkController@index');//m_work_monitor.html 工单管理
-Route::get('huawu/work/list', 'huawu\WorkController@list');///Repair_list.html 我的工单///
+Route::get('huawu/work/list', 'huawu\WorkController@list');///Repair_list.html 我的工单
 Route::get('huawu/work/add/{id}', 'huawu\WorkController@add');//work_add.html 我的客户-增加工单
 Route::get('huawu/work/history', 'huawu\WorkController@history');//work_history.html 工单-历史
 Route::get('huawu/work/hot', 'huawu\WorkController@hot');//work_hot.html 工单- 热点
 Route::get('huawu/work/re_list', 'huawu\WorkController@re_list');//work_Return.html  工单- 重新指派
+Route::get('huawu/work/info/{id}', 'huawu\WorkController@info');//work_add.html 工单--详情
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -220,6 +223,7 @@ Route::get('weixiu/exam/win', 'weixiu\ExamController@win');//examin_over.html �
 Route::get('weixiu/problem/add', 'weixiu\ProblemController@add');//feedback.html 在线反馈
 //工单
 Route::get('weixiu/work/list', 'weixiu\WorkController@list');///Repair_list.html  我的工单
+Route::get('weixiu/work/info/{id}', 'weixiu\WorkController@info');//work_add.html 工单--详情
 //学习
 Route::get('weixiu/lore', 'weixiu\LoreController@index');//study.html 在线学习
 Route::get('weixiu/lore/info', 'weixiu\LoreController@info');//know_view.html 在线学习

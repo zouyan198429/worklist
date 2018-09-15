@@ -16,14 +16,14 @@
     <tr>
         <td><%=item.work_num%></td>
         <td><%=item.created_at%></td>
-        <td><%=item.real_name%></td>
-        <td><%=item.send_real_name%></td>
         <td><%=item.time_name%></td>
-        <td><%=item.status_text%>剩余1小时12分</td>
+        <td> </td>
         <td><a href="tel:<%=item.call_number%>" class="btn" ><%=item.call_number%> <i class="fa fa-phone-square fa-fw" aria-hidden="true"></i> </a></td>
         <td><%=item.customer_name%>(<%=item.sex_text%>)</td>
         <td><%=item.customer_type_name%></td>
         <td><%=item.city_name%>/<%=item.area_name%></td>
+        <td><%=item.call_num%></td>
+        <td><%=item.last_call_date%></td>
         <td>
             <%if( true){%>
             <a href="javascript:void(0);" class="btn btn-mini btn-success"  onclick="action.show(<%=item.id%>)">
@@ -38,7 +38,6 @@
                 <i class="ace-icon fa fa-trash-o bigger-60"> 删除</i>
             </a>
             <%}%>
-
         </td>
     </tr>
     <%}%>

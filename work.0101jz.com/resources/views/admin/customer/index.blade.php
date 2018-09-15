@@ -65,13 +65,14 @@
 <script type="text/javascript">
 	var OPERATE_TYPE = <?php echo isset($operate_type)?$operate_type:0; ?>;
 	const AJAX_URL = "{{ url('api/admin/customer/ajax_alist') }}";//ajax请求的url
-	const ADD_URL = ""; // {{ url('manage/staff/add/0') }} //添加url
-	const SHOW_URL = "";//{{url('accounts/info/')}}/ //显示页面地址前缀 + id
-	const EDIT_URL = "";//{{url('manage/staff/add/')}}/  //修改页面地址前缀 + id
-	const DEL_URL = "";  //{{ url('api/manage/problem/ajax_del') }}  //删除页面地址
-	const BATCH_DEL_URL = ""; //{{ url('api/manage/staff/ajax_del') }}  //批量删除页面地址
-	const EXPORT_EXCEL_URL = ""; //{{ url('manage/staff/add/0') }}  "{{ url('api/manage/staff/export') }}";//导出EXCEL地址
-	const IMPORT_EXCEL_URL = ""; //{{ url('manage/staff/add/0') }}"{{ url('api/manage/staff/import') }}";//导入EXCEL地址
+	const ADD_URL = ""; // {{ url('admin/customer/add/0') }} //添加url
+	const SHOW_URL = "";//{{url('admin/customer/info/')}}/ //显示页面地址前缀 + id
+    const SHOW_URL_TITLE = "" ;// 详情弹窗显示提示
+	const EDIT_URL = "";//{{url('admin/customer/add/')}}/  //修改页面地址前缀 + id
+	const DEL_URL = "";  //{{ url('api/admin/customer/ajax_del') }}  //删除页面地址
+	const BATCH_DEL_URL = ""; //{{ url('api/admin/customer/ajax_del') }}  //批量删除页面地址
+	const EXPORT_EXCEL_URL = ""; //{{ url('admin/customer/add/0') }}  "{{ url('api/admin/customer/export') }}";//导出EXCEL地址
+	const IMPORT_EXCEL_URL = ""; //{{ url('admin/customer/add/0') }}"{{ url('api/admin/customer/import') }}";//导入EXCEL地址
 
 </script>
 <script src="{{asset('js/common/list.js')}}"></script>

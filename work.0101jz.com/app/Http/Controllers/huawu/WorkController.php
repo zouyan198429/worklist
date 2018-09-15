@@ -103,7 +103,7 @@ class WorkController extends WorksController
         ];
 
         if ($id > 0) { // 获得详情数据
-            $resultDatas = CompanyWork::getInfoData($request, $this, $id);
+            $resultDatas = CompanyWork::getInfoData($request, $this, $id, '');
             $content = $resultDatas['content'] ?? '';
             $resultDatas['content'] = replace_enter_char($content,2);
         }
@@ -112,6 +112,34 @@ class WorkController extends WorksController
         $arrList = CompanyWork::addInitData( $request, $this);
         $reDataArr = array_merge($reDataArr, $arrList);
         return view('huawu.work.add', $reDataArr);
+    }
+
+    /**
+     * 详情
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function info(Request $request,$id = 0)
+    {
+        $this->InitParams($request);
+
+        $reDataArr = $this->reDataArr;
+        $resultDatas = [
+            'id'=>$id,
+            'department_id' => 0,
+        ];
+
+        if ($id > 0) { // 获得详情数据
+            $relations = ['workHistoryStaffCreate', 'workHistoryStaffSend'];
+            $resultDatas = CompanyWork::getInfoData($request, $this, $id, $relations);
+        }
+        $reDataArr = array_merge($reDataArr, $resultDatas);
+        // 初始化数据
+        $arrList = CompanyWork::addInitData( $request, $this);
+        $reDataArr = array_merge($reDataArr, $arrList);
+        return view('huawu.work.info', $reDataArr);
     }
 
     /**

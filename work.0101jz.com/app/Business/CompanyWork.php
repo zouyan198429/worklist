@@ -17,7 +17,7 @@ class CompanyWork extends BaseBusiness
 
     // 状态 0新工单2待反馈工单[处理中];4待回访工单;8已完成工单
     public static  $status_arr = [
-        '0' => '新工单',
+       // '0' => '新工单',
         '2' => '处理中',
         '4' => '待回访',
         '8' => '已完成',
@@ -108,12 +108,13 @@ class CompanyWork extends BaseBusiness
      * @param Request $request 请求信息
      * @param Controller $controller 控制对象
      * @param int $id id
+     * @param mixed $relations 关系
      * @return  array 单条数据 - -维数组
      * @author zouyan(305463219@qq.com)
      */
-    public static function getInfoData(Request $request, Controller $controller, $id){
+    public static function getInfoData(Request $request, Controller $controller, $id, $relations = ''){
         $company_id = $controller->company_id;
-        $relations = '';
+        // $relations = '';
         $resultDatas = CommonBusiness::getinfoApi(self::$model_name, $relations, $company_id , $id);
         // $resultDatas = self::getInfoDataBase($request, $controller, self::$model_name, $id, $relations);
         // 判断权限

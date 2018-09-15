@@ -24,6 +24,34 @@ class WorkController extends AdminController
     }
 
     /**
+     * 详情
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function info(Request $request,$id = 0)
+    {
+        $this->InitParams($request);
+
+        $reDataArr = $this->reDataArr;
+        $resultDatas = [
+            'id'=>$id,
+            'department_id' => 0,
+        ];
+
+        if ($id > 0) { // 获得详情数据
+            $relations = ['workHistoryStaffCreate', 'workHistoryStaffSend'];
+            $resultDatas = CompanyWork::getInfoData($request, $this, $id, $relations);
+        }
+        $reDataArr = array_merge($reDataArr, $resultDatas);
+        // 初始化数据
+        $arrList = CompanyWork::addInitData( $request, $this);
+        $reDataArr = array_merge($reDataArr, $arrList);
+        return view('admin.work.info', $reDataArr);
+    }
+
+    /**
      * ajax获得列表数据
      *
      * @param Request $request

@@ -12,14 +12,14 @@
 	document.write("    <tr>");
 	document.write("        <td><%=item.work_num%><\/td>");
 	document.write("        <td><%=item.created_at%><\/td>");
-	document.write("        <td><%=item.real_name%><\/td>");
-	document.write("        <td><%=item.send_real_name%><\/td>");
 	document.write("        <td><%=item.time_name%><\/td>");
-	document.write("        <td><%=item.status_text%>剩余1小时12分<\/td>");
+	document.write("        <td> <\/td>");
 	document.write("        <td><a href=\"tel:<%=item.call_number%>\" class=\"btn\" ><%=item.call_number%> <i class=\"fa fa-phone-square fa-fw\" aria-hidden=\"true\"><\/i> <\/a><\/td>");
 	document.write("        <td><%=item.customer_name%>(<%=item.sex_text%>)<\/td>");
 	document.write("        <td><%=item.customer_type_name%><\/td>");
 	document.write("        <td><%=item.city_name%>\/<%=item.area_name%><\/td>");
+	document.write("        <td><%=item.call_num%><\/td>");
+	document.write("        <td><%=item.last_call_date%><\/td>");
 	document.write("        <td>");
 	document.write("            <%if( true){%>");
 	document.write("            <a href=\"javascript:void(0);\" class=\"btn btn-mini btn-success\"  onclick=\"action.show(<%=item.id%>)\">");
@@ -34,7 +34,6 @@
 	document.write("                <i class=\"ace-icon fa fa-trash-o bigger-60\"> 删除<\/i>");
 	document.write("            <\/a>");
 	document.write("            <%}%>");
-	document.write("");
 	document.write("        <\/td>");
 	document.write("    <\/tr>");
 	document.write("    <%}%>");

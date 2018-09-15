@@ -66,7 +66,8 @@
         var OPERATE_TYPE = <?php echo isset($operate_type)?$operate_type:0; ?>;
         const AJAX_URL = "{{ url('api/manage/staff/ajax_alist') }}";//ajax请求的url
         const ADD_URL = "{{ url('manage/staff/add/0') }}"; //添加url
-        const SHOW_URL = "{{url('accounts/info/')}}/";//显示页面地址前缀 + id
+        const SHOW_URL = "{{url('manage/staff/info/')}}/";//显示页面地址前缀 + id
+        const SHOW_URL_TITLE = "" ;// 详情弹窗显示提示
         const EDIT_URL = "{{url('manage/staff/add/')}}/";//修改页面地址前缀 + id
         const DEL_URL = "{{ url('api/manage/staff/ajax_del') }}";//删除页面地址
         const BATCH_DEL_URL = "{{ url('api/manage/staff/ajax_del') }}";//批量删除页面地址

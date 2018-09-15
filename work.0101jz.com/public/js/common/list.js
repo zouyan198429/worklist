@@ -56,11 +56,12 @@ var action = {
         return false;
     },
     show : function(id){
-        go(SHOW_URL + id);
-        //location.href='/pms/Supplier/show?supplier_id='+id;
-        //var weburl = '/pms/Supplier/show?supplier_id='+id+"&operate_type=1";
-        //var tishi = "查看供应商";
-        //layeriframe(weburl,tishi,950,600,0);
+        // go(SHOW_URL + id);
+        // location.href='/pms/Supplier/show?supplier_id='+id;
+        var weburl = SHOW_URL + id;
+        // var weburl = '/pms/Supplier/show?supplier_id='+id+"&operate_type=1";
+        var tishi = SHOW_URL_TITLE;//"查看供应商";
+        layeriframe(weburl,tishi,950,600,0);
         return false;
     },
     edit : function(id){

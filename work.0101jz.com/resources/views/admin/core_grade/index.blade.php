@@ -39,6 +39,7 @@
         const AJAX_URL = "{{ url('api/admin/core_grade/ajax_alist') }}";//ajax请求的url
         const ADD_URL = "{{ url('admin/core_grade/add/0') }}"; //添加url
         const SHOW_URL = "";// {{url('core_grade/info/')}}/";//显示页面地址前缀 + id
+        const SHOW_URL_TITLE = "" ;// 详情弹窗显示提示
         const EDIT_URL = "{{url('admin/core_grade/add/')}}/";//修改页面地址前缀 + id
         const DEL_URL = "{{ url('api/admin/core_grade/ajax_del') }}";//删除页面地址
         const BATCH_DEL_URL = "";// {{ url('api/manage/core_grade/ajax_del') }}";//批量删除页面地址

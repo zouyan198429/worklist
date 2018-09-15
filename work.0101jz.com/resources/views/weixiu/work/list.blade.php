@@ -137,7 +137,8 @@
         var OPERATE_TYPE = <?php echo isset($operate_type)?$operate_type:0; ?>;
         const AJAX_URL = "{{ url('api/weixiu/work/ajax_alist') }}";//ajax请求的url
         const ADD_URL = "{{ url('weixiu/work/add/0') }}"; //添加url
-        const SHOW_URL = "{{url('accounts/info/')}}/";//显示页面地址前缀 + id
+        const SHOW_URL = "{{url('weixiu/work/info/')}}/";//显示页面地址前缀 + id
+		const SHOW_URL_TITLE = "工单详情" ;// 详情弹窗显示提示
         const EDIT_URL = "{{url('weixiu/work/add/')}}/";//修改页面地址前缀 + id
         const DEL_URL = "{{ url('api/weixiu/work/ajax_del') }}";//删除页面地址
         const BATCH_DEL_URL = "{{ url('api/weixiu/work/ajax_del') }}";//批量删除页面地址
@@ -147,50 +148,5 @@
 	</script>
 	<script src="{{asset('js/common/list.js')}}"></script>
 
-	<!-- 前端模板部分 -->
-	<!-- 列表模板部分 开始  <! -- 模板中可以用HTML注释 -- >  或  <%* 这是模板自带注释格式 *%>-->
-	<script type="text/template"  id="baidu_template_data_list">
-
-		<%for(var i = 0; i<data_list.length;i++){
-		var item = data_list[i];
-		{{--var account_status = item.account_status; --}}
-		{{--var can_modify = false; --}}
-		{{--//&& (item.supplier_status & (1+8))>0--}}
-		{{--if( item.issuper==0 ){--}}
-		can_modify = false;
-		{{--}--}}
-		%>
-
-		<tr>
-			<td><%=item.work_num%></td>
-			<td><%=item.created_at%></td>
-			<td><%=item.time_name%></td>
-			<td> </td>
-			<td><a href="tel:<%=item.call_number%>" class="btn" ><%=item.call_number%> <i class="fa fa-phone-square fa-fw" aria-hidden="true"></i> </a></td>
-			<td><%=item.customer_name%>(<%=item.sex_text%>)</td>
-			<td><%=item.customer_type_name%></td>
-			<td><%=item.city_name%>/<%=item.area_name%></td>
-			<td><%=item.call_num%></td>
-			<td><%=item.last_call_date%></td>
-			<td>
-            <%if( true){%>
-            <a href="javascript:void(0);" class="btn btn-mini btn-success"  onclick="action.show(<%=item.id%>)">
-                <i class="ace-icon fa fa-check bigger-60"> 查看</i>
-            </a>
-            <%}%>
-            <%if( can_modify){%>
-            <a href="javascript:void(0);" class="btn btn-mini btn-info" onclick="action.edit(<%=item.id%>)">
-                <i class="ace-icon fa fa-pencil bigger-60"> 编辑</i>
-            </a>
-            <a href="javascript:void(0);" class="btn btn-mini btn-info" onclick="action.del(<%=item.id%>)">
-                <i class="ace-icon fa fa-trash-o bigger-60"> 删除</i>
-            </a>
-            <%}%>
-			</td>
-		</tr>
-    <%}%>
-</script>
-<!-- 列表模板部分 结束-->
-<!-- 前端模板结束 -->
-	{{--<script src="{{ asset('js/weixiu/lanmu/work.js') }}"  type="text/javascript"></script>--}}
+	<script src="{{ asset('js/weixiu/lanmu/work.js') }}"  type="text/javascript"></script>
 @endpush
