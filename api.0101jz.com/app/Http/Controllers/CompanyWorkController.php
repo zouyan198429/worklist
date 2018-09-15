@@ -222,6 +222,7 @@ class CompanyWorkController extends CompController
     public function add_save(Request $request)
     {
         $this->InitParams($request);
+        $currentNow = Carbon::now();
         $company_id = $this->company_id;
         $work_id = Common::getInt($request, 'id');
         $staff_id = Common::getInt($request, 'staff_id');// 操作员工
@@ -269,7 +270,7 @@ class CompanyWorkController extends CompController
         //街道id[分类二级]
         $area_id = $save_data['area_id'] ?? 0;
         Common::judgeInitParams($request, 'area_id', $area_id);
-        $areaObj = CompanyWorkType::select(['id', 'area_name'])->find($area_id);
+        $areaObj = CompanyArea::select(['id', 'area_name'])->find($area_id);
         if(empty($areaObj)){
             throws("没有街道信息");
         }
@@ -303,8 +304,36 @@ class CompanyWorkController extends CompController
         }
         $save_data['caller_type_name'] = $workCallerTypeObj->type_name ?? '';
 
+        // 部门名称
+        $send_department_name = '';
+        $send_department_id = $save_data['send_department_id'] ?? 0;
+        if($send_department_id > 0){
+            // Common::judgeInitParams($request, 'send_department_id', $send_department_id);
+            $departmentObj = CompanyDepartment::select(['id', 'department_name'])->find($send_department_id);
+            if(empty($departmentObj)){
+                throws("没有部门信息");
+            }
+            $send_department_name = $departmentObj->department_name ?? '';
+        }
+        $save_data['send_department_name'] = $send_department_name;
+
+        // 小组名称
+        $send_group_name = '';
+        $send_group_id = $save_data['send_group_id'] ?? 0;
+        if($send_group_id > 0){
+            // Common::judgeInitParams($request, 'send_group_id', $send_group_id);
+            $groupObj = CompanyDepartment::select(['id', 'department_name'])->find($send_group_id);
+            if(empty($groupObj)){
+                throws("没有小组信息");
+            }
+            $send_group_name = $groupObj->department_name ?? '';
+        }
+        $save_data['send_group_name'] = $send_group_name;
+
+
         // 获得员工历史记录id-- 工单接收员工
         $send_staff_id = $save_data['send_staff_id'] ?? 0;
+        $save_data['status'] = 0; // 默认状态
         if($send_staff_id > 0){ // 指定了员工
             $sendStaffObj = null;
             Common::getObjByModelName("CompanyStaff", $sendStaffObj);
@@ -419,6 +448,60 @@ class CompanyWorkController extends CompController
             'id' => $work_id,
         ];
         Common::updateOrCreate($workObj, $workSearchConditon, $save_data );
+
+        // 工单派发记录
+        $workSends = [
+            'company_id' => $workObj->company_id,
+            'work_id' => $workObj->id,
+            'work_status' => $workObj->status,
+            'send_department_id' => $workObj->send_department_id,
+            'send_department_name' => $workObj->send_department_name,
+            'send_group_id' => $workObj->send_group_id,
+            'send_group_name' => $workObj->send_group_name,
+            'send_staff_id' => $workObj->send_staff_id,
+            'send_staff_history_id' => $workObj->send_staff_history_id,
+            'status' => 0, // 状态0可处理;1不可处理
+            'operate_staff_id' => $workObj->operate_staff_id,
+            'operate_staff_history_id' => $workObj->operate_staff_history_id,
+        ];
+        $workSendsObj = null;
+        Common::getObjByModelName("CompanyWorkSends", $workSendsObj);
+        Common::create($workSendsObj, $workSends);
+
+        // 工单操作日志
+        $workLog = [
+            'company_id' => $workObj->company_id,
+            'work_id' => $workObj->id,
+            'work_status_new' => $workObj->status,
+            'content' => "创建工单", // 操作内容
+            'operate_staff_id' => $workObj->operate_staff_id,
+            'operate_staff_history_id' => $workObj->operate_staff_history_id,
+        ];
+
+        $workLogObj = null;
+        Common::getObjByModelName("CompanyWorkLog", $workLogObj);
+        Common::create($workLogObj, $workLog);
+
+        // 工单来电统计
+
+        $workCallCountObj = null;
+        Common::getObjByModelName("CompanyWorkCallCount", $workCallCountObj);
+
+        $searchConditon = [
+            'company_id' => $workObj->company_id,
+            'operate_staff_id' => $workObj->operate_staff_id,
+            'count_year' => $currentNow->year,
+            'count_month' => $currentNow->month,
+            'count_day' => $currentNow->day,
+        ];
+        $updateFields = [
+            'amount' => 0,
+            'operate_staff_history_id' => $workObj->operate_staff_history_id,
+        ];
+
+        Common::firstOrCreate($workCallCountObj, $searchConditon, $updateFields );
+        $workCallCountObj->amount++;
+        $workCallCountObj->save();
         return  okArray($workObj);
     }
 
