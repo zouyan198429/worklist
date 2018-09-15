@@ -161,6 +161,7 @@ class CompanyProblem extends BaseBusiness
             // 判断权限
             $judgeData = [
                 'company_id' => $company_id,
+                'status' => 0,
             ];
             $relations = '';
             CommonBusiness::judgePower($id, $judgeData, self::$model_name, $company_id, $relations, $notLog);
@@ -290,6 +291,7 @@ class CompanyProblem extends BaseBusiness
         // $requestTesUrl = splicQuestAPI($url , $requestData);
         return HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
     }
+
     /**
      * 添加页面初始化要填充的数据
      *
@@ -345,6 +347,38 @@ class CompanyProblem extends BaseBusiness
             $id = $result['id'] ?? 0;
         }
         return $result;
+    }
+
+    /**
+     * 添加页面初始化要填充的数据
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @return  mixed 数据
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function replayAjaxSave(Request $request, Controller $controller)
+    {
+        $id = Common::getInt($request, 'id');
+        // Common::judgeEmptyParams($request, 'id', $id);
+        $reply_content = Common::get($request, 'reply_content');
+        $reply_content =  replace_enter_char($reply_content,1);
+
+        $saveData = [
+            'reply_content' => $reply_content,// 内容
+            'status' => 1,
+        ];
+
+//        if($id <= 0) {// 新加;要加入的特别字段
+//            $addNewData = [
+//                // 'account_password' => $account_password,
+//            ];
+//            $saveData = array_merge($saveData, $addNewData);
+//        }
+
+         $resultDatas = self::replaceById($request, $controller, $saveData, $id);
+         return $resultDatas;
+        // return ajaxDataArr(1, $resultDatas, '');
 
     }
 }

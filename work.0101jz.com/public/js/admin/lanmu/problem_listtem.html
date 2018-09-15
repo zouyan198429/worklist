@@ -27,7 +27,7 @@
         <td><%=item.created_at%></td>
         <td>
             <%if( can_modify){%>
-            <a href="javascript:void(0);" onclick="reply(<%=item.id%>)" class="btn btn-mini" >回复</a>
+            <a href="javascript:void(0);" data-id="<%=item.id%>" class="btn btn-mini reply_page" >回复</a>
             <%}%>
         </td>
     </tr> <%}%>

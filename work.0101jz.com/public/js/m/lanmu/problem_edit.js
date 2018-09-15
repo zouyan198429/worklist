@@ -71,7 +71,7 @@ function ajax_form(){
     }
 
     var content = $('textarea[name=content]').val();
-    if(!judge_validate(4,'内容',content,true,'length',2,3000)){
+    if(!judge_validate(4,'内容',content,true,'length',2,2000)){
         return false;
     }
 

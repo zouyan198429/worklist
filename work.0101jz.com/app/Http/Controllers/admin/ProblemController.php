@@ -62,10 +62,36 @@ class ProblemController extends AdminController
      * @return mixed
      * @author liuxin
      */
-    public function return_send(Request $request)
+    public function reply(Request $request,$id = 0)
     {
         $this->InitParams($request);
-        return view('manage.problem.return_send');
+        $reDataArr = $this->reDataArr;
+        $resultDatas = [
+            'id'=>$id,
+            //  'call_number' => $this->user_info['mobile'] ?? '',
+        ];
+
+        if ($id > 0) { // 获得详情数据
+            $resultDatas = CompanyProblem::getInfoData($request, $this, $id, '');
+            $reply_content = $resultDatas['reply_content'] ?? '';
+            $resultDatas['reply_content'] = replace_enter_char($reply_content,2);
+        }
+        $reDataArr = array_merge($reDataArr, $resultDatas);
+        return view('admin.problem.reply',$reDataArr);
+    }
+
+    /**
+     * ajax保存数据
+     *
+     * @param int $id
+     * @return Response
+     * @author zouyan(305463219@qq.com)
+     */
+    public function reply_ajax_save(Request $request)
+    {
+        $this->InitParams($request);
+        $resultDatas = CompanyProblem::replayAjaxSave( $request, $this);
+        return ajaxDataArr(1, $resultDatas, '');
     }
 
 }

@@ -7,7 +7,7 @@
 	document.write("    <%for(var i = 0; i<data_list.length;i++){");
 	document.write("    var item = data_list[i];");
 	document.write("    var can_modify = false;");
-	document.write("    if( item.status==0 ){");
+	document.write("    if( item.status == 0 ){");
 	document.write("    can_modify = true;");
 	document.write("    }");
 	document.write("    %>");
@@ -22,7 +22,7 @@
 	document.write("        <td><%=item.created_at%><\/td>");
 	document.write("        <td>");
 	document.write("            <%if( can_modify){%>");
-	document.write("            <a href=\"javascript:void(0);\" onclick=\"reply(<%=item.id%>)\" class=\"btn btn-mini\" >回复<\/a>");
+	document.write("            <a href=\"javascript:void(0);\" data-id=\"<%=item.id%>\"  class=\"btn btn-mini reply_page\" >回复<\/a>");
 	document.write("            <%}%>");
 	document.write("        <\/td>");
 	document.write("    <\/tr> <%}%>");

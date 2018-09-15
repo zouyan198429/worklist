@@ -81,10 +81,8 @@
 	const EXPORT_EXCEL_URL = ""; //{{ url('admin/problem/add/0') }}  "{{ url('api/admin/problem/export') }}";//导出EXCEL地址
 	const IMPORT_EXCEL_URL = ""; //{{ url('admin/problem/add/0') }}"{{ url('api/admin/problem/import') }}";//导入EXCEL地址
 
-	const REPLY_URL = "";// 回复地址
-	function reply(id) {
-		alert(id);
-    }
+	const REPLY_URL = "{{ url('admin/problem/reply/')}}/";// 回复地址
+    const REPLY_TITLE = "回复";
 </script>
 <script src="{{asset('js/common/list.js')}}"></script>
 <script src="{{ asset('/js/admin/lanmu/problem.js') }}"  type="text/javascript"></script>

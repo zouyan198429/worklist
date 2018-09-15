@@ -112,6 +112,7 @@ Route::any('admin/staff/ajax_get_areachild', 'admin\StaffController@ajax_get_are
 
 //反馈问题
 Route::any('admin/problem/ajax_alist', 'admin\ProblemController@ajax_alist');// 大后台反馈问题
+Route::any('admin/problem/reply_ajax_save', 'admin\ProblemController@reply_ajax_save');// 新加/修改
 
 //客户
 Route::any('admin/customer/ajax_alist', 'admin\CustomerController@ajax_alist');//ajax获得列表数据
@@ -134,6 +135,7 @@ Route::any('manage/department/ajax_get_child', 'manage\DepartmentController@ajax
 
 //反馈问题 （liuxin）
 Route::any('manage/problem/ajax_alist', 'manage\ProblemController@ajax_alist');//ajax获得反馈问题的列表数据
+Route::any('manage/problem/reply_ajax_save', 'manage\ProblemController@reply_ajax_save');// 新加/修改
 
 //客户
 Route::any('manage/customer/ajax_alist', 'manage\CustomerController@ajax_alist');//ajax获得列表数据

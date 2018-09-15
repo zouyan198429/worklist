@@ -110,7 +110,7 @@ Route::get('admin/lore', 'admin\LoreController@index');//know_list.html 在线�
 
 //反馈
 Route::get('admin/problem', 'admin\ProblemController@index');//problem.html 反馈问题
-Route::get('admin/problem/return_send/{id}', 'manage\ProblemController@return_send');//m_problem.html 反馈问题 - 回复
+Route::get('admin/problem/reply/{id}', 'admin\ProblemController@reply');//m_problem.html 反馈问题 - 回复
 
 //考次试卷
 Route::get('admin/exam', 'admin\ExamController@index');//x_examination_list.html 试次管理
@@ -148,7 +148,7 @@ Route::get('manage/lore/info', 'manage\LoreController@info');//know_view.html �
 Route::get('manage/customer', 'manage\CustomerController@index');//m_customer_all.html 客户管理
 //反馈
 Route::get('manage/problem', 'manage\ProblemController@index');//m_problem.html 反馈问题 - 列表 /该模块的首页
-Route::get('manage/problem/return_send/{id}', 'manage\ProblemController@return_send');//m_problem.html 反馈问题 - 回复
+Route::get('manage/problem/reply/{id}', 'manage\ProblemController@reply');//m_problem.html 反馈问题 - 回复
 //同事
 Route::get('manage/staff/list', 'manage\StaffController@list');//m_staff.html 我的同事--管理
 Route::get('manage/staff', 'manage\StaffController@index');//colleague.html 我的同事--列表
