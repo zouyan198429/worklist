@@ -521,6 +521,30 @@ class Tool
     }
 
     /**
+     * 一维数组返回指定下标数组的一维数组,-以原数组下标不准，
+     *
+     * @param array $array 一维数组
+     * @param array $keys 要获取的下标数组 -维
+     * @param boolean $needNotIn  keys在数组中不存在的，false:不要，true：空值
+     * @return array 一维数组
+     */
+    public static function formatArrKeys(&$array, $keys, $needNotIn = false){
+        foreach($array as $k => $v){
+            if(!in_array($k , $keys )){
+                unset($array[$k]);
+                continue;
+            }
+        }
+        if(! $needNotIn) return $array;
+
+        foreach($keys as $k){
+            if(isset($array[$k])) continue;
+            $array[$k] = '';
+        }
+        return $array;
+    }
+
+    /**
      * 获得当前的路由和方法
      *
      * @return string 当前的路由和方法  App\Http\Controllers\CompanyWorkController@addInit

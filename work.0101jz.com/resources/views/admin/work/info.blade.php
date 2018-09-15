@@ -96,21 +96,47 @@
 				</td>
 			</tr>
 			<tr>
-				<th>派发到</th>
+				<th>派发记录</th>
 				<td>
-					<select class="wnormal" name="send_department_id">
-						<option value="">请选择部门</option>
-						@foreach ($departmentFirstList as $k=>$txt)
-							<option value="{{ $k }}"  @if(isset($send_department_id) && $send_department_id == $k) selected @endif >{{ $txt }}</option>
+					<table class="table1">
+						<tr>
+							<th>操作人</th>
+							<th>派发部门/小组</th>
+							<th>派发员工</th>
+							<th>操作时间</th>
+						</tr>
+						@foreach ($sendLogs as $log)
+						<tr>
+							<td>{{ $log['operate_staff_name'] or '' }}</td>
+							<td>{{ $log['send_department_name'] or '' }}/{{ $log['send_group_name'] or '' }}</td>
+							<td>{{ $log['send_staff_name'] or '' }}</td>
+							<td>{{ $log['created_at'] or '' }}</td>
+						</tr>
 						@endforeach
-					</select>
-					<select class="wnormal" name="send_group_id">
-						<option value="">请选择小组</option>
-					</select>
-					<select class="wnormal" name="send_staff_id">
-						<option value="">请选择员工</option>
-					</select>
-					{{--<p class="tip">客户所在区街道和责任员工相对应</p>---}}
+
+					</table>
+
+				</td>
+			</tr>
+			<tr>
+				<th>日志记录</th>
+				<td>
+					<table class="table1">
+						<tr>
+							<th>操作人</th>
+							<th>操作内容</th>
+							<th>操作时间</th>
+						</tr>
+						@foreach ($logs as $log)
+							<tr>
+								<td>{{ $log['real_name'] or '' }}</td>
+								<td>{{ $log['content'] or '' }}</td>
+								<td>{{ $log['created_at'] or '' }}</td>
+							</tr>
+						@endforeach
+
+					</table>
+
 				</td>
 			</tr>
 

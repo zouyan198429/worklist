@@ -13,4 +13,12 @@ class CompanyWorkLog extends BaseModel
      */
     protected $table = 'company_work_log';
 
+    /**
+     * 获取工单派发记录对应的历史员工[添加者]--一维
+     */
+    public function workLogHistoryStaffCreate()
+    {
+        return $this->belongsTo('App\Models\CompanyStaffHistory', 'operate_staff_history_id', 'id');
+    }
+
 }

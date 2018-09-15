@@ -5,6 +5,7 @@ namespace App\Business;
 use App\Services\Common;
 use App\Services\CommonBusiness;
 use App\Services\HttpRequest;
+use App\Services\Tool;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as Controller;
 
@@ -126,6 +127,52 @@ class CompanyWork extends BaseBusiness
     }
 
     /**
+     * 根据id获得单条数据
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param int $id id
+     * @return  array 单条数据 - -维数组
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function getShowInfoData(Request $request, Controller $controller, $id){
+        // 工单日志和派发记录
+        $relations = ['workSends.workSendHistoryStaffCreate', 'workSends.workSendHistoryStaffSend', 'workLogs.workLogHistoryStaffCreate'];
+        $resultDatas = self::getInfoData($request, $controller, $id, $relations);
+
+        // 操作日志
+        $workLogs = $resultDatas['work_logs'] ?? [];
+        if(isset($resultDatas['work_logs'])) unset($resultDatas['work_logs']);
+        $temLogs = [];
+        $temNeeds = ['created_at', 'content'];
+        foreach($workLogs as $v){
+            $temNameArr = [
+                'real_name' => $v['work_log_history_staff_create']['real_name'] . "[" . $v['work_log_history_staff_create']['work_num'] . "]",
+            ];
+            Tool::formatArrKeys($v , $temNeeds);
+            $temLogs[] = array_merge($v, $temNameArr);
+        }
+        $resultDatas['logs'] = $temLogs;
+
+        // 分派日志
+        $sendLogs = $resultDatas['work_sends'] ?? [];
+        if(isset($resultDatas['work_sends'])) unset($resultDatas['work_sends']);
+        $temSends = [];
+        $temNeeds = ['created_at', 'work_status', 'send_department_id', 'send_department_name',
+            'send_group_id', 'send_group_name', 'send_staff_id', 'operate_staff_id'];
+        foreach($sendLogs as $v){
+            $temNameArr = [
+                'send_staff_name' => $v['work_send_history_staff_send']['real_name'] . "[" . $v['work_send_history_staff_send']['work_num'] . "]",
+                'operate_staff_name' => $v['work_send_history_staff_create']['real_name'] . "(" . $v['work_send_history_staff_create']['work_num'] . ")",
+            ];
+            Tool::formatArrKeys($v , $temNeeds);
+            $temSends[] = array_merge($v, $temNameArr);
+        }
+        $resultDatas['sendLogs'] = $temSends;
+        return $resultDatas;
+    }
+
+    /**
      * 根据id新加或修改单条数据-id 为0 新加，返回新的对象数组[-维],  > 0 ：修改对应的记录，返回true
      *
      * @param Request $request 请求信息
@@ -157,6 +204,7 @@ class CompanyWork extends BaseBusiness
         // 新加或修改
         return self::replaceByIdBase($request, $controller, self::$model_name, $saveData, $id, $notLog);
     }
+
 
     /**
      * 根据id新加或修改单条数据-id 为0 新加，返回新的对象数组[-维],  > 0 ：修改对应的记录，返回true

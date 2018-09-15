@@ -158,7 +158,7 @@
 	<script type="text/javascript">
 
         const SAVE_URL = "{{ url('api/huawu/work/ajax_save') }}";// ajax保存记录地址
-        const LIST_URL = "{{url('huawu/work/history')}}";//保存成功后跳转到的地址
+        const LIST_URL = "{{url('huawu/work')}}";//保存成功后跳转到的地址
         const DEPARTMENT_CHILD_URL = "{{ url('api/huawu/department/ajax_get_child') }}";// 部门二级分类请求地址
         const GROUP_CHILD_URL = "{{ url('api/huawu/staff/ajax_get_child') }}";// 部门组获得员工---二级分类请求地址
         const WORKTYPE_CHILD_URL = "{{ url('api/weixiu/work_type/ajax_get_child') }}";// 维修类型二级分类请求地址

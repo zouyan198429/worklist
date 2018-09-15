@@ -134,6 +134,22 @@ class CompanyWork extends BaseModel
     }
 
     /**
+     * 获取工单的派发记录-二维
+     */
+    public function workSends()
+    {
+        return $this->hasMany('App\Models\CompanyWorkSends', 'work_id', 'id');
+    }
+
+    /**
+     * 获取工单的操作日志-二维
+     */
+    public function workLogs()
+    {
+        return $this->hasMany('App\Models\CompanyWorkLog', 'work_id', 'id');
+    }
+
+    /**
      * 工单的标簦[通过中间表company_work_tags 多对多]
      */
     public function workTags()

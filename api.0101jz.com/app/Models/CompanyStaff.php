@@ -31,6 +31,7 @@ class CompanyStaff extends BaseModel
         '1' => '男',
         '2' => '女',
     ];
+
     /**
      * 在数组中隐藏的属性
      *

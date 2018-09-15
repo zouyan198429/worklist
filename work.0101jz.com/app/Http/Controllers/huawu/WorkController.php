@@ -5,6 +5,7 @@ namespace App\Http\Controllers\huawu;
 use App\Business\CompanyWork;
 use App\Http\Controllers\WorksController;
 use App\Services\Common;
+use App\Services\Tool;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -133,8 +134,7 @@ class WorkController extends WorksController
         ];
 
         if ($id > 0) { // 获得详情数据
-            $relations = ['workHistoryStaffCreate', 'workHistoryStaffSend'];
-            $resultDatas = CompanyWork::getInfoData($request, $this, $id, $relations);
+            $resultDatas =CompanyWork::getShowInfoData($request, $this, $id);
         }
         $reDataArr = array_merge($reDataArr, $resultDatas);
         // 初始化数据
