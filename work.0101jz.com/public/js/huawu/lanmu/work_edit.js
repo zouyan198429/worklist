@@ -95,7 +95,7 @@ function ajax_form(){
     }
 
     var caller_type_id = $('select[name=caller_type_id]').val();
-    var judge_seled = judge_validate(1,'部门',caller_type_id,true,'digit','','');
+    var judge_seled = judge_validate(1,'来电类型',caller_type_id,true,'digit','','');
     if(judge_seled != ''){
         layer_alert("请选择来电类型",3,0);
         //err_alert('<font color="#000000">' + judge_seled + '</font>');

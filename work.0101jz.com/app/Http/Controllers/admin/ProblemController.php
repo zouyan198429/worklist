@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Business\CompanyWorkType;
 use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 use App\Business\CompanyProblem;
@@ -19,6 +20,9 @@ class ProblemController extends AdminController
     {
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
+        // 第一级业务
+        // 获得第一级部门分类一维数组[$k=>$v]
+        $reDataArr['work_type_kv'] = CompanyWorkType::getChildListKeyVal($request, $this, 0, 1 + 0);
         return view('admin.problem.index', $reDataArr);
     }
 
@@ -31,7 +35,7 @@ class ProblemController extends AdminController
      */
     public function ajax_alist(Request $request){
         $this->InitParams($request);
-        return  CompanyProblem::getList($request, $this);
+        return  CompanyProblem::getIndexList($request, $this,2 + 4);
     }
 
 

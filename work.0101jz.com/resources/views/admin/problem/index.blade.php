@@ -15,13 +15,13 @@
 			<form onsubmit="return false;" class="form-horizontal" role="form" method="post" id="search_frm" action="#">
 				<div class="msearch fr">
 
-					<select name="aaabbb" class="wmini">
-						<option value="a01">全部</option>
-						<option value="a02">维修部</option>
-						<option value="a03">话务部</option>
-						<option value="a04">行政部</option>
+					<select class="wmini" name="work_type_id" >
+						<option value="">全部</option>
+						@foreach ($work_type_kv as $k=>$txt)
+							<option value="{{ $k }}"  >{{ $txt }}</option>
+						@endforeach
 					</select>
-					<input type="text" value=""  name="keyword" />
+					<input type="text" value=""  name="keyWord"  placeholder="客户电话"/>
 					<button class="btn btn-normal search_frm " >搜索</button>
 				</div>
 			</form>
@@ -32,10 +32,10 @@
 				{{--<th></th>--}}
 				<th>类型</th>
 				<th>内容</th>
+				<th>回复</th>
 				<th>客户电话</th>
 				<th>地址</th>
 				<th>发送人</th>
-				<th>手机</th>
 				<th>时间</th>
 				<th>操作</th>
 			</tr>
@@ -51,22 +51,11 @@
 				<td>18955263568</td>
 				<td>2018-05-25 14:22</td>
 				<td><a href="m_problem_hf.html" class="btn btn-mini" >回复</a></td>
-			</tr>
-			<tr>
-				<td><input type="checkbox" name="vehicle" value="11" /></td>
-				<td>固定电话/新装</td>
-				<td>一个问题的内容</td>
-				<td>张兰兰</td>
-				<td>15699888555</td>
-				<td>雷小明</td>
-				<td>18955263568</td>
-				<td>2018-05-25 14:22</td>
-				<td><a href="m_problem_hf.html" class="btn btn-mini" >回复</a></td>
 			</tr>--}}
 			</tbody>
 		</table>
 
-		<div class="mmfoot">
+		<div class="mmfoot" >
 			<div class="mmfleft"></div>
 			<div class="pagination"></div>
 		</div>
@@ -92,39 +81,11 @@
 	const EXPORT_EXCEL_URL = ""; //{{ url('admin/problem/add/0') }}  "{{ url('api/admin/problem/export') }}";//导出EXCEL地址
 	const IMPORT_EXCEL_URL = ""; //{{ url('admin/problem/add/0') }}"{{ url('api/admin/problem/import') }}";//导入EXCEL地址
 
+	const REPLY_URL = "";// 回复地址
+	function reply(id) {
+		alert(id);
+    }
 </script>
 <script src="{{asset('js/common/list.js')}}"></script>
-
-<!-- 前端模板部分 -->
-<!-- 列表模板部分 开始  <!-- 模板中可以用HTML注释 -- >  或  <%* 这是模板自带注释格式 *%>-->
-<script type="text/template"  id="baidu_template_data_list">
-
-	<%for(var i = 0; i<data_list.length;i++){
-	var item = data_list[i];
-	{{--var account_status = item.account_status; --}}
-	var can_modify = false;
-	if( item.account_issuper==0 ){ //&& (item.supplier_status & (1+8))>0
-	can_modify = true;
-	}
-	%>
-
-	<tr>
-		{{--<td>--}}
-		{{--<label class="pos-rel">--}}
-		{{--<input  onclick="action.seledSingle(this)" type="checkbox" class="ace check_item" <%if( false &&  !can_modify){%> disabled <%}%>  value="<%=item.id%>"/>--}}
-		{{--<span class="lbl"></span>--}}
-		{{--</label>--}}
-		{{--</td>--}}
-		<td><%=item.type_name%></td>
-		<td><%=item.content%></td>
-		<td><%=item.call_number%></td>
-		<td><%=item.city_name%><%=item.area_name%><%=item.address%></td>
-		<td><%=item.customer_name%></td>
-		<td><%=item.call_number%></td>
-		<td><%=item.created_at%></td>
-		<td><a href="{{url('manage/problem/return_send')}}/<%=item.id%>" class="btn btn-mini" >回复</a></td>
-	</tr> <%}%>
-</script>
-<!-- 列表模板部分 结束-->
-<!-- 前端模板结束 -->
+<script src="{{ asset('/js/admin/lanmu/problem.js') }}"  type="text/javascript"></script>
 @endpush

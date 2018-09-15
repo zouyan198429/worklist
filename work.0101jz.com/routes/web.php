@@ -220,7 +220,8 @@ Route::get('weixiu/exam/doing', 'weixiu\ExamController@doing');//examin_do.html 
 Route::get('weixiu/exam', 'weixiu\ExamController@index');//examin_list.html 在线考试
 Route::get('weixiu/exam/win', 'weixiu\ExamController@win');//examin_over.html 在线考试
 //反馈
-Route::get('weixiu/problem/add', 'weixiu\ProblemController@add');//feedback.html 在线反馈
+#Route::get('weixiu/problem/add', 'weixiu\ProblemController@add');//feedback.html 在线反馈
+Route::get('weixiu/problem/add/{id}', 'weixiu\ProblemController@add');//feedback.html 问题反馈-提交问题
 //工单
 Route::get('weixiu/work/list', 'weixiu\WorkController@list');///Repair_list.html  我的工单
 Route::get('weixiu/work/info/{id}', 'weixiu\WorkController@info');//work_add.html 工单--详情
@@ -258,7 +259,9 @@ Route::get('m/staff/list', 'm\StaffController@list');//mycolleague.html 我的�
 //客户
 Route::get('m/customer', 'm\CustomerController@index');//customer_all.html 我的客户-列表
 //反馈
-Route::get('m/problem/add', 'm\ProblemController@add');//feedback.html 问题反馈-提交问题
+// Route::get('m/problem/add', 'm\ProblemController@add');//feedback.html 问题反馈-提交问题
+Route::get('m/problem/add/{id}', 'm\ProblemController@add');//feedback.html 问题反馈-提交问题
+
 Route::get('m/exam', 'm\ExamController@index');//kaoshi.html 在线考试 --考试列表
 Route::get('m/exam_score', 'm\ExamController@score');//kaoshi-cj.html 考试成绩-成绩列表
 Route::get('m/exam_search', 'm\ExamController@search');//kaoshi-cj-view.html  考试成绩-维修业务知识测评--成绩查询

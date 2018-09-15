@@ -24,5 +24,6 @@ return [
         'apiPath' => [
             'workAddInit' => 'work/add_init',// 工单添加页初始数据
             'saveWork' => 'work/add_save',// 工单添加/修改
+            'saveProblem' => 'problem/add_save',// 反馈问题添加/修改
         ],
     ];

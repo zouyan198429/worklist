@@ -6,7 +6,7 @@
                 <a href="{{ url('weixiu') }}"><i class="fa fa-home fa-fw" aria-hidden="true"></i> 首页</a>
             </li>
             <li>
-                <a href="{{ url('weixiu/problem/add') }}">
+                <a href="{{ url('weixiu/problem/add/0') }}">
                     <i class="fa fa-clock-o fa-fw" aria-hidden="true"></i>
                     <span>反馈问题</span>
                 </a>

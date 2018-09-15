@@ -31,7 +31,7 @@ class CustomerController extends AdminController
      */
     public function ajax_alist(Request $request){
         $this->InitParams($request);
-        return  CompanyCustomer::getList($request, $this);
+        return  CompanyCustomer::getList($request, $this, 2 + 4, ['customerType']);
     }
 
 

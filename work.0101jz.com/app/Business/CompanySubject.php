@@ -19,11 +19,12 @@ class CompanySubject extends BaseBusiness
      * @param Request $request 请求信息
      * @param Controller $controller 控制对象
      * @param int $oprateBit 操作类型位 1:获得所有的; 2 分页获取[同时有1和2，2优先]；4 返回分页html翻页代码
+     * @param mixed $relations 关系
      * @param int $notLog 是否需要登陆 0需要1不需要
      * @return  array 列表数据
      * @author zouyan(305463219@qq.com)
      */
-    public static function getList(Request $request, Controller $controller, $oprateBit = 2 + 4, $notLog = 0){
+    public static function getList(Request $request, Controller $controller, $oprateBit = 2 + 4, $relations = '', $notLog = 0){
         $company_id = $controller->company_id;
 
         // 获得数据
@@ -41,7 +42,7 @@ class CompanySubject extends BaseBusiness
             'orderBy' => ['id'=>'desc'],
         ];// 查询条件参数
         // $relations = ['CompanyInfo'];// 关系
-        $relations = '';//['CompanyInfo'];// 关系
+        // $relations = '';//['CompanyInfo'];// 关系
         $result = self::getBaseListData($request, $controller, self::$model_name, $queryParams,$relations , $oprateBit, $notLog);
 
         // 格式化数据
@@ -75,12 +76,13 @@ class CompanySubject extends BaseBusiness
      * @param Request $request 请求信息
      * @param Controller $controller 控制对象
      * @param int $id id
+     * @param mixed $relations 关系
      * @return  array 单条数据 - -维数组
      * @author zouyan(305463219@qq.com)
      */
-    public static function getInfoData(Request $request, Controller $controller, $id){
+    public static function getInfoData(Request $request, Controller $controller, $id, $relations = ''){
         $company_id = $controller->company_id;
-        $relations = '';
+        // $relations = '';
         $resultDatas = CommonBusiness::getinfoApi(self::$model_name, $relations, $company_id , $id);
         // $resultDatas = self::getInfoDataBase($request, $controller, self::$model_name, $id, $relations);
         // 判断权限

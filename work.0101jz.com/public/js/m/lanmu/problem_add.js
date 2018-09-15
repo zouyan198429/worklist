@@ -31,7 +31,7 @@ function ajax_form(){
         return false;
     }
     var content = $('textarea[name=content]').val();
-    if(!judge_validate(4,'反馈内容',content,true,'length',2,998)){
+    if(!judge_validate(4,'反馈内容',content,true,'length',2,2500)){
         return false;
     }
 

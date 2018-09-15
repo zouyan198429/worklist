@@ -31,7 +31,7 @@ class ProblemController extends AdminController
      */
     public function ajax_alist(Request $request){
         $this->InitParams($request);
-        return  CompanyProblem::getList($request, $this);
+        return  CompanyProblem::getIndexList($request, $this,2 + 4);
     }
 
 

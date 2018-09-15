@@ -53,6 +53,8 @@ Route::any('comp/compareHistoryOrUpdateVersion', 'Comp\CommonController@compareH
 Route::any('work/test', 'CompanyWorkController@test');//测试
 Route::any('work/add_init', 'CompanyWorkController@addInit');//工单添加页初始数据
 Route::any('work/add_save', 'CompanyWorkController@add_save');//工单添加/修改
+// 问题反馈
+Route::any('problem/add_save', 'CompanyProblemController@add_save');//工单添加/修改
 
 Route::any('proUnit/countLabels', 'CompanyProUnitController@countLabels');// 统计生产单元下的标签
 
