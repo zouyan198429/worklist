@@ -54,6 +54,7 @@ class WorkController extends WorksController
             CommonBusiness::judgePowerByObj($resultDatas, $judgeData );
         }
         $reDataArr = array_merge($reDataArr, $resultDatas);
+        // pr($reDataArr);
 
         return view('mobile.work.win', $reDataArr);
     }
@@ -127,7 +128,11 @@ class WorkController extends WorksController
     {
         $this->InitParams($request);
         $id = Common::getInt($request, 'id');
-        $saveData = [];
+        $win_content = Common::get($request, 'win_content');
+        $win_content =  replace_enter_char($win_content,1);
+        $saveData = [
+            'win_content' => $win_content,// 内容
+        ];
         $resultDatas = CompanyWork::workWin($request, $this, $saveData, $id);
         return ajaxDataArr(1, $resultDatas, '');
     }

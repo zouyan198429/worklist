@@ -8,69 +8,56 @@
 
     <div class="page">
         <div id="header">
-            <div class="top-title">问题反馈</div>
+            <div class="top-title">结单</div>
         </div>
+
+        <form class="am-form am-form-horizontal" method="post"  id="addForm">
+            <input type="hidden" name="id" value="{{ $id or 0 }}"/>
+        {{--<div class="box">--}}
         <div id="prlblem" class="table4" >
-            <dl class="inp">
-                <dt>问题类型</dt>
-                <dd>
-                    <select class="wnormal">
-                        <option value="a01">固定电话</option>
-                        <option value="a02">宽带业务</option>
-                        <option value="a03">手机业务</option>
-                        <option value="a04">其他</option>
-                    </select>
-                    <select class="wnormal">
-                        <option value="a01">新装</option>
-                        <option value="a02">断网</option>
-                        <option value="a03">迁移</option>
-                        <option value="a04">其他</option>
-                    </select>
-                </dd>
-            </dl>
-            <dl class="inp">
-                <!-- 					<dt>反馈内容<span class="must">*</span></dt>
-                 -->					<dd>
-                    <textarea type="text" class="inptext wlong"  style=" height:200px"  placeholder="反馈内容" /></textarea>
-                </dd>
-            </dl>
-            <div class="k10"></div>
-            <div class="line"></div>
-            <div class="k10"></div>
-            <dl class="inp">
-                <!-- 					<dt>客户电话</dt>
-                 -->					<dd>
-                    <input type="text" class="inp wlong" value="" placeholder="客户电话" autofocus  required />
-                </dd>
-            </dl>
-            <dl class="inp">
-                <dt>客户地址</dt>
-                <dd>
-                    <select class="wnormal">
-                        <option value="a01">区</option>
-                        <option value="a02">宽带业务</option>
-                        <option value="a03">手机业务</option>
-                        <option value="a04">其他</option>
-                    </select>
-                    <select class="wnormal">
-                        <option value="a01">街道</option>
-                        <option value="a02">宽带业务</option>
-                        <option value="a03">手机业务</option>
-                        <option value="a04">其他</option>
-                    </select>
-                    <div class="k10"></div>
-                    <input type="text" class="inp wlong" placeholder="详细地址"  />
-                </dd>
-            </dl>
-            <dl>
-                <dt> </dt>
-                <div class="k10"></div>
-                <dd><button class="btn btn-l wlong" >提交</button>
-                </dd>
-            </dl>
 
+            <div class="bd inp" >
+
+                <div class="gd-list" >
+                    <div class="gd-hd">
+                        <p>
+                            <span class="khname"><i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i> {{ $customer_name or ''  }}({{ $sex_text or ''  }}) </span>
+                    <a href="tel:{{ $call_number or ''  }}" class="btnnb fr" ><i class="fa fa-phone fa-fw" aria-hidden="true"></i> {{ $call_number or ''  }}</a>
+            </div>
+            <div class="gd-bd">
+                <p><i class="fa fa-flag fa-fw" aria-hidden="true"></i>  工单类型：{{ $type_name or ''  }}--{{ $business_name or ''  }}</p>
+                <p class="khtip">{!!  $content or ''  !!}
+                </p>
+                <p>
+                    <span class="gdtime"><i class="fa fa-clock-o fa-fw" aria-hidden="true"></i> 报修时间：{{ $created_at or ''  }}</span>
+                    <span class="gdtime"> 预约时间：{{ $book_time or ''  }}</span>
+                </p>
+            </div>
+            <div class="gd-fd">
+                <i class="fa fa-map-marker fa-fw" aria-hidden="true"></i> {{ $city_name or ''  }}{{ $area_name or ''  }}{{ $address or ''  }}</p>
+            </div>
+            <div class="gd-fd">
+                <dl class="inp">
+                    <!-- 					<dt>反馈内容<span class="must">*</span></dt>
+                     -->
+                    <dd>
+                        <textarea type="text" class="inptext wlong"  style=" height:200px"  placeholder="结单内容说明" name="win_content"  />{{ $win_content or '' }}</textarea>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt> </dt>
+                    <div class="k10"></div>
+                    <dd><button class="btn btn-l wlong"  id="submitBtn" >结单</button>
+                    </dd>
+                </dl>
+
+            </div>
         </div>
 
+            </div>
+        </div>
+
+        </form>
         @include('mobile.layout_public.menu', ['menu_id' => 5])
 
 
@@ -88,4 +75,9 @@
         $.sidebarMenu($('.sidebar-menu'))
     </script>
 
+    <script type="text/javascript">
+        const SAVE_URL = "{{ url('api/m/work/ajax_win') }}";// ajax保存记录地址
+        const LIST_URL = "{{url('m')}}";//保存成功后跳转到的地址
+    </script>
+    <script src="{{ asset('/js/m/lanmu/work_win_edit.js') }}"  type="text/javascript"></script>
 @endpush

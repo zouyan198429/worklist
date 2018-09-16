@@ -770,17 +770,19 @@ class CompanyWorkController extends CompController
         $company_id = $this->company_id;
         $work_id = Common::getInt($request, 'id');
         $staff_id = Common::getInt($request, 'staff_id');// 操作员工
-//        $save_data = Common::get($request, 'save_data');
-//        Common::judgeEmptyParams($request, 'save_data', $save_data);
-//        // json 转成数组
-//        jsonStrToArr($save_data, 1, '参数[save_data]格式有误!');
+        $save_data = Common::get($request, 'save_data');
+        Common::judgeEmptyParams($request, 'save_data', $save_data);
+        // json 转成数组
+        jsonStrToArr($save_data, 1, '参数[save_data]格式有误!');
+
+        $win_content = $save_data['win_content'] ?? '';// 内容说明
         // 获取工单信息
         $workObj = CompanyWork::find($work_id);
         if(empty($workObj)){
             throws("工单记录不存在!");
         }
         if($workObj->status != 2 || $workObj->company_id != $company_id || $workObj->send_staff_id != $staff_id){
-            throws("此工单不可进行此操作!");
+            throws("不可进行此操作!");
         }
 
         // 获是员工历史记录id-- 操作员工
@@ -804,10 +806,13 @@ class CompanyWorkController extends CompController
 //        $save_data['operate_staff_history_id'] = $operate_staff_history_id;
 
         // 修改状态
+        foreach($save_data as $field => $val){
+            $workObj->{$field} = $val;
+        }
         $workObj->status = 4;
         $workObj->save();
         // 日志
-        $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "确认工单结单!");
+        $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "确认工单结单!内容："  . $win_content);
         // 统计处理数量
         $this->workRepairCount($workObj, $staff_id , $operate_staff_history_id);
         return  okArray([]);
@@ -826,10 +831,14 @@ class CompanyWorkController extends CompController
         $company_id = $this->company_id;
         $work_id = Common::getInt($request, 'id');
         $staff_id = Common::getInt($request, 'staff_id');// 操作员工
-//        $save_data = Common::get($request, 'save_data');
-//        Common::judgeEmptyParams($request, 'save_data', $save_data);
-//        // json 转成数组
-//        jsonStrToArr($save_data, 1, '参数[save_data]格式有误!');
+        $save_data = Common::get($request, 'save_data');
+        Common::judgeEmptyParams($request, 'save_data', $save_data);
+        // json 转成数组
+        jsonStrToArr($save_data, 1, '参数[save_data]格式有误!');
+
+
+        $re_content = $save_data['re_content'] ?? '';// 内容说明
+
         // 获取工单信息
         $workObj = CompanyWork::find($work_id);
         if(empty($workObj)){
@@ -860,10 +869,13 @@ class CompanyWorkController extends CompController
 //        $save_data['operate_staff_history_id'] = $operate_staff_history_id;
 
         // 修改状态
+        foreach($save_data as $field => $val){
+            $workObj->{$field} = $val;
+        }
         $workObj->status = 8;
         $workObj->save();
         // 日志
-        $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "工单回访!");
+        $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "工单回访!内容：" . $re_content);
         return  okArray([]);
     }
 

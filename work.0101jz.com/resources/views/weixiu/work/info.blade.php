@@ -130,7 +130,7 @@
 						@foreach ($logs as $log)
 							<tr>
 								<td>{{ $log['real_name'] or '' }}</td>
-								<td>{{ $log['content'] or '' }}</td>
+								<td>{!! $log['content'] or '' !!}</td>
 								<td>{{ $log['created_at'] or '' }}</td>
 							</tr>
 						@endforeach
