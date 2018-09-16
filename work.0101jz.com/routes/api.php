@@ -213,6 +213,9 @@ Route::any('weixiu/work_type/ajax_get_child', 'weixiu\WorkTypeController@ajax_ge
 Route::any('weixiu/work/ajax_alist', 'weixiu\WorkController@ajax_alist');//ajax获得列表数据
 Route::any('weixiu/work/ajax_del', 'weixiu\WorkController@ajax_del');// 删除
 Route::any('weixiu/work/ajax_save', 'weixiu\WorkController@ajax_save');// 新加/修改
+Route::any('weixiu/work/ajax_doing_list', 'weixiu\WorkController@ajax_doing_list');// 根据状态获得工单信息
+Route::any('weixiu/work/ajax_sure', 'weixiu\WorkController@ajax_sure');// 确认工单地址
+Route::any('weixiu/work/ajax_win', 'weixiu\WorkController@ajax_win');// 工单结单地址
 
 // 系统模块
 Route::any('weixiu/system_module/ajax_get_child', 'weixiu\SystemModuleController@ajax_get_child');// 获得子类部门数组[kv一维数组]

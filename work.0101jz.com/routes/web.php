@@ -226,6 +226,7 @@ Route::get('weixiu/problem/add/{id}', 'weixiu\ProblemController@add');//feedback
 //工单
 Route::get('weixiu/work/list', 'weixiu\WorkController@list');///Repair_list.html  我的工单
 Route::get('weixiu/work/info/{id}', 'weixiu\WorkController@info');//work_add.html 工单--详情
+Route::get('weixiu/work/win/{id}', 'weixiu\WorkController@win');// 结单
 //学习
 Route::get('weixiu/lore', 'weixiu\LoreController@index');//study.html 在线学习
 Route::get('weixiu/lore/info', 'weixiu\LoreController@info');//know_view.html 在线学习
