@@ -268,4 +268,4 @@ Route::get('m/exam_search', 'm\ExamController@search');//kaoshi-cj-view.html  �
 Route::get('m/lore', 'm\LoreController@index');//study.html 学习中心--知识列表
 Route::get('m/lore/info', 'm\LoreController@info');//study_view.html 学习中心-知识详情页
 // 工单
-Route::get('m/work/win', 'm\WorkController@win');// 结单
+Route::get('m/work/win/{id}', 'm\WorkController@win');// 结单

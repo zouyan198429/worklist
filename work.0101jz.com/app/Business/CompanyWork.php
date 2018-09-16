@@ -484,7 +484,7 @@ class CompanyWork extends BaseBusiness
             // 判断权限
             $judgeData = [
                 'company_id' => $company_id,
-                'send_staff_id' => $controller->user_id,
+                // 'operate_staff_id' => $controller->user_id,
             ];
             $relations = '';
             $infoData = CommonBusiness::judgePower($id, $judgeData, self::$model_name, $company_id, $relations, $notLog);

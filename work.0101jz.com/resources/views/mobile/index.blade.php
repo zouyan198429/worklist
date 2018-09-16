@@ -41,6 +41,7 @@
                     <button class="btn btn-normal  search_frm ">搜索</button>
                 </form>
 			</div>
+
 			<div class="bd"   id="data_list">
 
 
@@ -63,18 +64,19 @@
     <script type="text/javascript">
         var OPERATE_TYPE = <?php echo isset($operate_type)?$operate_type:0; ?>;
         const AJAX_URL = "{{ url('api/m/work/ajax_doing_list') }}";//ajax请求的url
-        const ADD_URL = "{{ url('m/work/add/0') }}"; //添加url
-        const SHOW_URL = "{{url('m/work/info/')}}/";//显示页面地址前缀 + id
-        const SHOW_URL_TITLE = "" ;// 详情弹窗显示提示
-        const EDIT_URL = "{{url('m/work/add/')}}/";//修改页面地址前缀 + id
-        const DEL_URL = "{{ url('api/m/work/ajax_del') }}";//删除页面地址
-        const BATCH_DEL_URL = "{{ url('api/m/work/ajax_del') }}";//批量删除页面地址
-        const EXPORT_EXCEL_URL = "{{ url('m/work/add/0') }}"; //"{{ url('api/m/work/export') }}";//导出EXCEL地址
-        const IMPORT_EXCEL_URL = "{{ url('m/work/add/0') }}"; //"{{ url('api/m/work/import') }}";//导入EXCEL地址
+        {{--const ADD_URL = "{{ url('m/work/add/0') }}"; //添加url--}}
+        {{--const SHOW_URL = "{{url('m/work/info/')}}/";//显示页面地址前缀 + id--}}
+        {{--const SHOW_URL_TITLE = "" ;// 详情弹窗显示提示--}}
+        {{--const EDIT_URL = "{{url('m/work/add/')}}/";//修改页面地址前缀 + id--}}
+        {{--const DEL_URL = "{{ url('api/m/work/ajax_del') }}";//删除页面地址--}}
+        {{--const BATCH_DEL_URL = "{{ url('api/m/work/ajax_del') }}";//批量删除页面地址--}}
+        {{--const EXPORT_EXCEL_URL = "{{ url('m/work/add/0') }}"; //"{{ url('api/m/work/export') }}";//导出EXCEL地址--}}
+        {{--const IMPORT_EXCEL_URL = "{{ url('m/work/add/0') }}"; //"{{ url('api/m/work/import') }}";//导入EXCEL地址--}}
 
     const SURE_MSG_URL = "{{ url('api/m/msg/ajax_save') }}/";// ajax确认消息地址
     const SURE_WORK_URL = "{{ url('api/m/work/ajax_sure') }}/";// ajax确认工单地址
     const WIN_WORK_URL = "{{ url('api/m/work/ajax_win') }}/";// ajax工单结单地址
+    const WIN_WORK_PAGE_URL = "{{ url('m/work/win') }}/";// ajax工单结单地址
 
 
     var SUBMIT_FORM = true;//防止多次点击提交
@@ -124,15 +126,16 @@
         $(document).on("click",".work_win",function(){
             var obj = $(this);
             var id = obj.data('id');
-            var index_query = layer.confirm('确认结单？', {
-                btn: ['确定','取消'] //按钮
-            }, function(){
+            // var index_query = layer.confirm('确认结单？', {
+            //     btn: ['确定','取消'] //按钮
+            // }, function(){
                 // operate_ajax('sure_word',id);
+                go(WIN_WORK_PAGE_URL + id);
                 // 跳转让到内容输入页
-                alert(id);
-                layer.close(index_query);
-            }, function(){
-            });
+                // alert(id);
+            //     layer.close(index_query);
+            // }, function(){
+            // });
             return false;
         });
     });

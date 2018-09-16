@@ -5,6 +5,7 @@ namespace App\Http\Controllers\m;
 use App\Business\CompanyWork;
 use App\Http\Controllers\WorksController;
 use App\Services\Common;
+use App\Services\CommonBusiness;
 use Illuminate\Http\Request;
 
 class WorkController extends WorksController
@@ -32,10 +33,28 @@ class WorkController extends WorksController
      * @return mixed
      * @author zouyan(305463219@qq.com)
      */
-    public function win(Request $request)
+    public function win(Request $request,$id = 0)
     {
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
+        $company_id = $this->company_id;
+        $resultDatas = [
+            'id'=>$id,
+            'department_id' => 0,
+        ];
+
+        if ($id > 0) { // 获得详情数据
+            $resultDatas = CompanyWork::getInfoData($request, $this, $id);
+            // 判断权限
+            $judgeData = [
+                'company_id' => $company_id,
+                'send_staff_id' => $this->user_id,
+                'status' => 2,
+            ];
+            CommonBusiness::judgePowerByObj($resultDatas, $judgeData );
+        }
+        $reDataArr = array_merge($reDataArr, $resultDatas);
+
         return view('mobile.work.win', $reDataArr);
     }
 
@@ -97,4 +116,19 @@ class WorkController extends WorksController
         return ajaxDataArr(1, $resultDatas, '');
     }
 
+    /**
+     * ajax结单
+     *
+     * @param int $id
+     * @return Response
+     * @author zouyan(305463219@qq.com)
+     */
+    public function ajax_win(Request $request)
+    {
+        $this->InitParams($request);
+        $id = Common::getInt($request, 'id');
+        $saveData = [];
+        $resultDatas = CompanyWork::workWin($request, $this, $saveData, $id);
+        return ajaxDataArr(1, $resultDatas, '');
+    }
 }

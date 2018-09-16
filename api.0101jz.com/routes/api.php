@@ -54,6 +54,11 @@ Route::any('work/test', 'CompanyWorkController@test');//测试
 Route::any('work/add_init', 'CompanyWorkController@addInit');//工单添加页初始数据
 Route::any('work/add_save', 'CompanyWorkController@add_save');//工单添加/修改
 Route::any('work/mobile_index', 'CompanyWorkController@mobile_index');//手机站首页初始化数据
+Route::any('work/workReSend', 'CompanyWorkController@workReSend');//工单重新指定
+Route::any('work/workSure', 'CompanyWorkController@workSure');//确认工单
+Route::any('work/workWin', 'CompanyWorkController@workWin');//结单
+Route::any('work/workReply', 'CompanyWorkController@workReply');//回访
+
 // 问题反馈
 Route::any('problem/add_save', 'CompanyProblemController@add_save');//工单添加/修改
 
