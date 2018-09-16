@@ -252,6 +252,9 @@ Route::any('m/work_type/ajax_get_child', 'm\WorkTypeController@ajax_get_child');
 Route::any('m/work/ajax_alist', 'm\WorkController@ajax_alist');//ajax获得列表数据
 Route::any('m/work/ajax_del', 'm\WorkController@ajax_del');// 删除
 Route::any('m/work/ajax_save', 'm\WorkController@ajax_save');// 新加/修改
+Route::any('m/work/ajax_doing_list', 'm\WorkController@ajax_doing_list');// 根据状态获得工单信息
+Route::any('m/work/ajax_sure', 'm\WorkController@ajax_sure');// 确认工单地址
+Route::any('m/work/ajax_win', 'm\WorkController@ajax_win');// 工单结单地址
 
 // 系统模块
 Route::any('m/system_module/ajax_get_child', 'm\SystemModuleController@ajax_get_child');// 获得子类部门数组[kv一维数组]
@@ -261,7 +264,8 @@ Route::any('m/system_module/ajax_get_child', 'm\SystemModuleController@ajax_get_
 //Route::any('m/problem/ajax_getarea', 'm\ProblemController@ajax_getarea');//ajax获得二级地址数据
 //Route::any('m/problem/ajax_problem_add', 'm\ProblemController@ajax_problem_add');//ajax获得二级地址数据
 Route::any('m/problem/ajax_save', 'm\ProblemController@ajax_save');// 新加/修改
-
+// 消息确认
+Route::any('m/msg/ajax_save', 'm\SiteMsgController@ajax_sure');// 新加/修改
 
 
 

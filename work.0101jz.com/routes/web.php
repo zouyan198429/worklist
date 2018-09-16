@@ -267,3 +267,5 @@ Route::get('m/exam_score', 'm\ExamController@score');//kaoshi-cj.html 考试成�
 Route::get('m/exam_search', 'm\ExamController@search');//kaoshi-cj-view.html  考试成绩-维修业务知识测评--成绩查询
 Route::get('m/lore', 'm\LoreController@index');//study.html 学习中心--知识列表
 Route::get('m/lore/info', 'm\LoreController@info');//study_view.html 学习中心-知识详情页
+// 工单
+Route::get('m/work/win', 'm\WorkController@win');// 结单

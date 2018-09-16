@@ -18,7 +18,8 @@ class CompanyWork extends BaseBusiness
 
     // 状态 0新工单2待反馈工单[处理中];4待回访工单;8已完成工单
     public static  $status_arr = [
-       // '0' => '新工单',
+        //'0' => '待确认接单',
+        '1' => '待确认',
         '2' => '处理中',
         '4' => '待回访',
         '8' => '已完成',
@@ -97,7 +98,7 @@ class CompanyWork extends BaseBusiness
      * @param Controller $controller 控制对象
      * @param int $oprateBit 操作类型位 1:获得所有的; 2 分页获取[同时有1和2，2优先]；4 返回分页html翻页代码
      * @param mixed $relations 关系
-     * @param int $status 状态0新工单2待反馈工单;4待回访工单;8已完成工单
+     * @param int $status 状态0新工单2待反馈工单;4待回访工单;8已完成工单 , 如果要查多个用逗号分隔 ,
      * @param int $notLog 是否需要登陆 0需要1不需要
      * @return  array 列表数据
      * @author zouyan(305463219@qq.com)
@@ -110,8 +111,11 @@ class CompanyWork extends BaseBusiness
             'where' => [
                 ['company_id', $company_id],
                 ['send_staff_id', $controller->user_id],
-                ['status', $status],
+               // ['status', $status],
             ],
+//            'whereIn' => [
+//                'status'=> [0,1,2,4,8],
+//            ],
 //            'select' => [
 //                'id','company_id','type_name','sort_num'
 //                //,'operate_staff_id','operate_staff_history_id'
@@ -119,7 +123,21 @@ class CompanyWork extends BaseBusiness
 //            ],
 //            'orderBy' => ['sort_num'=>'desc','id'=>'desc'],
             'orderBy' => ['book_time'=>'desc','id'=>'desc'],
-        ];// 查询条件参数
+        ];
+        $statusArr = explode(',', $status);
+        if(count($statusArr) > 1){
+            $queryParams['whereIn'] = [
+                'status'=> $statusArr,
+            ];
+        }else{
+            array_push($queryParams['where'],['status', $status]);
+        }
+//        if(in_array($status, [1,2])){
+//            $queryParams['orderBy'] = ['book_time'=>'desc','id'=>'desc'];
+//        }else{
+//            $queryParams['orderBy'] = ['id'=>'desc'];
+//        }
+        // 查询条件参数
         // $relations = ['CompanyInfo'];// 关系
         // $relations = '';//['CompanyInfo'];// 关系
         $result = self::getBaseListData($request, $controller, self::$model_name, $queryParams,$relations , $oprateBit, $notLog);
@@ -135,7 +153,8 @@ class CompanyWork extends BaseBusiness
 //        $result['data_list'] = $data_list;
         // return ajaxDataArr(1, $result, '');
         // 格式化数据
-        return $result;
+        // return $result;
+        return ajaxDataArr(1, $result, '');
     }
 
     /**
@@ -336,4 +355,157 @@ class CompanyWork extends BaseBusiness
         return HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
     }
 
+    /**
+     * 手机站首页页面初始化要填充的数据
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @return  array 数据
+    //        $listData = [
+    //            'waitSureCount' => $waitSureCount,// 1 待确认工单数量
+    //            'doingCount' => $doingCount,// 2 处理中工单数量
+    //            'msgList' => $total,// 4 未读消息
+    //        ];
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function mobileInitData(Request $request, Controller $controller)
+    {
+        $company_id = $controller->company_id;
+        // 参数
+        $requestData = [
+            'company_id' => $company_id,
+            'staff_id' =>  $controller->user_id,
+            'operate_no' => 1 + 2 + 4,
+        ];
+        $url = config('public.apiUrl') . config('apiUrl.apiPath.initMobileWork');
+        // 生成带参数的测试get请求
+        // $requestTesUrl = splicQuestAPI($url , $requestData);
+        return HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
+    }
+
+    /**
+     * 确认工单
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param array $saveData 要保存或修改的数组
+     * @param int $id id
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function workSure(Request $request, Controller $controller, $saveData , &$id, $notLog = 0)
+    {
+        $company_id = $controller->company_id;
+        if($id > 0){
+            // 判断权限
+            $judgeData = [
+                'company_id' => $company_id,
+                'send_staff_id' => $controller->user_id,
+            ];
+            $relations = '';
+            $infoData = CommonBusiness::judgePower($id, $judgeData, self::$model_name, $company_id, $relations, $notLog);
+            // 判断状态
+            $status = $infoData['status'] ?? '';
+            if($status != 1){
+                throws('当前记录不可进行此操作!');
+            }
+        }else {// 新加;要加入的特别字段
+            throws("参数有误!");
+        }
+        // 参数
+        $requestData = [
+            'company_id' => $company_id,
+            'staff_id' =>  $controller->user_id,
+            'id' => $id,
+            'save_data' => $saveData,
+        ];
+        $url = config('public.apiUrl') . config('apiUrl.apiPath.workSure');
+        // 生成带参数的测试get请求
+        // $requestTesUrl = splicQuestAPI($url , $requestData);
+        return HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
+    }
+
+    /**
+     * 结单
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param array $saveData 要保存或修改的数组
+     * @param int $id id
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function workWin(Request $request, Controller $controller, $saveData , &$id, $notLog = 0)
+    {
+        $company_id = $controller->company_id;
+        if($id > 0){
+            // 判断权限
+            $judgeData = [
+                'company_id' => $company_id,
+                'send_staff_id' => $controller->user_id,
+            ];
+            $relations = '';
+            $infoData = CommonBusiness::judgePower($id, $judgeData, self::$model_name, $company_id, $relations, $notLog);
+            // 判断状态
+            $status = $infoData['status'] ?? '';
+            if($status != 2){
+                throws('当前记录不可操作!');
+            }
+        }else {// 新加;要加入的特别字段
+            throws("参数有误!");
+        }
+        // 参数
+        $requestData = [
+            'company_id' => $company_id,
+            'staff_id' =>  $controller->user_id,
+            'id' => $id,
+            'save_data' => $saveData,
+        ];
+        $url = config('public.apiUrl') . config('apiUrl.apiPath.workWin');
+        // 生成带参数的测试get请求
+        // $requestTesUrl = splicQuestAPI($url , $requestData);
+        return HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
+    }
+
+    /**
+     * 回访
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param array $saveData 要保存或修改的数组
+     * @param int $id id
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function workReply(Request $request, Controller $controller, $saveData , &$id, $notLog = 0)
+    {
+        $company_id = $controller->company_id;
+        if($id > 0){
+            // 判断权限
+            $judgeData = [
+                'company_id' => $company_id,
+                'send_staff_id' => $controller->user_id,
+            ];
+            $relations = '';
+            $infoData = CommonBusiness::judgePower($id, $judgeData, self::$model_name, $company_id, $relations, $notLog);
+            // 判断状态
+            $status = $infoData['status'] ?? '';
+            if($status != 4){
+                throws('当前记录不可操作!');
+            }
+        }else {// 新加;要加入的特别字段
+            throws("参数有误!");
+        }
+        // 参数
+        $requestData = [
+            'company_id' => $company_id,
+            'staff_id' =>  $controller->user_id,
+            'id' => $id,
+            'save_data' => $saveData,
+        ];
+        $url = config('public.apiUrl') . config('apiUrl.apiPath.workReply');
+        // 生成带参数的测试get请求
+        // $requestTesUrl = splicQuestAPI($url , $requestData);
+        return HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
+    }
 }

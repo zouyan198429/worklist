@@ -53,6 +53,7 @@ Route::any('comp/compareHistoryOrUpdateVersion', 'Comp\CommonController@compareH
 Route::any('work/test', 'CompanyWorkController@test');//测试
 Route::any('work/add_init', 'CompanyWorkController@addInit');//工单添加页初始数据
 Route::any('work/add_save', 'CompanyWorkController@add_save');//工单添加/修改
+Route::any('work/mobile_index', 'CompanyWorkController@mobile_index');//手机站首页初始化数据
 // 问题反馈
 Route::any('problem/add_save', 'CompanyProblemController@add_save');//工单添加/修改
 

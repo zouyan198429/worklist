@@ -22,14 +22,9 @@ class IndexController extends WorksController
     {
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
-        // 获得系统消息
-        $msgList = CompanySiteMsg::getListByRead( $request, $this, 1 + 0, 0);
-        $reDataArr["msgList"] = $msgList['data_list'] ?? [];
-        // 待处理工单
-        $workList = CompanyWork::getListByStatus($request, $this, 1 + 0, 2);
-        $reDataArr["waitWorkList"] = $workList['data_list'] ?? [];
-        // 已完成的 - ajax请求
-//        pr($reDataArr);
+        // 初始化数据
+        $arrList = CompanyWork::mobileInitData($request, $this);
+        $reDataArr = array_merge($reDataArr, $arrList);
         return view('mobile.index', $reDataArr);
     }
 

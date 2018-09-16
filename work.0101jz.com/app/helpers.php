@@ -285,7 +285,7 @@ function showPage($totalpg, $pg = 1, $record = 0,$showpage = 9,$show_num = 0)
 
     $page = '';
 
-    if($totalpg < 1){
+    if($totalpg <= 1){
        return $page;
     }
 

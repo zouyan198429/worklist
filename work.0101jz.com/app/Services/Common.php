@@ -129,6 +129,7 @@ class Common
                     // whereIn  子句
                     // ->whereIn('id', [1, 2, 3])
                     if ( (! empty($param)) && is_array($param)){
+
                         $tbObj = $tbObj->whereIn($param);
                     }
 

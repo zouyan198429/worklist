@@ -10,8 +10,10 @@ use App\Models\CompanyCustomerType;
 use App\Models\CompanyDepartment;
 use App\Models\CompanyServiceTags;
 use App\Models\CompanyServiceTime;
+use App\Models\CompanySiteMsg;
 use App\Models\CompanyStaff;
 use App\Models\CompanyStaffHistory;
+use App\Models\CompanyWork;
 use App\Models\CompanyWorkCallerType;
 use App\Models\CompanyWorkType;
 use App\Services\Common;
@@ -348,7 +350,7 @@ class CompanyWorkController extends CompController
             $send_staff_history_id = $sendStaffHistoryObj->id;
             Common::judgeEmptyParams($request, '指派员工历史记录ID', $send_staff_history_id);
             $save_data['send_staff_history_id'] = $send_staff_history_id;
-            $save_data['status'] = 2;//2待反馈工单
+            $save_data['status'] = 1;//1待确认工单
         }
 
         // 获是员工历史记录id-- 操作员工
@@ -505,4 +507,64 @@ class CompanyWorkController extends CompController
         return  okArray($workObj);
     }
 
+    /**
+     * 手机站首页初始化数据
+     *
+     * @param int $id
+     * @return Response
+     * @author zouyan(305463219@qq.com)
+     */
+    public function mobile_index(Request $request)
+    {
+
+        $this->InitParams($request);
+        $company_id = $this->company_id;
+        // operate_no 操作编号
+        $operate_no = Common::getInt($request, 'operate_no');
+        $staff_id = Common::getInt($request, 'staff_id');// 操作员工
+
+        $listData = [];
+        //待确认工单数量 1
+        $waitSureCount = 0;
+        if(($operate_no & 1) == 1 ){
+            $waitSureCount = CompanyWork::where([
+                    ['company_id', '=', $company_id],
+                    ['send_staff_id', '=', $staff_id],
+                    ['status', '=', 1],
+                ])->count();
+        }
+        $listData['waitSureCount'] = $waitSureCount;
+
+        //处理中工单数量 2
+        $doingCount = 0;
+        if(($operate_no & 2) == 2 ){
+            $doingCount = CompanyWork::where([
+                ['company_id', '=', $company_id],
+                ['send_staff_id', '=', $staff_id],
+                ['status', '=',2],
+            ])->count();
+        }
+        $listData['doingCount'] = $doingCount;
+
+        // 未读消息
+        $msgList = [];
+        if(($operate_no & 4) == 4 ) {
+            $msgList = CompanySiteMsg::select(['id', 'msg_name', 'mst_content', 'is_read', 'accept_staff_id'
+                , 'operate_staff_id', 'created_at'])
+               ->orderBy('id', 'desc')
+                ->where([
+                    ['company_id', '=', $company_id],
+                    ['accept_staff_id', '=', $staff_id],
+                    ['is_read', '=', 0],
+                ])->get();
+        }
+        $listData['msgList'] = $msgList;
+//        $listData = [
+//            'waitSureCount' => $waitSureCount,// 待确认工单数量
+//            'doingCount' => $doingCount,// 处理中工单数量
+//            'msgList' => $total,//未读消息
+//        ];
+       return okArray($listData);
+
+    }
 }
