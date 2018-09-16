@@ -183,6 +183,7 @@ Route::any('huawu/system_module/ajax_get_child', 'huawu\SystemModuleController@a
 Route::any('huawu/work/ajax_save', 'huawu\WorkController@ajax_save');// 新加/修改
 Route::any('huawu/work/ajax_alist', 'huawu\WorkController@ajax_alist');//ajax获得列表数据
 Route::any('huawu/work/ajax_del', 'huawu\WorkController@ajax_del');// 删除
+Route::any('huawu/work/reply_ajax_save', 'huawu\WorkController@reply_ajax_save');// 回访新加/修改
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //web-weixiu 维修
 // 登陆

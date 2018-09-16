@@ -249,4 +249,53 @@ class WorkController extends WorksController
 //        return CompanyWork::delAjax($request, $this);
 //    }
 
+    /**
+     * 反馈问题的回复
+     *
+     * @param Request $request
+     * @return mixed
+     * @author liuxin
+     */
+    public function reply(Request $request,$id = 0)
+    {
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        $resultDatas = [
+            'id'=>$id,
+            //  'call_number' => $this->user_info['mobile'] ?? '',
+        ];
+
+        if ($id > 0) { // 获得详情数据
+            $resultDatas =CompanyWork::getShowInfoData($request, $this, $id);
+            //$resultDatas = CompanyWork::getInfoData($request, $this, $id, '');
+            $reply_content = $resultDatas['reply_content'] ?? '';
+            $resultDatas['reply_content'] = replace_enter_char($reply_content,2);
+        }
+        $reDataArr = array_merge($reDataArr, $resultDatas);
+        // 初始化数据
+        $arrList = CompanyWork::addInitData( $request, $this);
+        $reDataArr = array_merge($reDataArr, $arrList);
+        return view('huawu.work.reply',$reDataArr);
+    }
+
+    /**
+     * ajax保存数据
+     *
+     * @param int $id
+     * @return Response
+     * @author zouyan(305463219@qq.com)
+     */
+    public function reply_ajax_save(Request $request)
+    {
+        $this->InitParams($request);
+        $id = Common::getInt($request, 'id');
+        $reply_content = Common::get($request, 'reply_content');
+        $reply_content =  replace_enter_char($reply_content,1);
+        $saveData = [
+            'reply_content' => $reply_content,// 内容
+        ];
+        $resultDatas = CompanyWork::workReply($request,  $this, $saveData , $id);
+        return ajaxDataArr(1, $resultDatas, '');
+    }
+
 }

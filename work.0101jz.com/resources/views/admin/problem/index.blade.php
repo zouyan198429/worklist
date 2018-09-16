@@ -37,7 +37,7 @@
 				<th>地址</th>
 				<th>发送人</th>
 				<th>时间</th>
-				<th>操作</th>
+				{{--<th>操作</th>--}}
 			</tr>
 			</thead>
 			<tbody id="data_list">

@@ -201,6 +201,7 @@ Route::get('huawu/work/history', 'huawu\WorkController@history');//work_history.
 Route::get('huawu/work/hot', 'huawu\WorkController@hot');//work_hot.html 工单- 热点
 Route::get('huawu/work/re_list', 'huawu\WorkController@re_list');//work_Return.html  工单- 重新指派
 Route::get('huawu/work/info/{id}', 'huawu\WorkController@info');//work_add.html 工单--详情
+Route::get('huawu/work/reply/{id}', 'huawu\WorkController@reply');// 工单-- 回访
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

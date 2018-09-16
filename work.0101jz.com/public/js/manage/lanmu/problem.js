@@ -34,11 +34,11 @@ $(function(){
     document.write("        <td><%=item.city_name%><%=item.area_name%><%=item.address%><\/td>");
     document.write("        <td><%=item.operate_staff_name%><\/td>");
     document.write("        <td><%=item.created_at%><\/td>");
-    document.write("        <td>");
-    document.write("            <%if( can_modify){%>");
-    document.write("            <a href=\"javascript:void(0);\" data-id=\"<%=item.id%>\"  class=\"btn btn-mini reply_page\" >回复<\/a>");
-    document.write("            <%}%>");
-    document.write("        <\/td>");
+    // document.write("        <td>");
+    // document.write("            <%if( can_modify){%>");
+    // document.write("            <a href=\"javascript:void(0);\" data-id=\"<%=item.id%>\"  class=\"btn btn-mini reply_page\" >回复<\/a>");
+    // document.write("            <%}%>");
+    // document.write("        <\/td>");
     document.write("    <\/tr> <%}%>");
     document.write("<\/script>");
     document.write("<!-- 列表模板部分 结束-->");

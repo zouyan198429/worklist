@@ -974,7 +974,7 @@ class CompanyWorkController extends CompController
         jsonStrToArr($save_data, 1, '参数[save_data]格式有误!');
 
 
-        $re_content = $save_data['re_content'] ?? '';// 内容说明
+        $reply_content = $save_data['reply_content'] ?? '';// 内容说明
 
 
         DB::beginTransaction();
@@ -1016,7 +1016,7 @@ class CompanyWorkController extends CompController
             $workObj->status = 8;
             $workObj->save();
             // 日志
-            $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "工单回访!内容：" . $re_content);
+            $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "工单回访!内容：" . $reply_content);
         } catch ( \Exception $e) {
             DB::rollBack();
             throws('提交失败；信息[' . $e->getMessage() . ']');
