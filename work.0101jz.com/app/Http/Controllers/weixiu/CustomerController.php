@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\weixiu;
 
+use App\Business\CompanyStaffCustomer;
 use App\Http\Controllers\WorksController;
 use Illuminate\Http\Request;
 use App\Business\CompanyCustomer;
@@ -46,7 +47,7 @@ class CustomerController extends WorksController
      */
     public function ajax_alist(Request $request){
         $this->InitParams($request);
-        return  CompanyCustomer::getList($request, $this, 2 + 4, ['customerType'] );
+        return  CompanyStaffCustomer::getList($request, $this, 2 + 4, ['customerType'] );
     }
 
 
@@ -61,7 +62,7 @@ class CustomerController extends WorksController
     public function ajax_del(Request $request)
     {
         $this->InitParams($request);
-        return CompanyCustomer::delAjax($request, $this);
+        return CompanyStaffCustomer::delAjax($request, $this);
     }
 
 

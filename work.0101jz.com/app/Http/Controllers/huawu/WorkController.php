@@ -218,7 +218,22 @@ class WorkController extends WorksController
      */
     public function ajax_alist(Request $request){
         $this->InitParams($request);
-        return  CompanyWork::getList($request, $this, 2 + 4);
+        $company_id = $this->company_id;
+        $user_id = $this->user_id;
+        $queryParams = [
+            'where' => [
+                ['company_id', $company_id],
+                ['operate_staff_id', $user_id],
+            ],
+//            'select' => [
+//                'id','company_id','type_name','sort_num'
+//                //,'operate_staff_id','operate_staff_history_id'
+//                ,'created_at'
+//            ],
+//            'orderBy' => ['sort_num'=>'desc','id'=>'desc'],
+            'orderBy' => ['id'=>'desc'],
+        ];// 查询条件参数
+        return  CompanyWork::getList($request, $this, 2 + 4,$queryParams);
     }
 
     /**

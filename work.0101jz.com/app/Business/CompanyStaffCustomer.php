@@ -9,9 +9,9 @@ use App\Http\Controllers\BaseController as Controller;
 /**
  *
  */
-class CompanyCustomer extends BaseBusiness
+class CompanyStaffCustomer extends BaseBusiness
 {
-    protected static $model_name = 'CompanyCustomer';
+    protected static $model_name = 'CompanyStaffCustomer';
 
     /**
      * 获得列表数据--所有数据
@@ -31,7 +31,7 @@ class CompanyCustomer extends BaseBusiness
         $queryParams = [
             'where' => [
                 ['company_id', $company_id],
-                //['mobile', $keyword],
+                ['staff_id', $controller->user_id],
             ],
 //            'select' => [
 //                'id','company_id','type_name','sort_num'
@@ -39,7 +39,7 @@ class CompanyCustomer extends BaseBusiness
 //                ,'created_at'
 //            ],
             'orderBy' => ['is_tab'=>'desc','id'=>'desc'],
-//            'orderBy' => ['id'=>'desc'],
+            //'orderBy' => ['id'=>'desc'],
         ];// 查询条件参数
         // $relations = ['CompanyInfo'];// 关系
         // $relations = ['customerType'];//['CompanyInfo'];// 关系
