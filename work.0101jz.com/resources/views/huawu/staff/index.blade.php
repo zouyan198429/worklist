@@ -21,7 +21,7 @@
 				</select>
 			</div>
 
-			<div class="msearch fr"> <input type="text" value=""  name="keyword"  /> <button class="btn btn-normal  search_frm">搜索</button> </div>
+			<div class="msearch fr"> <input type="text" value=""  name="keyword"  placeholder="请输入姓名" /> <button class="btn btn-normal  search_frm">搜索</button> </div>
 			</form>
 		</div>
 		{{--

@@ -164,8 +164,10 @@ class Tool
      public static function order_sn($uid)
     {
         // return '619' . date('YmdHis') . str_pad(mt_rand(1, 999999), 6, '0', STR_PAD_LEFT) . $uid;
-        return date('YmdHis') . str_pad(mt_rand(1, 99), 2, '0', STR_PAD_LEFT)
-            . str_pad($uid,4,"0",STR_PAD_LEFT);
+        //return date('YmdHis') . str_pad(mt_rand(1, 99), 2, '0', STR_PAD_LEFT)
+        //    . str_pad($uid,4,"0",STR_PAD_LEFT);
+        return date('ymdHis') . str_pad(mt_rand(1, 99), 2, '0', STR_PAD_LEFT);
+           // . str_pad($uid,4,"0",STR_PAD_LEFT);
     }
 
     /**

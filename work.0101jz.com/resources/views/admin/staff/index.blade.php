@@ -24,7 +24,7 @@
 						<option value="{{ $k }}"  @if(isset($department_id) && $department_id == $k) selected @endif >{{ $txt }}</option>
 					@endforeach
 				</select>
-				<input type="text" value=""    name="keyword" />
+				<input type="text" value=""    name="keyword"  placeholder="请输入姓名"/>
 				<button class="btn btn-normal search_frm">搜索</button>
 			</div>
 			</form>
