@@ -12,6 +12,7 @@ use App\Models\CompanyServiceTags;
 use App\Models\CompanyServiceTime;
 use App\Models\CompanySiteMsg;
 use App\Models\CompanyStaff;
+use App\Models\CompanyStaffCustomer;
 use App\Models\CompanyStaffHistory;
 use App\Models\CompanyWork;
 use App\Models\CompanyWorkCallerType;
@@ -20,6 +21,7 @@ use App\Services\Common;
 use App\Services\Tool;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CompanyWorkController extends CompController
@@ -337,191 +339,255 @@ class CompanyWorkController extends CompController
         $save_data['send_group_name'] = $send_group_name;
         array_push($sendLogs, $send_group_name);// 指派日志
 
-        // 获得员工历史记录id-- 工单接收员工
-        $send_staff_id = $save_data['send_staff_id'] ?? 0;
-        $save_data['status'] = 0; // 默认状态
-        if($send_staff_id > 0){ // 指定了员工
-            $sendStaffObj = null;
-//            Common::getObjByModelName("CompanyStaff", $sendStaffObj);
-            $sendStaffHistoryObj = null;
-//            Common::getObjByModelName("CompanyStaffHistory", $sendStaffHistoryObj);
-//            $sendStaffHistorySearch = [
-//                'company_id' => $company_id,
-//                'staff_id' => $send_staff_id,
-//            ];
-//
-//            Common::getHistory($sendStaffObj, $send_staff_id, $sendStaffHistoryObj,'company_staff_history', $sendStaffHistorySearch, []);
-            $this->getHistoryStaff($sendStaffObj , $sendStaffHistoryObj, $company_id, $send_staff_id);
+        DB::beginTransaction();
+        try {
+            // 获得员工历史记录id-- 工单接收员工
+            $send_staff_id = $save_data['send_staff_id'] ?? 0;
+            $save_data['status'] = 0; // 默认状态
+            if($send_staff_id > 0){ // 指定了员工
+                $sendStaffObj = null;
+    //            Common::getObjByModelName("CompanyStaff", $sendStaffObj);
+                $sendStaffHistoryObj = null;
+    //            Common::getObjByModelName("CompanyStaffHistory", $sendStaffHistoryObj);
+    //            $sendStaffHistorySearch = [
+    //                'company_id' => $company_id,
+    //                'staff_id' => $send_staff_id,
+    //            ];
+    //
+    //            Common::getHistory($sendStaffObj, $send_staff_id, $sendStaffHistoryObj,'company_staff_history', $sendStaffHistorySearch, []);
+                $this->getHistoryStaff($sendStaffObj , $sendStaffHistoryObj, $company_id, $send_staff_id);
 
-            $send_staff_history_id = $sendStaffHistoryObj->id;
-            Common::judgeEmptyParams($request, '指派员工历史记录ID', $send_staff_history_id);
-            $save_data['send_staff_history_id'] = $send_staff_history_id;
-            $save_data['status'] = 1;//1待确认工单
+                $send_staff_history_id = $sendStaffHistoryObj->id;
+                Common::judgeEmptyParams($request, '指派员工历史记录ID', $send_staff_history_id);
+                $save_data['send_staff_history_id'] = $send_staff_history_id;
+                $save_data['status'] = 1;//1待确认工单
 
-            array_push($sendLogs, $sendStaffHistoryObj->real_name . '[' . $sendStaffHistoryObj->work_num . ']');// 指派日志
+                array_push($sendLogs, $sendStaffHistoryObj->real_name . '[' . $sendStaffHistoryObj->work_num . ']');// 指派日志
+            }
+
+            // 获是员工历史记录id-- 操作员工
+            $staffObj = null;
+    //        Common::getObjByModelName("CompanyStaff", $staffObj);
+            $staffHistoryObj = null;
+    //        Common::getObjByModelName("CompanyStaffHistory", $staffHistoryObj);
+    //        $StaffHistorySearch = [
+    //            'company_id' => $company_id,
+    //            'staff_id' => $staff_id,
+    //        ];
+    //
+    //        Common::getHistory($staffObj, $staff_id, $staffHistoryObj,'company_staff_history', $StaffHistorySearch, []);
+
+            $this->getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id);
+
+            $operate_staff_history_id = $staffHistoryObj->id;
+            Common::judgeEmptyParams($request, '员工历史记录ID', $operate_staff_history_id);
+
+            $save_data['operate_staff_id'] = $staff_id;
+            $save_data['operate_staff_history_id'] = $operate_staff_history_id;
+
+            // 对客户信息进行处理 [更新或新建]
+            $call_number = $save_data['call_number'] ?? '';
+            // 获得客户信息:没有新建，有则更新来电次数
+            $customer = [
+                'company_id' => $company_id,// $save_data['company_id'] ?? '',
+                'call_number' => $save_data['call_number'] ?? '',// 来电号码
+                'type_id' => $save_data['type_id'] ?? '',// 客户类别id
+                'customer_name' => $save_data['customer_name'] ?? '',// 客户姓名
+                'sex' => $save_data['sex'] ?? '',// 性别0未知1男2女
+                'city_id' => $save_data['city_id'] ?? '',// 县/区id
+                'area_id' => $save_data['area_id'] ?? '',// 街道id
+                'address' => $save_data['address'] ?? '',// 详细地址
+                // 'call_num' => 1,// 来电次数,放后面单独自加1
+                'last_call_date' => date("Y-m-d H:i:s",time()),// 上次到访时间
+                'operate_staff_id' => $staff_id,//  操作员工id
+                'operate_staff_history_id' => $operate_staff_history_id,// 操作员工历史id
+            ];
+            // 创建或更新客户信息
+            $customerObj = null;
+            Common::getObjByModelName("CompanyCustomer", $customerObj);
+
+            $searchCustomerConditon = [
+                'company_id' => $company_id,
+                'call_number' => $call_number,
+            ];
+
+            Common::updateOrCreate($customerObj, $searchCustomerConditon, $customer );
+            $customer_id = $customerObj->id;
+            $save_data['customer_id'] = $customer_id;
+
+             // 来电次数加1;;修改也算
+            //if($work_id <=0 ){
+                $customerObj->call_num++;
+                $customerObj->save();
+            //}
+
+            // 判断版本号是否要+1
+
+            $compareHistoryObj = null;
+            Common::getObjByModelName("CompanyCustomerHistory", $compareHistoryObj);
+            $customerHistorySearch = [
+                'company_id' => $company_id,
+                'customer_id' => $customer_id,
+            ];
+
+            $customerIgnoreFields = ['call_num', 'last_call_date'];
+            $customerIsUpdate = false;// 客户表是否更新,false:没有更新,true：有更新
+            $diffDataArr = Common::compareHistoryOrUpdateVersion($customerObj, $customer_id,
+                $compareHistoryObj,'company_customer_history',
+                $customerHistorySearch, $customerIgnoreFields, 0);
+            if(! empty($diffDataArr)){// 客户有新信息，版本号+1
+                // 对比主表和历史表是否相同，相同：不更新版本号，不同：版本号+1
+                $customerObj->version_num++ ;
+                $customerObj->save();
+                $customerIsUpdate = true;
+            }
+
+
+            // 客户历史id
+            //$customerObj = null;
+            // Common::getObjByModelName("CompanyCustomer", $customerObj);
+            $customerHistoryObj = null;
+            Common::getObjByModelName("CompanyCustomerHistory", $customerHistoryObj);
+            $customerHistorySearch = [
+                'company_id' => $company_id,
+                'customer_id' => $customer_id,
+            ];
+
+            Common::getHistory($customerObj, $customer_id, $customerHistoryObj,'company_customer_history', $customerHistorySearch, []);
+            $customer_history_id = $customerHistoryObj->id;
+            Common::judgeEmptyParams($request, '客户历史记录ID', $customer_history_id);
+            $save_data['customer_history_id'] = $customer_history_id;
+
+
+            // 保存添加员工的客户信息--创建或修改
+
+            $staffCustomerData = $customerObj->toArray();
+    //        $staffCustomerNeedFields = ['company_id', 'version_num', 'call_number', 'type_id', 'customer_name', 'sex'
+    //            , 'city_id', 'area_id', 'address', 'call_num', 'last_call_date', 'operate_staff_id', 'operate_staff_history_id'];
+    //        Tool::formatTwoArrKeys($staffCustomerData, $staffCustomerNeedFields, $needNotIn = false);
+
+            if($staffCustomerData['id']) unset($staffCustomerData['id']);
+            if($staffCustomerData['sex_text']) unset($staffCustomerData['sex_text']);
+            if($staffCustomerData['created_at']) unset($staffCustomerData['created_at']);
+            if($staffCustomerData['updated_at']) unset($staffCustomerData['updated_at']);
+            $batchModifyStaffCustomer = $staffCustomerData;
+            $staffCustomerData['customer_id'] = $customer_id;
+            $staffCustomerData['customer_history_id'] = $customer_history_id;
+            $staffCustomerData['staff_id'] = $staff_id;
+            $staffCustomerData['staff_history_id'] = $operate_staff_history_id;
+
+            // 创建或更新员工客户信息
+            $StaffCustomerObj = null;
+            Common::getObjByModelName("CompanyStaffCustomer", $StaffCustomerObj);
+
+            $searchStaffCustomerConditon = [
+                'company_id' => $company_id,
+                'staff_id' => $staff_id,
+                'customer_id' => $customer_id,
+            ];
+
+            Common::updateOrCreate($StaffCustomerObj, $searchStaffCustomerConditon, $staffCustomerData );
+
+            //更新使用了此用户表的，员工表-- 自动更新
+            if($customerIsUpdate){
+                $where = [
+                    ['company_id', '=', $company_id],
+                    ['customer_id', '=', $customer_id],
+                ];
+                CompanyStaffCustomer::where($where)->update($batchModifyStaffCustomer);
+            }
+
+            // 保存指派员工的客户信息
+            $staffCustomerData['staff_id'] = $send_staff_id;
+            $staffCustomerData['staff_history_id'] = $send_staff_history_id;
+            // 创建或更新员工客户信息
+            $sendStaffCustomerObj = null;
+            Common::getObjByModelName("CompanyStaffCustomer", $sendStaffCustomerObj);
+
+            $searchSendStaffCustomerConditon = [
+                'company_id' => $company_id,
+                'staff_id' => $send_staff_id,
+                'customer_id' => $customer_id,
+            ];
+
+            Common::updateOrCreate($sendStaffCustomerObj, $searchSendStaffCustomerConditon, $staffCustomerData );
+
+
+            // 保存或修改工单
+            $workObj = null;
+            Common::getObjByModelName("CompanyWork", $workObj);
+            $workSearchConditon = [
+                'company_id' => $company_id,
+                'id' => $work_id,
+            ];
+            Common::updateOrCreate($workObj, $workSearchConditon, $save_data );
+
+            // 工单派发记录
+            if($send_staff_id > 0) { // 指定了员工
+                $this->saveSends($workObj, $workObj->operate_staff_id, $workObj->operate_staff_history_id);
+            }
+    //        $workSends = [
+    //            'company_id' => $workObj->company_id,
+    //            'work_id' => $workObj->id,
+    //            'work_status' => $workObj->status,
+    //            'send_department_id' => $workObj->send_department_id,
+    //            'send_department_name' => $workObj->send_department_name,
+    //            'send_group_id' => $workObj->send_group_id,
+    //            'send_group_name' => $workObj->send_group_name,
+    //            'send_staff_id' => $workObj->send_staff_id,
+    //            'send_staff_history_id' => $workObj->send_staff_history_id,
+    //            'status' => 0, // 状态0可处理;1不可处理
+    //            'operate_staff_id' => $workObj->operate_staff_id,
+    //            'operate_staff_history_id' => $workObj->operate_staff_history_id,
+    //        ];
+    //        $workSendsObj = null;
+    //        Common::getObjByModelName("CompanyWorkSends", $workSendsObj);
+    //        Common::create($workSendsObj, $workSends);
+
+            // 工单操作日志
+            $this->saveWorkLog($workObj , $workObj->operate_staff_id , $workObj->operate_staff_history_id, "创建工单");
+            if($send_staff_id > 0) { // 指定了员工
+                $this->saveWorkLog($workObj , $workObj->operate_staff_id , $workObj->operate_staff_history_id, implode(",", $sendLogs));
+            }
+    //        $workLog = [
+    //            'company_id' => $workObj->company_id,
+    //            'work_id' => $workObj->id,
+    //            'work_status_new' => $workObj->status,
+    //            'content' => "创建工单", // 操作内容
+    //            'operate_staff_id' => $workObj->operate_staff_id,
+    //            'operate_staff_history_id' => $workObj->operate_staff_history_id,
+    //        ];
+    //
+    //        $workLogObj = null;
+    //        Common::getObjByModelName("CompanyWorkLog", $workLogObj);
+    //        Common::create($workLogObj, $workLog);
+
+            // 工单来电统计
+            $this->workCallCount($workObj, $workObj->operate_staff_id , $workObj->operate_staff_history_id);
+    //        $workCallCountObj = null;
+    //        Common::getObjByModelName("CompanyWorkCallCount", $workCallCountObj);
+    //
+    //        $searchConditon = [
+    //            'company_id' => $workObj->company_id,
+    //            'operate_staff_id' => $workObj->operate_staff_id,
+    //            'count_year' => $currentNow->year,
+    //            'count_month' => $currentNow->month,
+    //            'count_day' => $currentNow->day,
+    //        ];
+    //        $updateFields = [
+    //            'amount' => 0,
+    //            'operate_staff_history_id' => $workObj->operate_staff_history_id,
+    //        ];
+    //
+    //        Common::firstOrCreate($workCallCountObj, $searchConditon, $updateFields );
+    //        $workCallCountObj->amount++;
+    //        $workCallCountObj->save();
+        } catch ( \Exception $e) {
+            DB::rollBack();
+            throws('提交失败；信息[' . $e->getMessage() . ']');
+            // throws($e->getMessage());
         }
-
-        // 获是员工历史记录id-- 操作员工
-        $staffObj = null;
-//        Common::getObjByModelName("CompanyStaff", $staffObj);
-        $staffHistoryObj = null;
-//        Common::getObjByModelName("CompanyStaffHistory", $staffHistoryObj);
-//        $StaffHistorySearch = [
-//            'company_id' => $company_id,
-//            'staff_id' => $staff_id,
-//        ];
-//
-//        Common::getHistory($staffObj, $staff_id, $staffHistoryObj,'company_staff_history', $StaffHistorySearch, []);
-
-        $this->getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id);
-
-        $operate_staff_history_id = $staffHistoryObj->id;
-        Common::judgeEmptyParams($request, '员工历史记录ID', $operate_staff_history_id);
-
-        $save_data['operate_staff_id'] = $staff_id;
-        $save_data['operate_staff_history_id'] = $operate_staff_history_id;
-
-        // 对客户信息进行处理 [更新或新建]
-        $call_number = $save_data['call_number'] ?? '';
-        // 获得客户信息:没有新建，有则更新来电次数
-        $customer = [
-            'company_id' => $company_id,// $save_data['company_id'] ?? '',
-            'call_number' => $save_data['call_number'] ?? '',// 来电号码
-            'type_id' => $save_data['type_id'] ?? '',// 客户类别id
-            'customer_name' => $save_data['customer_name'] ?? '',// 客户姓名
-            'sex' => $save_data['sex'] ?? '',// 性别0未知1男2女
-            'city_id' => $save_data['city_id'] ?? '',// 县/区id
-            'area_id' => $save_data['area_id'] ?? '',// 街道id
-            'address' => $save_data['address'] ?? '',// 详细地址
-            // 'call_num' => 1,// 来电次数,放后面单独自加1
-            'last_call_date' => date("Y-m-d H:i:s",time()),// 上次到访时间
-            'operate_staff_id' => $staff_id,//  操作员工id
-            'operate_staff_history_id' => $operate_staff_history_id,// 操作员工历史id
-        ];
-        // 创建或更新客户信息
-        $customerObj = null;
-        Common::getObjByModelName("CompanyCustomer", $customerObj);
-
-        $searchCustomerConditon = [
-            'company_id' => $company_id,
-            'call_number' => $call_number,
-        ];
-
-        Common::updateOrCreate($customerObj, $searchCustomerConditon, $customer );
-        $customer_id = $customerObj->id;
-        $save_data['customer_id'] = $customer_id;
-
-         // 来电次数加1;;修改也算
-        //if($work_id <=0 ){
-            $customerObj->call_num++;
-            $customerObj->save();
-        //}
-
-        // 判断版本号是否要+1
-
-        $compareHistoryObj = null;
-        Common::getObjByModelName("CompanyCustomerHistory", $compareHistoryObj);
-        $customerHistorySearch = [
-            'company_id' => $company_id,
-            'customer_id' => $customer_id,
-        ];
-
-        $customerIgnoreFields = ['call_num', 'last_call_date'];
-
-        $diffDataArr = Common::compareHistoryOrUpdateVersion($customerObj, $customer_id,
-            $compareHistoryObj,'company_customer_history',
-            $customerHistorySearch, $customerIgnoreFields, 0);
-        if(! empty($diffDataArr)){// 客户有新信息，版本号+1
-            // 对比主表和历史表是否相同，相同：不更新版本号，不同：版本号+1
-            $customerObj->version_num++ ;
-            $customerObj->save();
-        }
-
-        // 客户历史id
-        //$customerObj = null;
-        // Common::getObjByModelName("CompanyCustomer", $customerObj);
-        $customerHistoryObj = null;
-        Common::getObjByModelName("CompanyCustomerHistory", $customerHistoryObj);
-        $customerHistorySearch = [
-            'company_id' => $company_id,
-            'customer_id' => $customer_id,
-        ];
-
-        Common::getHistory($customerObj, $customer_id, $customerHistoryObj,'company_customer_history', $customerHistorySearch, []);
-        $customer_history_id = $customerHistoryObj->id;
-        Common::judgeEmptyParams($request, '客户历史记录ID', $customer_history_id);
-        $save_data['customer_history_id'] = $customer_history_id;
-
-
-        // 保存或修改工单
-        $workObj = null;
-        Common::getObjByModelName("CompanyWork", $workObj);
-        $workSearchConditon = [
-            'company_id' => $company_id,
-            'id' => $work_id,
-        ];
-        Common::updateOrCreate($workObj, $workSearchConditon, $save_data );
-
-        // 工单派发记录
-        if($send_staff_id > 0) { // 指定了员工
-            $this->saveSends($workObj, $workObj->operate_staff_id, $workObj->operate_staff_history_id);
-        }
-//        $workSends = [
-//            'company_id' => $workObj->company_id,
-//            'work_id' => $workObj->id,
-//            'work_status' => $workObj->status,
-//            'send_department_id' => $workObj->send_department_id,
-//            'send_department_name' => $workObj->send_department_name,
-//            'send_group_id' => $workObj->send_group_id,
-//            'send_group_name' => $workObj->send_group_name,
-//            'send_staff_id' => $workObj->send_staff_id,
-//            'send_staff_history_id' => $workObj->send_staff_history_id,
-//            'status' => 0, // 状态0可处理;1不可处理
-//            'operate_staff_id' => $workObj->operate_staff_id,
-//            'operate_staff_history_id' => $workObj->operate_staff_history_id,
-//        ];
-//        $workSendsObj = null;
-//        Common::getObjByModelName("CompanyWorkSends", $workSendsObj);
-//        Common::create($workSendsObj, $workSends);
-
-        // 工单操作日志
-        $this->saveWorkLog($workObj , $workObj->operate_staff_id , $workObj->operate_staff_history_id, "创建工单");
-        if($send_staff_id > 0) { // 指定了员工
-            $this->saveWorkLog($workObj , $workObj->operate_staff_id , $workObj->operate_staff_history_id, implode(",", $sendLogs));
-        }
-//        $workLog = [
-//            'company_id' => $workObj->company_id,
-//            'work_id' => $workObj->id,
-//            'work_status_new' => $workObj->status,
-//            'content' => "创建工单", // 操作内容
-//            'operate_staff_id' => $workObj->operate_staff_id,
-//            'operate_staff_history_id' => $workObj->operate_staff_history_id,
-//        ];
-//
-//        $workLogObj = null;
-//        Common::getObjByModelName("CompanyWorkLog", $workLogObj);
-//        Common::create($workLogObj, $workLog);
-
-        // 工单来电统计
-        $this->workCallCount($workObj, $workObj->operate_staff_id , $workObj->operate_staff_history_id);
-//        $workCallCountObj = null;
-//        Common::getObjByModelName("CompanyWorkCallCount", $workCallCountObj);
-//
-//        $searchConditon = [
-//            'company_id' => $workObj->company_id,
-//            'operate_staff_id' => $workObj->operate_staff_id,
-//            'count_year' => $currentNow->year,
-//            'count_month' => $currentNow->month,
-//            'count_day' => $currentNow->day,
-//        ];
-//        $updateFields = [
-//            'amount' => 0,
-//            'operate_staff_history_id' => $workObj->operate_staff_history_id,
-//        ];
-//
-//        Common::firstOrCreate($workCallCountObj, $searchConditon, $updateFields );
-//        $workCallCountObj->amount++;
-//        $workCallCountObj->save();
+        DB::commit();
         return  okArray($workObj);
     }
 
@@ -611,32 +677,40 @@ class CompanyWorkController extends CompController
         if($workObj->status != 1 || $workObj->company_id != $company_id || $workObj->send_staff_id != $staff_id){
             throws("此工单不可进行此操作!");
         }
+        DB::beginTransaction();
+        try {
 
-        // 获是员工历史记录id-- 操作员工
-        $staffObj = null;
-//        Common::getObjByModelName("CompanyStaff", $staffObj);
-        $staffHistoryObj = null;
-//        Common::getObjByModelName("CompanyStaffHistory", $staffHistoryObj);
-//        $StaffHistorySearch = [
-//            'company_id' => $company_id,
-//            'staff_id' => $staff_id,
-//        ];
-//
-//        Common::getHistory($staffObj, $staff_id, $staffHistoryObj,'company_staff_history', $StaffHistorySearch, []);
+            // 获是员工历史记录id-- 操作员工
+            $staffObj = null;
+    //        Common::getObjByModelName("CompanyStaff", $staffObj);
+            $staffHistoryObj = null;
+    //        Common::getObjByModelName("CompanyStaffHistory", $staffHistoryObj);
+    //        $StaffHistorySearch = [
+    //            'company_id' => $company_id,
+    //            'staff_id' => $staff_id,
+    //        ];
+    //
+    //        Common::getHistory($staffObj, $staff_id, $staffHistoryObj,'company_staff_history', $StaffHistorySearch, []);
 
-        $this->getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id);
+            $this->getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id);
 
-        $operate_staff_history_id = $staffHistoryObj->id;
-        Common::judgeEmptyParams($request, '员工历史记录ID', $operate_staff_history_id);
+            $operate_staff_history_id = $staffHistoryObj->id;
+            Common::judgeEmptyParams($request, '员工历史记录ID', $operate_staff_history_id);
 
-//        $save_data['operate_staff_id'] = $staff_id;
-//        $save_data['operate_staff_history_id'] = $operate_staff_history_id;
+    //        $save_data['operate_staff_id'] = $staff_id;
+    //        $save_data['operate_staff_history_id'] = $operate_staff_history_id;
 
-        // 修改状态
-        $workObj->status = 2;
-        $workObj->save();
-        // 日志
-        $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "确认工单!");
+            // 修改状态
+            $workObj->status = 2;
+            $workObj->save();
+            // 日志
+            $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "确认工单!");
+        } catch ( \Exception $e) {
+            DB::rollBack();
+            throws('提交失败；信息[' . $e->getMessage() . ']');
+            // throws($e->getMessage());
+        }
+        DB::commit();
         return  okArray([]);
     }
 
@@ -666,6 +740,7 @@ class CompanyWorkController extends CompController
         if( !in_array($workObj->status, [0,1]) || $workObj->company_id != $company_id){//  || $workObj->operate_staff_id != $staff_id
             throws("此工单不可进行此操作!");
         }
+        $oldSendStaffId = $workObj->send_staff_id;// 源来指定的员工信息
 
         // 部门名称
         $send_department_name = '';
@@ -696,64 +771,116 @@ class CompanyWorkController extends CompController
         array_push($sendLogs, $send_group_name);// 指派日志
 
 
-        // 获得员工历史记录id-- 工单接收员工
-        $send_staff_id = $save_data['send_staff_id'] ?? 0;
-        $save_data['status'] = 0; // 默认状态
-        if($send_staff_id > 0){ // 指定了员工
-            $sendStaffObj = null;
-//            Common::getObjByModelName("CompanyStaff", $sendStaffObj);
-            $sendStaffHistoryObj = null;
-//            Common::getObjByModelName("CompanyStaffHistory", $sendStaffHistoryObj);
-//            $sendStaffHistorySearch = [
-//                'company_id' => $company_id,
-//                'staff_id' => $send_staff_id,
-//            ];
-//
-//            Common::getHistory($sendStaffObj, $send_staff_id, $sendStaffHistoryObj,'company_staff_history', $sendStaffHistorySearch, []);
-            $this->getHistoryStaff($sendStaffObj , $sendStaffHistoryObj, $company_id, $send_staff_id);
+        DB::beginTransaction();
+        try {
+            // 获得员工历史记录id-- 工单接收员工
+            $send_staff_id = $save_data['send_staff_id'] ?? 0;
+            $save_data['status'] = 0; // 默认状态
+            if($send_staff_id > 0){ // 指定了员工
+                $sendStaffObj = null;
+    //            Common::getObjByModelName("CompanyStaff", $sendStaffObj);
+                $sendStaffHistoryObj = null;
+    //            Common::getObjByModelName("CompanyStaffHistory", $sendStaffHistoryObj);
+    //            $sendStaffHistorySearch = [
+    //                'company_id' => $company_id,
+    //                'staff_id' => $send_staff_id,
+    //            ];
+    //
+    //            Common::getHistory($sendStaffObj, $send_staff_id, $sendStaffHistoryObj,'company_staff_history', $sendStaffHistorySearch, []);
+                $this->getHistoryStaff($sendStaffObj , $sendStaffHistoryObj, $company_id, $send_staff_id);
 
-            $send_staff_history_id = $sendStaffHistoryObj->id;
-            Common::judgeEmptyParams($request, '指派员工历史记录ID', $send_staff_history_id);
-            $save_data['send_staff_history_id'] = $send_staff_history_id;
-            $save_data['status'] = 1;//1待确认工单
+                $send_staff_history_id = $sendStaffHistoryObj->id;
+                Common::judgeEmptyParams($request, '指派员工历史记录ID', $send_staff_history_id);
+                $save_data['send_staff_history_id'] = $send_staff_history_id;
+                $save_data['status'] = 1;//1待确认工单
 
-            array_push($sendLogs, $sendStaffHistoryObj->real_name . '[' . $sendStaffHistoryObj->work_num . ']');// 指派日志
-        }else{
-            throws("没有指派的员工!");
+                array_push($sendLogs, $sendStaffHistoryObj->real_name . '[' . $sendStaffHistoryObj->work_num . ']');// 指派日志
+            }else{
+                throws("没有指派的员工!");
+            }
+
+            // 获是员工历史记录id-- 操作员工
+            $staffObj = null;
+    //        Common::getObjByModelName("CompanyStaff", $staffObj);
+            $staffHistoryObj = null;
+    //        Common::getObjByModelName("CompanyStaffHistory", $staffHistoryObj);
+    //        $StaffHistorySearch = [
+    //            'company_id' => $company_id,
+    //            'staff_id' => $staff_id,
+    //        ];
+    //
+    //        Common::getHistory($staffObj, $staff_id, $staffHistoryObj,'company_staff_history', $StaffHistorySearch, []);
+
+            $this->getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id);
+
+            $operate_staff_history_id = $staffHistoryObj->id;
+            Common::judgeEmptyParams($request, '员工历史记录ID', $operate_staff_history_id);
+
+    //        $save_data['operate_staff_id'] = $staff_id;
+    //        $save_data['operate_staff_history_id'] = $operate_staff_history_id;
+
+            // 修改主表
+            foreach($save_data as $field => $val){
+                $workObj->{$field} = $val;
+            }
+            $workObj->save();
+            if($send_staff_id > 0 && $oldSendStaffId != $send_staff_id){ // 指定的员工不同，需要把客户也复制一份给新指定的员工。
+                // 从用户表
+                $customer_id = $workObj->customer_id;
+                $customer_history_id = $workObj->customer_history_id;
+                // $customerObj = CompanyCustomer::find($workObj->customer_id);
+                $customerObj = CompanyCustomerHistory::find($customer_history_id);
+                // 保存指定员工的客户信息--创建或修改
+
+                $staffCustomerData = $customerObj->toArray();
+                //        $staffCustomerNeedFields = ['company_id', 'version_num', 'call_number', 'type_id', 'customer_name', 'sex'
+                //            , 'city_id', 'area_id', 'address', 'call_num', 'last_call_date', 'operate_staff_id', 'operate_staff_history_id'];
+                //        Tool::formatTwoArrKeys($staffCustomerData, $staffCustomerNeedFields, $needNotIn = false);
+
+                if($staffCustomerData['id']) unset($staffCustomerData['id']);
+                if($staffCustomerData['sex_text']) unset($staffCustomerData['sex_text']);
+                if($staffCustomerData['created_at']) unset($staffCustomerData['created_at']);
+                if($staffCustomerData['updated_at']) unset($staffCustomerData['updated_at']);
+                $batchModifyStaffCustomer = $staffCustomerData;
+                $staffCustomerData['customer_id'] = $customer_id;
+                $staffCustomerData['customer_history_id'] = $customer_history_id;
+                $staffCustomerData['staff_id'] = $send_staff_id;
+                $staffCustomerData['staff_history_id'] = $send_staff_history_id;
+
+                // 创建或更新员工客户信息
+                $sendStaffCustomerObj = null;
+                Common::getObjByModelName("CompanyStaffCustomer", $sendStaffCustomerObj);
+
+                $searchSendStaffCustomerConditon = [
+                    'company_id' => $company_id,
+                    'staff_id' => $send_staff_id,
+                    'customer_id' => $customer_id,
+                ];
+
+                Common::updateOrCreate($sendStaffCustomerObj, $searchSendStaffCustomerConditon, $staffCustomerData );
+
+                //        $customerList = CompanyCustomer::select(['id', 'call_num'])
+//            ->where([
+//                ['company_id', '=', $company_id],
+//                ['call_number', '=', $call_number],
+//            ])->limit(1)
+//            ->get()->toArray();
+
+            }
+            // 日志
+            $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "重新派发员工!");
+            if($send_staff_id > 0) { // 指定了员工
+                // 工单派发记录
+                $this->saveSends($workObj,  $staff_id , $operate_staff_history_id);
+                $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, implode(",", $sendLogs));
+            }
+
+        } catch ( \Exception $e) {
+            DB::rollBack();
+            throws('提交失败；信息[' . $e->getMessage() . ']');
+            // throws($e->getMessage());
         }
-
-        // 获是员工历史记录id-- 操作员工
-        $staffObj = null;
-//        Common::getObjByModelName("CompanyStaff", $staffObj);
-        $staffHistoryObj = null;
-//        Common::getObjByModelName("CompanyStaffHistory", $staffHistoryObj);
-//        $StaffHistorySearch = [
-//            'company_id' => $company_id,
-//            'staff_id' => $staff_id,
-//        ];
-//
-//        Common::getHistory($staffObj, $staff_id, $staffHistoryObj,'company_staff_history', $StaffHistorySearch, []);
-
-        $this->getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id);
-
-        $operate_staff_history_id = $staffHistoryObj->id;
-        Common::judgeEmptyParams($request, '员工历史记录ID', $operate_staff_history_id);
-
-//        $save_data['operate_staff_id'] = $staff_id;
-//        $save_data['operate_staff_history_id'] = $operate_staff_history_id;
-
-        // 修改主表
-        foreach($save_data as $field => $val){
-            $workObj->{$field} = $val;
-        }
-        $workObj->save();
-        // 日志
-        $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "重新派发员工!");
-        if($send_staff_id > 0) { // 指定了员工
-            // 工单派发记录
-            $this->saveSends($workObj,  $staff_id , $operate_staff_history_id);
-            $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, implode(",", $sendLogs));
-        }
+        DB::commit();
         return  okArray([]);
     }
 
@@ -781,40 +908,50 @@ class CompanyWorkController extends CompController
         if(empty($workObj)){
             throws("工单记录不存在!");
         }
-        if($workObj->status != 2 || $workObj->company_id != $company_id || $workObj->send_staff_id != $staff_id){
+        if($workObj->status != 2 || $workObj->company_id != $company_id ){// || $workObj->send_staff_id != $staff_id
             throws("不可进行此操作!");
         }
 
-        // 获是员工历史记录id-- 操作员工
-        $staffObj = null;
-//        Common::getObjByModelName("CompanyStaff", $staffObj);
-        $staffHistoryObj = null;
-//        Common::getObjByModelName("CompanyStaffHistory", $staffHistoryObj);
-//        $StaffHistorySearch = [
-//            'company_id' => $company_id,
-//            'staff_id' => $staff_id,
-//        ];
-//
-//        Common::getHistory($staffObj, $staff_id, $staffHistoryObj,'company_staff_history', $StaffHistorySearch, []);
 
-        $this->getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id);
+        DB::beginTransaction();
+        try {
+            // 获是员工历史记录id-- 操作员工
+            $staffObj = null;
+    //        Common::getObjByModelName("CompanyStaff", $staffObj);
+            $staffHistoryObj = null;
+    //        Common::getObjByModelName("CompanyStaffHistory", $staffHistoryObj);
+    //        $StaffHistorySearch = [
+    //            'company_id' => $company_id,
+    //            'staff_id' => $staff_id,
+    //        ];
+    //
+    //        Common::getHistory($staffObj, $staff_id, $staffHistoryObj,'company_staff_history', $StaffHistorySearch, []);
 
-        $operate_staff_history_id = $staffHistoryObj->id;
-        Common::judgeEmptyParams($request, '员工历史记录ID', $operate_staff_history_id);
+            $this->getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id);
 
-//        $save_data['operate_staff_id'] = $staff_id;
-//        $save_data['operate_staff_history_id'] = $operate_staff_history_id;
+            $operate_staff_history_id = $staffHistoryObj->id;
+            Common::judgeEmptyParams($request, '员工历史记录ID', $operate_staff_history_id);
 
-        // 修改状态
-        foreach($save_data as $field => $val){
-            $workObj->{$field} = $val;
+    //        $save_data['operate_staff_id'] = $staff_id;
+    //        $save_data['operate_staff_history_id'] = $operate_staff_history_id;
+
+            // 修改状态
+            foreach($save_data as $field => $val){
+                $workObj->{$field} = $val;
+            }
+            $workObj->status = 4;
+            $workObj->save();
+            // 日志
+            $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "确认工单结单!内容："  . $win_content);
+            // 统计处理数量
+            $this->workRepairCount($workObj, $staff_id , $operate_staff_history_id);
+
+        } catch ( \Exception $e) {
+            DB::rollBack();
+            throws('提交失败；信息[' . $e->getMessage() . ']');
+            // throws($e->getMessage());
         }
-        $workObj->status = 4;
-        $workObj->save();
-        // 日志
-        $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "确认工单结单!内容："  . $win_content);
-        // 统计处理数量
-        $this->workRepairCount($workObj, $staff_id , $operate_staff_history_id);
+        DB::commit();
         return  okArray([]);
     }
 
@@ -839,43 +976,53 @@ class CompanyWorkController extends CompController
 
         $re_content = $save_data['re_content'] ?? '';// 内容说明
 
-        // 获取工单信息
-        $workObj = CompanyWork::find($work_id);
-        if(empty($workObj)){
-            throws("工单记录不存在!");
+
+        DB::beginTransaction();
+        try {
+
+            // 获取工单信息
+            $workObj = CompanyWork::find($work_id);
+            if(empty($workObj)){
+                throws("工单记录不存在!");
+            }
+            if($workObj->status != 4 || $workObj->company_id != $company_id ){// || $workObj->send_staff_id != $staff_id
+                throws("此工单不可进行此操作!");
+            }
+
+            // 获是员工历史记录id-- 操作员工
+            $staffObj = null;
+    //        Common::getObjByModelName("CompanyStaff", $staffObj);
+            $staffHistoryObj = null;
+    //        Common::getObjByModelName("CompanyStaffHistory", $staffHistoryObj);
+    //        $StaffHistorySearch = [
+    //            'company_id' => $company_id,
+    //            'staff_id' => $staff_id,
+    //        ];
+    //
+    //        Common::getHistory($staffObj, $staff_id, $staffHistoryObj,'company_staff_history', $StaffHistorySearch, []);
+
+            $this->getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id);
+
+            $operate_staff_history_id = $staffHistoryObj->id;
+            Common::judgeEmptyParams($request, '员工历史记录ID', $operate_staff_history_id);
+
+    //        $save_data['operate_staff_id'] = $staff_id;
+    //        $save_data['operate_staff_history_id'] = $operate_staff_history_id;
+
+            // 修改状态
+            foreach($save_data as $field => $val){
+                $workObj->{$field} = $val;
+            }
+            $workObj->status = 8;
+            $workObj->save();
+            // 日志
+            $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "工单回访!内容：" . $re_content);
+        } catch ( \Exception $e) {
+            DB::rollBack();
+            throws('提交失败；信息[' . $e->getMessage() . ']');
+            // throws($e->getMessage());
         }
-        if($workObj->status != 4 || $workObj->company_id != $company_id ){// || $workObj->send_staff_id != $staff_id
-            throws("此工单不可进行此操作!");
-        }
-
-        // 获是员工历史记录id-- 操作员工
-        $staffObj = null;
-//        Common::getObjByModelName("CompanyStaff", $staffObj);
-        $staffHistoryObj = null;
-//        Common::getObjByModelName("CompanyStaffHistory", $staffHistoryObj);
-//        $StaffHistorySearch = [
-//            'company_id' => $company_id,
-//            'staff_id' => $staff_id,
-//        ];
-//
-//        Common::getHistory($staffObj, $staff_id, $staffHistoryObj,'company_staff_history', $StaffHistorySearch, []);
-
-        $this->getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id);
-
-        $operate_staff_history_id = $staffHistoryObj->id;
-        Common::judgeEmptyParams($request, '员工历史记录ID', $operate_staff_history_id);
-
-//        $save_data['operate_staff_id'] = $staff_id;
-//        $save_data['operate_staff_history_id'] = $operate_staff_history_id;
-
-        // 修改状态
-        foreach($save_data as $field => $val){
-            $workObj->{$field} = $val;
-        }
-        $workObj->status = 8;
-        $workObj->save();
-        // 日志
-        $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "工单回访!内容：" . $re_content);
+        DB::commit();
         return  okArray([]);
     }
 

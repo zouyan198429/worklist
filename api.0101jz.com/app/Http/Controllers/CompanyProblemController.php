@@ -18,6 +18,7 @@ use App\Services\Common;
 use App\Services\Tool;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CompanyProblemController extends CompController
@@ -78,36 +79,43 @@ class CompanyProblemController extends CompController
         }
         $save_data['business_name'] = $businessWorkTypeObj->type_name ?? '';
 
+        DB::beginTransaction();
+        try {
+                // 获是员工历史记录id-- 操作员工
+            $staffObj = null;
+            Common::getObjByModelName("CompanyStaff", $staffObj);
+            $staffHistoryObj = null;
+            Common::getObjByModelName("CompanyStaffHistory", $staffHistoryObj);
+            $StaffHistorySearch = [
+                'company_id' => $company_id,
+                'staff_id' => $staff_id,
+            ];
+
+            Common::getHistory($staffObj, $staff_id, $staffHistoryObj,'company_staff_history', $StaffHistorySearch, []);
+            $operate_staff_history_id = $staffHistoryObj->id;
+            Common::judgeEmptyParams($request, '员工历史记录ID', $operate_staff_history_id);
+
+            $save_data['operate_staff_id'] = $staff_id;
+            $save_data['operate_staff_history_id'] = $operate_staff_history_id;
+            $save_data['operate_staff_name'] = $staffHistoryObj->real_name;
+
+            // 保存或修改反馈问题
+            $problemObj = null;
+            Common::getObjByModelName("CompanyProblem", $problemObj);
+            $problemSearchConditon = [
+                'company_id' => $company_id,
+                'id' => $problem_id,
+            ];
+
+            Common::updateOrCreate($problemObj, $problemSearchConditon, $save_data );
 
 
-        // 获是员工历史记录id-- 操作员工
-        $staffObj = null;
-        Common::getObjByModelName("CompanyStaff", $staffObj);
-        $staffHistoryObj = null;
-        Common::getObjByModelName("CompanyStaffHistory", $staffHistoryObj);
-        $StaffHistorySearch = [
-            'company_id' => $company_id,
-            'staff_id' => $staff_id,
-        ];
-
-        Common::getHistory($staffObj, $staff_id, $staffHistoryObj,'company_staff_history', $StaffHistorySearch, []);
-        $operate_staff_history_id = $staffHistoryObj->id;
-        Common::judgeEmptyParams($request, '员工历史记录ID', $operate_staff_history_id);
-
-        $save_data['operate_staff_id'] = $staff_id;
-        $save_data['operate_staff_history_id'] = $operate_staff_history_id;
-        $save_data['operate_staff_name'] = $staffHistoryObj->real_name;
-
-        // 保存或修改反馈问题
-        $problemObj = null;
-        Common::getObjByModelName("CompanyProblem", $problemObj);
-        $problemSearchConditon = [
-            'company_id' => $company_id,
-            'id' => $problem_id,
-        ];
-
-        Common::updateOrCreate($problemObj, $problemSearchConditon, $save_data );
-
+        } catch ( \Exception $e) {
+            DB::rollBack();
+            throws('提交失败；信息[' . $e->getMessage() . ']');
+            // throws($e->getMessage());
+        }
+        DB::commit();
         return  okArray($problemObj);
     }
 
