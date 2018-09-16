@@ -235,7 +235,7 @@ class CompanyWorkController extends CompController
         // json 转成数组
         jsonStrToArr($save_data , 1, '参数[save_data]格式有误!');
 
-        $sendLogs = [];//指派日志
+        $sendLogs = ["派发工单"];//指派日志
 
         // 工单号
         if($work_id <= 0){

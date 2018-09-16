@@ -32,7 +32,7 @@ $(function(){
     document.write("        <td><%=item.real_name%><\/td>");
     document.write("        <td><%=item.send_real_name%><\/td>");
     document.write("        <td><%=item.time_name%><\/td>");
-    document.write("        <td><%=item.status_text%>剩余1小时12分<\/td>");
+    document.write("        <td><%=item.status_text%><\/td>");// 剩余1小时12分
     document.write("        <td><a href=\"tel:<%=item.call_number%>\" class=\"btn\" ><%=item.call_number%> <i class=\"fa fa-phone-square fa-fw\" aria-hidden=\"true\"><\/i> <\/a><\/td>");
     document.write("        <td><%=item.customer_name%>(<%=item.sex_text%>)<\/td>");
     document.write("        <td><%=item.customer_type_name%><\/td>");
