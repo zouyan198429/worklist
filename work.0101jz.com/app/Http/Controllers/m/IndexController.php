@@ -29,7 +29,7 @@ class IndexController extends WorksController
         $workList = CompanyWork::getListByStatus($request, $this, 1 + 0, 2);
         $reDataArr["waitWorkList"] = $workList['data_list'] ?? [];
         // 已完成的 - ajax请求
-        // pr($reDataArr);
+//        pr($reDataArr);
         return view('mobile.index', $reDataArr);
     }
 

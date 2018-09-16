@@ -557,7 +557,6 @@ class Tool
             self::formatArrKeys($array[$k], $keys, $needNotIn );
         }
         return $array;
-
     }
 
     /**

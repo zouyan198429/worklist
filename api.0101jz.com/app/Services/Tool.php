@@ -549,6 +549,22 @@ class Tool
     }
 
     /**
+     * 二维数组返回指定下标数组的新的二维维数组,-以原数组下标为准，
+     *
+     * @param array $array 二维数组
+     * @param array $keys 要获取的下标数组 -维
+     * @param boolean $needNotIn  keys在数组中不存在的，false:不要，true：空值
+     * @return array 一维数组
+     */
+    public static function formatTwoArrKeys(&$array, $keys, $needNotIn = false){
+        foreach($array as $k => $v){
+            self::formatArrKeys($array[$k], $keys, $needNotIn );
+        }
+        return $array;
+
+    }
+
+    /**
      * 获得当前的路由和方法
      *
      * @return string 当前的路由和方法  App\Http\Controllers\CompanyWorkController@addInit
