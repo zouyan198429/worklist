@@ -123,6 +123,8 @@ class CompanyWorkController extends CompController
      */
     public function test(Request $request)
     {
+        $aaa = Carbon::now()->toDateTimeString();
+        pr($aaa);
         // CompanyWorkBusiness::autoSiteMsg();
          // $worksObj = CompanyWorkDoingBusiness::getWorkInfo(1, 3);
          //var_dump(empty($worksObj));
@@ -683,7 +685,7 @@ class CompanyWorkController extends CompController
     //        $save_data['operate_staff_history_id'] = $operate_staff_history_id;
 
             // 修改状态
-            $saveData = ['status' => 2];
+            $saveData = ['status' => 2,'confirm_time' => Carbon::now()->toDateTimeString()];
             foreach($saveData as $field => $val){
                 $workObj->{$field} = $val;
             }
@@ -811,6 +813,7 @@ class CompanyWorkController extends CompController
     //        $save_data['operate_staff_history_id'] = $operate_staff_history_id;
 
             // 修改主表
+            $save_data['reply_time'] = Carbon::now()->toDateTimeString();
             foreach($save_data as $field => $val){
                 $workObj->{$field} = $val;
             }
@@ -934,6 +937,7 @@ class CompanyWorkController extends CompController
 
             // 修改状态
             $save_data['status'] = 4;
+            $save_data['win_time'] = Carbon::now()->toDateTimeString();
             foreach($save_data as $field => $val){
                 $workObj->{$field} = $val;
             }
@@ -1012,6 +1016,7 @@ class CompanyWorkController extends CompController
 
             // 修改状态
             $save_data['status'] = 8;
+            $save_data['reply_time'] = Carbon::now()->toDateTimeString();
             foreach($save_data as $field => $val){
                 $workObj->{$field} = $val;
             }

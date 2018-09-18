@@ -20,7 +20,7 @@
 	document.write("            <\/p>");
 	document.write("            <p>");
 	document.write("                <span class=\"gdtime\"><i class=\"fa fa-clock-o fa-fw\" aria-hidden=\"true\"><\/i> 报修时间：<%=item.created_at%><\/span>");
-	document.write("                <span class=\"gdtime\"> 预约时间：<%=item.book_time%><\/span>");
+	document.write("                <span class=\"gdtime\"> 到期时间：<%=item.expiry_time%><\/span>");
 	document.write("            <\/p>");
 	document.write("        <\/div>");
 	document.write("        <div class=\"gd-fd\">");

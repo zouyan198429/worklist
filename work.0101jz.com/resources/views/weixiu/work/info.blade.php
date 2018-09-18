@@ -54,9 +54,9 @@
 				</td>
 			</tr><!-- 
 			<tr>
-				<th>预约处理时间</th>
+				<th>到期时间</th>
 				<td>
-					{{ $book_time or '' }}
+					{{ $expiry_time or '' }}
 				</td>
 			</tr> -->
 		</table>
