@@ -5,13 +5,19 @@
             <li>
                 <a href="{{ url('manage') }}">
                     <i class="fa fa-clock-o fa-fw" aria-hidden="true"></i>
-                    <span>主管首页</span>
+                    <span>管理首页</span>
                 </a>
             </li>
             <li>
                 <a href="{{ url('manage/work') }}">
+                    <i class="fa fa-check-square fa-fw" aria-hidden="true"></i>
+                    <span>工单信息</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ url('manage/problem') }}">
                     <i class="fa fa-clock-o fa-fw" aria-hidden="true"></i>
-                    <span>工单管理</span>
+                    <span>反馈问题</span>
                 </a>
             </li>
             <li>
@@ -28,25 +34,20 @@
             </li>
             <li>
                 <a href="{{ url('manage/staff/list') }}">
-                    <i class="fa fa-clock-o fa-fw" aria-hidden="true"></i>
+                    <i class="fa fa-user-o fa-fw" aria-hidden="true"></i>
                     <span>员工管理</span>
                 </a>
             </li>
-            <li>
-                <a href="{{ url('manage/problem') }}">
-                    <i class="fa fa-clock-o fa-fw" aria-hidden="true"></i>
-                    <span>反馈问题</span>
-                </a>
-            </li>
+            
             <li>
                 <a href="{{ url('manage/customer') }}">
-                    <i class="fa fa-clock-o fa-fw" aria-hidden="true"></i>
+                    <i class="fa fa-address-card-o fa-fw" aria-hidden="true"></i>
                     <span>客户管理</span>
                 </a>
             </li>
             <li>
                 <a href="{{ url('manage/lore') }}">
-                    <i class="fa fa-clock-o fa-fw" aria-hidden="true"></i>
+                    <i class="fa fa-book fa-fw" aria-hidden="true"></i>
                     <span>知识管理</span>
                 </a>
             </li>
@@ -65,7 +66,7 @@
             </li>
             <li class="treeview">
                 <a href="" >
-                    <i class="fa fa-check-square fa-fw" aria-hidden="true"></i>
+                    <i class="fa fa-bar-chart fa-fw" aria-hidden="true"></i>
                     <span>数据统计</span>
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>

@@ -12,10 +12,10 @@
 			<input type="hidden" name="id" value="{{ $id or 0 }}"/>
 		<table class="table1">
 			<tr>
-				<th>所属部门<span class="must">*</span></th>
+				<th>所属区县<span class="must">*</span></th>
 				<td>
 					<select class="wnormal" name="department_parent_id">
-						<option value="">请选择部门</option>
+						<option value="">请选择区县</option>
 						<option value="0"  @if ( 0 == $department_parent_id ) selected @endif>父级部门</option>
 						@foreach ($department_kv as $k=>$txt)
 							<option value="{{ $k }}"  @if(isset($department_parent_id) && $department_parent_id == $k) selected @endif >{{ $txt }}</option>
@@ -24,7 +24,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th>部门/小组名称<span class="must">*</span></th>
+				<th>营业厅或片区<span class="must">*</span></th>
 				<td>
 					<input type="text" class="inp wnormal" name="department_name" value="{{ $department_name or '' }}" placeholder="部门/小组名称" autofocus  required />
 				</td>

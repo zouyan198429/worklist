@@ -16,8 +16,8 @@
 		<table id="dynamic-table"  class="table2">
 			<thead>
 			<tr>
-				<th>部门名称</th>
-				<th>小组</th>
+				<th>区县</th>
+				<th>营业厅或片区</th>
 				<th>排序</th>
 				<th width=200>操作</th>
 			</tr>

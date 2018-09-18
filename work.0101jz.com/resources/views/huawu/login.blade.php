@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>登录</title>
+	<title>登录--总部话务员</title>
 	<link rel="stylesheet" type="text/css" href="{{asset('statichuawu/css/style.css')}}">
 	<style type="text/css">
 	#manlist { margin-top: 0px; text-align: center; }
@@ -19,12 +19,12 @@
 				<li><input type="submit"  id="submitBtn"   {{--onClick="window.open('index.html')"--}} value="登录" class="btn" /></li>
 			</ul>
 		</div>
-	</form>
+	</form><!-- 
 	<div id="manlist">
 	<a href="{{ url('huawu') }}" >话务员</a>
 	<a href="../web-weixiu/main_wx.html" >维修工程师</a>   
 	<a href="../web-manage/main_admin.html" >管理层</a>   
-	</div>
+	</div> -->
 </body>
 </html>
 <script src="{{asset('statichuawu/js/jquery-2.1.1.min.js')}}" type="text/javascript"></script>

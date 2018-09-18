@@ -1,6 +1,6 @@
 
 <div id="header">
-    <div id="logo">工单管理及业务培训系统</div>
+    <div id="logo">管理后台--工单管理及业务培训系统</div>
     <div id="userinfo">
         <div class="dropdown">
             <span><i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i> 欢迎您：{{ $baseArr['real_name'] or '' }} <i class="fa fa-angle-down fa-fw" aria-hidden="true"></i>  </span>

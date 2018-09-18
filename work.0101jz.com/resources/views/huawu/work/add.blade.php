@@ -25,11 +25,11 @@
 			</tr>
 
 			<tr>
-				<th>维修类型</th>
+				<th>工单类型</th>
 				<td>
 
 					<select class="wnormal" name="work_type_id">
-						<option value="">请选择业务类型</option>
+						<option value="">请选择类型</option>
 						@foreach ($workFirstList as $k=>$txt)
 							<option value="{{ $k }}"  @if(isset($work_type_id) && $work_type_id == $k) selected @endif >{{ $txt }}</option>
 						@endforeach
@@ -64,6 +64,7 @@
 					@endforeach
 				</td>
 			</tr>
+
 			<tr style="display: none;">
 				<th>预约处理时间</th>
 				<td>
@@ -101,9 +102,7 @@
 					@endforeach
 				</td>
 			</tr>
-		</table>
-		<div class="line"> </div>
-		<table class="table1">
+
 
 			<tr>
 				<th>客户地址</th>
@@ -120,6 +119,9 @@
 					<input type="text" class="inp wnormal"  name="address" value="{{ $address or '' }}"/>
 				</td>
 			</tr>
+		</table>
+		<div class="line"> </div>
+		<table class="table1">
 			<tr>
 				<th>派发到</th>
 				<td>

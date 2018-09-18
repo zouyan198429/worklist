@@ -35,7 +35,7 @@
                 </tr>
             </table>
             <div class="line"></div>
-            <table class="table1">
+           <!--  <table class="table1">
                 <tr>
                     <th>客户电话</th>
                     <td>
@@ -59,7 +59,7 @@
                         </select>
                         <input type="text" class="inp wnormal" name="address"    value="{{ $address or '' }}" />
                     </td>
-                </tr>
+                </tr> -->
 
                 <tr>
                     <th> </th>
