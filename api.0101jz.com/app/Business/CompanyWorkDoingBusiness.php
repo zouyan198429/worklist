@@ -43,14 +43,26 @@ class CompanyWorkDoingBusiness extends CompanyWorkBusiness
                 // CompanyStaffCustomer::where($where)->update($batchModifyStaffCustomer);
                 // 发送消息
                 $work_ids = [];
+                $doingId = [];
                 foreach($worksList as $work){
                     // 发送消息
-                    CompanySiteMsgBusiness::sendSiteMsg($work, null, null, '工单即将逾期提醒', '工单[' . $work->work_num . ']即将逾期提醒,请尽快处理！');
+                    CompanySiteMsgBusiness::sendSiteMsg($work, null, null,
+                        '工单即将逾期提醒', '工单[' . $work->work_num . ']即将逾期提醒,请尽快处理！');
                     $work->is_focus = 1;
                     $work->save();
                     array_push($work_ids, $work->work_id);
+                    array_push($doingId, $work->id);
                 }
-                if(count($work_ids) > 0)  CompanyWork::whereIn('id', $work_ids)->update(['is_focus' => 1]);
+                $mainWorkWhere = [
+                    ['company_id', '=', $companyObj->id],
+                    ['is_focus', '=', 0],
+                    ['status', '<>', 8],
+                ];
+                if(count($work_ids) > 0) {
+                    $updateData = ['is_focus' => 1];
+                    CompanyWork::whereIn('id', $work_ids)->where($mainWorkWhere)->update($updateData);
+                    CompanyWorkDoing::whereIn('id', $doingId)->where($mainWorkWhere)->update($updateData);
+                }
                 // 逾期判断
                 $overdueWhere = [
                     ['company_id', '=', $companyObj->id],
@@ -58,8 +70,22 @@ class CompanyWorkDoingBusiness extends CompanyWorkBusiness
                     ['status', '<>', 8],
                     ['expiry_time', '<', $currentNow->toDateTimeString()],
                 ];
-                CompanyWorkDoing::where($overdueWhere)->update(['is_overdue' => 1]);
-                CompanyWork::where($overdueWhere)->update(['is_overdue' => 1]);
+
+                $overdueWorksObj = CompanyWorkDoing::where($overdueWhere)->get();
+                $overdueWorksList = $overdueWorksObj->toArray();
+                $overdueIds = array_column($overdueWorksList, 'work_id');
+                $doingIds = array_column($overdueWorksList, 'id');
+                if(count($overdueIds) > 0){
+                    $updateData = ['is_overdue' => 1];
+                    CompanyWork::whereIn('id', $overdueIds)->where($overdueWhere)->update($updateData);
+                    CompanyWorkDoing::whereIn('id', $doingIds)->where($overdueWhere)->update($updateData);
+//                    foreach($overdueWorksObj as $temWork){
+                        // 发送消息
+//                        CompanySiteMsgBusiness::sendSiteMsg($temWork, null, null,
+//                            '工单已经逾期提醒', '工单[' . $temWork->work_num . ']已经逾期,请尽快处理！');
+
+//                    }
+                }
             }
         } catch ( \Exception $e) {
             DB::rollBack();

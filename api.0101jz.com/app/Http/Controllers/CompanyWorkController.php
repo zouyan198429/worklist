@@ -123,9 +123,8 @@ class CompanyWorkController extends CompController
      */
     public function test(Request $request)
     {
-        $aaa = Carbon::now()->toDateTimeString();
-        pr($aaa);
-        // CompanyWorkBusiness::autoSiteMsg();
+
+         CompanyWorkDoingBusiness::autoSiteMsg();
          // $worksObj = CompanyWorkDoingBusiness::getWorkInfo(1, 3);
          //var_dump(empty($worksObj));
         /*

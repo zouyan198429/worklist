@@ -34,47 +34,47 @@ class CompanyWorkBusiness extends BaseBusiness
      * @return Response
      * @author zouyan(305463219@qq.com)
      */
-    public static function autoSiteMsg(){
-        $currentNow = Carbon::now();
-        DB::beginTransaction();
-        try {
-            $companysObj = Company::get();
-            foreach($companysObj as $companyObj){
-                // 重点关注
-                $focusWhere = [
-                    ['company_id', '=', $companyObj->id],
-                    ['is_focus', '=', 0],
-                    ['status', '<>', 8],
-                    ['expiry_time', '>=', $currentNow->toDateTimeString()],
-                    ['expiry_time', '<=', $currentNow->addMinutes(self::$focusTime)],
-                ];
-                $worksList = CompanyWork::where($focusWhere)->get();
-
-                // CompanyStaffCustomer::where($where)->update($batchModifyStaffCustomer);
-                // 发送消息
-                foreach($worksList as $work){
-                    // 发送消息
-                    CompanySiteMsgBusiness::sendSiteMsg($work, null, null, '工单即将逾期提醒', '工单[' . $work->work_num . ']即将逾期提醒,请尽快处理！');
-                    $work->is_focus = 1;
-                    $work->save();
-                }
-                // 逾期判断
-                $overdueWhere = [
-                    ['company_id', '=', $companyObj->id],
-                    ['is_overdue', '=', 0],
-                    ['status', '<>', 8],
-                    ['expiry_time', '<', $currentNow->toDateTimeString()],
-                ];
-                CompanyWork::where($overdueWhere)->update(['is_overdue' => 1]);
-            }
-        } catch ( \Exception $e) {
-            DB::rollBack();
-            throws('工单即将逾期提醒失败；信息[' . $e->getMessage() . ']');
-            // throws($e->getMessage());
-        }
-        DB::commit();
-
-    }
+//    public static function autoSiteMsg(){
+//        $currentNow = Carbon::now();
+//        DB::beginTransaction();
+//        try {
+//            $companysObj = Company::get();
+//            foreach($companysObj as $companyObj){
+//                // 重点关注
+//                $focusWhere = [
+//                    ['company_id', '=', $companyObj->id],
+//                    ['is_focus', '=', 0],
+//                    ['status', '<>', 8],
+//                    ['expiry_time', '>=', $currentNow->toDateTimeString()],
+//                    ['expiry_time', '<=', $currentNow->addMinutes(self::$focusTime)],
+//                ];
+//                $worksList = CompanyWork::where($focusWhere)->get();
+//
+//                // CompanyStaffCustomer::where($where)->update($batchModifyStaffCustomer);
+//                // 发送消息
+//                foreach($worksList as $work){
+//                    // 发送消息
+//                    CompanySiteMsgBusiness::sendSiteMsg($work, null, null, '工单即将逾期提醒', '工单[' . $work->work_num . ']即将逾期提醒,请尽快处理！');
+//                    $work->is_focus = 1;
+//                    $work->save();
+//                }
+//                // 逾期处理
+//                $overdueWhere = [
+//                    ['company_id', '=', $companyObj->id],
+//                    ['is_overdue', '=', 0],
+//                    ['status', '<>', 8],
+//                    ['expiry_time', '<', $currentNow->toDateTimeString()],
+//                ];
+//                CompanyWork::where($overdueWhere)->update(['is_overdue' => 1]);
+//            }
+//        } catch ( \Exception $e) {
+//            DB::rollBack();
+//            throws('工单即将逾期提醒失败；信息[' . $e->getMessage() . ']');
+//            // throws($e->getMessage());
+//        }
+//        DB::commit();
+//
+//    }
 
     /**
      * 按状态统计工单数量
