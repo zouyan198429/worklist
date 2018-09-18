@@ -30,7 +30,7 @@ class Kernel extends ConsoleKernel
         $filePath = '/data/CronResult.text';
         $schedule->call(function () {
             CompanyWorkDoingBusiness::autoSiteMsg();
-        })->everyMinute();// 每分钟执行一次 锁会在 5 分钟后失效 ->withoutOverlapping(5)->appendOutputTo($filePath)
+        })->everyMinute();// 每分钟执行一次 锁会在 5 分钟后失效->withoutOverlapping(5)[会失败] ;  ->appendOutputTo($filePath)
     }
 
     /**

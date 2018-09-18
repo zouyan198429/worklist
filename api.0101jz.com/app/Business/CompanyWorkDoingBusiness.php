@@ -25,18 +25,18 @@ class CompanyWorkDoingBusiness extends CompanyWorkBusiness
      * @author zouyan(305463219@qq.com)
      */
     public static function autoSiteMsg(){
-        $currentNow = Carbon::now();
         DB::beginTransaction();
         try {
             $companysObj = Company::get();
+            $currentNow = Carbon::now();
             foreach($companysObj as $companyObj){
                 // 重点关注
                 $focusWhere = [
                     ['company_id', '=', $companyObj->id],
                     ['is_focus', '=', 0],
                     ['status', '<>', 8],
-                    ['expiry_time', '>=', $currentNow->toDateTimeString()],
-                    ['expiry_time', '<=', $currentNow->addMinutes(self::$focusTime)],
+                    ['expiry_time', '>=', Carbon::now()->toDateTimeString()],
+                    ['expiry_time', '<=', Carbon::now()->addMinutes(self::$focusTime)],
                 ];
                 $worksList = CompanyWorkDoing::where($focusWhere)->get();
 
@@ -48,8 +48,8 @@ class CompanyWorkDoingBusiness extends CompanyWorkBusiness
                     // 发送消息
                     CompanySiteMsgBusiness::sendSiteMsg($work, null, null,
                         '工单即将逾期提醒', '工单[' . $work->work_num . ']即将逾期提醒,请尽快处理！');
-                    $work->is_focus = 1;
-                    $work->save();
+                    // $work->is_focus = 1;
+                   //  $work->save();
                     array_push($work_ids, $work->work_id);
                     array_push($doingId, $work->id);
                 }
@@ -68,7 +68,7 @@ class CompanyWorkDoingBusiness extends CompanyWorkBusiness
                     ['company_id', '=', $companyObj->id],
                     ['is_overdue', '=', 0],
                     ['status', '<>', 8],
-                    ['expiry_time', '<', $currentNow->toDateTimeString()],
+                    ['expiry_time', '<', Carbon::now()->toDateTimeString()],
                 ];
 
                 $overdueWorksObj = CompanyWorkDoing::where($overdueWhere)->get();
