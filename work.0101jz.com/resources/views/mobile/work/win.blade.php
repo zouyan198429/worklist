@@ -30,7 +30,7 @@
                 </p>
                 <p>
                     <span class="gdtime"><i class="fa fa-clock-o fa-fw" aria-hidden="true"></i> 报修时间：{{ $created_at or ''  }}</span>
-                    <span class="gdtime"> 预约时间：{{ $book_time or ''  }}</span>
+                    <span class="gdtime"> 到期时间：{{ $expiry_time or ''  }}</span>
                 </p>
             </div>
             <div class="gd-fd">
