@@ -100,11 +100,12 @@ class CompanyWorkBusiness extends BaseBusiness
     /**
      * 通过id修改记录
      *
+     * @param int $company_id 公司id
      * @param int $work_id 工单id
      * @return array $saveData 需要更新的记录 一维数组 ['字段'=>'字段值']
      * @author zouyan(305463219@qq.com)
      */
-    public static function saveById($work_id, $saveData = []){
+    public static function saveById($company_id, $work_id, $saveData = []){
         $workObj = CompanyWork::find($work_id);
 
         foreach($saveData as $field => $val){

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\m;
 use App\Business\CompanySiteMsg;
 use App\Business\CompanyStaff;
 use App\Business\CompanyWork;
+use App\Business\CompanyWorkDoing;
 use App\Http\Controllers\WorksController;
 use Illuminate\Http\Request;
 
@@ -23,7 +24,7 @@ class IndexController extends WorksController
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
         // 初始化数据
-        $arrList = CompanyWork::mobileInitData($request, $this);
+        $arrList = CompanyWorkDoing::mobileInitData($request, $this);
         $reDataArr = array_merge($reDataArr, $arrList);
         return view('mobile.index', $reDataArr);
     }

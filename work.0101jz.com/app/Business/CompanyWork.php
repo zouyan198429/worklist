@@ -75,6 +75,9 @@ class CompanyWork extends BaseBusiness
         // 格式化数据
         $data_list = $result['data_list'] ?? [];
         foreach($data_list as $k => $v){
+            // 加上 work_id字段
+            if(! isset($data_list[$k]['work_id'])) $data_list[$k]['work_id'] = $v['id'];
+
             // 去掉内容
             if(isset($data_list[$k]['content'])) unset($data_list[$k]['content']);
 
@@ -126,7 +129,8 @@ class CompanyWork extends BaseBusiness
 //                ,'created_at'
 //            ],
 //            'orderBy' => ['sort_num'=>'desc','id'=>'desc'],
-            'orderBy' => ['book_time'=>'desc','id'=>'desc'],
+            // 'orderBy' => ['expiry_time'=>'desc','id'=>'desc'],
+            'orderBy' => ['id'=>'desc'],
         ];
         $statusArr = explode(',', $status);
         if(count($statusArr) > 1){
@@ -147,14 +151,16 @@ class CompanyWork extends BaseBusiness
         $result = self::getBaseListData($request, $controller, self::$model_name, $queryParams,$relations , $oprateBit, $notLog);
 
         // 格式化数据
-//        $data_list = $result['data_list'] ?? [];
-//        foreach($data_list as $k => $v){
+        $data_list = $result['data_list'] ?? [];
+        foreach($data_list as $k => $v){
+            // 加上 work_id字段
+            if(! isset($data_list[$k]['work_id'])) $data_list[$k]['work_id'] = $v['id'];
 //            // 公司名称
 //            $data_list[$k]['company_name'] = $v['company_info']['company_name'] ?? '';
 //            if(isset($data_list[$k]['company_info'])) unset($data_list[$k]['company_info']);
-//        }
+        }
         // Tool::formatTwoArrKeys($data_list,['id', 'work_num', 'caller_type_name', 'customer_id', 'customer_name'], false);
-//        $result['data_list'] = $data_list;
+        $result['data_list'] = $data_list;
         // return ajaxDataArr(1, $result, '');
         // 格式化数据
         // return $result;
@@ -195,6 +201,8 @@ class CompanyWork extends BaseBusiness
         $judgeData = [
             'company_id' => $company_id,
         ];
+        // 加上 work_id字段
+        if(! isset($resultDatas['work_id'])) $resultDatas['work_id'] = $resultDatas['id'];
         CommonBusiness::judgePowerByObj($resultDatas, $judgeData );
         return $resultDatas;
     }
@@ -359,33 +367,6 @@ class CompanyWork extends BaseBusiness
         return HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
     }
 
-    /**
-     * 手机站首页页面初始化要填充的数据
-     *
-     * @param Request $request 请求信息
-     * @param Controller $controller 控制对象
-     * @return  array 数据
-    //        $listData = [
-    //            'waitSureCount' => $waitSureCount,// 1 待确认工单数量
-    //            'doingCount' => $doingCount,// 2 处理中工单数量
-    //            'msgList' => $total,// 4 未读消息
-    //        ];
-     * @author zouyan(305463219@qq.com)
-     */
-    public static function mobileInitData(Request $request, Controller $controller)
-    {
-        $company_id = $controller->company_id;
-        // 参数
-        $requestData = [
-            'company_id' => $company_id,
-            'staff_id' =>  $controller->user_id,
-            'operate_no' => 1 + 2 + 4,
-        ];
-        $url = config('public.apiUrl') . config('apiUrl.apiPath.initMobileWork');
-        // 生成带参数的测试get请求
-        // $requestTesUrl = splicQuestAPI($url , $requestData);
-        return HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
-    }
 
     /**
      * 确认工单
