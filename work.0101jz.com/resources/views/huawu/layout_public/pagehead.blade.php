@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>客服平台</title>
+    <title>总部客服平台</title>
     @include('public.dynamic_list_head')
     <link rel="stylesheet" href="{{asset('statichuawu/css/style.css')}}">
     <link rel="stylesheet" href="{{asset('statichuawu/css/sidebar-menu.css')}}">

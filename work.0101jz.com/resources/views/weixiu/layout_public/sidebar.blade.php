@@ -6,18 +6,17 @@
                 <a href="{{ url('weixiu') }}"><i class="fa fa-home fa-fw" aria-hidden="true"></i> 首页</a>
             </li>
             <li>
+                <a href="{{ url('weixiu/work/list') }}">
+                    <i class="fa fa-check-square fa-fw" aria-hidden="true"></i>
+                    <span>我的工单</span>
+                </a>
+            </li>            
+            <li>
                 <a href="{{ url('weixiu/problem/add/0') }}">
-                    <i class="fa fa-clock-o fa-fw" aria-hidden="true"></i>
+                    <i class="fa fa-edit fa-fw" aria-hidden="true"></i>
                     <span>反馈问题</span>
                 </a>
             </li>
-            <li>
-                <a href="{{ url('weixiu/work/list') }}">
-                    <i class="fa fa-clock-o fa-fw" aria-hidden="true"></i>
-                    <span>维修清单</span>
-                </a>
-            </li>
-
             <li>
                 <a href="{{ url('weixiu/customer') }}">
                     <i class="fa fa-star-o fa-fw" aria-hidden="true"></i>

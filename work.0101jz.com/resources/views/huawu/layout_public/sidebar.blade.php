@@ -8,8 +8,8 @@
             <li>
                 <a href="{{ url('huawu/work/add/0') }}">
                     <i class="fa fa-phone-square fa-fw" aria-hidden="true"></i>
-                    <span>来电记录</span>
-                    <small class="label pull-right label-info">HOT</small>
+                    <span>投诉派单</span>
+                    <small class="label pull-right label-info">Hot</small>
                 </a>
             </li>
             <li>

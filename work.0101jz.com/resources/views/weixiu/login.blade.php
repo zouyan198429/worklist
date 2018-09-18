@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>登录</title>
+	<title>登录--区县人员</title>
 	<link rel="stylesheet" type="text/css" href="{{asset('staticweixiu/css/style.css')}}">
 	<style type="text/css">
 	#manlist { margin-top: 0px; text-align: center; }
@@ -20,11 +20,11 @@
 			</ul>
 		</div>
 	</form>
-	<div id="manlist">
+<!-- 	<div id="manlist">
 	<a href="{{ url('huawu') }}" >话务员</a>
 	<a href="{{ url('weixiu') }}" >维修工程师</a>
 	<a href="{{ url('admin') }}" >管理层</a>
-	</div>
+	</div> -->
 </body>
 </html>
 <script src="{{asset('staticweixiu/js/jquery-2.1.1.min.js')}}" type="text/javascript"></script>
