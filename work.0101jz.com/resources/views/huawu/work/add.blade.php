@@ -64,7 +64,7 @@
 					@endforeach
 				</td>
 			</tr>
-			<tr>
+			<tr style="display: none;">
 				<th>预约处理时间</th>
 				<td>
 					<input type="text" id="yuyuetime" name="book_time" class="inp wlong form-date" value="{{ $book_time or '' }}" />

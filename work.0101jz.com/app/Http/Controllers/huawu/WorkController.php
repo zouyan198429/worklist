@@ -102,6 +102,7 @@ class WorkController extends WorksController
         $resultDatas = [
             'id'=>$id,
             'department_id' => 0,
+            'book_time' => Carbon::now()->toDateTimeString(),
         ];
 
         if ($id > 0) { // 获得详情数据
@@ -163,12 +164,12 @@ class WorkController extends WorksController
         $content =  replace_enter_char($content,1);
         $tag_id = Common::getInt($request, 'tag_id');
         $time_id = Common::getInt($request, 'time_id');
-        $book_time = Common::get($request, 'book_time');
-        //判断预约处理时间
-        $book_time_unix = judgeDate($book_time);
-        if($book_time_unix === false){
-            ajaxDataArr(0, null, '预约处理时间不是有效日期');
-        }
+//        $book_time = Common::get($request, 'book_time');
+//        //判断预约处理时间
+//        $book_time_unix = judgeDate($book_time);
+//        if($book_time_unix === false){
+//            ajaxDataArr(0, null, '预约处理时间不是有效日期');
+//        }
         $customer_name = Common::get($request, 'customer_name');
         $sex = Common::getInt($request, 'sex');
         $type_id = Common::getInt($request, 'type_id');
@@ -187,7 +188,7 @@ class WorkController extends WorksController
             'content' => $content,// 内容
             'tag_id' => $tag_id,// 标签
             'time_id' => $time_id,// 工单时长
-            'book_time' => $book_time,// 预约处理时间
+            //'book_time' => $book_time,// 预约处理时间
             'customer_name' => $customer_name,// 客户姓名
             'sex' => $sex,// 性别
             'type_id' => $type_id,// 客户类别

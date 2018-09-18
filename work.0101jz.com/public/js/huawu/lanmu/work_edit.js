@@ -144,10 +144,10 @@ function ajax_form(){
         return false;
     }
 
-    var book_time = $('input[name=book_time]').val();
-    if(!judge_validate(4,'预约处理时间',book_time,true,'date','','')){
-        return false;
-    }
+    // var book_time = $('input[name=book_time]').val();
+    // if(!judge_validate(4,'预约处理时间',book_time,true,'date','','')){
+    //     return false;
+    // }
 
     var customer_name = $('input[name=customer_name]').val();
     if(!judge_validate(4,'客户姓名',customer_name,true,'length',1,50)){

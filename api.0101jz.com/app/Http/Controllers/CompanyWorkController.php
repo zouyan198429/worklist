@@ -3,17 +3,27 @@
 namespace App\Http\Controllers;
 
 
+use App\Business\CompanyAreaBusiness;
+use App\Business\CompanyCustomerTypeBusiness;
+use App\Business\CompanyDepartmentBusiness;
+use App\Business\CompanyServiceTagsBusiness;
+use App\Business\CompanyServiceTimeBusiness;
+use App\Business\CompanySiteMsgBusiness;
+use App\Business\CompanyStaffBusiness;
+use App\Business\CompanyWorkBusiness;
+use App\Business\CompanyWorkCallCountBusiness;
+use App\Business\CompanyWorkCallerTypeBusiness;
+use App\Business\CompanyWorkDoingBusiness;
+use App\Business\CompanyWorkLogBusiness;
+use App\Business\CompanyWorkRepairCountBusiness;
+use App\Business\CompanyWorkSendsBusiness;
+use App\Business\CompanyWorkTypeBusiness;
 use App\Models\CompanyArea;
-use App\Models\CompanyCustomer;
 use App\Models\CompanyCustomerHistory;
 use App\Models\CompanyCustomerType;
 use App\Models\CompanyDepartment;
-use App\Models\CompanyServiceTags;
 use App\Models\CompanyServiceTime;
-use App\Models\CompanySiteMsg;
-use App\Models\CompanyStaff;
 use App\Models\CompanyStaffCustomer;
-use App\Models\CompanyStaffHistory;
 use App\Models\CompanyWork;
 use App\Models\CompanyWorkCallerType;
 use App\Models\CompanyWorkType;
@@ -53,82 +63,39 @@ class CompanyWorkController extends CompController
         $listData = [];
         //工单分类第一级 1
         if(($operate_no & 1) == 1 ){
-            $workFirstList = CompanyWorkType::select(['id', 'type_name'])
-                ->orderBy('sort_num', 'desc')->orderBy('id', 'desc')
-                ->where([
-                    ['company_id', '=', $company_id],
-                    ['type_parent_id', '=', 0],
-                ])
-                ->get()->toArray();
-            $listData['workFirstList'] = Tool::formatArrKeyVal($workFirstList, 'id', 'type_name');
+             $listData['workFirstList'] = CompanyWorkTypeBusiness::getWorkTypeKeyVals($company_id, 0, true) ?? [];
         }
 
         //工单来电类型 2
         if(($operate_no & 2) == 2 ) {
-            $workCallTypeList = CompanyWorkCallerType::select(['id', 'type_name'])
-                ->orderBy('sort_num', 'desc')->orderBy('id', 'desc')
-                ->where([
-                    ['company_id', '=', $company_id],
-                ])
-                ->get()->toArray();
-            $listData['workCallTypeList'] = Tool::formatArrKeyVal($workCallTypeList, 'id', 'type_name');
+            $listData['workCallTypeList'] = CompanyWorkCallerTypeBusiness::getWorkCallerTypeKeyVals($company_id, true) ?? [];
         }
 
         //业务标签 4
         if(($operate_no & 4) == 4 ) {
-            $serviceTagList = CompanyServiceTags::select(['id', 'tag_name'])
-                ->orderBy('sort_num', 'desc')->orderBy('id', 'desc')
-                ->where([
-                    ['company_id', '=', $company_id],
-                ])
-                ->get()->toArray();
-            $listData['serviceTagList'] = Tool::formatArrKeyVal($serviceTagList, 'id', 'tag_name');
+            $listData['serviceTagList'] = CompanyServiceTagsBusiness:: getServiceTagsKeyVals($company_id, true) ?? [];
         }
         // 业务时间 8
         if(($operate_no & 8) == 8 ) {
-            $serviceTimeList = CompanyServiceTime::select(['id', 'time_name', 'second_num'])
-                ->orderBy('sort_num', 'desc')->orderBy('id', 'desc')
-                ->where([
-                    ['company_id', '=', $company_id],
-                ])
-                ->get()->toArray();
+            $serviceTimeList = CompanyServiceTimeBusiness::getServiceTimeKeyVals($company_id, false) ?? [];
             $listData['serviceTimeList'] = Tool::formatArrKeyVal($serviceTimeList, 'id', 'time_name');
             $listData['serviceTimeMinList'] = Tool::formatArrKeyVal($serviceTimeList, 'id', 'second_num');
         }
 
         // 客户类型 16
         if(($operate_no & 16) == 16 ) {
-            $customerTypeList = CompanyCustomerType::select(['id', 'type_name'])
-                ->orderBy('sort_num', 'desc')->orderBy('id', 'desc')
-                ->where([
-                    ['company_id', '=', $company_id],
-                ])
-                ->get()->toArray();
-            $listData['customerTypeList'] = Tool::formatArrKeyVal($customerTypeList, 'id', 'type_name');
+            $listData['customerTypeList'] = CompanyCustomerTypeBusiness::getCustomerTypeKeyVals($company_id, true) ?? [];
         }
 
         // 客户地区 32
         if(($operate_no & 32) == 32 ) {
-            $areaCityList = CompanyArea::select(['id', 'area_name'])
-                ->orderBy('sort_num', 'desc')->orderBy('id', 'desc')
-                ->where([
-                    ['company_id', '=', $company_id],
-                    ['area_parent_id', '=', 0],
-                ])
-                ->get()->toArray();
-            $listData['areaCityList'] = Tool::formatArrKeyVal($areaCityList, 'id', 'area_name');
+            $listData['areaCityList'] = CompanyAreaBusiness::getWorkTypeKeyVals($company_id, 0, true) ?? [];
         }
 
         // 部门信息 64
         if(($operate_no & 64) == 64 ) {
-            $departmentFirstList = CompanyDepartment::select(['id', 'department_name'])
-                ->orderBy('sort_num', 'desc')->orderBy('id', 'desc')
-                ->where([
-                    ['company_id', '=', $company_id],
-                    ['department_parent_id', '=', 0],
-                ])
-                ->get()->toArray();
-            $listData['departmentFirstList'] = Tool::formatArrKeyVal($departmentFirstList, 'id', 'department_name');
+            $listData['departmentFirstList'] = CompanyDepartmentBusiness::getDepartmentKeyVals($company_id,  0,  true) ?? [];
+
         }
 //        $listData = [
 //            'workFirstList' => $workFirstList,// 工单分类第一级
@@ -156,6 +123,10 @@ class CompanyWorkController extends CompController
      */
     public function test(Request $request)
     {
+        // CompanyWorkBusiness::autoSiteMsg();
+         // $worksObj = CompanyWorkDoingBusiness::getWorkInfo(1, 3);
+         //var_dump(empty($worksObj));
+        /*
         $staff_id = 1;
         $company_id = 1;
         $mainObj = null;
@@ -170,6 +141,8 @@ class CompanyWorkController extends CompController
         Common::getHistory($mainObj, $staff_id, $historyObj,'company_staff_history', $historySearch, []);
 
         pr($historyObj->id);
+        */
+
 //        // 获得员操作员工信息
 //        $resourceInfoObj = CompanyStaff::find($staff_id);
 //        if(empty($resourceInfoObj)){
@@ -226,7 +199,7 @@ class CompanyWorkController extends CompController
     public function add_save(Request $request)
     {
         $this->InitParams($request);
-        $currentNow = Carbon::now();
+//        $currentNow = Carbon::now();
         $company_id = $this->company_id;
         $work_id = Common::getInt($request, 'id');
         $staff_id = Common::getInt($request, 'staff_id');// 操作员工
@@ -251,11 +224,12 @@ class CompanyWorkController extends CompController
         }
         $second_num = $serviceTimeObj->second_num;
 
+        $expiry_time =  Carbon::now()->addMinute($second_num);
         $save_data['time_name'] = $serviceTimeObj->time_name;
         $save_data['second_num'] = $second_num;
-        $save_data['expiry_time']  = Carbon::now()->addMinute($second_num);
-
-        //客户类型[分类一级]
+        $save_data['expiry_time']  = $expiry_time;
+        $save_data['book_time']  = $expiry_time;
+            //客户类型[分类一级]
         $type_id = $save_data['type_id'] ?? 0;
         Common::judgeInitParams($request, 'type_id', $type_id);
         $customerTypeObj = CompanyCustomerType::select(['id', 'type_name'])->find($type_id);
@@ -355,8 +329,8 @@ class CompanyWorkController extends CompController
     //            ];
     //
     //            Common::getHistory($sendStaffObj, $send_staff_id, $sendStaffHistoryObj,'company_staff_history', $sendStaffHistorySearch, []);
-                $this->getHistoryStaff($sendStaffObj , $sendStaffHistoryObj, $company_id, $send_staff_id);
-
+                // $this->getHistoryStaff($sendStaffObj , $sendStaffHistoryObj, $company_id, $send_staff_id);
+                CompanyStaffBusiness::getHistoryStaff($sendStaffObj , $sendStaffHistoryObj, $company_id, $send_staff_id );
                 $send_staff_history_id = $sendStaffHistoryObj->id;
                 Common::judgeEmptyParams($request, '指派员工历史记录ID', $send_staff_history_id);
                 $save_data['send_staff_history_id'] = $send_staff_history_id;
@@ -377,11 +351,13 @@ class CompanyWorkController extends CompController
     //
     //        Common::getHistory($staffObj, $staff_id, $staffHistoryObj,'company_staff_history', $StaffHistorySearch, []);
 
-            $this->getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id);
+            // $this->getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id);
+            CompanyStaffBusiness::getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id );
 
             $operate_staff_history_id = $staffHistoryObj->id;
             Common::judgeEmptyParams($request, '员工历史记录ID', $operate_staff_history_id);
-
+            $operate_department_id = $staffObj->department_id;
+            $operate_group_id = $staffObj->group_id;
             $save_data['operate_staff_id'] = $staff_id;
             $save_data['operate_staff_history_id'] = $operate_staff_history_id;
 
@@ -521,10 +497,28 @@ class CompanyWorkController extends CompController
                 'id' => $work_id,
             ];
             Common::updateOrCreate($workObj, $workSearchConditon, $save_data );
+            $work_id = $workObj->id;
+            // 保存或修改工单进行表
+            $workDoingObj = null;
+            Common::getObjByModelName("CompanyWorkDoing", $workDoingObj);
+            $workSearchConditon = [
+                'company_id' => $company_id,
+                'work_num' => $workObj->work_num,
+                'work_id' => $work_id,
+            ];
+            $workDoingSaveData = $workObj->toArray();
+            $workDoingSaveData['work_id'] = $work_id;
+            if(isset($workDoingSaveData['status_text'])) unset($workDoingSaveData['status_text']);
+            if(isset($workDoingSaveData['sex_text'])) unset($workDoingSaveData['sex_text']);
+            Common::updateOrCreate($workDoingObj, $workSearchConditon, $workDoingSaveData );
 
             // 工单派发记录
             if($send_staff_id > 0) { // 指定了员工
-                $this->saveSends($workObj, $workObj->operate_staff_id, $workObj->operate_staff_history_id);
+
+                // $this->saveSends($workObj, $workObj->operate_staff_id, $workObj->operate_staff_history_id);
+                CompanyWorkSendsBusiness::saveSends($workObj, $workObj->operate_staff_id , $workObj->operate_staff_history_id);                // 发送消息
+                CompanySiteMsgBusiness::sendSiteMsg($workObj, null, null,
+                    '指派新工单提醒', '工单[' . $workObj->work_num . ']已指派给您,请注意安排处理！');
             }
     //        $workSends = [
     //            'company_id' => $workObj->company_id,
@@ -545,9 +539,11 @@ class CompanyWorkController extends CompController
     //        Common::create($workSendsObj, $workSends);
 
             // 工单操作日志
-            $this->saveWorkLog($workObj , $workObj->operate_staff_id , $workObj->operate_staff_history_id, "创建工单");
+            // $this->saveWorkLog($workObj , $workObj->operate_staff_id , $workObj->operate_staff_history_id, "创建工单");
+            CompanyWorkLogBusiness::saveWorkLog($workObj , $workObj->operate_staff_id , $workObj->operate_staff_history_id,  "创建工单");
             if($send_staff_id > 0) { // 指定了员工
-                $this->saveWorkLog($workObj , $workObj->operate_staff_id , $workObj->operate_staff_history_id, implode(",", $sendLogs));
+                //$this->saveWorkLog($workObj , $workObj->operate_staff_id , $workObj->operate_staff_history_id, implode(",", $sendLogs));
+                CompanyWorkLogBusiness::saveWorkLog($workObj , $workObj->operate_staff_id , $workObj->operate_staff_history_id,  implode(",", $sendLogs));
             }
     //        $workLog = [
     //            'company_id' => $workObj->company_id,
@@ -563,7 +559,9 @@ class CompanyWorkController extends CompController
     //        Common::create($workLogObj, $workLog);
 
             // 工单来电统计
-            $this->workCallCount($workObj, $workObj->operate_staff_id , $workObj->operate_staff_history_id);
+            // $this->workCallCount($workObj, $workObj->operate_staff_id , $workObj->operate_staff_history_id);
+            CompanyWorkCallCountBusiness::workCallCount($workObj, $operate_department_id , $operate_group_id, $workObj->operate_staff_id , $workObj->operate_staff_history_id);
+
     //        $workCallCountObj = null;
     //        Common::getObjByModelName("CompanyWorkCallCount", $workCallCountObj);
     //
@@ -608,40 +606,22 @@ class CompanyWorkController extends CompController
 
         $listData = [];
         //待确认工单数量 1
-        $waitSureCount = 0;
         if(($operate_no & 1) == 1 ){
-            $waitSureCount = CompanyWork::where([
-                    ['company_id', '=', $company_id],
-                    ['send_staff_id', '=', $staff_id],
-                    ['status', '=', 1],
-                ])->count();
+            $waitSureCount = CompanyWorkDoingBusiness::getCount($company_id, $staff_id, 1);
         }
-        $listData['waitSureCount'] = $waitSureCount;
+        $listData['waitSureCount'] = $waitSureCount ?? 0;
 
         //处理中工单数量 2
-        $doingCount = 0;
         if(($operate_no & 2) == 2 ){
-            $doingCount = CompanyWork::where([
-                ['company_id', '=', $company_id],
-                ['send_staff_id', '=', $staff_id],
-                ['status', '=',2],
-            ])->count();
+            $doingCount = CompanyWorkDoingBusiness::getCount($company_id, $staff_id, 2);
         }
-        $listData['doingCount'] = $doingCount;
+        $listData['doingCount'] = $doingCount ?? 0;
 
         // 未读消息
-        $msgList = [];
         if(($operate_no & 4) == 4 ) {
-            $msgList = CompanySiteMsg::select(['id', 'msg_name', 'mst_content', 'is_read', 'accept_staff_id'
-                , 'operate_staff_id', 'created_at'])
-               ->orderBy('id', 'desc')
-                ->where([
-                    ['company_id', '=', $company_id],
-                    ['accept_staff_id', '=', $staff_id],
-                    ['is_read', '=', 0],
-                ])->get();
+            $msgList = CompanySiteMsgBusiness::getSiteMsgByIsRead($company_id, $staff_id, 0);
         }
-        $listData['msgList'] = $msgList;
+        $listData['msgList'] = $msgList ?? [];
 //        $listData = [
 //            'waitSureCount' => $waitSureCount,// 待确认工单数量
 //            'doingCount' => $doingCount,// 处理中工单数量
@@ -671,6 +651,7 @@ class CompanyWorkController extends CompController
 //        jsonStrToArr($save_data, 1, '参数[save_data]格式有误!');
         // 获取工单信息
         $workObj = CompanyWork::find($work_id);
+        // $workObj = CompanyWorkDoingBusiness::getWorkInfo($company_id, $work_id); // $workDoingObj
         if(empty($workObj)){
             throws("工单记录不存在!");
         }
@@ -692,7 +673,8 @@ class CompanyWorkController extends CompController
     //
     //        Common::getHistory($staffObj, $staff_id, $staffHistoryObj,'company_staff_history', $StaffHistorySearch, []);
 
-            $this->getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id);
+            //$this->getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id);
+            CompanyStaffBusiness::getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id );
 
             $operate_staff_history_id = $staffHistoryObj->id;
             Common::judgeEmptyParams($request, '员工历史记录ID', $operate_staff_history_id);
@@ -701,10 +683,16 @@ class CompanyWorkController extends CompController
     //        $save_data['operate_staff_history_id'] = $operate_staff_history_id;
 
             // 修改状态
-            $workObj->status = 2;
+            $saveData = ['status' => 2];
+            foreach($saveData as $field => $val){
+                $workObj->{$field} = $val;
+            }
             $workObj->save();
+            // CompanyWorkBusiness::saveById($work_id, $saveData);
+            CompanyWorkDoingBusiness::saveById($company_id, $work_id, $saveData);
             // 日志
-            $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "确认工单!");
+            // $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "确认工单!");
+            CompanyWorkLogBusiness::saveWorkLog($workObj , $staff_id , $operate_staff_history_id,  "确认工单!");
         } catch ( \Exception $e) {
             DB::rollBack();
             throws('提交失败；信息[' . $e->getMessage() . ']');
@@ -734,6 +722,7 @@ class CompanyWorkController extends CompController
         $sendLogs = [];//指派日志
         // 获取工单信息
         $workObj = CompanyWork::find($work_id);
+        // $workObj = CompanyWorkDoingBusiness::getWorkInfo($company_id, $work_id); // $workDoingObj
         if(empty($workObj)){
             throws("工单记录不存在!");
         }
@@ -787,7 +776,8 @@ class CompanyWorkController extends CompController
     //            ];
     //
     //            Common::getHistory($sendStaffObj, $send_staff_id, $sendStaffHistoryObj,'company_staff_history', $sendStaffHistorySearch, []);
-                $this->getHistoryStaff($sendStaffObj , $sendStaffHistoryObj, $company_id, $send_staff_id);
+               // $this->getHistoryStaff($sendStaffObj , $sendStaffHistoryObj, $company_id, $send_staff_id);
+                CompanyStaffBusiness::getHistoryStaff($sendStaffObj , $sendStaffHistoryObj, $company_id, $send_staff_id );
 
                 $send_staff_history_id = $sendStaffHistoryObj->id;
                 Common::judgeEmptyParams($request, '指派员工历史记录ID', $send_staff_history_id);
@@ -811,7 +801,8 @@ class CompanyWorkController extends CompController
     //
     //        Common::getHistory($staffObj, $staff_id, $staffHistoryObj,'company_staff_history', $StaffHistorySearch, []);
 
-            $this->getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id);
+            // $this->getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id);
+            CompanyStaffBusiness::getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id );
 
             $operate_staff_history_id = $staffHistoryObj->id;
             Common::judgeEmptyParams($request, '员工历史记录ID', $operate_staff_history_id);
@@ -824,6 +815,7 @@ class CompanyWorkController extends CompController
                 $workObj->{$field} = $val;
             }
             $workObj->save();
+            CompanyWorkDoingBusiness::saveById($company_id, $work_id, $save_data);
             if($send_staff_id > 0 && $oldSendStaffId != $send_staff_id){ // 指定的员工不同，需要把客户也复制一份给新指定的员工。
                 // 从用户表
                 $customer_id = $workObj->customer_id;
@@ -868,11 +860,14 @@ class CompanyWorkController extends CompController
 
             }
             // 日志
-            $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "重新派发员工!");
+            // $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "重新派发员工!");
+            CompanyWorkLogBusiness::saveWorkLog($workObj , $staff_id , $operate_staff_history_id,  "重新派发员工!");
             if($send_staff_id > 0) { // 指定了员工
                 // 工单派发记录
-                $this->saveSends($workObj,  $staff_id , $operate_staff_history_id);
-                $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, implode(",", $sendLogs));
+                // $this->saveSends($workObj,  $staff_id , $operate_staff_history_id);
+                CompanyWorkSendsBusiness::saveSends($workObj, $staff_id , $operate_staff_history_id);
+                // $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, implode(",", $sendLogs));
+                CompanyWorkLogBusiness::saveWorkLog($workObj , $staff_id , $operate_staff_history_id,  implode(",", $sendLogs));
             }
 
         } catch ( \Exception $e) {
@@ -927,25 +922,30 @@ class CompanyWorkController extends CompController
     //
     //        Common::getHistory($staffObj, $staff_id, $staffHistoryObj,'company_staff_history', $StaffHistorySearch, []);
 
-            $this->getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id);
+            //$this->getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id);
+            CompanyStaffBusiness::getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id );
 
             $operate_staff_history_id = $staffHistoryObj->id;
             Common::judgeEmptyParams($request, '员工历史记录ID', $operate_staff_history_id);
-
+            $department_id = $staffObj->department_id;
+            $group_id = $staffObj->group_id;
     //        $save_data['operate_staff_id'] = $staff_id;
     //        $save_data['operate_staff_history_id'] = $operate_staff_history_id;
 
             // 修改状态
+            $save_data['status'] = 4;
             foreach($save_data as $field => $val){
                 $workObj->{$field} = $val;
             }
-            $workObj->status = 4;
+            // $workObj->status = 4;
             $workObj->save();
+            CompanyWorkDoingBusiness::saveById($company_id, $work_id, $save_data);
             // 日志
-            $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "确认工单结单!内容："  . $win_content);
+            // $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "确认工单结单!内容："  . $win_content);
+            CompanyWorkLogBusiness::saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "确认工单结单!内容："  . $win_content);
             // 统计处理数量
-            $this->workRepairCount($workObj, $staff_id , $operate_staff_history_id);
-
+            //$this->workRepairCount($workObj, $staff_id , $operate_staff_history_id);
+            CompanyWorkRepairCountBusiness::workRepairCount($workObj, $department_id , $group_id, $staff_id , $operate_staff_history_id);
         } catch ( \Exception $e) {
             DB::rollBack();
             throws('提交失败；信息[' . $e->getMessage() . ']');
@@ -1001,7 +1001,8 @@ class CompanyWorkController extends CompController
     //
     //        Common::getHistory($staffObj, $staff_id, $staffHistoryObj,'company_staff_history', $StaffHistorySearch, []);
 
-            $this->getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id);
+            // $this->getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id);
+            CompanyStaffBusiness::getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id );
 
             $operate_staff_history_id = $staffHistoryObj->id;
             Common::judgeEmptyParams($request, '员工历史记录ID', $operate_staff_history_id);
@@ -1010,13 +1011,17 @@ class CompanyWorkController extends CompController
     //        $save_data['operate_staff_history_id'] = $operate_staff_history_id;
 
             // 修改状态
+            $save_data['status'] = 8;
             foreach($save_data as $field => $val){
                 $workObj->{$field} = $val;
             }
-            $workObj->status = 8;
+            // $workObj->status = 8;
             $workObj->save();
+            // 删除操作表
+            CompanyWorkDoingBusiness::delById($company_id, $work_id);
             // 日志
-            $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "工单回访!内容：" . $reply_content);
+            // $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "工单回访!内容：" . $reply_content);
+            CompanyWorkLogBusiness::saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "工单回访!内容：" . $reply_content);
         } catch ( \Exception $e) {
             DB::rollBack();
             throws('提交失败；信息[' . $e->getMessage() . ']');
@@ -1026,154 +1031,4 @@ class CompanyWorkController extends CompController
         return  okArray([]);
     }
 
-    /**
-     * 工单日志
-     *
-     * @param obj $workObj 当前工单对象
-     * @param int $operate_staff_id 操作员工id
-     * @param int $operate_staff_history_id 操作员工历史id
-     * @param string $logContent 操作说明
-     * @return null
-     * @author zouyan(305463219@qq.com)
-     */
-    protected function saveWorkLog($workObj , $operate_staff_id , $operate_staff_history_id, $logContent){
-        // 工单操作日志
-        $workLog = [
-            'company_id' => $workObj->company_id,
-            'work_id' => $workObj->id,
-            'work_status_new' => $workObj->status,
-            'content' => $logContent,// "创建工单", // 操作内容
-            'operate_staff_id' => $operate_staff_id,//$workObj->operate_staff_id,
-            'operate_staff_history_id' => $operate_staff_history_id,//$workObj->operate_staff_history_id,
-        ];
-        $workLogObj = null;
-        Common::getObjByModelName("CompanyWorkLog", $workLogObj);
-        Common::create($workLogObj, $workLog);
-    }
-
-
-    /**
-     * 工单派发记录
-     *
-     * @param obj $workObj 当前工单对象
-     * @param int $operate_staff_id 操作员工id
-     * @param int $operate_staff_history_id 操作员工历史id
-     * @return null
-     * @author zouyan(305463219@qq.com)
-     */
-    protected function saveSends($workObj, $operate_staff_id , $operate_staff_history_id){
-        // 工单派发记录
-        $workSends = [
-            'company_id' => $workObj->company_id,
-            'work_id' => $workObj->id,
-            'work_status' => $workObj->status,
-            'send_department_id' => $workObj->send_department_id,
-            'send_department_name' => $workObj->send_department_name,
-            'send_group_id' => $workObj->send_group_id,
-            'send_group_name' => $workObj->send_group_name,
-            'send_staff_id' => $workObj->send_staff_id,
-            'send_staff_history_id' => $workObj->send_staff_history_id,
-            'status' => 0, // 状态0可处理;1不可处理
-            'operate_staff_id' => $operate_staff_id,// $workObj->operate_staff_id,
-            'operate_staff_history_id' => $operate_staff_history_id,// $workObj->operate_staff_history_id,
-        ];
-        $workSendsObj = null;
-        Common::getObjByModelName("CompanyWorkSends", $workSendsObj);
-        Common::create($workSendsObj, $workSends);
-    }
-
-
-    /**
-     * 工单来电统计
-     *
-     * @param obj $workObj 当前工单对象
-     * @param int $operate_staff_id 操作员工id
-     * @param int $operate_staff_history_id 操作员工历史id
-     * @return null
-     * @author zouyan(305463219@qq.com)
-     */
-    protected function workCallCount($workObj, $operate_staff_id , $operate_staff_history_id){
-        $currentNow = Carbon::now();
-        // 工单来电统计
-
-        $workCallCountObj = null;
-        Common::getObjByModelName("CompanyWorkCallCount", $workCallCountObj);
-
-        $searchConditon = [
-            'company_id' => $workObj->company_id,
-            'operate_staff_id' => $operate_staff_id,// $workObj->operate_staff_id,
-            'count_year' => $currentNow->year,
-            'count_month' => $currentNow->month,
-            'count_day' => $currentNow->day,
-        ];
-        $updateFields = [
-            'amount' => 0,
-            'operate_staff_history_id' => $operate_staff_history_id,//$workObj->operate_staff_history_id,
-        ];
-
-        Common::firstOrCreate($workCallCountObj, $searchConditon, $updateFields );
-        $workCallCountObj->amount++;
-        $workCallCountObj->save();
-    }
-
-    /**
-     * 工单维修统计
-     *
-     * @param obj $workObj 当前工单对象
-     * @param int $operate_staff_id 操作员工id
-     * @param int $operate_staff_history_id 操作员工历史id
-     * @return null
-     * @author zouyan(305463219@qq.com)
-     */
-    protected function workRepairCount($workObj, $operate_staff_id , $operate_staff_history_id){
-        $currentNow = Carbon::now();
-        // 工单来电统计
-
-        $workRepairCountObj = null;
-        Common::getObjByModelName("CompanyWorkRepairCount", $workRepairCountObj);
-
-        $searchConditon = [
-            'company_id' => $workObj->company_id,
-            'operate_staff_id' => $operate_staff_id,// $workObj->operate_staff_id,
-            'count_year' => $currentNow->year,
-            'count_month' => $currentNow->month,
-            'count_day' => $currentNow->day,
-        ];
-        $updateFields = [
-            'amount' => 0,
-            'operate_staff_history_id' => $operate_staff_history_id,//$workObj->operate_staff_history_id,
-        ];
-
-        Common::firstOrCreate($workRepairCountObj, $searchConditon, $updateFields );
-        $workRepairCountObj->amount++;
-        $workRepairCountObj->save();
-    }
-
-    /**
-     * 员工获得主表+历史表对象
-     *
-     * @param obj $workObj 员工主对象
-     * @param obj $staffHistoryObj 员工历史对象
-     * @param int $company_id 公司id
-     * @param int $staff_id 员工id
-     * @return int 员工历史记录id
-     * @author zouyan(305463219@qq.com)
-     */
-    protected function getHistoryStaff(&$staffObj = null , &$staffHistoryObj = null, $company_id = 0, $staff_id = 0 ){
-
-        // 获是员工历史记录id-- 操作员工
-        //$staffObj = null;
-        Common::getObjByModelName("CompanyStaff", $staffObj);
-        // $staffHistoryObj = null;
-        Common::getObjByModelName("CompanyStaffHistory", $staffHistoryObj);
-        $StaffHistorySearch = [
-            'company_id' => $company_id,
-            'staff_id' => $staff_id,
-        ];
-
-        Common::getHistory($staffObj, $staff_id, $staffHistoryObj,'company_staff_history', $StaffHistorySearch, []);
-        $operate_staff_history_id = $staffHistoryObj->id;
-        return $operate_staff_history_id;
-
-    }
 }
