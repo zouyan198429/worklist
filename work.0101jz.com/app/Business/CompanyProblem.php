@@ -307,21 +307,21 @@ class CompanyProblem extends BaseBusiness
         // Common::judgeEmptyParams($request, 'id', $id);
         $work_type_id = Common::getInt($request, 'work_type_id');
         $business_id = Common::getInt($request, 'business_id');
-        $call_number = Common::get($request, 'call_number');
+//        $call_number = Common::get($request, 'call_number');
         $content = Common::get($request, 'content');
         $content =  replace_enter_char($content,1);
-        $city_id = Common::getInt($request, 'city_id');
-        $area_id = Common::getInt($request, 'area_id');
-        $address = Common::get($request, 'address');
+//        $city_id = Common::getInt($request, 'city_id');
+//        $area_id = Common::getInt($request, 'area_id');
+//        $address = Common::get($request, 'address');
 
         $saveData = [
             'work_type_id' => $work_type_id, //业务类型
             'business_id' => $business_id,// 业务
             'content' => $content,// 内容
-            'call_number' => $call_number,// 来电号码
-            'city_id' => $city_id,// 区县
-            'area_id' => $area_id,// 街道
-            'address' => $address,// 详细地址
+//            'call_number' => $call_number,// 来电号码
+//            'city_id' => $city_id,// 区县
+//            'area_id' => $area_id,// 街道
+//            'address' => $address,// 详细地址
         ];
 
 //        if($id <= 0) {// 新加;要加入的特别字段

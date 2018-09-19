@@ -22,10 +22,10 @@ $(function(){
         return false;
     });
     //区县值变动
-    $(document).on("change",'select[name=city_id]',function(){
-        changeFirstSel(REL_CHANGE.area_city, $(this).val(), 0, true);
-        return false;
-    });
+    // $(document).on("change",'select[name=city_id]',function(){
+    //     changeFirstSel(REL_CHANGE.area_city, $(this).val(), 0, true);
+    //     return false;
+    // });
 });
 
 var SUBMIT_FORM = true;//防止多次点击提交
@@ -75,31 +75,31 @@ function ajax_form(){
         return false;
     }
 
-    var call_number = $('input[name=call_number]').val();
-    if(!judge_validate(4,'来电号码',call_number,true,'length',3,30)){
-        return false;
-    }
-
-    var city_id = $('select[name=city_id]').val();
-    var judge_seled = judge_validate(1,'区县',city_id,true,'digit','','');
-    if(judge_seled != ''){
-        layer_alert("请选择区县",3,0);
-        //err_alert('<font color="#000000">' + judge_seled + '</font>');
-        return false;
-    }
-
-    var area_id = $('select[name=area_id]').val();
-    var judge_seled = judge_validate(1,'街道',area_id,true,'digit','','');
-    if(judge_seled != ''){
-        layer_alert("请选择街道",3,0);
-        //err_alert('<font color="#000000">' + judge_seled + '</font>');
-        return false;
-    }
-
-    var address = $('input[name=address]').val();
-    if(!judge_validate(4,'详细地址',address,true,'length',1,50)){
-        return false;
-    }
+    // var call_number = $('input[name=call_number]').val();
+    // if(!judge_validate(4,'来电号码',call_number,true,'length',3,30)){
+    //     return false;
+    // }
+    //
+    // var city_id = $('select[name=city_id]').val();
+    // var judge_seled = judge_validate(1,'区县',city_id,true,'digit','','');
+    // if(judge_seled != ''){
+    //     layer_alert("请选择区县",3,0);
+    //     //err_alert('<font color="#000000">' + judge_seled + '</font>');
+    //     return false;
+    // }
+    //
+    // var area_id = $('select[name=area_id]').val();
+    // var judge_seled = judge_validate(1,'街道',area_id,true,'digit','','');
+    // if(judge_seled != ''){
+    //     layer_alert("请选择街道",3,0);
+    //     //err_alert('<font color="#000000">' + judge_seled + '</font>');
+    //     return false;
+    // }
+    //
+    // var address = $('input[name=address]').val();
+    // if(!judge_validate(4,'详细地址',address,true,'length',1,50)){
+    //     return false;
+    // }
 
     // 验证通过
     SUBMIT_FORM = false;//标记为已经提交过

@@ -42,23 +42,23 @@ class CompanyProblemController extends CompController
         jsonStrToArr($save_data , 1, '参数[save_data]格式有误!');
 
 
-        //县/区id[分类一级]
-        $city_id = $save_data['city_id'] ?? 0;
-        Common::judgeInitParams($request, 'city_id', $city_id);
-        $cityObj = CompanyArea::select(['id', 'area_name'])->find($city_id);
-        if(empty($cityObj)){
-            throws("没有区/县信息");
-        }
-        $save_data['city_name'] = $cityObj->area_name ?? '';
-
-        //街道id[分类二级]
-        $area_id = $save_data['area_id'] ?? 0;
-        Common::judgeInitParams($request, 'area_id', $area_id);
-        $areaObj = CompanyArea::select(['id', 'area_name'])->find($area_id);
-        if(empty($areaObj)){
-            throws("没有街道信息");
-        }
-        $save_data['area_name'] = $areaObj->area_name ?? '';
+//        //县/区id[分类一级]
+//        $city_id = $save_data['city_id'] ?? 0;
+//        Common::judgeInitParams($request, 'city_id', $city_id);
+//        $cityObj = CompanyArea::select(['id', 'area_name'])->find($city_id);
+//        if(empty($cityObj)){
+//            throws("没有区/县信息");
+//        }
+//        $save_data['city_name'] = $cityObj->area_name ?? '';
+//
+//        //街道id[分类二级]
+//        $area_id = $save_data['area_id'] ?? 0;
+//        Common::judgeInitParams($request, 'area_id', $area_id);
+//        $areaObj = CompanyArea::select(['id', 'area_name'])->find($area_id);
+//        if(empty($areaObj)){
+//            throws("没有街道信息");
+//        }
+//        $save_data['area_name'] = $areaObj->area_name ?? '';
 
 
         //业务分类id[分类一级]

@@ -35,7 +35,7 @@
                 </tr>
             </table>
             <div class="line"></div>
-           <!--  <table class="table1">
+             <table class="table1" style="display: none;">
                 <tr>
                     <th>客户电话</th>
                     <td>
@@ -45,7 +45,7 @@
             </table>
             <div class="line"></div>
             <table class="table1">
-                <tr>
+                <tr style="display: none;">
                     <th>客户地址</th>
                     <td>
                         <select class="wmini" name="city_id" onchange="getAreaArr()">
@@ -59,7 +59,7 @@
                         </select>
                         <input type="text" class="inp wnormal" name="address"    value="{{ $address or '' }}" />
                     </td>
-                </tr> -->
+                </tr> 
 
                 <tr>
                     <th> </th>
@@ -92,10 +92,10 @@
             changeFirstSel(REL_CHANGE.work_type,WORK_TYPE_ID,BUSINESS_ID, false);
             @endif
 
-            // 当前的客户地址
-            @if (isset($city_id) && $city_id >0 )
-            changeFirstSel(REL_CHANGE.area_city,CITY_ID,AREA_ID, false);
-            @endif
+            {{--// 当前的客户地址--}}
+            {{--@if (isset($city_id) && $city_id >0 )--}}
+            {{--changeFirstSel(REL_CHANGE.area_city,CITY_ID,AREA_ID, false);--}}
+            {{--@endif--}}
         });
     </script>
     <script src="{{ asset('/js/weixiu/lanmu/problem_edit.js') }}"  type="text/javascript"></script>

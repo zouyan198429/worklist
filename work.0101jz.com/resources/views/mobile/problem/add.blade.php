@@ -36,13 +36,13 @@
 			<div class="k10"></div>
 			<div class="line"></div>
 			<div class="k10"></div>
-			<dl class="inp">
+			<dl class="inp" style="display: none;">
 				<!-- 					<dt>客户电话</dt>
                  -->					<dd>
 					<input type="text" class="inp wlong" value="{{ $call_number or '' }}" name="call_number" placeholder="客户电话" autofocus  required />
 				</dd>
 			</dl>
-			<dl class="inp">
+			<dl class="inp" style="display: none;">
 				<dt>客户地址</dt>
 				<dd>
 					<select class="wnormal" name="city_id" >
@@ -100,9 +100,9 @@
 			@endif
 
             // 当前的客户地址
-			@if (isset($city_id) && $city_id >0 )
-            	changeFirstSel(REL_CHANGE.area_city,CITY_ID,AREA_ID, false);
-			@endif
+			{{--@if (isset($city_id) && $city_id >0 )--}}
+            	{{--changeFirstSel(REL_CHANGE.area_city,CITY_ID,AREA_ID, false);--}}
+			{{--@endif--}}
         });
 	</script>
 	<script src="{{ asset('/js/m/lanmu/problem_edit.js') }}"  type="text/javascript"></script>
