@@ -33,7 +33,7 @@
 			</thead>
 			<tbody>
 			<tr>
-				<td class="tl" ><a href="{{ url('manage/lore/info') }}" ><i class="fa fa-lemon-o fa-fw" aria-hidden="true"></i> 企业品牌推广的战略选择</a></td>
+				<td class="tl" ><a href="{{ url('manage/lore/info') }}" ><i class="fa fa-angle-right fa-fw" aria-hidden="true"></i> 企业品牌推广的战略选择</a></td>
 				<td>★★</td>
 				<td>话务</td>
 				<td>张兰兰</td>
@@ -41,7 +41,7 @@
 				<td>233</td>
 			</tr>
 			<tr>
-				<td class="tl"><a href="{{ url('manage/lore/info') }}" ><i class="fa fa-lemon-o fa-fw" aria-hidden="true"></i>  网络口碑营销传播的实例独家分析</a></td>
+				<td class="tl"><a href="{{ url('manage/lore/info') }}" ><i class="fa fa-angle-right fa-fw" aria-hidden="true"></i>  网络口碑营销传播的实例独家分析</a></td>
 				<td>★★</td>
 				<td>话务</td>
 				<td>张兰兰</td>
@@ -49,7 +49,7 @@
 				<td>233</td>
 			</tr>
 			<tr>
-				<td class="tl"><a href="{{ url('manage/lore/info') }}" ><i class="fa fa-lemon-o fa-fw" aria-hidden="true"></i>  由火狐推广方式的转变谈网站的本地化策略</a></td>
+				<td class="tl"><a href="{{ url('manage/lore/info') }}" ><i class="fa fa-angle-right fa-fw" aria-hidden="true"></i>  由火狐推广方式的转变谈网站的本地化策略</a></td>
 				<td>★★</td>
 				<td>话务</td>
 				<td>张兰兰</td>
@@ -57,7 +57,7 @@
 				<td>233</td>
 			</tr>
 			<tr>
-				<td class="tl"><a href="{{ url('manage/lore/info') }}" ><i class="fa fa-lemon-o fa-fw" aria-hidden="true"></i>  如何创立网络营销品牌？</a></td>
+				<td class="tl"><a href="{{ url('manage/lore/info') }}" ><i class="fa fa-angle-right fa-fw" aria-hidden="true"></i>  如何创立网络营销品牌？</a></td>
 				<td>★★</td>
 				<td>话务</td>
 				<td>张兰兰</td>
@@ -65,7 +65,7 @@
 				<td>233</td>
 			</tr>
 			<tr>
-				<td class="tl"><a href="{{ url('manage/lore/info') }}" ><i class="fa fa-lemon-o fa-fw" aria-hidden="true"></i>  如何利用网络营销提升企业品牌形象</a></td>
+				<td class="tl"><a href="{{ url('manage/lore/info') }}" ><i class="fa fa-angle-right fa-fw" aria-hidden="true"></i>  如何利用网络营销提升企业品牌形象</a></td>
 				<td>★★</td>
 				<td>话务</td>
 				<td>张兰兰</td>
@@ -73,7 +73,7 @@
 				<td>233</td>
 			</tr>
 			<tr>
-				<td class="tl"><a href="{{ url('manage/lore/info') }}" ><i class="fa fa-lemon-o fa-fw" aria-hidden="true"></i> 企业品牌推广的战略选择</a></td>
+				<td class="tl"><a href="{{ url('manage/lore/info') }}" ><i class="fa fa-angle-right fa-fw" aria-hidden="true"></i> 企业品牌推广的战略选择</a></td>
 				<td>★★</td>
 				<td>话务</td>
 				<td>张兰兰</td>
@@ -81,7 +81,7 @@
 				<td>233</td>
 			</tr>
 			<tr>
-				<td class="tl"><a href="{{ url('manage/lore/info') }}" ><i class="fa fa-lemon-o fa-fw" aria-hidden="true"></i>  网络口碑营销传播的实例独家分析</a></td>
+				<td class="tl"><a href="{{ url('manage/lore/info') }}" ><i class="fa fa-angle-right fa-fw" aria-hidden="true"></i>  网络口碑营销传播的实例独家分析</a></td>
 				<td>★★</td>
 				<td>话务</td>
 				<td>张兰兰</td>
@@ -89,7 +89,7 @@
 				<td>233</td>
 			</tr>
 			<tr>
-				<td class="tl"><a href="{{ url('manage/lore/info') }}" ><i class="fa fa-lemon-o fa-fw" aria-hidden="true"></i>  由火狐推广方式的转变谈网站的本地化策略</a></td>
+				<td class="tl"><a href="{{ url('manage/lore/info') }}" ><i class="fa fa-angle-right fa-fw" aria-hidden="true"></i>  由火狐推广方式的转变谈网站的本地化策略</a></td>
 				<td>★★</td>
 				<td>话务</td>
 				<td>张兰兰</td>
@@ -97,7 +97,7 @@
 				<td>233</td>
 			</tr>
 			<tr>
-				<td class="tl"><a href="{{ url('manage/lore/info') }}" ><i class="fa fa-lemon-o fa-fw" aria-hidden="true"></i>  如何创立网络营销品牌？</a></td>
+				<td class="tl"><a href="{{ url('manage/lore/info') }}" ><i class="fa fa-angle-right fa-fw" aria-hidden="true"></i>  如何创立网络营销品牌？</a></td>
 				<td>★★</td>
 				<td>话务</td>
 				<td>张兰兰</td>
@@ -105,7 +105,7 @@
 				<td>233</td>
 			</tr>
 			<tr>
-				<td class="tl"><a href="{{ url('manage/lore/info') }}" ><i class="fa fa-lemon-o fa-fw" aria-hidden="true"></i>  如何利用网络营销提升企业品牌形象</a></td>
+				<td class="tl"><a href="{{ url('manage/lore/info') }}" ><i class="fa fa-angle-right fa-fw" aria-hidden="true"></i>  如何利用网络营销提升企业品牌形象</a></td>
 				<td>★★</td>
 				<td>话务</td>
 				<td>张兰兰</td>

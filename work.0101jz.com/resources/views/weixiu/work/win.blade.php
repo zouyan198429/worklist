@@ -12,7 +12,7 @@
 			<input type="hidden" name="id" value="{{ $id or 0 }}"/>
 			<table class="table1">
 				<tr>
-					<th>内容<span class="must">*</span></th>
+					<th>反馈<span class="must">*</span></th>
 					<td>
 						<textarea type="text" class="inptext wlong" name="win_content" />{{ $win_content or '' }}</textarea>
 						<p class="tip"></p>
