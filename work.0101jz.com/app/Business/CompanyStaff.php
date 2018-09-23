@@ -4,6 +4,7 @@ namespace App\Business;
 
 use App\Services\Common;
 use App\Services\CommonBusiness;
+use App\Services\HttpRequest;
 use App\Services\Tool;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as Controller;
@@ -581,6 +582,30 @@ class CompanyStaff extends BaseBusiness
             return false;
         }
         return true;
+    }
+
+    /**
+     * 批量导入员工
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param array $saveData 要保存或修改的数组
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function staffImport(Request $request, Controller $controller, $saveData , $notLog = 0)
+    {
+        $company_id = $controller->company_id;
+        // 参数
+        $requestData = [
+            'company_id' => $company_id,
+            'staff_id' =>  $controller->user_id,
+            'save_data' => $saveData,
+        ];
+        $url = config('public.apiUrl') . config('apiUrl.apiPath.staffImport');
+        // 生成带参数的测试get请求
+        // $requestTesUrl = splicQuestAPI($url , $requestData);
+        return HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
     }
 
 }

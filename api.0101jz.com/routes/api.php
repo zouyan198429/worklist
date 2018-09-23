@@ -59,6 +59,9 @@ Route::any('work/workSure', 'CompanyWorkController@workSure');//确认工单
 Route::any('work/workWin', 'CompanyWorkController@workWin');//结单
 Route::any('work/workReply', 'CompanyWorkController@workReply');//回访
 
+// 员工
+Route::any('staff/bathImport', 'CompanyStaffController@bathImport');//批量导入
+
 // 问题反馈
 Route::any('problem/add_save', 'CompanyProblemController@add_save');//工单添加/修改
 

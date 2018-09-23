@@ -121,6 +121,15 @@ class CompanyStaff extends BaseModel
 
 
     /**
+     * 获取员工对应的渠道--一维
+     */
+    public function staffChannel()
+    {
+        return $this->belongsTo('App\Models\CompanyChannel', 'channel_id', 'id');
+    }
+
+
+    /**
      * 获取员工对应的职位- 一维
      */
     public function staffPosition()

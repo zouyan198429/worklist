@@ -65,6 +65,7 @@ class ImportExport
 //        ];
         // 最终都要转换为 [ '列编号' => '数组下标关键字']
         ini_set('memory_limit', self::$MEMORY_LIMIT);// 增加PHP可用的内存
+        set_time_limit(0);   // 设置脚本最大执行时间 为0 永不过期
         $headColKey = [];
         if($headRowNum == 0) $headColKey = $headArr;
         // 行、列 都是从1开始
@@ -203,7 +204,7 @@ class ImportExport
      */
     public static function export($file_dir = '', $create_filename = '', $dataArr = [], $type = 1 , $headArr = [], $save_type = 0, $other_arr = []){
         ini_set('memory_limit', self::$MEMORY_LIMIT);// 增加PHP可用的内存
-
+        set_time_limit(0);   // 设置脚本最大执行时间 为0 永不过期
         //如果文件名为空，则文件名默认按日期的形式生成
         $expand = 'xlsx';
         if($save_type == 2) $expand = 'xls';

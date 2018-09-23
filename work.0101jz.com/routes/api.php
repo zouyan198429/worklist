@@ -111,7 +111,7 @@ Route::any('admin/staff/ajax_del', 'admin\StaffController@ajax_del');// 删除
 Route::any('admin/staff/ajax_save', 'admin\StaffController@ajax_save');// 新加/修改
 Route::any('admin/staff/ajax_get_child', 'admin\StaffController@ajax_get_child');// 根据部门id,小组id获得子类员工数组[kv一维数组]
 Route::any('admin/staff/ajax_get_areachild', 'admin\StaffController@ajax_get_areachild');// 根据区县id,街道id获得子类员工数组[kv一维数组]
-
+Route::get('admin/staff/ajax_import_staff','admin\StaffController@ajax_import_staff'); // 导入员工
 
 //反馈问题
 Route::any('admin/problem/ajax_alist', 'admin\ProblemController@ajax_alist');// 大后台反馈问题

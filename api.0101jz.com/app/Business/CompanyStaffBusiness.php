@@ -42,4 +42,116 @@ class CompanyStaffBusiness extends BaseBusiness
         return $operate_staff_history_id;
 
     }
+
+    /**
+     * 判断工号是否已经存在
+     *
+     * @param int $company_id 公司id
+     * @param string $work_num 工号
+     * @return boolean true ：已存在 ;false：不存在
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function judgeExistWorkNum($company_id, $work_num){
+        $staffObj = null;
+        Common::getObjByModelName("CompanyStaff", $staffObj);
+        $queryParams = [
+            'where' => [
+                ['company_id', '=', $company_id],
+                ['work_num', '=', $work_num],
+                //  ['phonto_name', 'like', '%知的标题1%']
+            ],
+            'select' => [
+                'id'
+            ],
+           // 'orderBy' => ['id'=>'desc','company_id'=>'asc'],
+        ];
+        $relations = '';
+        $requestData = Common::getModelListDatas($staffObj, 1, 1, 1, $queryParams, $relations);
+        $dataList = $requestData['dataList'] ?? [];
+        if(count($dataList) > 0) return true;
+        return false;
+    }
+
+    /**
+     * 判断手机号是否已经存在
+     *
+     * @param int $company_id 公司id
+     * @param string $mobile 手机号
+     * @return boolean true ：已存在 ;false：不存在
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function judgeExistMobile($company_id, $mobile){
+        $staffObj = null;
+        Common::getObjByModelName("CompanyStaff", $staffObj);
+        $queryParams = [
+            'where' => [
+                ['company_id', '=', $company_id],
+                ['mobile', '=', $mobile],
+                //  ['phonto_name', 'like', '%知的标题1%']
+            ],
+            'select' => [
+                'id'
+            ],
+            // 'orderBy' => ['id'=>'desc','company_id'=>'asc'],
+        ];
+        $relations = '';
+        $requestData = Common::getModelListDatas($staffObj, 1, 1, 1, $queryParams, $relations);
+        $dataList = $requestData['dataList'] ?? [];
+        if(count($dataList) > 0) return true;
+        return false;
+    }
+
+    /**
+     * 判断手机号是否已经存在
+     *
+     * @param int $company_id 公司id
+     * @param string $work_num 工号
+     * @param string $mobile 手机号
+     * @return boolean true ：已存在 ;false：不存在
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function judgeExistWorkNumMobile($company_id, $work_num, $mobile){
+        $staffObj = null;
+        Common::getObjByModelName("CompanyStaff", $staffObj);
+        $queryParams = [
+            'where' => [
+                ['company_id', '=', $company_id],
+                ['work_num', '=', $work_num],
+                ['mobile', '=', $mobile],
+                //  ['phonto_name', 'like', '%知的标题1%']
+            ],
+            'select' => [
+                'id'
+            ],
+            // 'orderBy' => ['id'=>'desc','company_id'=>'asc'],
+        ];
+        $relations = '';
+        $requestData = Common::getModelListDatas($staffObj, 1, 1, 1, $queryParams, $relations);
+        $dataList = $requestData['dataList'] ?? [];
+        if(count($dataList) > 0) return true;
+        return false;
+    }
+
+    /**
+     * 根据工号，获得员工信息[没有则新加]
+     *
+     * @param int $company_id 公司id
+     * @param array $staffArr  员工信息 ['work_num' =>'fsdfsd', 'mobile' => '15829686962']
+     * @return mixed 员工对象
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function firstOrCreate($company_id, $staffArr){
+        $staffObj = null;
+        Common::getObjByModelName(self::$model_name, $staffObj);
+        $searchConditon = [
+            'company_id' => $company_id,
+            'work_num' => $staffArr['work_num'] ?? '',
+            'mobile' => $staffArr['mobile'] ?? '',
+        ];
+        $updateFields = $staffArr;
+        Common::firstOrCreate($staffObj, $searchConditon, $updateFields );
+        return $staffObj;
+    }
+
+
 }
