@@ -44,8 +44,7 @@
 				<th>工单号</th>
 				<th>下单时间</th>
 				<th>工单等级</th>
-				<th></th>
-				<th>来电号码</th>
+ 				<th>来电号码</th>
 				<th>客户姓名</th>
 				<th>客户类别</th>
 				<th>客户位置</th>
@@ -60,54 +59,14 @@
 				<td>34523</td>
 				<td>05-22  15:33</td>
 				<td>2小时</td>
-				<td>剩余1小时12分</td>
-				<td><a href="tel:15366658554" class="btn" >15366658554 <i class="fa fa-phone-square fa-fw" aria-hidden="true"></i> </a></td>
+ 				<td><a href="tel:15366658554" class="btn" >15366658554 <i class="fa fa-phone-square fa-fw" aria-hidden="true"></i> </a></td>
 				<td>王(女)</td>
 				<td>企业</td>
 				<td>秦州区/中城街道</td>
 				<td>2</td>
 				<td>2018-05-21</td>
 				<td><a href="" class="btn" >结单</a></td>
-			</tr>
-			<tr>
-				<td>34523</td>
-				<td>05-22  15:33</td>
-				<td>2小时</td>
-				<td><span class="red" >超时</a></td>
-				<td><a href="tel:15366658554" class="btn" >15366658554 <i class="fa fa-phone-square fa-fw" aria-hidden="true"></i> </a></td>
-				<td>王(女)</td>
-				<td>企业</td>
-				<td>秦州区/中城街道</td>
-				<td>2</td>
-				<td>2018-05-21</td>
-				<td><a href="" class="btn" >结单</a></td>
-			</tr>
-			<tr>
-				<td>34523</td>
-				<td>05-22  15:33</td>
-				<td>2小时</td>
-				<td> </td>
-				<td><a href="tel:15366658554" class="btn" >15366658554 <i class="fa fa-phone-square fa-fw" aria-hidden="true"></i> </a></td>
-				<td>王(女)</td>
-				<td>企业</td>
-				<td>秦州区/中城街道</td>
-				<td>2</td>
-				<td>2018-05-21</td>
-				<td><a href="" class="btn btn-gray" >查看</a></td>
-			</tr>
-			<tr>
-				<td>34523</td>
-				<td>05-22  15:33</td>
-				<td>2小时</td>
-				<td> </td>
-				<td><a href="tel:15366658554" class="btn" >15366658554 <i class="fa fa-phone-square fa-fw" aria-hidden="true"></i> </a></td>
-				<td>王(女)</td>
-				<td>企业</td>
-				<td>秦州区/中城街道</td>
-				<td>2</td>
-				<td>2018-05-21</td>
-				<td><a href="" class="btn btn-gray" >查看</a></td>
-			</tr>
+			</tr>			 
 			--}}
 			</tbody>
 		</table>
@@ -292,14 +251,13 @@
 			<td><%=item.work_num%></td>
         <td><%=item.created_at%></td>
         <td><%=item.time_name%></td>
-        <td> </td>
-        <td><a href="tel:<%=item.call_number%>" class="btn" ><%=item.call_number%> <i class="fa fa-phone-square fa-fw" aria-hidden="true"></i> </a></td>
+        <td> <%=item.call_number%> </td>
         <td><%=item.customer_name%>(<%=item.sex_text%>)</td>
         <td><%=item.customer_type_name%></td>
         <td><%=item.city_name%>/<%=item.area_name%></td>
         <td><%=item.call_num%></td>
         <td><%=item.last_call_date%></td>
-        <td>
+        <td style="text-align:left;" >
             <%if( true){%>
             <a href="javascript:void(0);" class="btn btn-mini btn-success"  onclick="action.show(<%=item.id%>)">
                 <i class="ace-icon fa fa-check bigger-60"> 查看</i>

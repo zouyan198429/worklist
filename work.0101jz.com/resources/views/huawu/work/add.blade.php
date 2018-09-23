@@ -10,22 +10,27 @@
 		<form class="am-form am-form-horizontal" method="post"  id="addForm">
 			<input type="hidden" name="id" value="{{ $id or 0 }}"/>
 		<table class="table1">
-
 			<tr>
-				<th>来源/号码<span class="must">*</span></th>
-				<td>
-					<select class="wmini" name="caller_type_id">
-						<option value="">请选择来电类型</option>
-						@foreach ($workCallTypeList as $k=>$txt)
-							<option value="{{ $k }}"  @if(isset($caller_type_id) && $caller_type_id == $k) selected @endif >{{ $txt }}</option>
-						@endforeach
-					</select>
+				<th>来电号码<span class="must">*</span></th>
+				<td>					
 					<input type="number" class="inp wnormal" name="call_number" value="{{ $call_number or '' }}" placeholder="来电号码" autofocus  required />
 				</td>
 			</tr>
 
 			<tr>
-				<th>工单类型</th>
+				<th>投诉类型<span class="must">*</span></th>
+				<td>
+					<select class="wnormal" name="caller_type_id">
+						<option value="">请选择来电类型</option>
+						@foreach ($workCallTypeList as $k=>$txt)
+							<option value="{{ $k }}"  @if(isset($caller_type_id) && $caller_type_id == $k) selected @endif >{{ $txt }}</option>
+						@endforeach
+					</select>
+				</td>
+			</tr>
+
+			<tr>
+				<th>业务类型</th>
 				<td>
 
 					<select class="wnormal" name="work_type_id">

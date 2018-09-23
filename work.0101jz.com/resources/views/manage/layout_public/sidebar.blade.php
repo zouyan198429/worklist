@@ -19,6 +19,12 @@
                     <i class="fa fa-clock-o fa-fw" aria-hidden="true"></i>
                     <span>反馈问题</span>
                 </a>
+            </li>            
+            <li>
+                <a href="{{ url('manage/lore/list') }}">
+                    <i class="fa fa-bullhorn fa-fw" aria-hidden="true"></i>
+                    <span>通知公告</span>
+                </a>
             </li>
             <li>
                 <a href="{{ url('manage/staff') }}">

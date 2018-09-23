@@ -16,7 +16,7 @@
     </tr>
 
     <tr>
-        <th>维修类型</th>
+        <th>工单类型</th>
         <td>
             {{ $type_name or '' }}/
             {{ $business_name or '' }}
@@ -44,13 +44,13 @@
                 <label><input type="radio"  disabled="disabled"  name="time_id"  value="{{ $k }}"  @if(isset($time_id) && $time_id == $k) checked="checked"  @endif />{{ $txt }} </label>
             @endforeach
         </td>
-    </tr>
+    </tr><!-- 
     <tr>
-        <th>到期时间</th>
+        <th>预约处理时间</th>
         <td>
-            {{ $expiry_time or '' }}
+            {{ $book_time or '' }}
         </td>
-    </tr>
+    </tr> -->
 </table>
 <div class="line"> </div>
 <table class="table1">

@@ -26,8 +26,8 @@
 				<th>工单号</th>
 				<th>下单时间</th>
 				<th>工单等级</th>
-				<th>响应时间</th>
-				<th>来电号码</th>
+<!-- 				<th>响应时间</th>
+ -->				<th>来电号码</th>
 				<th>客户姓名</th>
 				<th>客户类别</th>
 				<th>客户位置</th>
@@ -41,54 +41,14 @@
 				<td>34523</td>
 				<td>05-22  15:33</td>
 				<td>2小时</td>
-				<td>剩余1小时12分</td>
-				<td><a href="tel:15366658554" class="btn" >15366658554 <i class="fa fa-phone-square fa-fw" aria-hidden="true"></i> </a></td>
+				<td>15366658554</td>
 				<td>王(女)</td>
 				<td>企业</td>
 				<td>秦州区/中城街道</td>
 				<td>2</td>
 				<td>2018-05-21</td>
 				<td><a href="" class="btn" >结单</a></td>
-			</tr>
-			<tr>
-				<td>34523</td>
-				<td>05-22  15:33</td>
-				<td>2小时</td>
-				<td><span class="red" >超时</a></td>
-				<td><a href="tel:15366658554" class="btn" >15366658554 <i class="fa fa-phone-square fa-fw" aria-hidden="true"></i> </a></td>
-				<td>王(女)</td>
-				<td>企业</td>
-				<td>秦州区/中城街道</td>
-				<td>2</td>
-				<td>2018-05-21</td>
-				<td><a href="" class="btn" >结单</a></td>
-			</tr>
-			<tr>
-				<td>34523</td>
-				<td>05-22  15:33</td>
-				<td>2小时</td>
-				<td> </td>
-				<td><a href="tel:15366658554" class="btn" >15366658554 <i class="fa fa-phone-square fa-fw" aria-hidden="true"></i> </a></td>
-				<td>王(女)</td>
-				<td>企业</td>
-				<td>秦州区/中城街道</td>
-				<td>2</td>
-				<td>2018-05-21</td>
-				<td><a href="" class="btn btn-gray" >查看</a></td>
-			</tr>
-			<tr>
-				<td>34523</td>
-				<td>05-22  15:33</td>
-				<td>2小时</td>
-				<td> </td>
-				<td><a href="tel:15366658554" class="btn" >15366658554 <i class="fa fa-phone-square fa-fw" aria-hidden="true"></i> </a></td>
-				<td>王(女)</td>
-				<td>企业</td>
-				<td>秦州区/中城街道</td>
-				<td>2</td>
-				<td>2018-05-21</td>
-				<td><a href="" class="btn btn-gray" >查看</a></td>
-			</tr>
+			</tr> 
 
 			</tbody>
 		</table>
