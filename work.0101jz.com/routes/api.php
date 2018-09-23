@@ -17,7 +17,10 @@ use Illuminate\Http\Request;
 Route::any('upload', 'UploadController@index');
 // Route::any('upload/test', 'UploadController@test');
 Route::any('upload/ajax_del', 'UploadController@ajax_del');// 根据id删除文件
-
+// excel
+Route::get('excel/test','ExcelController@test');
+Route::get('excel/export','ExcelController@export'); // 导出
+Route::get('excel/import','ExcelController@import'); // 导入
 //
 // admin
 // 登陆
