@@ -18,7 +18,7 @@
 
 					<select class="wmini" name="work_type_id" >
 						<option value="">反馈部门</option>
-						@foreach ($work_type_kv as $k=>$txt)
+						@foreach ($problem_type_kv as $k=>$txt)
 							<option value="{{ $k }}"  >{{ $txt }}</option>
 						@endforeach
 					</select>

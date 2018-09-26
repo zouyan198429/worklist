@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Business\CompanyAreaBusiness;
 use App\Business\CompanyCustomerTypeBusiness;
 use App\Business\CompanyDepartmentBusiness;
+use App\Business\CompanyProblemTypeBusiness;
 use App\Business\CompanyServiceTagsBusiness;
 use App\Business\CompanyServiceTimeBusiness;
 use App\Business\CompanySiteMsgBusiness;
@@ -97,6 +98,13 @@ class CompanyWorkController extends CompController
             $listData['departmentFirstList'] = CompanyDepartmentBusiness::getDepartmentKeyVals($company_id,  0,  true) ?? [];
 
         }
+
+        //反馈分类第一级 1
+        if(($operate_no & 128) == 128 ){
+            $listData['problemFirstList'] = CompanyProblemTypeBusiness::getWorkTypeKeyVals($company_id, 0, true) ?? [];
+
+        }
+
 //        $listData = [
 //            'workFirstList' => $workFirstList,// 工单分类第一级
 //            'workCallTypeList' => $page,// 工单来电类型
@@ -105,6 +113,7 @@ class CompanyWorkController extends CompController
 //            'customerTypeList' => $requestData,// 客户类型
 //            'areaCityList' => $requestData,// 客户地区
 //            'departmentFirstList' => $requestData,// 部门信息
+//            'problemFirstList' => $requestData,// 反馈分类第一级
 //        ];
         $resultData = okArray($listData);
         // 缓存数据

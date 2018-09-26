@@ -17,7 +17,7 @@
 
                         <select class="wnormal" name="work_type_id" >
                             <option  value="">请选择</option>
-                            @foreach ($workFirstList as $k=>$txt)
+                            @foreach ($problemFirstList as $k=>$txt)
                                 <option value="{{ $k }}"  @if(isset($work_type_id) && $work_type_id == $k) selected @endif >{{ $txt }}</option>
                             @endforeach
                         </select>
@@ -79,7 +79,7 @@
     <script type="text/javascript">
         const SAVE_URL = "{{ url('api/weixiu/problem/ajax_save') }}";// ajax保存记录地址
         const LIST_URL = "{{url('weixiu/problem/add/0')}}";//保存成功后跳转到的地址
-        const WORKTYPE_CHILD_URL = "{{ url('api/weixiu/work_type/ajax_get_child') }}";// 维修类型二级分类请求地址
+        const WORKTYPE_CHILD_URL = "{{ url('api/weixiu/problem_type/ajax_get_child') }}";// 维修类型二级分类请求地址
         const AREA_CHILD_URL = "{{ url('api/weixiu/area/ajax_get_child') }}";// 区县二级分类请求地址
         const WORK_TYPE_ID = "{{ $work_type_id or 0}}";// 维修类型-默认值
         const BUSINESS_ID = "{{ $business_id or 0 }}";// 维修类型二级--默认值
