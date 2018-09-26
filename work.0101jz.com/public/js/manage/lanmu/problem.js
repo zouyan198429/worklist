@@ -30,8 +30,9 @@ $(function(){
     document.write("        <td><%=item.type_name%>\/<%=item.business_name%><\/td>");
     document.write("        <td><%=item.content%><\/td>");
     // document.write("        <td><%=item.reply_content%><\/td>");
-    document.write("        <td><%=item.call_number%><\/td>");
-    document.write("        <td><%=item.city_name%><%=item.area_name%><%=item.address%><\/td>");
+ //   document.write("        <td><%=item.call_number%><\/td>");
+    // document.write("        <td><%=item.city_name%><%=item.area_name%><%=item.address%><\/td>");
+    document.write("        <td><%=item.department_name%>/<%=item.group_name%><\/td>");
     document.write("        <td><%=item.operate_staff_name%><\/td>");
     document.write("        <td><%=item.created_at%><\/td>");
     // document.write("        <td>");
