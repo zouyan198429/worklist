@@ -11,12 +11,13 @@
 		<div class="mmhead" id="mywork">
 			@include('common.pageParams')
 			<div class="tabbox" >
+					<button class="btn btn-normal search_frm " >导出EXECL</button>
 			</div>
 			<form onsubmit="return false;" class="form-horizontal" role="form" method="post" id="search_frm" action="#">
 				<div class="msearch fr">
 
 					<select class="wmini" name="work_type_id" >
-						<option value="">全部</option>
+						<option value="">反馈部门</option>
 						@foreach ($work_type_kv as $k=>$txt)
 							<option value="{{ $k }}"  >{{ $txt }}</option>
 						@endforeach
@@ -30,13 +31,14 @@
 			<thead>
 			<tr>
 				{{--<th></th>--}}
-				<th>类型</th>
+				<th width="140">问题分类</th>
 				<th>内容</th>
-				{{--<th>回复</th>--}}
+				{{--<th>回复</th>
 				<th>客户电话</th>
-				<th>地址</th>
-				<th>发送人</th>
-				<th>时间</th>
+				<th>地址</th>--}}
+				<th width="140">发送部门</th>
+				<th width="140">发送人</th>
+				<th width="140">时间</th>
 				{{--<th>操作</th>--}}
 			</tr>
 			</thead>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>员工登录</title>
+	<title>超级管理员登录</title>
 	<link rel="stylesheet" type="text/css" href="{{asset('staticadmin/css/style.css')}}">
 </head>
 <body id="body-login">

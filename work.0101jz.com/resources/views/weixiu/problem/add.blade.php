@@ -12,7 +12,7 @@
             <input type="hidden" name="id" value="{{ $id or 0 }}"/>
             <table class="table1">
                 <tr>
-                    <th>问题类型</th>
+                    <th>问题分类</th>
                     <td>
 
                         <select class="wnormal" name="work_type_id" >
