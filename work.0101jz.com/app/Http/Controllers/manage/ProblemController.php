@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\manage;
 
-use App\Business\CompanyWorkType;
+use App\Business\CompanyProblemType;
 use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 use App\Business\CompanyProblem;
@@ -22,7 +22,7 @@ class ProblemController extends AdminController
         $reDataArr = $this->reDataArr;
         // 第一级业务
         // 获得第一级部门分类一维数组[$k=>$v]
-        $reDataArr['work_type_kv'] = CompanyWorkType::getChildListKeyVal($request, $this, 0, 1 + 0);
+        $reDataArr['problem_type_kv'] = CompanyProblemType::getChildListKeyVal($request, $this, 0, 1 + 0);
         return view('manage.problem.index', $reDataArr);
     }
 

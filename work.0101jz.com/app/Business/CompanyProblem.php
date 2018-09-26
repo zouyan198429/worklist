@@ -275,6 +275,7 @@ class CompanyProblem extends BaseBusiness
     //            'customerTypeList' => $requestData,// 16 客户类型
     //            'areaCityList' => $requestData,// 32 客户地区
     //            'departmentFirstList' => $requestData,// 64 部门信息
+    //            'problemFirstList' => $requestData,// 128反馈分类第一级
     //        ];
      * @author zouyan(305463219@qq.com)
      */
@@ -284,7 +285,7 @@ class CompanyProblem extends BaseBusiness
         // 参数
         $requestData = [
             'company_id' => $company_id,
-            'operate_no' => 1 + 32 ,
+            'operate_no' => 128 + 32 ,
         ];
         $url = config('public.apiUrl') . config('apiUrl.apiPath.workAddInit');
         // 生成带参数的测试get请求

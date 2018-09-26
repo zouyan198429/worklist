@@ -8,6 +8,7 @@ use App\Models\CompanyCustomer;
 use App\Models\CompanyCustomerHistory;
 use App\Models\CompanyCustomerType;
 use App\Models\CompanyDepartment;
+use App\Models\CompanyProblemType;
 use App\Models\CompanyServiceTags;
 use App\Models\CompanyServiceTime;
 use App\Models\CompanyStaff;
@@ -64,7 +65,7 @@ class CompanyProblemController extends CompController
         //业务分类id[分类一级]
         $work_type_id = $save_data['work_type_id'] ?? 0;
         Common::judgeInitParams($request, 'work_type_id', $work_type_id);
-        $workTypeObj = CompanyWorkType::select(['id', 'type_name'])->find($work_type_id);
+        $workTypeObj = CompanyProblemType::select(['id', 'type_name'])->find($work_type_id);
         if(empty($workTypeObj)){
             throws("没有业务时间信息");
         }
@@ -73,7 +74,7 @@ class CompanyProblemController extends CompController
         //业务id[分类二级]
         $business_id = $save_data['business_id'] ?? 0;
         Common::judgeInitParams($request, 'business_id', $business_id);
-        $businessWorkTypeObj = CompanyWorkType::select(['id', 'type_name'])->find($business_id);
+        $businessWorkTypeObj = CompanyProblemType::select(['id', 'type_name'])->find($business_id);
         if(empty($businessWorkTypeObj)){
             throws("没有业务时间信息");
         }
