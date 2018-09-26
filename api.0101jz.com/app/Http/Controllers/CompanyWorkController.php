@@ -371,6 +371,32 @@ class CompanyWorkController extends CompController
             $save_data['operate_staff_id'] = $staff_id;
             $save_data['operate_staff_history_id'] = $operate_staff_history_id;
 
+            $department_id = $staffObj->department_id;
+            // 获得部门名称
+            $department_name = '';
+            if($department_id > 0){
+                $departmentObj = CompanyDepartment::select(['id', 'department_name'])->find($department_id);
+                if(empty($departmentObj)){
+                    throws("没有部门信息");
+                }
+                $department_name = $departmentObj->department_name ?? '';
+            }
+            $save_data['department_id'] = $department_id;
+            $save_data['department_name'] = $department_name;
+
+            $group_id = $staffObj->group_id;
+            // 小组名称
+            $group_name = '';
+            if($group_id > 0){
+                $groupObj = CompanyDepartment::select(['id', 'department_name'])->find($group_id);
+                if(empty($groupObj)){
+                    throws("没有小组信息");
+                }
+                $group_name = $groupObj->department_name ?? '';
+            }
+            $save_data['group_id'] = $group_id;
+            $save_data['group_name'] = $group_name;
+
             // 对客户信息进行处理 [更新或新建]
             $call_number = $save_data['call_number'] ?? '';
             // 获得客户信息:没有新建，有则更新来电次数
