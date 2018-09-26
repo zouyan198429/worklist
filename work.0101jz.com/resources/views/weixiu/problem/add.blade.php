@@ -12,7 +12,7 @@
             <input type="hidden" name="id" value="{{ $id or 0 }}"/>
             <table class="table1">
                 <tr>
-                    <th>问题分类</th>
+                    <th>问题分类<span class="must">*</span></th>
                     <td>
 
                         <select class="wnormal" name="work_type_id" >
@@ -30,7 +30,6 @@
                     <th>反馈内容<span class="must">*</span></th>
                     <td>
                         <textarea type="text" class="inptext wlong" name="content" />{{ $content or '' }}</textarea>
-                        <p class="tip">根据客户描述，进行记录或备注。</p>
                     </td>
                 </tr>
             </table>

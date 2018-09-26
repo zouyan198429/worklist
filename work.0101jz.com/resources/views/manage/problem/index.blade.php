@@ -17,12 +17,12 @@
 				<div class="msearch fr">
 
 					<select class="wmini" name="work_type_id" >
-						<option value="">反馈部门</option>
+						<option value="">问题分类</option>
 						@foreach ($problem_type_kv as $k=>$txt)
 							<option value="{{ $k }}"  >{{ $txt }}</option>
 						@endforeach
 					</select>
-					<input type="text" value=""   name="keyWord" placeholder="客户电话" />
+					<input type="text" value=""   name="keyWord" placeholder="关键词" />
 					<button class="btn btn-normal search_frm " >搜索</button>
 				</div>
 			</form>
@@ -31,7 +31,7 @@
 			<thead>
 			<tr>
 				{{--<th></th>--}}
-				<th width="140">问题分类</th>
+				<th width="200">问题分类</th>
 				<th>内容</th>
 				{{--<th>回复</th>
 				<th>客户电话</th>
