@@ -26,7 +26,7 @@ class CompanyProblem extends BaseModel
      */
     public function problemTypeId()
     {
-        return $this->belongsTo('App\Models\CompanyWorkType', 'work_type_id', 'id');
+        return $this->belongsTo('App\Models\CompanyProblemType', 'work_type_id', 'id');
     }
 
     /**
@@ -34,7 +34,7 @@ class CompanyProblem extends BaseModel
      */
     public function problemBusinessId()
     {
-        return $this->belongsTo('App\Models\CompanyWorkType', 'business_id', 'id');
+        return $this->belongsTo('App\Models\CompanyProblemType', 'business_id', 'id');
     }
 
     /**

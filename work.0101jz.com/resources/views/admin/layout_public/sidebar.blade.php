@@ -45,6 +45,7 @@
                     <li><a href="{{ url('admin/customer_type') }}">客户分类</a></li>
                     <li><a href="{{ url('admin/work_caller_type') }}">来电分类</a></li>
                     <li><a href="{{ url('admin/work_type') }}">工单分类</a></li>
+                    <li><a href="{{ url('admin/problem_type') }}">反馈分类</a></li>
                     <li><a href="{{ url('admin/tags') }}">业务标签</a></li>
                     <li><a href="{{ url('admin/area') }}">区县划分</a></li>
                     {{--<li><a href="{{ url('admin/roles') }}">角色权限</a></li>--}}

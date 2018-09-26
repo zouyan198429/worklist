@@ -108,6 +108,10 @@ Route::get('admin/lore_type/add/{id}', 'admin\LoreTypeController@add');// 知识
 
 Route::get('admin/lore', 'admin\LoreController@index');//know_list.html 在线学习
 
+// 反馈分类
+Route::get('admin/problem_type', 'admin\ProblemTypeController@index');//class_order.html 反馈分类
+Route::get('admin/problem_type/add/{id}', 'admin\ProblemTypeController@add');// 反馈分类--添加
+
 //反馈
 Route::get('admin/problem', 'admin\ProblemController@index');//problem.html 反馈问题
 Route::get('admin/problem/reply/{id}', 'admin\ProblemController@reply');//m_problem.html 反馈问题 - 回复

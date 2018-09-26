@@ -113,6 +113,12 @@ Route::any('admin/staff/ajax_get_child', 'admin\StaffController@ajax_get_child')
 Route::any('admin/staff/ajax_get_areachild', 'admin\StaffController@ajax_get_areachild');// 根据区县id,街道id获得子类员工数组[kv一维数组]
 Route::get('admin/staff/ajax_import_staff','admin\StaffController@ajax_import_staff'); // 导入员工
 
+// 反馈分类
+Route::any('admin/problem_type/ajax_alist', 'admin\ProblemTypeController@ajax_alist');//ajax获得列表数据
+Route::any('admin/problem_type/ajax_get_child', 'admin\ProblemTypeController@ajax_get_child');// 获得子类部门数组[kv一维数组]
+Route::any('admin/problem_type/ajax_del', 'admin\ProblemTypeController@ajax_del');// 删除
+Route::any('admin/problem_type/ajax_save', 'admin\ProblemTypeController@ajax_save');// 新加/修改
+
 //反馈问题
 Route::any('admin/problem/ajax_alist', 'admin\ProblemController@ajax_alist');// 大后台反馈问题
 Route::any('admin/problem/reply_ajax_save', 'admin\ProblemController@reply_ajax_save');// 新加/修改
