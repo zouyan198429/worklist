@@ -58,7 +58,7 @@ function ajax_form(){
     }
 
     var real_name = $('input[name=real_name]').val();
-    if(!judge_validate(4,'姓名',real_name,true,'length',1,20)){
+    if(!judge_validate(4,'姓名',real_name,true,'length',1,90)){
         return false;
     }
 
