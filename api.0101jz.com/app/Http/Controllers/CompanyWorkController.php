@@ -1056,6 +1056,7 @@ class CompanyWorkController extends CompController
 
             // 修改状态
             $save_data['status'] = 8;
+            $save_data['is_reply'] = 1;
             $save_data['reply_time'] = Carbon::now()->toDateTimeString();
             foreach($save_data as $field => $val){
                 $workObj->{$field} = $val;

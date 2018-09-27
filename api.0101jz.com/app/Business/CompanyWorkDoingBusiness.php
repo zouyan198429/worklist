@@ -34,11 +34,11 @@ class CompanyWorkDoingBusiness extends CompanyWorkBusiness
                 $focusWhere = [
                     ['company_id', '=', $companyObj->id],
                     ['is_focus', '=', 0],
-                    ['status', '<>', 8],
+                   // ['status', '<>', 8],
                     ['expiry_time', '>=', Carbon::now()->toDateTimeString()],
                     ['expiry_time', '<=', Carbon::now()->addMinutes(self::$focusTime)],
                 ];
-                $worksList = CompanyWorkDoing::where($focusWhere)->get();
+                $worksList = CompanyWorkDoing::where($focusWhere)->whereIn('status',[0,1,2])->get();
 
                 // CompanyStaffCustomer::where($where)->update($batchModifyStaffCustomer);
                 // 发送消息
@@ -53,32 +53,38 @@ class CompanyWorkDoingBusiness extends CompanyWorkBusiness
                     array_push($work_ids, $work->work_id);
                     array_push($doingId, $work->id);
                 }
-                $mainWorkWhere = [
-                    ['company_id', '=', $companyObj->id],
-                    ['is_focus', '=', 0],
-                    ['status', '<>', 8],
-                ];
                 if(count($work_ids) > 0) {
+                    $mainWorkWhere = [
+                        ['company_id', '=', $companyObj->id],
+                        ['is_focus', '=', 0],
+                        // ['status', '<>', 8],
+                    ];
                     $updateData = ['is_focus' => 1];
                     CompanyWork::whereIn('id', $work_ids)->where($mainWorkWhere)->update($updateData);
                     CompanyWorkDoing::whereIn('id', $doingId)->where($mainWorkWhere)->update($updateData);
                 }
+
                 // 逾期判断
                 $overdueWhere = [
                     ['company_id', '=', $companyObj->id],
                     ['is_overdue', '=', 0],
-                    ['status', '<>', 8],
+//                    ['status', '<>', 8],
                     ['expiry_time', '<', Carbon::now()->toDateTimeString()],
                 ];
 
-                $overdueWorksObj = CompanyWorkDoing::where($overdueWhere)->get();
+                $overdueWorksObj = CompanyWorkDoing::where($overdueWhere)->whereIn('status',[0,1,2])->get();
                 $overdueWorksList = $overdueWorksObj->toArray();
                 $overdueIds = array_column($overdueWorksList, 'work_id');
                 $doingIds = array_column($overdueWorksList, 'id');
                 if(count($overdueIds) > 0){
+                    $mainWorkWhere = [
+                        ['company_id', '=', $companyObj->id],
+                        ['is_overdue', '=', 0],
+                        // ['status', '<>', 8],
+                    ];
                     $updateData = ['is_overdue' => 1];
-                    CompanyWork::whereIn('id', $overdueIds)->where($overdueWhere)->update($updateData);
-                    CompanyWorkDoing::whereIn('id', $doingIds)->where($overdueWhere)->update($updateData);
+                    CompanyWork::whereIn('id', $overdueIds)->where($mainWorkWhere)->update($updateData);
+                    CompanyWorkDoing::whereIn('id', $doingIds)->where($mainWorkWhere)->update($updateData);
 //                    foreach($overdueWorksObj as $temWork){
                         // 发送消息
 //                        CompanySiteMsgBusiness::sendSiteMsg($temWork, null, null,
@@ -86,6 +92,43 @@ class CompanyWorkDoingBusiness extends CompanyWorkBusiness
 
 //                    }
                 }
+                // 一个月(30天)未回访，自动移动到work表
+                $moveWhere = [
+                    ['company_id', '=', $companyObj->id],
+//                    ['is_overdue', '=', 1],
+                    ['status', '=', 4],
+                    ['expiry_time', '<',  Carbon::now()->subMonths(2)],// Carbon::now()->subMonth() Carbon::now()->subMonths(2) Carbon::now()->subDay() Carbon::now()->subDays(1)
+                ];
+
+                $moveWorksObj = CompanyWorkDoing::where($moveWhere)->get();
+                $moveWorksList = $moveWorksObj->toArray();
+                $moveIds = array_column($moveWorksList, 'work_id');
+                $doingIds = array_column($moveWorksList, 'id');
+                if(count($moveIds) > 0){
+                    $mainWorkWhere = [
+                        ['company_id', '=', $companyObj->id],
+                        ['status', '=', 4],
+                    ];
+                    $reply_content = '系统自动完成[未回访]';
+                    $temWorksObj = CompanyWork::whereIn('id', $moveIds)->where($mainWorkWhere)->get();
+                    foreach($temWorksObj as $workObj){
+                        // 发送消息
+    //                        CompanySiteMsgBusiness::sendSiteMsg($temWork, null, null,
+    //                            '工单已经逾期提醒', '工单[' . $temWork->work_num . ']已经逾期,请尽快处理！');
+
+                        // 日志
+                        CompanyWorkLogBusiness::saveWorkLog($workObj , 0 , 0, "工单自动完成!内容：" . $reply_content);
+                    }
+                    $updateData = [
+                        'status' => 8,
+                        'is_reply' =>2,
+                        'reply_time' => Carbon::now()->toDateTimeString(),
+                        'reply_content' => $reply_content,
+                    ];
+                    CompanyWork::whereIn('id', $moveIds)->where($mainWorkWhere)->update($updateData);
+                    CompanyWorkDoing::whereIn('id', $doingIds)->where($mainWorkWhere)->delete();
+                }
+
             }
         } catch ( \Exception $e) {
             DB::rollBack();
