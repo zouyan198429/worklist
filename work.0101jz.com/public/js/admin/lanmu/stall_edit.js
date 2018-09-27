@@ -75,16 +75,16 @@ function ajax_form(){
         return false;
     }
 
-    var tel = $('input[name=tel]').val();
-    if(!judge_validate(4,'座机电话',tel,false,'length',1,20)){
-        return false;
-    }
+    // var tel = $('input[name=tel]').val();
+    // if(!judge_validate(4,'座机电话',tel,false,'length',1,20)){
+    //     return false;
+    // }
 
 
-    var qq_number = $('input[name=qq_number]').val();
-    if(!judge_validate(4,'QQ',qq_number,false,'length',1,20)){
-        return false;
-    }
+    // var qq_number = $('input[name=qq_number]').val();
+    // if(!judge_validate(4,'QQ',qq_number,false,'length',1,20)){
+    //     return false;
+    // }
 
     var admin_username = $('input[name=admin_username]').val();
     if(!judge_validate(4,'用户名',admin_username,true,'length',6,20)){

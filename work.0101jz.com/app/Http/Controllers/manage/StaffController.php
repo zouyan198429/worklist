@@ -60,11 +60,14 @@ class StaffController extends AdminController
             'id'=>$id,
             'department_id' => 0,
         ];
+        $operate = "添加";
 
         if ($id > 0) { // 获得详情数据
+            $operate = "修改";
             $resultDatas = CompanyStaff::getInfoData($request, $this, $id);
         }
         $reDataArr = array_merge($reDataArr, $resultDatas);
+        $reDataArr['operate'] = $operate;
 
         // 获得第一级部门分类一维数组[$k=>$v]
         $reDataArr['department_kv'] = CompanyDepartment::getChildListKeyVal($request, $this, 0, 1 + 0);

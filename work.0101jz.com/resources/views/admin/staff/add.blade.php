@@ -6,7 +6,7 @@
 
 @section('content')
 
-	<div id="crumb"><i class="fa fa-reorder fa-fw" aria-hidden="true"></i> 添加员工</div>
+	<div id="crumb"><i class="fa fa-reorder fa-fw" aria-hidden="true"></i> {{ $operate or '' }}员工</div>
 	<div class="mm">
 		<form class="am-form am-form-horizontal" method="post"  id="addForm">
 			<input type="hidden" name="id" value="{{ $id or 0 }}"/>
@@ -62,18 +62,18 @@
 					<input type="number" class="inp wnormal"  name="mobile" value="{{ $mobile or '' }}" placeholder="请输入手机" autofocus  required />
 				</td>
 			</tr>
-			<!-- <tr>
-				<th>座机电话</th>
-				<td>
-					<input type="number" class="inp wnormal"  name="tel" value="{{ $tel or '' }}" placeholder="请输入座机电话" autofocus  required />
-				</td>
-			</tr>
-			<tr>
-				<th>QQ</th>
-				<td>
-					<input type="number" class="inp wnormal"  name="qq_number" value="{{ $qq_number or '' }}" placeholder="请输入QQ" autofocus  required />
-				</td>
-			</tr> -->
+			{{--<tr>--}}
+				{{--<th>座机电话</th>--}}
+				{{--<td>--}}
+					{{--<input type="number" class="inp wnormal"  name="tel" value="{{ $tel or '' }}" placeholder="请输入座机电话" autofocus  required />--}}
+				{{--</td>--}}
+			{{--</tr>--}}
+			{{--<tr>--}}
+				{{--<th>QQ</th>--}}
+				{{--<td>--}}
+					{{--<input type="number" class="inp wnormal"  name="qq_number" value="{{ $qq_number or '' }}" placeholder="请输入QQ" autofocus  required />--}}
+				{{--</td>--}}
+			{{--</tr>--}}
 			<tr>
 				<th>用户名<span class="must">*</span></th>
 				<td>

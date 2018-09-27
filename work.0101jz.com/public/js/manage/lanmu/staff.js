@@ -24,9 +24,9 @@
     document.write("            <td><%=item.real_name%><\/td>");
     document.write("            <td><%=item.sex_text%><\/td>");
     document.write("            <td><%=item.position_name%><\/td>");
-    document.write("            <td><%=item.tel%><\/td>");
+    // document.write("            <td><%=item.tel%><\/td>");
     document.write("            <td><%=item.mobile%><\/td>");
-    document.write("            <td><%=item.qq_number%><\/td>");
+    // document.write("            <td><%=item.qq_number%><\/td>");
     document.write("            <td>");
     document.write("                <%if( false){%>");
     document.write("                <a href=\"javascript:void(0);\" class=\"btn btn-mini btn-success\"  onclick=\"action.show(<%=item.id%>)\">");
