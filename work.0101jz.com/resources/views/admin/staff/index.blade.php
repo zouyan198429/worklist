@@ -50,9 +50,9 @@
 				<th>姓名</th>
 				<th>性别</th>
 				<th>职务</th>
-				<th>电话</th>
+				{{--<th>电话</th>--}}
 				<th>手机</th>
-				<th>QQ</th>
+				{{--<th>QQ</th>--}}
 				<th>操作</th>
 			</tr>
 			</thead>
