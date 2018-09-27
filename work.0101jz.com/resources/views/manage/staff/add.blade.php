@@ -62,7 +62,7 @@
 					<input type="number" class="inp wnormal"  name="mobile" value="{{ $mobile or '' }}" placeholder="请输入手机" autofocus  required />
 				</td>
 			</tr>
-			<tr>
+			<!-- <tr>
 				<th>座机电话</th>
 				<td>
 					<input type="number" class="inp wnormal"  name="tel" value="{{ $tel or '' }}" placeholder="请输入座机电话" autofocus  required />
@@ -73,7 +73,7 @@
 				<td>
 					<input type="number" class="inp wnormal"  name="qq_number" value="{{ $qq_number or '' }}" placeholder="请输入QQ" autofocus  required />
 				</td>
-			</tr>
+			</tr> -->
 			<tr>
 				<th>用户名<span class="must">*</span></th>
 				<td>
