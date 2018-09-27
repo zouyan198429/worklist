@@ -51,7 +51,7 @@
 					<p class="tip">根据客户描述，进行记录或备注。</p>
 				</td>
 			</tr>
-			<tr >
+			<tr  style="display: none;" >
 				<th> </th>
 				<td>
 					@foreach ($serviceTagList as $k=>$txt)
@@ -61,7 +61,7 @@
 				</td>
 			</tr>
 
-			<tr >
+			<tr>
 				<th></th>
 				<td>
 					@foreach ($serviceTimeList as $k=>$txt)
@@ -85,7 +85,7 @@
 			</tr>
 		</table>
 		<div class="line"> </div>
-		<table class="table1">
+		<table class="table1"  style="display: none;">
 			<tr>
 				<th>客户姓名</th>
 				<td>
@@ -107,7 +107,9 @@
 					@endforeach
 				</td>
 			</tr>
+		</table>
 
+		<table class="table1">
 
 			<tr>
 				<th>客户地址</th>
