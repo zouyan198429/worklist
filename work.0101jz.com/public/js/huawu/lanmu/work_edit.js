@@ -128,13 +128,13 @@ function ajax_form(){
         return false;
     }
 
-    var tag_id = $('input[name=tag_id]:checked').val() || '';
-    var judge_seled = judge_validate(1,'标签',tag_id,true,'custom',/^[0-9]*$/,"");
-    if(judge_seled != ''){
-        layer_alert("请选择标签",3,0);
-        //err_alert('<font color="#000000">' + judge_seled + '</font>');
-        return false;
-    }
+    // var tag_id = $('input[name=tag_id]:checked').val() || '';
+    // var judge_seled = judge_validate(1,'标签',tag_id,true,'custom',/^[0-9]*$/,"");
+    // if(judge_seled != ''){
+    //     layer_alert("请选择标签",3,0);
+    //     //err_alert('<font color="#000000">' + judge_seled + '</font>');
+    //     return false;
+    // }
 
     var time_id = $('input[name=time_id]:checked').val() || '';
     var judge_seled = judge_validate(1,'工单时长',time_id,true,'custom',/^[0-9]*$/,"");
@@ -149,31 +149,31 @@ function ajax_form(){
     //     return false;
     // }
 
-    var customer_name = $('input[name=customer_name]').val();
-    if(!judge_validate(4,'客户姓名',customer_name,true,'length',1,50)){
-        return false;
-    }
+    // var customer_name = $('input[name=customer_name]').val();
+    // if(!judge_validate(4,'客户姓名',customer_name,true,'length',1,50)){
+    //     return false;
+    // }
 
-    var sex = $('input[name=sex]:checked').val() || '';
-    var judge_seled = judge_validate(1,'性别',sex,true,'custom',/^[12]$/,"");
-    if(judge_seled != ''){
-        layer_alert("请选择性别",3,0);
-        //err_alert('<font color="#000000">' + judge_seled + '</font>');
-        return false;
-    }
+    // var sex = $('input[name=sex]:checked').val() || '';
+    // var judge_seled = judge_validate(1,'性别',sex,true,'custom',/^[12]$/,"");
+    // if(judge_seled != ''){
+    //     layer_alert("请选择性别",3,0);
+    //     //err_alert('<font color="#000000">' + judge_seled + '</font>');
+    //     return false;
+    // }
 
-    var type_id = $('input[name=type_id]:checked').val() || '';
-    var judge_seled = judge_validate(1,'客户类别',type_id,true,'custom',/^[0-9]*$/,"");
-    if(judge_seled != ''){
-        layer_alert("请选择客户类别",3,0);
-        //err_alert('<font color="#000000">' + judge_seled + '</font>');
-        return false;
-    }
+    // var type_id = $('input[name=type_id]:checked').val() || '';
+    // var judge_seled = judge_validate(1,'客户类别',type_id,true,'custom',/^[0-9]*$/,"");
+    // if(judge_seled != ''){
+    //     layer_alert("请选择客户类别",3,0);
+    //     //err_alert('<font color="#000000">' + judge_seled + '</font>');
+    //     return false;
+    // }
 
 
 
     var city_id = $('select[name=city_id]').val();
-    var judge_seled = judge_validate(1,'区县',city_id,true,'digit','','');
+    var judge_seled = judge_validate(1,'区县',city_id,false,'digit','','');
     if(judge_seled != ''){
         layer_alert("请选择区县",3,0);
         //err_alert('<font color="#000000">' + judge_seled + '</font>');
@@ -181,7 +181,7 @@ function ajax_form(){
     }
 
     var area_id = $('select[name=area_id]').val();
-    var judge_seled = judge_validate(1,'街道',area_id,true,'digit','','');
+    var judge_seled = judge_validate(1,'街道',area_id,false,'digit','','');
     if(judge_seled != ''){
         layer_alert("请选择街道",3,0);
         //err_alert('<font color="#000000">' + judge_seled + '</font>');
@@ -189,7 +189,7 @@ function ajax_form(){
     }
 
     var address = $('input[name=address]').val();
-    if(!judge_validate(4,'详细地址',address,true,'length',1,50)){
+    if(!judge_validate(4,'详细地址',address,false,'length',1,50)){
         return false;
     }
 
