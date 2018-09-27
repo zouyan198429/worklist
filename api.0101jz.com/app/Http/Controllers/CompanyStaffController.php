@@ -81,7 +81,10 @@ class CompanyStaffController extends CompController
                 throws('手机号或工号不能为空');
             }
             if(empty($real_name)){
-                $real_name = $mobile;
+                $real_name = $channel;
+                if(empty($real_name)){
+                    $real_name = $mobile;
+                }
             }
             $sex_id = array_search($sex,$this->sex_arr);
             if($sex_id === false) $sex_id = 0;
