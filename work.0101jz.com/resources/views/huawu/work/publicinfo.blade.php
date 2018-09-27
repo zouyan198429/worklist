@@ -27,7 +27,7 @@
         <td>{!! $content or '' !!}
         </td>
     </tr>
-    <tr >
+    <tr style="display: none;">
         <th> </th>
         <td>
             @foreach ($serviceTagList as $k=>$txt)
@@ -52,8 +52,8 @@
         </td>
     </tr> -->
 </table>
-<div class="line"> </div>
-<table class="table1">
+<div class="line" style="display: none;"> </div>
+<table class="table1" style="display: none;">
     <tr>
         <th>客户姓名</th>
         <td>
