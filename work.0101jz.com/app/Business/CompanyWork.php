@@ -15,6 +15,7 @@ use App\Http\Controllers\BaseController as Controller;
 class CompanyWork extends BaseBusiness
 {
     protected static $model_name = 'CompanyWork';
+    protected static $model_doing_name = 'CompanyWorkDoing';
 
     // 状态 0新工单2待反馈工单[处理中];4待回访工单;8已完成工单
     public static  $status_arr = [
@@ -26,6 +27,34 @@ class CompanyWork extends BaseBusiness
         '4' => '待回访',
         '8' => '已完成',
     ];
+
+    /**
+     * 手机站首页页面初始化要填充的数据
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @return  array 数据
+    //        $listData = [
+    //            'waitSureCount' => $waitSureCount,// 1 待确认工单数量
+    //            'doingCount' => $doingCount,// 2 处理中工单数量
+    //            'msgList' => $total,// 4 未读消息
+    //        ];
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function mobileInitData(Request $request, Controller $controller)
+    {
+        $company_id = $controller->company_id;
+        // 参数
+        $requestData = [
+            'company_id' => $company_id,
+            'staff_id' =>  $controller->user_id,
+            'operate_no' => 1 + 2 + 4,
+        ];
+        $url = config('public.apiUrl') . config('apiUrl.apiPath.initMobileWork');
+        // 生成带参数的测试get请求
+        // $requestTesUrl = splicQuestAPI($url , $requestData);
+        return HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
+    }
 
     /**
      * 获得列表数据--所有数据
@@ -62,7 +91,11 @@ class CompanyWork extends BaseBusiness
         $status = Common::get($request, 'status');
         $field = Common::get($request, 'field');
         $keyWord = Common::get($request, 'keyWord');
-
+        $model_name = self::$model_name;
+        if(in_array($status,["-8", "-4", "0", "1", "2", "4"])){
+            $model_name = self::$model_doing_name;
+            $queryParams['orderBy'] = ['expiry_time'=>'desc','id'=>'desc'];
+        }
         if(!empty($status)){
             if($status == "-8"){ // 重点关注
                 $queryParams['whereIn']['status'] = [0,1,2];
@@ -80,7 +113,7 @@ class CompanyWork extends BaseBusiness
         }
         // $relations = ['CompanyInfo'];// 关系
         $relations = ['workHistoryStaffCreate', 'workHistoryStaffSend','workCustomer'];//['CompanyInfo'];// 关系
-        $result = self::getBaseListData($request, $controller, self::$model_name, $queryParams,$relations , $oprateBit, $notLog);
+        $result = self::getBaseListData($request, $controller, $model_name, $queryParams,$relations , $oprateBit, $notLog);
 
         // 格式化数据
         $data_list = $result['data_list'] ?? [];
@@ -143,8 +176,14 @@ class CompanyWork extends BaseBusiness
 //            'orderBy' => ['sort_num'=>'desc','id'=>'desc'],
             // 'orderBy' => ['expiry_time'=>'desc','id'=>'desc'],
             'orderBy' => ['id'=>'desc'],
+            // 'orderBy' => ['expiry_time'=>'desc','id'=>'desc'],
         ];
+        $model_name = self::$model_name;
         $statusArr = explode(',', $status);
+        if(!empty($statusArr) && !in_array(8, $statusArr) ){// 不是空数组 且 没有已完成的状态
+            $model_name = self::$model_doing_name;
+            $queryParams['orderBy'] = ['expiry_time'=>'desc','id'=>'desc'];
+        }
         if(count($statusArr) > 1){
             $queryParams['whereIn'] = [
                 'status'=> $statusArr,
@@ -160,7 +199,7 @@ class CompanyWork extends BaseBusiness
         // 查询条件参数
         // $relations = ['CompanyInfo'];// 关系
         // $relations = '';//['CompanyInfo'];// 关系
-        $result = self::getBaseListData($request, $controller, self::$model_name, $queryParams,$relations , $oprateBit, $notLog);
+        $result = self::getBaseListData($request, $controller, $model_name, $queryParams,$relations , $oprateBit, $notLog);
 
         // 格式化数据
         $data_list = $result['data_list'] ?? [];
@@ -187,11 +226,11 @@ class CompanyWork extends BaseBusiness
      * @return  array 列表数据
      * @author zouyan(305463219@qq.com)
      */
-    public static function delAjax(Request $request, Controller $controller)
-    {
-        return self::delAjaxBase($request, $controller, self::$model_name);
-
-    }
+//    public static function delAjax(Request $request, Controller $controller)
+//    {
+//        return self::delAjaxBase($request, $controller, self::$model_name);
+//
+//    }
 
     /**
      * 根据id获得单条数据
@@ -276,27 +315,27 @@ class CompanyWork extends BaseBusiness
      * @return  array 单条数据 - -维数组 为0 新加，返回新的对象数组[-维],  > 0 ：修改对应的记录，返回true
      * @author zouyan(305463219@qq.com)
      */
-    public static function replaceById(Request $request, Controller $controller, $saveData, &$id, $notLog = 0){
-        $company_id = $controller->company_id;
-        if($id > 0){
-            // 判断权限
-            $judgeData = [
-                'company_id' => $company_id,
-            ];
-            $relations = '';
-            CommonBusiness::judgePower($id, $judgeData, self::$model_name, $company_id, $relations, $notLog);
-
-        }else {// 新加;要加入的特别字段
-            $addNewData = [
-                'company_id' => $company_id,
-            ];
-            $saveData = array_merge($saveData, $addNewData);
-        }
-        // 加入操作人员信息
-        self::addOprate($request, $controller, $saveData);
-        // 新加或修改
-        return self::replaceByIdBase($request, $controller, self::$model_name, $saveData, $id, $notLog);
-    }
+//    public static function replaceById(Request $request, Controller $controller, $saveData, &$id, $notLog = 0){
+//        $company_id = $controller->company_id;
+//        if($id > 0){
+//            // 判断权限
+//            $judgeData = [
+//                'company_id' => $company_id,
+//            ];
+//            $relations = '';
+//            CommonBusiness::judgePower($id, $judgeData, self::$model_name, $company_id, $relations, $notLog);
+//
+//        }else {// 新加;要加入的特别字段
+//            $addNewData = [
+//                'company_id' => $company_id,
+//            ];
+//            $saveData = array_merge($saveData, $addNewData);
+//        }
+//        // 加入操作人员信息
+//        self::addOprate($request, $controller, $saveData);
+//        // 新加或修改
+//        return self::replaceByIdBase($request, $controller, self::$model_name, $saveData, $id, $notLog);
+//    }
 
 
     /**
@@ -400,7 +439,7 @@ class CompanyWork extends BaseBusiness
                 'send_staff_id' => $controller->user_id,
             ];
             $relations = '';
-            $infoData = CommonBusiness::judgePower($id, $judgeData, self::$model_name, $company_id, $relations, $notLog);
+            $infoData = CommonBusiness::judgePower($id, $judgeData, self::$model_doing_name, $company_id, $relations, $notLog);
             // 判断状态
             $status = $infoData['status'] ?? '';
             if($status != 1){
@@ -442,7 +481,7 @@ class CompanyWork extends BaseBusiness
                 'send_staff_id' => $controller->user_id,
             ];
             $relations = '';
-            $infoData = CommonBusiness::judgePower($id, $judgeData, self::$model_name, $company_id, $relations, $notLog);
+            $infoData = CommonBusiness::judgePower($id, $judgeData, self::$model_doing_name, $company_id, $relations, $notLog);
             // 判断状态
             $status = $infoData['status'] ?? '';
             if($status != 2){
@@ -484,7 +523,7 @@ class CompanyWork extends BaseBusiness
                 // 'operate_staff_id' => $controller->user_id,
             ];
             $relations = '';
-            $infoData = CommonBusiness::judgePower($id, $judgeData, self::$model_name, $company_id, $relations, $notLog);
+            $infoData = CommonBusiness::judgePower($id, $judgeData, self::$model_doing_name, $company_id, $relations, $notLog);
             // 判断状态
             $status = $infoData['status'] ?? '';
             if($status != 4){

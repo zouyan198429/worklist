@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\m;
 
 use App\Business\CompanyWork;
-use App\Business\CompanyWorkDoing;
 use App\Http\Controllers\WorksController;
 use App\Services\Common;
 use App\Services\CommonBusiness;
@@ -85,7 +84,7 @@ class WorkController extends WorksController
         if(empty($status)){
             $status = 1;
         }
-        return  CompanyWorkDoing::getListByStatus($request, $this, 1 + 4, $status);
+        return  CompanyWork::getListByStatus($request, $this, 1 + 4, $status);
     }
 
     /**
