@@ -136,6 +136,9 @@ body { background: #f2f2f2;}
 .table2 { width: 100%; border-collapse: collapse; }
 .table2 th { background: #f2f2f2; padding: 5px; text-align: center; border:1px solid #ddd;}
 .table2 td { background: #f8f8f8; padding: 5px; text-align: center; border:1px solid #ddd;}
+.table2 tr:hover {background-color: #dafdf3;}
+.table2 tr:hover td{background:none;}
+
 .mmfoot  { min-height: 50px;margin-top: 10px; }
 .mmfleft { float: left; }
 .mmfright { float: right; width: auto; padding: 10px 0;  text-align: right;  }
