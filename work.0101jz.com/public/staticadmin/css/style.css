@@ -156,7 +156,7 @@ p.tip { font-size: 12px;  line-height: 1.5em; color: #aaa; margin-top: 0.5em;}
 
 /*  mmhead  */
 .mmhead { margin-bottom: 10px; min-height: 20px; padding-bottom: 15px;}
-.tabbox { float: left; width: 560px; text-align: left;  }
+.tabbox { float: left; width: 600px; text-align: left;  }
 .msearch { width: 360px; text-align: right;  }
 
 .line {  border-bottom:1px solid #eee; }

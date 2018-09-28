@@ -18,6 +18,7 @@ class CompanyWork extends BaseBusiness
 
     // 状态 0新工单2待反馈工单[处理中];4待回访工单;8已完成工单
     public static  $status_arr = [
+        '-4' => '过期未处理',
         //'0' => '待确认接单',
         '1' => '待确认',
         '2' => '处理中',
@@ -62,7 +63,12 @@ class CompanyWork extends BaseBusiness
         $keyWord = Common::get($request, 'keyWord');
 
         if(!empty($status)){
-            array_push($queryParams['where'],['status', $status]);
+            if($status == "-4"){
+                $queryParams['whereIn']['status'] = [0,1,2];
+                array_push($queryParams['where'],['is_overdue', 1]);
+            }else{
+                array_push($queryParams['where'],['status', $status]);
+            }
         }
 
         if(!empty($field) && !empty($keyWord)){
@@ -79,7 +85,9 @@ class CompanyWork extends BaseBusiness
             if(! isset($data_list[$k]['work_id'])) $data_list[$k]['work_id'] = $v['id'];
 
             // 去掉内容
-            if(isset($data_list[$k]['content'])) unset($data_list[$k]['content']);
+           // if(isset($data_list[$k]['content'])) unset($data_list[$k]['content']);
+            if(isset($data_list[$k]['win_content'])) unset($data_list[$k]['win_content']);
+            if(isset($data_list[$k]['reply_content'])) unset($data_list[$k]['reply_content']);
 
             // 添加员工名称
             $data_list[$k]['real_name'] = ($v['work_history_staff_create']['real_name'] ?? '') . '[' .  ($v['work_history_staff_create']['work_num'] ?? '') . ']';

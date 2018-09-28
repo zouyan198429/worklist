@@ -42,11 +42,10 @@
 		<table  id="dynamic-table"  class="table2">
 			<thead>
 			<tr>
-				<th>工单号</th>
-				<th>来电号码</th>
+				<th>工单号<br/>来电号码</th>
 				<th>工单来源</th>
 				<th>工单类型</th>
-				<th>工单内容</th>
+				<th width="350px">工单内容</th>
 				<th>客户位置</th>
 				<th>下单时间</th>
 				<th>工单等级</th>
@@ -56,7 +55,7 @@
 				<!-- 
 				<th>客户姓名</th>
 				<th>客户类别</th> -->
-				<th>操作</th>
+				<th width="80px">操作</th>
 			</tr>
 			</thead>
 			<tbody  id="data_list">

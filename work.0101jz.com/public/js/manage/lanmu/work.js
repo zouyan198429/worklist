@@ -27,16 +27,17 @@ $(function(){
     document.write("    %>");
     document.write("");
     document.write("    <tr>");
-    document.write("        <td><%=item.work_num%><\/td>");
+    document.write("        <td><%=item.work_num%>");
+    document.write("        <br\/><a href=\"tel:<%=item.call_number%>\" class=\"btn\" ><%=item.call_number%> <i class=\"fa fa-phone-square fa-fw\" aria-hidden=\"true\"><\/i> <\/a><\/td>");
+    document.write("        <td><%=item.caller_type_name%><\/td>");
+    document.write("        <td><%=item.type_name%>\/<%=item.business_name%><\/td>");
+    document.write("        <td><%=item.content%><\/td>");
+    document.write("        <td><%=item.city_name%><%=item.area_name%><%=item.address%><\/td>");
     document.write("        <td><%=item.created_at%><\/td>");
-    document.write("        <td><%=item.real_name%><\/td>");
-    document.write("        <td><%=item.send_real_name%><\/td>");
-    document.write("        <td><%=item.time_name%><\/td>");
+    document.write("        <td><%=item.time_name%><br\/>[<%=item.expiry_time%>]<\/td>");
+    document.write("        <td><%=item.department_name%>/<%=item.group_name%><br\/><%=item.real_name%><\/td>");
+    document.write("        <td><%=item.send_department_name%>/<%=item.send_group_name%><br\/><%=item.send_real_name%><\/td>");
     document.write("        <td><%=item.status_text%><\/td>");//剩余1小时12分
-    document.write("        <td><a href=\"tel:<%=item.call_number%>\" class=\"btn\" ><%=item.call_number%> <i class=\"fa fa-phone-square fa-fw\" aria-hidden=\"true\"><\/i> <\/a><\/td>");
-    document.write("        <td><%=item.customer_name%>(<%=item.sex_text%>)<\/td>");
-    document.write("        <td><%=item.customer_type_name%><\/td>");
-    document.write("        <td><%=item.city_name%>\/<%=item.area_name%><\/td>");
     document.write("        <td>");
     document.write("            <%if( true){%>");
     document.write("            <a href=\"javascript:void(0);\" class=\"btn btn-mini btn-success\"  onclick=\"action.show(<%=item.id%>)\">");
