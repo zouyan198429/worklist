@@ -18,6 +18,7 @@ class CompanyWork extends BaseBusiness
 
     // 状态 0新工单2待反馈工单[处理中];4待回访工单;8已完成工单
     public static  $status_arr = [
+        '-8' => '重点关注',
         '-4' => '过期未处理',
         //'0' => '待确认接单',
         '1' => '待确认',
@@ -63,7 +64,10 @@ class CompanyWork extends BaseBusiness
         $keyWord = Common::get($request, 'keyWord');
 
         if(!empty($status)){
-            if($status == "-4"){
+            if($status == "-8"){ // 重点关注
+                $queryParams['whereIn']['status'] = [0,1,2];
+                array_push($queryParams['where'],['is_focus', 1]);
+            }elseif($status == "-4"){ // 过期未处理
                 $queryParams['whereIn']['status'] = [0,1,2];
                 array_push($queryParams['where'],['is_overdue', 1]);
             }else{
