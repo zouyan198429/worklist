@@ -49,6 +49,7 @@
 @push('footlast')
 	<script type="text/javascript">
         var OPERATE_TYPE = <?php echo isset($operate_type)?$operate_type:0; ?>;
+        const AUTO_READ_FIRST = true;//自动读取第一页 true:自动读取 false:指定地方读取
         const AJAX_URL = "{{ url('api/admin/area/ajax_alist') }}";//ajax请求的url
         const ADD_URL = "{{ url('admin/area/add/0') }}"; //添加url
         const SHOW_URL = "";// {{url('area/info/')}}/";//显示页面地址前缀 + id

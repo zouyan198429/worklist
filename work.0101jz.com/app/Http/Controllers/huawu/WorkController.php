@@ -158,6 +158,7 @@ class WorkController extends WorksController
         // Common::judgeEmptyParams($request, 'id', $id);
         $caller_type_id = Common::getInt($request, 'caller_type_id');
         $call_number = Common::get($request, 'call_number');
+        $contact_number = Common::get($request, 'contact_number');
         $work_type_id = Common::getInt($request, 'work_type_id');
         $business_id = Common::getInt($request, 'business_id');
         $content = Common::get($request, 'content');
@@ -183,6 +184,7 @@ class WorkController extends WorksController
         $saveData = [
             'caller_type_id' => $caller_type_id, // 来电类型
             'call_number' => $call_number,// 来电号码
+            'contact_number' => $contact_number,// 联系电话
             'work_type_id' => $work_type_id, //业务类型
             'business_id' => $business_id,// 业务
             'content' => $content,// 内容

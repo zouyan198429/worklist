@@ -12,16 +12,16 @@
 		<form onsubmit="return false;" class="form-horizontal" role="form" method="post" id="search_frm" action="#">
 		<div class="mmhead" id="mywork">
 			<div class="tabbox" >
-				<a href="javascript:void(0);" data-status="" class="on status_click">全部工单</a>
+				<a href="javascript:void(0);" data-status="" class="status_click">全部工单</a>
                 @foreach ($status as $k=>$txt)
-                    <a href="javascript:void(0);" data-status="{{ $k }}" class="status_click @if ($k == 10) on @endif">{{ $txt }}</a>
+                    <a href="javascript:void(0);" data-status="{{ $k }}" class="status_click @if ($k == 1) on @endif">{{ $txt }}</a>
                 @endforeach
 			</div>
 			<div class="msearch fr">
                 <select style="width:80px; height:28px; display:none;" name="status" >
                     <option value="">全部</option>
                     @foreach ($status as $k=>$txt)
-                        <option value="{{ $k }}" @if ($k == 10) selected @endif >{{ $txt }}</option>
+                        <option value="{{ $k }}" @if ($k == 1) selected @endif >{{ $txt }}</option>
                     @endforeach
                 </select>
 				<select style="width:80px; height:28px;"  name="field">
@@ -100,6 +100,7 @@
 @push('footlast')
 	<script type="text/javascript">
         var OPERATE_TYPE = <?php echo isset($operate_type)?$operate_type:0; ?>;
+        const AUTO_READ_FIRST = false;//自动读取第一页 true:自动读取 false:指定地方读取
         const AJAX_URL = "{{ url('api/manage/work/ajax_alist') }}";//ajax请求的url
         const ADD_URL = "{{ url('manage/work/add/0') }}"; //添加url
         const SHOW_URL = "{{url('manage/work/info/')}}/";//显示页面地址前缀 + id
@@ -112,9 +113,16 @@
 
 		const SATUS_COUNT_URL = "{{ url('api/manage/work/ajax_status_count') }}";// ajax工单状态统计 url
 
+	</script>
+	<script src="{{asset('js/common/list.js')}}"></script>
+
+    <script type="text/javascript">
+
         var SUBMIT_FORM = true;//防止多次点击提交
         $(function(){
+            $('.search_frm').trigger("click");// 触发搜索事件
             ajax_status_count(0, 0);//ajax工单状态统计
+            reset_list(false);
         });
 
         //ajax工单状态统计
@@ -150,7 +158,6 @@
             });
             return false;
         }
-	</script>
-	<script src="{{asset('js/common/list.js')}}"></script>
+    </script>
 	<script src="{{ asset('js/manage/lanmu/work.js') }}"  type="text/javascript"></script>
 @endpush

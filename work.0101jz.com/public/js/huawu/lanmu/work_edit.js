@@ -107,6 +107,11 @@ function ajax_form(){
         return false;
     }
 
+    var contact_number = $('input[name=contact_number]').val();
+    if(!judge_validate(4,'联系电话',contact_number,false,'length',3,30)){
+        return false;
+    }
+
     var work_type_id = $('select[name=work_type_id]').val();
     var judge_seled = judge_validate(1,'业务类型',work_type_id,true,'digit','','');
     if(judge_seled != ''){

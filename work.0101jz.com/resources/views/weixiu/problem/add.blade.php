@@ -16,13 +16,13 @@
                     <td>
 
                         <select class="wnormal" name="work_type_id" >
-                            <option  value="">请选择</option>
+                            <option  value="">请选择问题</option>
                             @foreach ($problemFirstList as $k=>$txt)
                                 <option value="{{ $k }}"  @if(isset($work_type_id) && $work_type_id == $k) selected @endif >{{ $txt }}</option>
                             @endforeach
                         </select>
                         <select class="wnormal" name="business_id" >
-                            <option value="">请选择</option>
+                            <option value="">请选择部门</option>
                         </select>
                     </td>
                 </tr>
