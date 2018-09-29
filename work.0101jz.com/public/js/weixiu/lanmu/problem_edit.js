@@ -2,7 +2,7 @@
 const REL_CHANGE = {
     'work_type':{// 维修类型二级分类
         'child_sel_name': 'business_id',// 第二级下拉框的name
-        'child_sel_txt': {'': "请选择业务" },// 第二级下拉框的{值:请选择文字名称}
+        'child_sel_txt': {'': "请选择部门" },// 第二级下拉框的{值:请选择文字名称}
         'change_ajax_url': WORKTYPE_CHILD_URL ,// 获取下级的ajax地址
         'parent_param_name': 'parent_id',// ajax调用时传递的参数名
         'other_params':{},//其它参数 {'aaa':123,'ccd':'dfasfs'}

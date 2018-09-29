@@ -14,6 +14,7 @@
 				<th>来电号码<span class="must">*</span></th>
 				<td>					
 					<input type="number" class="inp wnormal" name="call_number" value="{{ $call_number or '' }}" placeholder="来电号码" autofocus  required />
+					<input type="number" class="inp wnormal" name="contact_number" value="{{ $contact_number or '' }}" placeholder="联系电话"  />
 				</td>
 			</tr>
 

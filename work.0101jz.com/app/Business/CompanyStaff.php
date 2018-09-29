@@ -244,7 +244,7 @@ class CompanyStaff extends BaseBusiness
         $parentData = self::getChildListByDepartment($request, $controller, $department_id, $group_id, $oprateBit, $notLog);
         $department_list = $parentData['result']['data_list'] ?? [];
         foreach($department_list as $k => $v){
-            $department_list[$k]['real_name'] = $v['real_name'] . '[' . $v['work_num'] . ']';
+            $department_list[$k]['real_name'] = $v['real_name'] . '[' . $v['work_num'] . '；' . $v['mobile'] . ']';
         }
         return Tool::formatArrKeyVal($department_list, 'id', 'real_name');
     }

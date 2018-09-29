@@ -409,6 +409,7 @@ class CompanyWorkController extends CompController
             $customer = [
                 'company_id' => $company_id,// $save_data['company_id'] ?? '',
                 'call_number' => $save_data['call_number'] ?? '',// 来电号码
+                'contact_number' => $save_data['contact_number'] ?? '',// 联系电话
                 'type_id' => $save_data['type_id'] ?? '',// 客户类别id
                 'customer_name' => $save_data['customer_name'] ?? '',// 客户姓名
                 'sex' => $save_data['sex'] ?? '',// 性别0未知1男2女
