@@ -28,6 +28,7 @@ return [
             'workSure' => 'work/workSure',// 确认工单
             'workWin' => 'work/workWin',// 结单
             'workReply' => 'work/workReply',// 回访
+            'workStatusCount' => 'work/statusCount',// 工单状态统计
             'initMobileWork' => 'work/mobile_index',// 手机站首页初始化数据
             'saveProblem' => 'problem/add_save',// 反馈问题添加/修改
             'staffImport' => 'staff/bathImport',// 批量导入员工

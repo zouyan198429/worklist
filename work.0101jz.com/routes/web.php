@@ -234,6 +234,8 @@ Route::get('weixiu/work/win/{id}', 'weixiu\WorkController@win');// 结单
 //学习
 Route::get('weixiu/lore', 'weixiu\LoreController@index');//study.html 在线学习
 Route::get('weixiu/lore/info', 'weixiu\LoreController@info');//know_view.html 在线学习
+//帮助中心
+Route::get('weixiu/help', 'weixiu\HelpController@index');// 帮助中心
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //app

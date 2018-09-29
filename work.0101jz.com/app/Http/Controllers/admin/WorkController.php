@@ -76,4 +76,18 @@ class WorkController extends AdminController
 //    }
 
 
+    /**
+     * ajax获得工单状态统计
+     *
+     * @param Request $request
+     * @param int $staff_id 接收员工id
+     * @param int $operate_staff_id 添加员工id
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function ajax_status_count(Request $request){
+        $this->InitParams($request);
+        $countArr = CompanyWork::statusCount($request, $this);
+        return ajaxDataArr(1, $countArr, '');
+    }
 }

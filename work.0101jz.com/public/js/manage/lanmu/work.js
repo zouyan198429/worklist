@@ -11,7 +11,7 @@ $(function(){
         $('select[name=status]').val(status);
         $(".search_frm").click();
         return false;
-    })
+    });
 
 });
 

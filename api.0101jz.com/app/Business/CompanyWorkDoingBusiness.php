@@ -18,10 +18,10 @@ class CompanyWorkDoingBusiness extends CompanyWorkBusiness
     protected static $model_name = 'CompanyWorkDoing';
 
     /**
-     * 工单结单
+     * 跑过期脚本
      *
      * @param int $id
-     * @return Response
+     * @return mixed
      * @author zouyan(305463219@qq.com)
      */
     public static function autoSiteMsg(){
@@ -145,55 +145,81 @@ class CompanyWorkDoingBusiness extends CompanyWorkBusiness
      *
      * @param int $company_id 公司id
      * @param int $staff_id 员工id
-     * @param int $is_read 是否已读
-     * @return Response
+     * @param int $status 状态
+     * @param int $operate_staff_id 添加员工id
+     * @param array $otherWhere 其它条件[['company_id', '=', $company_id],...]
+     * @return int
      * @author zouyan(305463219@qq.com)
      */
-    public static function getCount($company_id, $staff_id = 0 , $status = 0){
-        $where = [
-            ['company_id', '=', $company_id],
-            // ['send_staff_id', '=', $staff_id],
-            ['status', '=', $status],
-        ];
-        if($staff_id > 0){
-            array_push($where,['send_staff_id', '=', $staff_id]);
-        }
-        return CompanyWorkDoing::where($where)->count();
-    }
+//    public static function getCount($company_id, $staff_id = 0 , $status = 0, $operate_staff_id = 0,$otherWhere = []){
+//        $where = [
+//            ['company_id', '=', $company_id],
+//            // ['send_staff_id', '=', $staff_id],
+//           // ['status', '=', $status],
+//        ];
+//        if(!empty($otherWhere)){
+//            $where = array_merge($where, $otherWhere);
+//        }
+//
+//        if(is_numeric($status)){
+//            array_push($where,['status', '=', $status]);
+//        }
+//
+//        if($staff_id > 0){
+//            array_push($where,['send_staff_id', '=', $staff_id]);
+//        }
+//
+//        if($operate_staff_id > 0){
+//            array_push($where,['operate_staff_id', '=', $operate_staff_id]);
+//        }
+//
+//        if(is_array($status)){
+//            $dataCount = CompanyWorkDoing::whereIn('status',$status)->where($where)->count();
+//        }else{
+//            $dataCount = CompanyWorkDoing::where($where)->count();
+//        }
+//        return $dataCount;
+//    }
 
     /**
      * 根据工单号查询工单
      *
+     * @param int $db_num 操作库 0 主库  1 doing库
      * @param int $company_id 公司id
      * @param int $work_id 工单id
      * @return array 工单信息 一维数组
      * @author zouyan(305463219@qq.com)
      */
-    public static function getWorkInfo($company_id, $work_id){
-        $where = [
-            ['company_id', '=', $company_id],
-            ['work_id', '=', $work_id],
-        ];
-        $worksObj = CompanyWorkDoing::where($where)->limit(1)->get();
-        return $worksObj[0] ?? [];
-    }
+//    public static function getWorkInfo($db_num = 0,$company_id, $work_id){
+//        $where = [
+//            ['company_id', '=', $company_id],
+//            ['work_id', '=', $work_id],
+//        ];
+//        if($db_num == 0 ){
+//            $worksObj = CompanyWork::where($where)->limit(1)->get();
+//        }else{
+//            $worksObj = CompanyWorkDoing::where($where)->limit(1)->get();
+//        }
+//        return $worksObj[0] ?? [];
+//    }
 
     /**
      * 通过id修改记录
      *
+     * @param int $db_num 操作库 0 主库  1 doing库
      * @param int $company_id 公司id
      * @param int $work_id 工单id
      * @return array $saveData 需要更新的记录 一维数组 ['字段'=>'字段值']
      * @author zouyan(305463219@qq.com)
      */
-    public static function saveById($company_id, $work_id, $saveData = []){
-        $workObj = self::getWorkInfo($company_id, $work_id);
-
-        foreach($saveData as $field => $val){
-            $workObj->{$field} = $val;
-        }
-        return $workObj->save();
-    }
+//    public static function saveById($db_num = 0,$company_id = 0, $work_id, $saveData = []){
+//        $workObj = self::getWorkInfo($db_num, $company_id, $work_id);
+//
+//        foreach($saveData as $field => $val){
+//            $workObj->{$field} = $val;
+//        }
+//        return $workObj->save();
+//    }
 
     /**
      * 通过id删除记录
@@ -202,11 +228,11 @@ class CompanyWorkDoingBusiness extends CompanyWorkBusiness
      * @param int $work_id 工单id
      * @author zouyan(305463219@qq.com)
      */
-    public static function delById($company_id, $work_id){
-        $where = [
-            ['company_id', '=', $company_id],
-            ['work_id', '=', $work_id],
-        ];
-        return CompanyWorkDoing::where($where)->limit(1)->delete();
-    }
+//    public static function delById($company_id, $work_id){
+//        $where = [
+//            ['company_id', '=', $company_id],
+//            ['work_id', '=', $work_id],
+//        ];
+//        return CompanyWorkDoing::where($where)->limit(1)->delete();
+//    }
 }

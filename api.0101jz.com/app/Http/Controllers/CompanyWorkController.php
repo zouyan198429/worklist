@@ -133,7 +133,7 @@ class CompanyWorkController extends CompController
     public function test(Request $request)
     {
 
-         CompanyWorkDoingBusiness::autoSiteMsg();
+//         CompanyWorkDoingBusiness::autoSiteMsg();
          // $worksObj = CompanyWorkDoingBusiness::getWorkInfo(1, 3);
          //var_dump(empty($worksObj));
         /*
@@ -649,13 +649,13 @@ class CompanyWorkController extends CompController
         $listData = [];
         //待确认工单数量 1
         if(($operate_no & 1) == 1 ){
-            $waitSureCount = CompanyWorkDoingBusiness::getCount($company_id, $staff_id, 1);
+            $waitSureCount = CompanyWorkBusiness::getCount($company_id, $staff_id, 1);
         }
         $listData['waitSureCount'] = $waitSureCount ?? 0;
 
         //处理中工单数量 2
         if(($operate_no & 2) == 2 ){
-            $doingCount = CompanyWorkDoingBusiness::getCount($company_id, $staff_id, 2);
+            $doingCount = CompanyWorkBusiness::getCount($company_id, $staff_id, 2);
         }
         $listData['doingCount'] = $doingCount ?? 0;
 
@@ -731,7 +731,7 @@ class CompanyWorkController extends CompController
             }
             $workObj->save();
             // CompanyWorkBusiness::saveById($work_id, $saveData);
-            CompanyWorkDoingBusiness::saveById($company_id, $work_id, $saveData);
+            CompanyWorkBusiness::saveById(1, $company_id, $work_id, $saveData);
             // 日志
             // $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "确认工单!");
             CompanyWorkLogBusiness::saveWorkLog($workObj , $staff_id , $operate_staff_history_id,  "确认工单!");
@@ -858,7 +858,7 @@ class CompanyWorkController extends CompController
                 $workObj->{$field} = $val;
             }
             $workObj->save();
-            CompanyWorkDoingBusiness::saveById($company_id, $work_id, $save_data);
+            CompanyWorkBusiness::saveById(1,$company_id, $work_id, $save_data);
             if($send_staff_id > 0 && $oldSendStaffId != $send_staff_id){ // 指定的员工不同，需要把客户也复制一份给新指定的员工。
                 // 从用户表
                 $customer_id = $workObj->customer_id;
@@ -983,7 +983,7 @@ class CompanyWorkController extends CompController
             }
             // $workObj->status = 4;
             $workObj->save();
-            CompanyWorkDoingBusiness::saveById($company_id, $work_id, $save_data);
+            CompanyWorkBusiness::saveById(1, $company_id, $work_id, $save_data);
             // 日志
             // $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "确认工单结单!内容："  . $win_content);
             CompanyWorkLogBusiness::saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "确认工单结单!内容："  . $win_content);
@@ -1064,7 +1064,7 @@ class CompanyWorkController extends CompController
             // $workObj->status = 8;
             $workObj->save();
             // 删除操作表
-            CompanyWorkDoingBusiness::delById($company_id, $work_id);
+            CompanyWorkBusiness::delById(1, $company_id, $work_id);
             // 日志
             // $this->saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "工单回访!内容：" . $reply_content);
             CompanyWorkLogBusiness::saveWorkLog($workObj , $staff_id , $operate_staff_history_id, "工单回访!内容：" . $reply_content);
@@ -1075,6 +1075,30 @@ class CompanyWorkController extends CompController
         }
         DB::commit();
         return  okArray([]);
+    }
+
+    /**
+     * 工单状态统计
+     *
+     * @param int $id
+     * @return Response
+     * @author zouyan(305463219@qq.com)
+     */
+    public function statusCount(Request $request)
+    {
+        $this->InitParams($request);
+        $company_id = $this->company_id;
+        $staff_id = Common::getInt($request, 'staff_id');// 接收员工id
+        $operate_staff_id = Common::getInt($request, 'operate_staff_id');// 添加员工id
+        $status = [0,1,2,4];
+        $result = CompanyWorkBusiness::getGroupCount($company_id, $status, $staff_id, $operate_staff_id);
+        // -8重点关注
+        $otherWhere = [['is_focus', '=', 1]];
+        $result[-8] = CompanyWorkBusiness::getCount($company_id, $staff_id, [0,1,2], $operate_staff_id, $otherWhere);
+        // -4过期未处理
+        $otherWhere = [['is_overdue', '=', 1]];
+        $result[-4] = CompanyWorkBusiness::getCount($company_id, $staff_id, [0,1,2], $operate_staff_id, $otherWhere);
+        return  okArray($result);
     }
 
 }

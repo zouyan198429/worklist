@@ -12,7 +12,8 @@ const PAGE_ID = "page";//当前页id
 const PAGE_SIZE = Math.ceil(parseInt($('#pagesize').val()));;//每页显示数量
 const TOTAL_ID = "total";//总记录数量[特别说明:小于0,需要从数据库重新获取]
 
-$(function(){
+ $(function(){
+// $(window).on('load', function () {
     //读取第一页数据
     ajaxPageList(DYNAMIC_TABLE,DYNAMIC_PAGE_BAIDU_TEMPLATE,AJAX_URL,false,SURE_FRM_IDS,true,DYNAMIC_BAIDU_TEMPLATE,DYNAMIC_TABLE_BODY,DYNAMIC_LODING_BAIDU_TEMPLATE,DYNAMIC_BAIDU_EMPTY_TEMPLATE,PAGE_ID,PAGE_SIZE,TOTAL_ID);
 

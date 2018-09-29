@@ -58,6 +58,9 @@ Route::any('work/workReSend', 'CompanyWorkController@workReSend');//工单重新
 Route::any('work/workSure', 'CompanyWorkController@workSure');//确认工单
 Route::any('work/workWin', 'CompanyWorkController@workWin');//结单
 Route::any('work/workReply', 'CompanyWorkController@workReply');//回访
+// 统计
+Route::any('work/statusCount', 'CompanyWorkController@statusCount');//工单状态统计
+
 
 // 员工
 Route::any('staff/bathImport', 'CompanyStaffController@bathImport');//批量导入

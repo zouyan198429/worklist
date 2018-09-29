@@ -544,4 +544,30 @@ class CompanyWork extends BaseBusiness
         // $requestTesUrl = splicQuestAPI($url , $requestData);
         return HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
     }
+
+
+    /**
+     * 工单状态统计
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function statusCount(Request $request, Controller $controller, $notLog = 0)
+    {
+        $company_id = $controller->company_id;
+        $staff_id = Common::getInt($request, 'staff_id');// 接收员工id
+        $operate_staff_id = Common::getInt($request, 'operate_staff_id');// 添加员工id
+        // 参数
+        $requestData = [
+            'company_id' => $company_id,
+            'staff_id' =>  $staff_id,
+            'operate_staff_id' => $operate_staff_id,
+        ];
+        $url = config('public.apiUrl') . config('apiUrl.apiPath.workStatusCount');
+        // 生成带参数的测试get请求
+        // $requestTesUrl = splicQuestAPI($url , $requestData);
+        return HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Business;
 
 use App\Models\Company;
 use App\Models\CompanyWork;
+use App\Models\CompanyWorkDoing;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CompController as Controller;
@@ -15,6 +16,8 @@ use Illuminate\Support\Facades\DB;
 class CompanyWorkBusiness extends BaseBusiness
 {
     protected static $model_name = 'CompanyWork';
+    protected static $model_doing_name = 'CompanyWorkDoing';
+
 
     // 状态 0新工单2待反馈工单[处理中];4待回访工单;8已完成工单
     public static  $status_arr = [
@@ -81,36 +84,178 @@ class CompanyWorkBusiness extends BaseBusiness
      *
      * @param int $company_id 公司id
      * @param int $staff_id 员工id
-     * @param int $is_read 是否已读
+     * @param int $status 状态
+     * @param int $operate_staff_id 添加员工id
+     * @param array $otherWhere 其它条件[['company_id', '=', $company_id],...]
      * @return Response
      * @author zouyan(305463219@qq.com)
      */
-    public static function getCount($company_id, $staff_id = 0 , $status = 0){
+    public static function getCount($company_id, $staff_id = 0 , $status = 0, $operate_staff_id = 0, $otherWhere = []){
         $where = [
             ['company_id', '=', $company_id],
             // ['send_staff_id', '=', $staff_id],
-            ['status', '=', $status],
+            // ['status', '=', $status],
         ];
+        if(!empty($otherWhere)){
+            $where = array_merge($where, $otherWhere);
+        }
+
+        if(is_numeric($status)){
+            array_push($where,['status', '=', $status]);
+        }
+
         if($staff_id > 0){
             array_push($where,['send_staff_id', '=', $staff_id]);
         }
-        return CompanyWork::where($where)->count();
+
+        if($operate_staff_id > 0){
+            array_push($where,['operate_staff_id', '=', $operate_staff_id]);
+        }
+
+        if(is_array($status)){
+            if(in_array(8,$status)){
+                $dataCount = CompanyWork::whereIn('status',$status)->where($where)->count();
+            }else{
+                $dataCount = CompanyWorkDoing::whereIn('status',$status)->where($where)->count();
+            }
+        }else{
+            if($status == '8'){
+                $dataCount = CompanyWork::where($where)->count();
+            }else{
+                $dataCount = CompanyWorkDoing::where($where)->count();
+            }
+        }
+        return $dataCount;
+    }
+
+    /**
+     * 按状态分组统计工单数量
+     *
+     * @param int $company_id 公司id
+     * @param array $status 状态  一维数组
+     * @param int $staff_id 接收员工id
+     * @param int $operate_staff_id 添加员工id
+     * @param array $otherWhere 其它条件[['company_id', '=', $company_id],...]
+     * @return array ['状态'=> 数量,...]
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function getGroupCount($company_id, $status, $staff_id = 0, $operate_staff_id = 0, $otherWhere = []){
+        $where = [
+            ['company_id', '=', $company_id],
+            // ['send_staff_id', '=', $staff_id],
+            // ['status', '=', $status],
+        ];
+        if(!empty($otherWhere)){
+            $where = array_merge($where, $otherWhere);
+        }
+        if($staff_id > 0){
+            array_push($where,['send_staff_id', '=', $staff_id]);
+        }
+
+        if($operate_staff_id > 0){
+            array_push($where,['operate_staff_id', '=', $operate_staff_id]);
+        }
+
+        if(empty($status) || in_array(8, $status)){
+            $dataList = CompanyWork::whereIn('status',$status)->where($where)
+                ->select(DB::raw('count(*) as status_count, status'))
+                ->groupBy('status')
+                ->get();
+        } else {
+            $dataList = CompanyWorkDoing::whereIn('status',$status)->where($where)
+                ->select(DB::raw('count(*) as status_count, status'))
+                ->groupBy('status')
+                ->get();
+        }
+
+        $requestData = [];
+        foreach($dataList as $info){
+            $requestData[$info['status']] = $info['status_count'];
+        }
+        foreach ($status as $temStatus){
+            if(isset($requestData[$temStatus])){
+                continue;
+            }
+            $requestData[$temStatus] = 0;
+        }
+        return $requestData;
+    }
+
+    /**
+     * 根据工单号查询工单
+     *
+     * @param int $db_num 操作库 0 主库  1 doing库
+     * @param int $company_id 公司id
+     * @param int $work_id 工单id
+     * @param array $otherWhere 其它条件[['company_id', '=', $company_id],...]
+     * @return array 工单信息 一维数组
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function getWorkInfo($db_num = 0, $company_id, $work_id, $otherWhere = []){
+        $where = [
+            ['company_id', '=', $company_id],
+            // ['work_id', '=', $work_id],
+        ];
+        if(!empty($otherWhere)){
+            $where = array_merge($where, $otherWhere);
+        }
+        if($db_num == 0 ){
+            array_push($where,['id', '=', $work_id]);
+            $worksObj = CompanyWork::where($where)->limit(1)->get();
+        }else{
+            array_push($where,['work_id', '=', $work_id]);
+            $worksObj = CompanyWorkDoing::where($where)->limit(1)->get();
+        }
+        return $worksObj[0] ?? [];
     }
 
     /**
      * 通过id修改记录
      *
+     * @param int $db_num 操作库 0 主库  1 doing库
      * @param int $company_id 公司id
      * @param int $work_id 工单id
      * @return array $saveData 需要更新的记录 一维数组 ['字段'=>'字段值']
      * @author zouyan(305463219@qq.com)
      */
-    public static function saveById($company_id, $work_id, $saveData = []){
-        $workObj = CompanyWork::find($work_id);
+    public static function saveById($db_num = 0, $company_id = 0, $work_id, $saveData = []){
+        if($db_num == 0){
+            $workObj = CompanyWork::find($work_id);
+        }else{
+            $workObj = self::getWorkInfo($db_num, $company_id, $work_id);
+            // $workObj = CompanyWorkDoing::find($work_id);
+        }
 
         foreach($saveData as $field => $val){
             $workObj->{$field} = $val;
         }
         return $workObj->save();
+    }
+
+
+    /**
+     * 通过id删除记录
+     *
+     * @param int $db_num 操作库 0 主库  1 doing库
+     * @param int $company_id 公司id
+     * @param int $work_id 工单id
+     * @param array $otherWhere 其它条件[['company_id', '=', $company_id],...]
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function delById($db_num = 0, $company_id, $work_id, $otherWhere = []){
+        $where = [
+            ['company_id', '=', $company_id],
+            // ['work_id', '=', $work_id],
+        ];
+        if(!empty($otherWhere)){
+            $where = array_merge($where, $otherWhere);
+        }
+        if($db_num == 0){
+            array_push($where,['id', '=', $work_id]);
+            return CompanyWork::find($where)->limit(1)->delete();
+        }else{
+            array_push($where,['work_id', '=', $work_id]);
+            return CompanyWorkDoing::where($where)->limit(1)->delete();
+        }
     }
 }

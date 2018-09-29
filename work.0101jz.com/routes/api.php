@@ -162,6 +162,7 @@ Route::any('manage/work_type/ajax_get_child', 'manage\WorkTypeController@ajax_ge
 Route::any('manage/work/ajax_alist', 'manage\WorkController@ajax_alist');//ajax获得列表数据
 Route::any('manage/work/ajax_del', 'manage\WorkController@ajax_del');// 删除
 Route::any('manage/work/ajax_save', 'manage\WorkController@ajax_save');// 新加/修改
+Route::any('manage/work/ajax_status_count', 'manage\WorkController@ajax_status_count');// 工单状态统计
 
 // 系统模块
 Route::any('manage/system_module/ajax_get_child', 'manage\SystemModuleController@ajax_get_child');// 获得子类部门数组[kv一维数组]

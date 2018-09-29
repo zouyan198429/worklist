@@ -14,14 +14,14 @@
 			<div class="tabbox" >
 				<a href="javascript:void(0);" data-status="" class="on status_click">全部工单</a>
                 @foreach ($status as $k=>$txt)
-                    <a href="javascript:void(0);" data-status="{{ $k }}" class="status_click">{{ $txt }}</a>
+                    <a href="javascript:void(0);" data-status="{{ $k }}" class="status_click @if ($k == 10) on @endif">{{ $txt }}</a>
                 @endforeach
 			</div>
 			<div class="msearch fr">
                 <select style="width:80px; height:28px; display:none;" name="status" >
                     <option value="">全部</option>
                     @foreach ($status as $k=>$txt)
-                        <option value="{{ $k }}"  >{{ $txt }}</option>
+                        <option value="{{ $k }}" @if ($k == 10) selected @endif >{{ $txt }}</option>
                     @endforeach
                 </select>
 				<select style="width:80px; height:28px;"  name="field">
@@ -110,6 +110,46 @@
         const EXPORT_EXCEL_URL = "{{ url('manage/work/add/0') }}"; //"{{ url('api/manage/work/export') }}";//导出EXCEL地址
         const IMPORT_EXCEL_URL = "{{ url('manage/work/add/0') }}"; //"{{ url('api/manage/work/import') }}";//导入EXCEL地址
 
+		const SATUS_COUNT_URL = "{{ url('api/manage/work/ajax_status_count') }}";// ajax工单状态统计 url
+
+        var SUBMIT_FORM = true;//防止多次点击提交
+        $(function(){
+            ajax_status_count(0, 0);//ajax工单状态统计
+        });
+
+        //ajax工单状态统计
+        function ajax_status_count(staff_id, operate_staff_id){
+            if (!SUBMIT_FORM) return false;//false，则返回
+
+            // 验证通过
+            SUBMIT_FORM = false;//标记为已经提交过
+            var data = {
+                'staff_id': staff_id,
+                'operate_staff_id': operate_staff_id,
+            };
+            console.log(SATUS_COUNT_URL);
+            console.log(data);
+            var layer_count_index = layer.load();
+            $.ajax({
+                'type' : 'POST',
+                'url' : SATUS_COUNT_URL,
+                'data' : data,
+                'dataType' : 'json',
+                'success' : function(ret){
+                    console.log(ret);
+                    if(!ret.apistatus){//失败
+                        //alert('失败');
+                        err_alert(ret.errorMsg);
+                    }else{//成功
+                        var statusCount = ret.result;
+                        console.log(statusCount);
+                    }
+                    SUBMIT_FORM = true;//标记为未提交过
+                    layer.close(layer_count_index)//手动关闭
+                }
+            });
+            return false;
+        }
 	</script>
 	<script src="{{asset('js/common/list.js')}}"></script>
 	<script src="{{ asset('js/manage/lanmu/work.js') }}"  type="text/javascript"></script>
