@@ -17,7 +17,6 @@
 					{{ $work_num or '' }}
 				</td>
 			</tr>
-
 			<tr>
 				<th>姓名</th>
 				<td>
@@ -33,7 +32,7 @@
 			<tr>
 				<th>新密码</th>
 				<td>
-					<input  name="admin_password"  type="password"  placeholder="请输入密码" class="inp wlong" />
+					<input  name="admin_password"  type="password"  placeholder="请输入密码" class="inp wlong" /> <span>新密码须6位以上，含英文及数字，建议首字母大写。</span>
 				</td>
 			</tr>
 			<tr>

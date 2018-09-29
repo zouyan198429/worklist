@@ -8,126 +8,37 @@
 
 	<div id="crumb"><i class="fa fa-reorder fa-fw" aria-hidden="true"></i> 帮助中心</div>
 	<div class="mm">
-		<div class="mmhead" id="mywork">
-			<div class="tabbox" >
-				<select class="wnormal">
-					<option value="a01">全部</option>
-					<option value="a02">维修部</option>
-					<option value="a03">话务部</option>
-					<option value="a04">行政部</option>
-				</select>
-			</div>
+		<h2>如何访问手机站？</h2>
+		<div class="con">
+			手机访问客户端，请使用手机扫描以下二维码：<br />
+			<img src="http://ofn8u9rp0.bkt.clouddn.com/ydmewm.png">
+		</div>		
+		<br />
+ 		<h2>如何查看工单？</h2>
+ 		<div class="con">
+ 			登录系统后，点击屏幕左侧主菜单：我的工单，即可进入工单列表页面。<br />
+ 			工单状态分为：<br />
+ 			1. 待确认  新接收到的工单需要点击确认按钮。<br />
+ 			2. 处理中  确认后的工单进入处理环节，状态为处理中。<br />
+ 			3. 过期未处理  处理完成的工单点击结单，在弹窗下方填写处理结果。超过要求时间未结单的状态为过期未处理。<br />
+ 			4. 待回访  处理完成的订单进入回访环节。回访完成后要点击详情按钮进入弹窗，填写回访记录。<br />
+ 			5. 完成 回访完成后的订单为完成订单。
+ 		</div>
+ 		<br />
+ 		<h2>如何反馈问题？</h2>
+ 		<div class="con">
+ 			登录系统后，点击屏幕左侧主菜单：反馈问题，即可进入反馈问题页面。<br />
+ 			进入页面后，选择问题类型及反馈到哪个部门，再填写问题详细描述，点击提交即可。
+ 		</div>
+ 		<br />
+ 		<h2>如何修改密码？</h2>
+ 		<idv class="con">
+ 			新登录用户建议在第一次登录后即修改掉原始登录密码。<br />
+ 			将鼠标移到屏幕右上角部门名称或个人姓名处，即弹出隐藏的二级菜单，点击修改密码项即可进入密码修改页面。根据提示输入新密码即可，新密码须6位以上，含英文及数字，建议首字母大写。
 
-			<div class="msearch fr"> <input type="text" value=""  /> <button class="btn btn-normal">搜索</button> </div>
-		</div>
-		<table class="table2">
-			<thead>
-			<tr>
-				<th>标题</th>
-				<th>推荐级别</th>
-				<th>适用岗位</th>
-				<th>上传时间</th>
-				<th>上传人</th>
-				<th>阅读量</th>
-			</tr>
-			</thead>
-			<tbody>
-			<tr>
-				<td class="tl" ><a href="{{ url('weixiu/lore/info') }}" ><i class="fa fa-angle-right fa-fw" aria-hidden="true"></i> 企业品牌推广的战略选择</a></td>
-				<td>★★</td>
-				<td>话务</td>
-				<td>张兰兰</td>
-				<td>2015-04-22</td>
-				<td>233</td>
-			</tr>
-			<tr>
-				<td class="tl"><a href="{{ url('weixiu/lore/info') }}" ><i class="fa fa-angle-right fa-fw" aria-hidden="true"></i>  网络口碑营销传播的实例独家分析</a></td>
-				<td>★★</td>
-				<td>话务</td>
-				<td>张兰兰</td>
-				<td>2015-04-22</td>
-				<td>233</td>
-			</tr>
-			<tr>
-				<td class="tl"><a href="{{ url('weixiu/lore/info') }}" ><i class="fa fa-angle-right fa-fw" aria-hidden="true"></i>  由火狐推广方式的转变谈网站的本地化策略</a></td>
-				<td>★★</td>
-				<td>话务</td>
-				<td>张兰兰</td>
-				<td>2015-04-22</td>
-				<td>233</td>
-			</tr>
-			<tr>
-				<td class="tl"><a href="{{ url('weixiu/lore/info') }}" ><i class="fa fa-angle-right fa-fw" aria-hidden="true"></i>  如何创立网络营销品牌？</a></td>
-				<td>★★</td>
-				<td>话务</td>
-				<td>张兰兰</td>
-				<td>2015-04-22</td>
-				<td>233</td>
-			</tr>
-			<tr>
-				<td class="tl"><a href="{{ url('weixiu/lore/info') }}" ><i class="fa fa-angle-right fa-fw" aria-hidden="true"></i>  如何利用网络营销提升企业品牌形象</a></td>
-				<td>★★</td>
-				<td>话务</td>
-				<td>张兰兰</td>
-				<td>2015-04-22</td>
-				<td>233</td>
-			</tr>
-			<tr>
-				<td class="tl"><a href="{{ url('weixiu/lore/info') }}" ><i class="fa fa-angle-right fa-fw" aria-hidden="true"></i> 企业品牌推广的战略选择</a></td>
-				<td>★★</td>
-				<td>话务</td>
-				<td>张兰兰</td>
-				<td>2015-04-22</td>
-				<td>233</td>
-			</tr>
-			<tr>
-				<td class="tl"><a href="{{ url('weixiu/lore/info') }}" ><i class="fa fa-angle-right fa-fw" aria-hidden="true"></i>  网络口碑营销传播的实例独家分析</a></td>
-				<td>★★</td>
-				<td>话务</td>
-				<td>张兰兰</td>
-				<td>2015-04-22</td>
-				<td>233</td>
-			</tr>
-			<tr>
-				<td class="tl"><a href="{{ url('weixiu/lore/info') }}" ><i class="fa fa-angle-right fa-fw" aria-hidden="true"></i>  由火狐推广方式的转变谈网站的本地化策略</a></td>
-				<td>★★</td>
-				<td>话务</td>
-				<td>张兰兰</td>
-				<td>2015-04-22</td>
-				<td>233</td>
-			</tr>
-			<tr>
-				<td class="tl"><a href="{{ url('weixiu/lore/info') }}" ><i class="fa fa-angle-right fa-fw" aria-hidden="true"></i>  如何创立网络营销品牌？</a></td>
-				<td>★★</td>
-				<td>话务</td>
-				<td>张兰兰</td>
-				<td>2015-04-22</td>
-				<td>233</td>
-			</tr>
-			<tr>
-				<td class="tl"><a href="{{ url('weixiu/lore/info') }}" ><i class="fa fa-angle-right fa-fw" aria-hidden="true"></i>  如何利用网络营销提升企业品牌形象</a></td>
-				<td>★★</td>
-				<td>话务</td>
-				<td>张兰兰</td>
-				<td>2015-04-22</td>
-				<td>233</td>
-			</tr>
+ 		</idv>
 
 
-
-			</tbody>
-		</table>
-		<div class="mmfoot">
-			<div class="mmfleft"></div>
-			<div class="mmfright pages">
-				<a href="" class="on" > - </a>
-				<a href="" > 1 </a>
-				<a href=""> 2 </a>
-				<a href=""> 4 </a>
-				<a href=""> 5 </a>
-				<a href=""> > </a>
-			</div>
-		</div>
 
 	</div>
 @endsection

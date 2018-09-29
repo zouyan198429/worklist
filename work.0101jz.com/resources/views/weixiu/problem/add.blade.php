@@ -22,7 +22,7 @@
                             @endforeach
                         </select>
                         <select class="wnormal" name="business_id" >
-                            <option value="">请选择业务</option>
+                            <option value="">请选择</option>
                         </select>
                     </td>
                 </tr>
