@@ -42,13 +42,13 @@
 			</tr>
 
 
-			<tr>
+<!-- 			<tr>
 				<th>电话</th>
 				<td>
 
 					{{ $tel or '' }}
 				</td>
-			</tr>
+			</tr> -->
 			<tr>
 				<th>手机</th>
 				<td>
@@ -56,13 +56,13 @@
 					{{ $mobile or '' }}
 				</td>
 			</tr>
-			<tr>
+			<!-- <tr>
 				<th>QQ</th>
 				<td>
 
 					{{ $qq_number or '' }}
 				</td>
-			</tr>
+			</tr> -->
 
 
 
