@@ -56,6 +56,13 @@
 						<div class="c"></div>
 					</li>
 					<li>
+						<a href="{{ url('m/help/help') }}">
+							<span>帮助中心</span>
+							<i class="fa fa-angle-right fa-fw" aria-hidden="true"></i>
+						</a>
+						<div class="c"></div>
+					</li>
+					<li>
 						<a href="{{ url('m/logout') }}"><span>退出</span></a>
 						<div class="c"></div>
 					</li>
