@@ -14,14 +14,19 @@
 			<div class="tabbox" >
 				<a href="javascript:void(0);" data-status="" class="status_click">全部工单</a>
                 @foreach ($status as $k=>$txt)
-                    <a href="javascript:void(0);" data-status="{{ $k }}" class="status_click @if ($k == 1) on @endif">{{ $txt }}</a>
+                    <a href="javascript:void(0);" data-status="{{ $k }}" class="status_click @if ($k == $defaultStatus) on @endif">
+                        {{ $txt }}
+                        @if(in_array($k,$countStatus))
+                            <span class="layui-badge status_count_{{ $k }}" data-old_count="0">0</span>
+                       @endif
+                    </a>
                 @endforeach
 			</div>
 			<div class="msearch fr">
                 <select style="width:80px; height:28px; display:none;" name="status" >
                     <option value="">全部</option>
                     @foreach ($status as $k=>$txt)
-                        <option value="{{ $k }}" @if ($k == 1) selected @endif >{{ $txt }}</option>
+                        <option value="{{ $k }}" @if ($k == $defaultStatus) selected @endif >{{ $txt }}</option>
                     @endforeach
                 </select>
 				<select style="width:80px; height:28px;"  name="field">
@@ -42,7 +47,7 @@
 		<table  id="dynamic-table"  class="table2">
 			<thead>
 			<tr>
-				<th>工单号<br/>来电号码<br/>联系电话</th>
+				<th width="155px">工单号<br/>来电号码<br/>联系电话</th>
 				<th>工单来源</th>
 				<th>工单类型</th>
 				<th width="350px">工单内容</th>
@@ -91,6 +96,9 @@
 		</div>
 
 	</div>
+    <div style="display:none;">
+        @include('public.scan_sound')
+    </div>
 @endsection
 
 
@@ -98,6 +106,7 @@
 @endpush
 
 @push('footlast')
+    <link rel="stylesheet" href="{{asset('layui-v2.4.3/layui/css/layui.css')}}">
 	<script type="text/javascript">
         var OPERATE_TYPE = <?php echo isset($operate_type)?$operate_type:0; ?>;
         const AUTO_READ_FIRST = false;//自动读取第一页 true:自动读取 false:指定地方读取
@@ -112,52 +121,9 @@
         const IMPORT_EXCEL_URL = "{{ url('manage/work/add/0') }}"; //"{{ url('api/manage/work/import') }}";//导入EXCEL地址
 
 		const SATUS_COUNT_URL = "{{ url('api/manage/work/ajax_status_count') }}";// ajax工单状态统计 url
+        const NEED_PLAY_STATUS = "{{ $countPlayStatus }}";// 需要发声的状态，多个逗号,分隔
 
 	</script>
 	<script src="{{asset('js/common/list.js')}}"></script>
-
-    <script type="text/javascript">
-
-        var SUBMIT_FORM = true;//防止多次点击提交
-        $(function(){
-            $('.search_frm').trigger("click");// 触发搜索事件
-            ajax_status_count(0, 0);//ajax工单状态统计
-            reset_list(false);
-        });
-
-        //ajax工单状态统计
-        function ajax_status_count(staff_id, operate_staff_id){
-            if (!SUBMIT_FORM) return false;//false，则返回
-
-            // 验证通过
-            SUBMIT_FORM = false;//标记为已经提交过
-            var data = {
-                'staff_id': staff_id,
-                'operate_staff_id': operate_staff_id,
-            };
-            console.log(SATUS_COUNT_URL);
-            console.log(data);
-            var layer_count_index = layer.load();
-            $.ajax({
-                'type' : 'POST',
-                'url' : SATUS_COUNT_URL,
-                'data' : data,
-                'dataType' : 'json',
-                'success' : function(ret){
-                    console.log(ret);
-                    if(!ret.apistatus){//失败
-                        //alert('失败');
-                        err_alert(ret.errorMsg);
-                    }else{//成功
-                        var statusCount = ret.result;
-                        console.log(statusCount);
-                    }
-                    SUBMIT_FORM = true;//标记为未提交过
-                    layer.close(layer_count_index)//手动关闭
-                }
-            });
-            return false;
-        }
-    </script>
 	<script src="{{ asset('js/manage/lanmu/work.js') }}"  type="text/javascript"></script>
 @endpush

@@ -12,16 +12,21 @@
 		<form onsubmit="return false;" class="form-horizontal" role="form" method="post" id="search_frm" action="#">
 		<div class="mmhead" id="mywork">
 			<div class="tabbox" >
-				<a href="javascript:void(0);"  data-status="" class="on status_click">全部工单</a>
+				<a href="javascript:void(0);"  data-status="" class="status_click">全部工单</a>
 				@foreach ($status as $k=>$txt)
-					<a href="javascript:void(0)" data-status="{{ $k }}" class="status_click">{{ $txt }}</a>
+					<a href="javascript:void(0)" data-status="{{ $k }}" class="status_click @if ($k == $defaultStatus) on @endif ">
+						{{ $txt }}
+						@if(in_array($k,$countStatus))
+							<span class="layui-badge status_count_{{ $k }}" data-old_count="0">0</span>
+						@endif
+					</a>
 				@endforeach
 			</div>
 			<div class="msearch fr">
 				<select style="width:80px; height:28px; display: none;" name="status" >
 					<option value="">全部</option>
 					@foreach ($status as $k=>$txt)
-						<option value="{{ $k }}"  >{{ $txt }}</option>
+						<option value="{{ $k }}"   @if ($k == $defaultStatus) selected @endif >{{ $txt }}</option>
 					@endforeach
 				</select>
 				<select style="width:80px; height:28px;" name="field">
@@ -42,17 +47,20 @@
 		<table   id="dynamic-table" class="table2">
 			<thead>
 			<tr>
-				<th>工单号</th>
-				<th>下单时间</th>
-				<th>派单人员</th>
-				<th>维修人员</th>
-				<th>工单等级</th>
-				<th>状态</th>
-				<th>来电号码</th>
-				<th>客户姓名</th>
-				<th>客户类别</th>
+				<th width="155px">工单号<br/>来电号码<br/>联系电话</th>
+				<th>工单来源</th>
+				<th>工单类型</th>
+				<th width="350px">工单内容</th>
 				<th>客户位置</th>
-				<th>操作</th>
+				<th>下单时间</th>
+				<th>工单等级</th>
+				<th>派单人员</th>
+				<th>区县客服</th>
+				<th>状态</th>
+				<!--
+				<th>客户姓名</th>
+				<th>客户类别</th> -->
+				<th width="80px">操作</th>
 			</tr>
 			</thead>
 			<tbody  id="data_list">
@@ -153,6 +161,9 @@
 		</div>
 
 	</div>
+	<div style="display:none;">
+		@include('public.scan_sound')
+	</div>
 @endsection
 
 
@@ -160,9 +171,10 @@
 @endpush
 
 @push('footlast')
+	<link rel="stylesheet" href="{{asset('layui-v2.4.3/layui/css/layui.css')}}">
 	<script type="text/javascript">
         var OPERATE_TYPE = <?php echo isset($operate_type)?$operate_type:0; ?>;
-        const AUTO_READ_FIRST = true;//自动读取第一页 true:自动读取 false:指定地方读取
+        const AUTO_READ_FIRST = false;//自动读取第一页 true:自动读取 false:指定地方读取
         const AJAX_URL = "{{ url('api/admin/work/ajax_alist') }}";//ajax请求的url
         const ADD_URL = "{{ url('admin/work/add/0') }}"; //添加url
         const SHOW_URL = "{{url('admin/work/info/')}}/";//显示页面地址前缀 + id
@@ -173,6 +185,8 @@
         const EXPORT_EXCEL_URL = "{{ url('admin/work/add/0') }}"; //"{{ url('api/admin/work/export') }}";//导出EXCEL地址
         const IMPORT_EXCEL_URL = "{{ url('admin/work/add/0') }}"; //"{{ url('api/admin/work/import') }}";//导入EXCEL地址
 
+        const SATUS_COUNT_URL = "{{ url('api/admin/work/ajax_status_count') }}";// ajax工单状态统计 url
+        const NEED_PLAY_STATUS = "{{ $countPlayStatus }}";// 需要发声的状态，多个逗号,分隔
 	</script>
 	<script src="{{asset('js/common/list.js')}}"></script>
 	<script src="{{ asset('js/admin/lanmu/work.js') }}"  type="text/javascript"></script>

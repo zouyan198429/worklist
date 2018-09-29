@@ -20,6 +20,9 @@ class WorkController extends AdminController
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
         $reDataArr['status'] =  CompanyWork::$status_arr;
+        $reDataArr['defaultStatus'] = 1;// 列表页默认状态
+        $reDataArr['countStatus'] = [-8,-4,0,1,2,4];// 列表页需要统计的状态数组
+        $reDataArr['countPlayStatus'] = '-8,-4';// 需要播放提示声音的状态，多个逗号,分隔
         return view('admin.work.index', $reDataArr);
     }
 
@@ -90,4 +93,5 @@ class WorkController extends AdminController
         $countArr = CompanyWork::statusCount($request, $this);
         return ajaxDataArr(1, $countArr, '');
     }
+
 }

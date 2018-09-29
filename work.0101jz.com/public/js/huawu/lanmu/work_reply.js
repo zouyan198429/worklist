@@ -14,7 +14,8 @@ function parent_only_reset_list(){
 }
 //关闭弹窗,并刷新父窗口列表
 function parent_reset_list_iframe_close(){
-    window.parent.reset_list();//刷新父窗口列表
+    // window.parent.reset_list();//刷新父窗口列表
+    window.parent.ajax_status_count(1, 0, 0);//ajax工单状态统计
     parent.layer.close(PARENT_LAYER_INDEX);
 }
 //关闭弹窗

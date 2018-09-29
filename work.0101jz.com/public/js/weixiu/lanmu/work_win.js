@@ -14,7 +14,8 @@ function parent_only_reset_list(){
 }
 //关闭弹窗,并刷新父窗口列表
 function parent_reset_list_iframe_close(){
-    window.parent.reset_list();//刷新父窗口列表
+    // window.parent.reset_list();//刷新父窗口列表
+    window.parent.ajax_status_count(1, 0, 0);//ajax工单状态统计
     parent.layer.close(PARENT_LAYER_INDEX);
 }
 //关闭弹窗
@@ -22,15 +23,16 @@ function parent_reset_list(){
     parent.layer.close(PARENT_LAYER_INDEX);
 }
 
+
 var SUBMIT_FORM = true;//防止多次点击提交
 $(function(){
     //提交
     $(document).on("click","#submitBtn",function(){
         var index_query = layer.confirm('您确定提交吗？', {
-           btn: ['确定','取消'] //按钮
+            btn: ['确定','取消'] //按钮
         }, function(){
-        ajax_form();
-           layer.close(index_query);
+            ajax_form();
+            layer.close(index_query);
         }, function(){
         });
 
@@ -39,7 +41,7 @@ $(function(){
 
 });
 
-//ajax提交表单
+// //ajax提交表单
 function ajax_form(){
     if (!SUBMIT_FORM) return false;//false，则返回
 

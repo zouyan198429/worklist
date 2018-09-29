@@ -5,12 +5,8 @@
 
     <%for(var i = 0; i<data_list.length;i++){
     var item = data_list[i];
-    {{--var account_status = item.account_status; --}}
-    {{--var can_modify = false; --}}
-    {{--//&& (item.supplier_status & (1+8))>0--}}
-    {{--if( item.issuper==0 ){--}}
+    var status = item.status;
     can_modify = false;
-    {{--}--}}
     %>
 
     <tr>
@@ -20,7 +16,7 @@
         <td><%=item.send_real_name%></td>
         <td><%=item.time_name%></td>
         <td><%=item.status_text%></td>{{--剩余1小时12分--}}
-        <td><a href="tel:<%=item.call_number%>" class="btn" ><%=item.call_number%> <i class="fa fa-phone-square fa-fw" aria-hidden="true"></i> </a></td>
+        <td> <%=item.call_number%> </td>
         <td><%=item.customer_name%>(<%=item.sex_text%>)</td>
         <td><%=item.customer_type_name%></td>
         <td><%=item.city_name%>/<%=item.area_name%></td>
@@ -28,6 +24,12 @@
             <%if( true){%>
             <a href="javascript:void(0);" class="btn btn-mini btn-success"  onclick="action.show(<%=item.id%>)">
                 <i class="ace-icon fa fa-check bigger-60"> 查看</i>
+            </a>
+            <%}%>
+
+            <%if( status == 4){%>
+            <a href="javascript:void(0);" class="btn btn-mini btn-info  reply_page" data-id="<%=item.id%>" >
+                <i class="ace-icon fa fa-pencil bigger-60"> 回访</i>
             </a>
             <%}%>
             <%if( can_modify){%>
