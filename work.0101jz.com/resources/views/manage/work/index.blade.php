@@ -42,7 +42,7 @@
 		<table  id="dynamic-table"  class="table2">
 			<thead>
 			<tr>
-				<th>工单号<br/>来电号码</th>
+				<th>工单号<br/>来电号码<br/>联系电话</th>
 				<th>工单来源</th>
 				<th>工单类型</th>
 				<th width="350px">工单内容</th>

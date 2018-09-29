@@ -16,10 +16,11 @@
 				</td>
 			</tr>
 			<tr>
-				<th>来源/号码</th>
+				<th>来源/号码/联系电话</th>
 				<td>
 					{{ $caller_type_name or '' }}/
-					{{ $call_number or '' }}
+					{{ $call_number or '' }}/
+					{{ $contact_number or '' }}
 				</td>
 			</tr>
 
@@ -35,7 +36,7 @@
 				<td>{!! $content or '' !!}
 				</td>
 			</tr>
-			<tr >
+			<tr style="display: none;" >
 				<th> </th>
 				<td>
 					@foreach ($serviceTagList as $k=>$txt)
@@ -60,8 +61,8 @@
 				</td>
 			</tr>
 		</table>
-		<div class="line"> </div>
-		<table class="table1">
+		<div class="line" style="display: none;"> </div>
+		<table class="table1" style="display: none;">
 			<tr>
 				<th>客户姓名</th>
 				<td>

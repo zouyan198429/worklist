@@ -22,7 +22,12 @@
                     <div class="gd-hd">
                         <p>
                             <span class="khname"><i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i> {{ $customer_name or ''  }}({{ $sex_text or ''  }}) </span>
-                    <a href="tel:{{ $call_number or ''  }}" class="btnnb fr" ><i class="fa fa-phone fa-fw" aria-hidden="true"></i> {{ $call_number or ''  }}</a>
+                            @if($contact_number == '')
+                                <a href="tel:{{ $call_number or ''  }}" class="btnnb fr" ><i class="fa fa-phone fa-fw" aria-hidden="true"></i> {{ $call_number or ''  }}</a>
+                            @else
+                               <a href="tel:{{ $contact_number or ''  }}" class="btnnb fr" ><i class="fa fa-phone fa-fw" aria-hidden="true"></i> {{ $contact_number or ''  }}</a>
+                            @endif
+                        </p>
             </div>
             <div class="gd-bd">
                 <p><i class="fa fa-flag fa-fw" aria-hidden="true"></i>  工单类型：{{ $type_name or ''  }}--{{ $business_name or ''  }}</p>

@@ -147,7 +147,12 @@ function work_operate_ajax(operate_type,id){
     document.write("        <div class=\"gd-hd\">");
     document.write("            <p>");
     document.write("                <span class=\"khname\"><i class=\"fa fa-user-circle-o fa-fw\" aria-hidden=\"true\"><\/i> <%=item.customer_name%>(<%=item.sex_text%>) <\/span>");
+
+    document.write("            <%if( item.contact_number == ''){%>");
     document.write("                <a href=\"tel:<%=item.call_number%>\" class=\"btnnb fr\" ><i class=\"fa fa-phone fa-fw\" aria-hidden=\"true\"><\/i> <%=item.call_number%><\/a>");
+    document.write("            <%}else{%>");
+    document.write("                <a href=\"tel:<%=item.contact_number%>\" class=\"btnnb fr\" ><i class=\"fa fa-phone fa-fw\" aria-hidden=\"true\"><\/i> <%=item.contact_number%><\/a>");
+    document.write("            <%}%>");
     document.write("        <\/div>");
     document.write("        <div class=\"gd-bd\">");
     document.write("            <p><i class=\"fa fa-flag fa-fw\" aria-hidden=\"true\"><\/i>  工单类型：<%=item.type_name%>--<%=item.business_name%><\/p>");

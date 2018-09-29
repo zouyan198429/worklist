@@ -8,10 +8,11 @@
         </td>
     </tr>
     <tr>
-        <th>来源/号码</th>
+        <th>来源/号码/联系电话</th>
         <td>
             {{ $caller_type_name or '' }}/
-            {{ $call_number or '' }}
+            {{ $call_number or '' }}/
+            {{ $contact_number or '' }}
         </td>
     </tr>
 
@@ -44,13 +45,13 @@
                 <label><input type="radio"  disabled="disabled"  name="time_id"  value="{{ $k }}"  @if(isset($time_id) && $time_id == $k) checked="checked"  @endif />{{ $txt }} </label>
             @endforeach
         </td>
-    </tr><!-- 
+    </tr>
     <tr>
-        <th>预约处理时间</th>
+        <th>到期时间</th>
         <td>
-            {{ $book_time or '' }}
+            {{ $expiry_time or '' }}
         </td>
-    </tr> -->
+    </tr>
 </table>
 <div class="line" style="display: none;"> </div>
 <table class="table1" style="display: none;">

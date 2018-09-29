@@ -94,7 +94,9 @@ class CompanyWork extends BaseBusiness
         $model_name = self::$model_name;
         if(in_array($status,["-8", "-4", "0", "1", "2", "4"])){
             $model_name = self::$model_doing_name;
-            $queryParams['orderBy'] = ['expiry_time'=>'desc','id'=>'desc'];
+            if(in_array($status,["-8", "-4"])){
+                $queryParams['orderBy'] = ['expiry_time'=>'desc','id'=>'desc'];
+            }
         }
         if(!empty($status)){
             if($status == "-8"){ // 重点关注
@@ -127,10 +129,10 @@ class CompanyWork extends BaseBusiness
             if(isset($data_list[$k]['reply_content'])) unset($data_list[$k]['reply_content']);
 
             // 添加员工名称
-            $data_list[$k]['real_name'] = ($v['work_history_staff_create']['real_name'] ?? '') . '[' .  ($v['work_history_staff_create']['work_num'] ?? '') . ']';
+            $data_list[$k]['real_name'] = ($v['work_history_staff_create']['real_name'] ?? '') . '[' .  ($v['work_history_staff_create']['work_num'] ?? '') . '；' .  ($v['work_history_staff_create']['mobile'] ?? '') . ']';
             if(isset($data_list[$k]['work_history_staff_create'])) unset($data_list[$k]['work_history_staff_create']);
             // 指派员工名称
-            $data_list[$k]['send_real_name'] = ($v['work_history_staff_send']['real_name'] ?? '') . '[' .  ($v['work_history_staff_send']['work_num'] ?? '') . ']';
+            $data_list[$k]['send_real_name'] = ($v['work_history_staff_send']['real_name'] ?? '') . '[' .  ($v['work_history_staff_send']['work_num'] ?? '') . '；' .  ($v['work_history_staff_send']['mobile'] ?? '') . ']';
             if(isset($data_list[$k]['work_history_staff_send'])) unset($data_list[$k]['work_history_staff_send']);
 
             // 最后来电时间
@@ -182,7 +184,9 @@ class CompanyWork extends BaseBusiness
         $statusArr = explode(',', $status);
         if(!empty($statusArr) && !in_array(8, $statusArr) ){// 不是空数组 且 没有已完成的状态
             $model_name = self::$model_doing_name;
-            $queryParams['orderBy'] = ['expiry_time'=>'desc','id'=>'desc'];
+            if(in_array('-4', $statusArr) || in_array('-8', $statusArr)){
+                $queryParams['orderBy'] = ['expiry_time'=>'desc','id'=>'desc'];
+            }
         }
         if(count($statusArr) > 1){
             $queryParams['whereIn'] = [
@@ -279,7 +283,7 @@ class CompanyWork extends BaseBusiness
         $temNeeds = ['created_at', 'content'];
         foreach($workLogs as $v){
             $temNameArr = [
-                'real_name' => $v['work_log_history_staff_create']['real_name'] . "[" . $v['work_log_history_staff_create']['work_num'] . "]",
+                'real_name' => $v['work_log_history_staff_create']['real_name'] . "[" . $v['work_log_history_staff_create']['work_num'] . "；" . $v['work_log_history_staff_create']['mobile'] . "]",
             ];
             Tool::formatArrKeys($v , $temNeeds);
             $temLogs[] = array_merge($v, $temNameArr);
@@ -294,8 +298,8 @@ class CompanyWork extends BaseBusiness
             'send_group_id', 'send_group_name', 'send_staff_id', 'operate_staff_id'];
         foreach($sendLogs as $v){
             $temNameArr = [
-                'send_staff_name' => $v['work_send_history_staff_send']['real_name'] . "[" . $v['work_send_history_staff_send']['work_num'] . "]",
-                'operate_staff_name' => $v['work_send_history_staff_create']['real_name'] . "(" . $v['work_send_history_staff_create']['work_num'] . ")",
+                'send_staff_name' => $v['work_send_history_staff_send']['real_name'] . "[" . $v['work_send_history_staff_send']['work_num'] . "；" . $v['work_send_history_staff_send']['mobile'] . "]",
+                'operate_staff_name' => $v['work_send_history_staff_create']['real_name'] . "(" . $v['work_send_history_staff_create']['work_num'] . "；" . $v['work_send_history_staff_create']['mobile'] . ")",
             ];
             Tool::formatArrKeys($v , $temNeeds);
             $temSends[] = array_merge($v, $temNameArr);

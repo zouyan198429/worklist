@@ -28,7 +28,11 @@ $(function(){
     document.write("");
     document.write("    <tr>");
     document.write("        <td><%=item.work_num%>");
-    document.write("        <br\/><a href=\"tel:<%=item.call_number%>\" class=\"btn\" ><%=item.call_number%> <i class=\"fa fa-phone-square fa-fw\" aria-hidden=\"true\"><\/i> <\/a><\/td>");
+    document.write("        <br\/><a href=\"tel:<%=item.call_number%>\" class=\"btn\" ><%=item.call_number%> <i class=\"fa fa-phone-square fa-fw\" aria-hidden=\"true\"><\/i> <\/a>");
+    document.write("            <%if( item.contact_number != ''){%>");
+    document.write("        <br\/><a href=\"tel:<%=item.contact_number%>\" class=\"btn\" ><%=item.contact_number%> <i class=\"fa fa-phone-square fa-fw\" aria-hidden=\"true\"><\/i> <\/a>");
+    document.write("            <%}%>");
+    document.write("        <\/td>");
     document.write("        <td><%=item.caller_type_name%><\/td>");
     document.write("        <td><%=item.type_name%>\/<%=item.business_name%><\/td>");
     document.write("        <td><%=item.content%><\/td>");

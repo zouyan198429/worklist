@@ -352,7 +352,7 @@ class CompanyWorkController extends CompController
                 $save_data['send_staff_history_id'] = $send_staff_history_id;
                 $save_data['status'] = 1;//1待确认工单
 
-                array_push($sendLogs, $sendStaffHistoryObj->real_name . '[' . $sendStaffHistoryObj->work_num . ']');// 指派日志
+                array_push($sendLogs, $sendStaffHistoryObj->real_name . '[' . $sendStaffHistoryObj->work_num . '；' . $sendStaffHistoryObj->mobile . ']');// 指派日志
             }
 
             // 获是员工历史记录id-- 操作员工
@@ -827,7 +827,7 @@ class CompanyWorkController extends CompController
                 $save_data['send_staff_history_id'] = $send_staff_history_id;
                 $save_data['status'] = 1;//1待确认工单
 
-                array_push($sendLogs, $sendStaffHistoryObj->real_name . '[' . $sendStaffHistoryObj->work_num . ']');// 指派日志
+                array_push($sendLogs, $sendStaffHistoryObj->real_name . '[' . $sendStaffHistoryObj->work_num . '；' . $sendStaffHistoryObj->mobile . ']');// 指派日志
             }else{
                 throws("没有指派的员工!");
             }
