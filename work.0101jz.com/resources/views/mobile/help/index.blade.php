@@ -10,162 +10,34 @@
 
 		<div id="header">
 			<div class="top-title">帮助中心</div>
-		</div>
-		<div class="tab">
-				<a href="work_monitor.html" class="on">全部</a>
-				<a href="#">产品营销</a>
-				<a href="#">技术文档</a>
-		</div>
-		<section class="main" id="study" >
-			<ul class="listtext">
-				<li>
-					<a href="{{ url('m/lore/info') }}" >
-						<div class="title" >
-							<p><i class="fa fa-angle-right  fa-fw" aria-hidden="true"></i> 企业品牌推的战略广的战略选择</p>
-							<span>★★</span>
-						</div>
-						<div class="view"><i class="fa fa-eye fa-fw" aria-hidden="true"></i> 2133</div>
-					</a>
-				</li>
-				<li>
-					<a href="{{ url('m/lore/info') }}" >
-						<div class="title" >
-							<p><i class="fa fa-angle-right  fa-fw" aria-hidden="true"></i> 企业品牌推的战略广的战略选择</p>
-							<span>★★★★</span>
-						</div>
-						<div class="view"><i class="fa fa-eye fa-fw" aria-hidden="true"></i> 1233</div>
-					</a>
-				</li>
-				<li>
-					<a href="{{ url('m/lore/info') }}" >
-						<div class="title" >
-							<p><i class="fa fa-angle-right  fa-fw" aria-hidden="true"></i> 企业品牌推的战略广的战略选择</p>
-							<span>★★</span>
-						</div>
-						<div class="view"><i class="fa fa-eye fa-fw" aria-hidden="true"></i> 563</div>
-					</a>
-				</li>
-				<li>
-					<a href="{{ url('m/lore/info') }}" >
-						<div class="title" >
-							<p><i class="fa fa-angle-right  fa-fw" aria-hidden="true"></i> 企业品牌推的战略广的战略选择</p>
-							<span>★</span>
-						</div>
-						<div class="view"><i class="fa fa-eye fa-fw" aria-hidden="true"></i> 233</div>
-					</a>
-				</li>
-				<li>
-					<a href="{{ url('m/lore/info') }}" >
-						<div class="title" >
-							<p><i class="fa fa-angle-right  fa-fw" aria-hidden="true"></i> 企业品牌推的战略广的战略选择</p>
-							<span>★★★</span>
-						</div>
-						<div class="view"><i class="fa fa-eye fa-fw" aria-hidden="true"></i> 123</div>
-					</a>
-				</li>
-				<li>
-					<a href="{{ url('m/lore/info') }}" >
-						<div class="title" >
-							<p><i class="fa fa-angle-right  fa-fw" aria-hidden="true"></i> 企业品牌推的战略广的战略选择</p>
-							<span>★★</span>
-						</div>
-						<div class="view"><i class="fa fa-eye fa-fw" aria-hidden="true"></i> 2133</div>
-					</a>
-				</li>
-				<li>
-					<a href="{{ url('m/lore/info') }}" >
-						<div class="title" >
-							<p><i class="fa fa-angle-right  fa-fw" aria-hidden="true"></i> 企业品牌推的战略广的战略选择</p>
-							<span>★★★★</span>
-						</div>
-						<div class="view"><i class="fa fa-eye fa-fw" aria-hidden="true"></i> 1233</div>
-					</a>
-				</li>
-				<li>
-					<a href="{{ url('m/lore/info') }}" >
-						<div class="title" >
-							<p><i class="fa fa-angle-right  fa-fw" aria-hidden="true"></i> 企业品牌推的战略广的战略选择</p>
-							<span>★★</span>
-						</div>
-						<div class="view"><i class="fa fa-eye fa-fw" aria-hidden="true"></i> 563</div>
-					</a>
-				</li>
-				<li>
-					<a href="{{ url('m/lore/info') }}" >
-						<div class="title" >
-							<p><i class="fa fa-angle-right  fa-fw" aria-hidden="true"></i> 企业品牌推的战略广的战略选择</p>
-							<span>★</span>
-						</div>
-						<div class="view"><i class="fa fa-eye fa-fw" aria-hidden="true"></i> 233</div>
-					</a>
-				</li>
-				<li>
-					<a href="{{ url('m/lore/info') }}" >
-						<div class="title" >
-							<p><i class="fa fa-angle-right  fa-fw" aria-hidden="true"></i> 企业品牌推的战略广的战略选择</p>
-							<span>★★★</span>
-						</div>
-						<div class="view"><i class="fa fa-eye fa-fw" aria-hidden="true"></i> 123</div>
-					</a>
-				</li>
-				<li>
-					<a href="{{ url('m/lore/info') }}" >
-						<div class="title" >
-							<p><i class="fa fa-angle-right  fa-fw" aria-hidden="true"></i> 企业品牌推的战略广的战略选择</p>
-							<span>★★</span>
-						</div>
-						<div class="view"><i class="fa fa-eye fa-fw" aria-hidden="true"></i> 2133</div>
-					</a>
-				</li>
-				<li>
-					<a href="{{ url('m/lore/info') }}" >
-						<div class="title" >
-							<p><i class="fa fa-angle-right  fa-fw" aria-hidden="true"></i> 企业品牌推的战略广的战略选择</p>
-							<span>★★★★</span>
-						</div>
-						<div class="view"><i class="fa fa-eye fa-fw" aria-hidden="true"></i> 1233</div>
-					</a>
-				</li>
-				<li>
-					<a href="{{ url('m/lore/info') }}" >
-						<div class="title" >
-							<p><i class="fa fa-angle-right  fa-fw" aria-hidden="true"></i> 企业品牌推的战略广的战略选择</p>
-							<span>★★</span>
-						</div>
-						<div class="view"><i class="fa fa-eye fa-fw" aria-hidden="true"></i> 563</div>
-					</a>
-				</li>
-				<li>
-					<a href="{{ url('m/lore/info') }}" >
-						<div class="title" >
-							<p><i class="fa fa-angle-right  fa-fw" aria-hidden="true"></i> 企业品牌推的战略广的战略选择</p>
-							<span>★</span>
-						</div>
-						<div class="view"><i class="fa fa-eye fa-fw" aria-hidden="true"></i> 233</div>
-					</a>
-				</li>
-				<li>
-					<a href="{{ url('m/lore/info') }}" >
-						<div class="title" >
-							<p><i class="fa fa-angle-right  fa-fw" aria-hidden="true"></i> 企业品牌推的战略广的战略选择</p>
-							<span>★★★</span>
-						</div>
-						<div class="view"><i class="fa fa-eye fa-fw" aria-hidden="true"></i> 123</div>
-					</a>
-				</li>
-			</ul>				
-		</section>
-		<div class="fd">
-				<div class="pages">
-					<a href="" class="on" > < </a> 
-					<a href="" > 1 </a> 
-					<a href="" > 2 </a> 
-					<a href=""> 3 </a> 
-					<a href=""> 4 </a> 
-					<a href=""> 5 </a> 
-					<a href=""> > </a> 
-				</div>
-		</div>
+		</div> 
+		<section class="main" id="help" style="text-align: left;" >
+ 
+ 		<h2>如何查看工单？</h2>
+ 		<div class="con">
+ 			登录系统后，点击屏幕左侧主菜单：我的工单，即可进入工单列表页面。<br />
+ 			工单状态分为：<br />
+ 			1. 待确认  新接收到的工单需要点击确认按钮。<br />
+ 			2. 处理中  确认后的工单进入处理环节，状态为处理中。<br />
+ 			3. 过期未处理  处理完成的工单点击结单，在弹窗下方填写处理结果。超过要求时间未结单的状态为过期未处理。<br />
+ 			4. 待回访  处理完成的订单进入回访环节。回访完成后要点击详情按钮进入弹窗，填写回访记录。<br />
+ 			5. 完成 回访完成后的订单为完成订单。
+ 		</div>
+ 		<br />
+ 		<h2>如何反馈问题？</h2>
+ 		<div class="con">
+ 			登录系统后，点击屏幕左侧主菜单：反馈问题，即可进入反馈问题页面。<br />
+ 			进入页面后，选择问题类型及反馈到哪个部门，再填写问题详细描述，点击提交即可。
+ 		</div>
+ 		<br />
+ 		<h2>如何修改密码？</h2>
+ 		<idv class="con">
+ 			新登录用户建议在第一次登录后即修改掉原始登录密码。<br />
+ 			将鼠标移到屏幕右上角部门名称或个人姓名处，即弹出隐藏的二级菜单，点击修改密码项即可进入密码修改页面。根据提示输入新密码即可，新密码须6位以上，含英文及数字，建议首字母大写。
+
+ 		</idv>
+ 		
+		</section> 
 		@include('mobile.layout_public.menu', ['menu_id' => 2])
 
 
