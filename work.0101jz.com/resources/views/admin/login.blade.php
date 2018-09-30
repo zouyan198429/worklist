@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<title>超级管理员登录</title>
 	<link rel="stylesheet" type="text/css" href="{{asset('staticadmin/css/style.css')}}">
+	@include('admin.layout_public.piwik')
 </head>
 <body id="body-login">
 	<form class="am-form" action="#"  method="post"  id="addForm">

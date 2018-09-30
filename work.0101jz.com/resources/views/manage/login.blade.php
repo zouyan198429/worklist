@@ -8,6 +8,7 @@
 	#manlist { margin-top: 0px; text-align: center; }
 	#manlist a { display: inline-block; margin-right: 20px;  width: 120px; height: 40px; line-height: 40px;}
 	</style>
+	@include('manage.layout_public.piwik')
 </head>
 <body id="body-login">
 	<form class="am-form" action="#"  method="post"  id="addForm">
