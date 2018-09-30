@@ -56,7 +56,7 @@
 						<div class="c"></div>
 					</li>
 					<li>
-						<a href="{{ url('m/help/help') }}">
+						<a href="{{ url('m/help') }}">
 							<span>帮助中心</span>
 							<i class="fa fa-angle-right fa-fw" aria-hidden="true"></i>
 						</a>

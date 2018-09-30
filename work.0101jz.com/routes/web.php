@@ -277,3 +277,5 @@ Route::get('m/lore', 'm\LoreController@index');//study.html 学习中心--知识
 Route::get('m/lore/info', 'm\LoreController@info');//study_view.html 学习中心-知识详情页
 // 工单
 Route::get('m/work/win/{id}', 'm\WorkController@win');// 结单
+//帮助中心
+Route::get('m/help', 'm\HelpController@index');// 帮助中心
