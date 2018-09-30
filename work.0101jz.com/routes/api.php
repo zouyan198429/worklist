@@ -296,6 +296,7 @@ Route::post('m/problem_type/ajax_get_child', 'm\ProblemTypeController@ajax_get_c
 Route::post('m/problem/ajax_save', 'm\ProblemController@ajax_save');// 新加/修改
 // 消息确认
 Route::post('m/msg/ajax_save', 'm\SiteMsgController@ajax_sure');// 新加/修改
+Route::post('m/msg/ajax_alist', 'm\SiteMsgController@ajax_alist');// ajax获得列表数据
 
 
 

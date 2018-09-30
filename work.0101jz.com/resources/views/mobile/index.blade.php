@@ -15,14 +15,7 @@
 			<img src="http://ofn8u9rp0.bkt.clouddn.com/logo-ydapp3.png" alt="移动工单管理系统">
 		</div>
 		<div class="box" id="indmess">
-			<ul>
-				@foreach ($msgList as $msg)
-				<li class="item">
-					<div class="con">  <i class="fa fa-bell-o  fa-fw" aria-hidden="true"></i>  {{ $msg['mst_content'] or '' }}</div>
-			 		<div class="btnbox2"><a href="#" class="btn smg_sure" data-id="{{ $msg['id'] or '' }}">收到</a></div>
-			 		<div class="c"></div>
-			 	</li>
-				@endforeach
+			<ul id="msgList" data-old_msg="0">
 			</ul>
 
 		</div>
@@ -30,12 +23,24 @@
 		<div class="line10"></div>
 		<div class="box" id="dynamic-table">
 			<div class="tab">
-                <a href="javascript:void(0);" class="on status_click" data-status="1">待确认({{ $waitSureCount or 0 }})</a>
-				<a href="javascript:void(0);" class=" status_click"  data-status="2">待处理({{ $doingCount or 0 }})</a>
+				@foreach ($status as $k=>$txt)
+					<a href="javascript:void(0);" data-status="{{ $k }}"  class=" status_click  @if ($k == $defaultStatus) on @endif" >
+						{{ $txt }}
+						@if(in_array($k,$countStatus))
+							(<span class="status_count_{{ $k }}" data-old_count="0">0</span>)
+						@endif
+					</a>
+				@endforeach
 				<a href="javascript:void(0);" class=" status_click" data-status="4,8">已完成</a>
 
                 <form style="display: none;" onsubmit="return false;" class="form-horizontal" role="form" method="post" id="search_frm" action="#">
-                    <input type="text" name="status" value="">
+					<select style="width:80px; height:28px;" name="status" >
+						<option value="">全部</option>
+						@foreach ($status as $k=>$txt)
+							<option value="{{ $k }}" @if ($k == $defaultStatus) selected @endif >{{ $txt }}</option>
+						@endforeach
+						<option value="4,8">已完成</option>
+					</select>
                     <button class="btn btn-normal  search_frm ">搜索</button>
                 </form>
 			</div>
@@ -52,6 +57,9 @@
 		</div>
 		@include('mobile.layout_public.menu', ['menu_id' => 1])
 	 </div>
+	<div style="display:none;">
+		@include('public.scan_sound')
+	</div>
 @endsection
 
 
@@ -61,7 +69,7 @@
 @push('footlast')
     <script type="text/javascript">
         var OPERATE_TYPE = <?php echo isset($operate_type)?$operate_type:0; ?>;
-        const AUTO_READ_FIRST = true;//自动读取第一页 true:自动读取 false:指定地方读取
+        const AUTO_READ_FIRST = false;//自动读取第一页 true:自动读取 false:指定地方读取
         const AJAX_URL = "{{ url('api/m/work/ajax_doing_list') }}";//ajax请求的url
         {{--const ADD_URL = "{{ url('m/work/add/0') }}"; //添加url--}}
         {{--const SHOW_URL = "{{url('m/work/info/')}}/";//显示页面地址前缀 + id--}}
@@ -77,11 +85,12 @@
     const WIN_WORK_URL = "{{ url('api/m/work/ajax_win') }}/";// ajax工单结单地址
     const WIN_WORK_PAGE_URL = "{{ url('m/work/win') }}/";// ajax工单结单地址
 
+        const SATUS_COUNT_URL = "{{ url('api/m/work/ajax_status_count') }}";// ajax工单状态统计 url
+        const NEED_PLAY_STATUS = "{{ $countPlayStatus }}";// 需要发声的状态，多个逗号,分隔
+
+		const MSG_LIST_URL = "{{ url('api/m/msg/ajax_alist') }}";// ajax最新消息 url
 
 </script>
  <script src="{{asset('js/common/list.js')}}"></script>
  <script src="{{asset('js/m/lanmu/index.js')}}"></script>
 @endpush
-
-
-

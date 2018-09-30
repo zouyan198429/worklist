@@ -136,4 +136,21 @@ class WorkController extends WorksController
         $resultDatas = CompanyWork::workWin($request, $this, $saveData, $id);
         return ajaxDataArr(1, $resultDatas, '');
     }
+
+    /**
+     * ajax获得工单状态统计
+     *
+     * @param Request $request
+     * @param int $staff_id 接收员工id
+     * @param int $operate_staff_id 添加员工id
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function ajax_status_count(Request $request){
+        $this->InitParams($request);
+        $user_id = $this->user_id;
+        $countArr = CompanyWork::statusCount($request, $this,$user_id,0);
+        return ajaxDataArr(1, $countArr, '');
+    }
+
 }

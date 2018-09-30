@@ -4,7 +4,7 @@
     <%for(var i = 0; i<data_list.length;i++){
     var item = data_list[i];
     %>
-    <li class="item">
+    <li class="item msg_<%=item.id%>"  data-id="<%=item.id%>">
         <div class="con">  <i class="fa fa-bell-o  fa-fw" aria-hidden="true"></i><%=item.mst_content%></div>
         <div class="btnbox2"><a href="#" class="btn smg_sure" data-id="<%=item.id%>">收到</a></div>
         <div class="c"></div>

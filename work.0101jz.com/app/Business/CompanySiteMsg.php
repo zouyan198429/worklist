@@ -20,6 +20,7 @@ class CompanySiteMsg extends BaseBusiness
      * @param Request $request 请求信息
      * @param Controller $controller 控制对象
      * @param int $oprateBit 操作类型位 1:获得所有的; 2 分页获取[同时有1和2，2优先]；4 返回分页html翻页代码
+     * @param string $queryParams 条件数组/json字符
      * @param mixed $relations 关系
      * @param int $isRead 0 未读;1已读
      * @param int $notLog 是否需要登陆 0需要1不需要
@@ -73,11 +74,11 @@ class CompanySiteMsg extends BaseBusiness
      * @return  array 列表数据
      * @author zouyan(305463219@qq.com)
      */
-    public static function getList(Request $request, Controller $controller, $oprateBit = 2 + 4, $relations = '', $notLog = 0){
+    public static function getList(Request $request, Controller $controller, $oprateBit = 2 + 4, $queryParams = [], $relations = '', $notLog = 0){
         $company_id = $controller->company_id;
 
         // 获得数据
-        $queryParams = [
+        $defaultQueryParams = [
             'where' => [
                 ['company_id', $company_id],
 //                ['accept_staff_id', $controller->user_id],
@@ -91,6 +92,9 @@ class CompanySiteMsg extends BaseBusiness
 //            'orderBy' => ['sort_num'=>'desc','id'=>'desc'],
             'orderBy' => ['id'=>'desc'],
         ];// 查询条件参数
+        if(empty($queryParams)){
+            $queryParams = $defaultQueryParams;
+        }
         // $relations = ['CompanyInfo'];// 关系
         // $relations = '';//['CompanyInfo'];// 关系
         $result = self::getBaseListData($request, $controller, self::$model_name, $queryParams,$relations , $oprateBit, $notLog);

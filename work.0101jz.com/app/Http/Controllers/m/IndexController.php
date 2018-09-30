@@ -22,9 +22,17 @@ class IndexController extends WorksController
     {
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
-        // 初始化数据
-        $arrList = CompanyWork::mobileInitData($request, $this);
-        $reDataArr = array_merge($reDataArr, $arrList);
+//        // 初始化数据
+//        $arrList = CompanyWork::mobileInitData($request, $this);
+//        $reDataArr = array_merge($reDataArr, $arrList);
+        $statusArr =  CompanyWork::$status_arr;
+        if(isset($statusArr[4]))  unset($statusArr[4]);
+        if(isset($statusArr[8]))  unset($statusArr[8]);
+        $reDataArr['status'] = $statusArr ;
+        $reDataArr['defaultStatus'] = 1;// 列表页默认状态
+        $reDataArr['countStatus'] = [-8,-4,0,1,2,4];// 列表页需要统计的状态数组
+        $reDataArr['countPlayStatus'] = '-8,-4,1';// 需要播放提示声音的状态，多个逗号,分隔 状态2的声音不需要。
+        $reDataArr['msgList'] = [];
         return view('mobile.index', $reDataArr);
     }
 

@@ -68,7 +68,7 @@ class CompanyWork extends BaseBusiness
      * @return  array 列表数据
      * @author zouyan(305463219@qq.com)
      */
-    public static function getList(Request $request, Controller $controller, $oprateBit = 2 + 4,$queryParams = [], $relations = '', $notLog = 0){
+    public static function getList(Request $request, Controller $controller, $oprateBit = 2 + 4, $queryParams = [], $relations = '', $notLog = 0){
         $company_id = $controller->company_id;
 
         // 获得数据
@@ -85,9 +85,9 @@ class CompanyWork extends BaseBusiness
 //            'orderBy' => ['sort_num'=>'desc','id'=>'desc'],
             'orderBy' => ['id'=>'desc'],
         ];// 查询条件参数
-        if(empty($queryParams)){
+         if(empty($queryParams)){
             $queryParams = $defaultQueryParams;
-        }
+         }
         $status = Common::get($request, 'status');
         $field = Common::get($request, 'field');
         $keyWord = Common::get($request, 'keyWord');
@@ -193,7 +193,15 @@ class CompanyWork extends BaseBusiness
                 'status'=> $statusArr,
             ];
         }else{
-            array_push($queryParams['where'],['status', $status]);
+            if($status == "-8"){ // 重点关注
+                $queryParams['whereIn']['status'] = [0,1,2];
+                array_push($queryParams['where'],['is_focus', 1]);
+            }elseif($status == "-4"){ // 过期未处理
+                $queryParams['whereIn']['status'] = [0,1,2];
+                array_push($queryParams['where'],['is_overdue', 1]);
+            }else{
+                array_push($queryParams['where'],['status', $status]);
+            }
         }
 //        if(in_array($status, [1,2])){
 //            $queryParams['orderBy'] = ['book_time'=>'desc','id'=>'desc'];
