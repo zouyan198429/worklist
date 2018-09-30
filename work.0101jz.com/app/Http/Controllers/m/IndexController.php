@@ -28,6 +28,7 @@ class IndexController extends WorksController
         $statusArr =  CompanyWork::$status_arr;
         if(isset($statusArr[4]))  unset($statusArr[4]);
         if(isset($statusArr[8]))  unset($statusArr[8]);
+        if(isset($statusArr[-4]))  unset($statusArr[-4]);
         $reDataArr['status'] = $statusArr ;
         $reDataArr['defaultStatus'] = 1;// 列表页默认状态
         $reDataArr['countStatus'] = [-8,-4,0,1,2,4];// 列表页需要统计的状态数组
