@@ -58,6 +58,7 @@ Route::post('work/workReSend', 'CompanyWorkController@workReSend');//工单重�
 Route::post('work/workSure', 'CompanyWorkController@workSure');//确认工单
 Route::post('work/workWin', 'CompanyWorkController@workWin');//结单
 Route::post('work/workReply', 'CompanyWorkController@workReply');//回访
+Route::post('work/workCount', 'CompanyWorkController@workCount');//工单统计
 // 统计
 Route::post('work/statusCount', 'CompanyWorkController@statusCount');//工单状态统计
 

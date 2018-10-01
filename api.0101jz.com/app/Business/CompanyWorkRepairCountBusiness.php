@@ -38,6 +38,7 @@ class CompanyWorkRepairCountBusiness extends BaseBusiness
             'department_id' => $department_id,
             'group_id' => $group_id,
             'operate_staff_id' => $operate_staff_id,// $workObj->operate_staff_id,
+            'count_date' => $currentNow->toDateString(),
             'count_year' => $currentNow->year,
             'count_month' => $currentNow->month,
             'count_day' => $currentNow->day,
