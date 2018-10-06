@@ -1091,6 +1091,8 @@ class CompanyWorkController extends CompController
         $company_id = $this->company_id;
         $staff_id = Common::getInt($request, 'staff_id');// 接收员工id
         $operate_staff_id = Common::getInt($request, 'operate_staff_id');// 添加员工id
+
+        // 统计工单状态
         $status = [0,1,2,4];
         $result = CompanyWorkBusiness::getGroupCount($company_id, $status, $staff_id, $operate_staff_id);
         // -8重点关注
@@ -1103,4 +1105,50 @@ class CompanyWorkController extends CompController
         return  okArray($result);
     }
 
+    /**
+     * 工单统计
+     *
+     * @param int $id
+     * @return Response
+     * @author zouyan(305463219@qq.com)
+     */
+    public function workCount(Request $request)
+    {
+        $this->InitParams($request);
+        $company_id = $this->company_id;
+        // operate_no 操作编号
+        $operate_no = Common::getInt($request, 'operate_no');
+
+        $staff_id = Common::getInt($request, 'staff_id');// 接收员工id
+        $operate_staff_id = Common::getInt($request, 'operate_staff_id');// 添加员工id
+
+        $listData = [];
+        //处理状态中的状态统计
+        if(($operate_no & 1) == 1 ) {
+            // 统计工单状态
+            $status = [0, 1, 2, 4];
+            $result = CompanyWorkBusiness::getGroupCount($company_id, $status, $staff_id, $operate_staff_id);
+            // -8重点关注   ]
+            $otherWhere = [['is_focus', '=', 1]];
+            $result[-8] = CompanyWorkBusiness::getCount($company_id, $staff_id, [0, 1, 2], $operate_staff_id, $otherWhere);
+            // -4过期未处理
+            $otherWhere = [['is_overdue', '=', 1]];
+            $result[-4] = CompanyWorkBusiness::getCount($company_id, $staff_id, [0, 1, 2], $operate_staff_id, $otherWhere);
+            $listData['status'] = $result;
+        }
+        //工单来电统计
+        if(($operate_no & 2) == 2 ) {
+            $selectArr = [];
+            $otherWhere = [];
+            $inWhereArr = [];
+            $groupByArr = [];
+            $havingRaw = '';
+            $orderByArr = [];
+            CompanyWorkCallCountBusiness::getCount($company_id, $selectArr, $otherWhere, $inWhereArr, $groupByArr, $havingRaw , $orderByArr);
+
+        }
+
+
+        return  okArray($listData);
+    }
 }

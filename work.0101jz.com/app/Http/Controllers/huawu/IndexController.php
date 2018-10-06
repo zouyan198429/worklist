@@ -10,6 +10,13 @@ use Illuminate\Http\Request;
 
 class IndexController extends WorksController
 {
+
+    public function test(Request $request)
+    {
+        phpinfo();
+    }
+
+
     /**
      * 首页
      *

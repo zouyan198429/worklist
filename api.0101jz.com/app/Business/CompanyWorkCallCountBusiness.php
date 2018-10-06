@@ -3,6 +3,7 @@
 namespace App\Business;
 
 
+use App\Models\CompanyWorkCallCount;
 use App\Services\Common;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -57,14 +58,16 @@ class CompanyWorkCallCountBusiness extends BaseBusiness
      * 统计工单
      *
      * @param int $company_id 公司id
-     * @param int $staff_id 员工id
-     * @param int $status 状态
-     * @param int $operate_staff_id 添加员工id
+     * @param array $selectArr 返回字段数组 一维
      * @param array $otherWhere 其它条件[['company_id', '=', $company_id],...]
-     * @return Response
+     * @param array $inWhereArr in条件 一维数组 ['字段'->[数组值]]
+     * @param array $groupByArr 分组字段数组 一维
+     * @param string $havingRaw 分组过滤条件
+     * @param array $orderByArr in条件 一维数组 ['字段'->'asc/desc']
+     * @return array
      * @author zouyan(305463219@qq.com)
      */
-    public static function getCount($company_id, $staff_id = 0 , $status = 0, $operate_staff_id = 0, $otherWhere = [])
+    public static function getCount($company_id, $selectArr = [] , $otherWhere = [], $inWhereArr = [], $groupByArr = [], $havingRaw = '', $orderByArr = [])
     {
         $where = [
             ['company_id', '=', $company_id],
@@ -74,27 +77,29 @@ class CompanyWorkCallCountBusiness extends BaseBusiness
             $where = array_merge($where, $otherWhere);
         }
 
-        if ($staff_id > 0) {
-            array_push($where, ['send_staff_id', '=', $staff_id]);
+        $select = 'sum(amount) as amount ';
+        array_push($selectArr, $select);
+        $obj = CompanyWorkCallCount::where($where)
+            ->select(DB::raw(implode(',', $selectArr)));
+
+        foreach($inWhereArr as $field => $inWhere){
+            $obj->whereIn($field,$inWhere);
         }
 
-        if ($operate_staff_id > 0) {
-            array_push($where, ['operate_staff_id', '=', $operate_staff_id]);
+        foreach($groupByArr as $group){
+            $obj->groupBy($group);
         }
-        $dataList = CompanyWorkDoing::whereIn('status', $status)->where($where)
-            ->select(DB::raw('count(*) as status_count, status'))
-            ->groupBy('status')
-            ->get();
-        $requestData = [];
-        foreach ($dataList as $info) {
-            $requestData[$info['status']] = $info['status_count'];
+
+        if(!empty($havingRaw)){
+            $obj->havingRaw($havingRaw);
         }
-        foreach ($status as $temStatus) {
-            if (isset($requestData[$temStatus])) {
-                continue;
-            }
-            $requestData[$temStatus] = 0;
+
+        foreach($orderByArr as $field => $order){
+            $obj->orderBy($field, $order);
         }
-        return $requestData;
+
+        $dataList = $obj->get();
+
+        return $dataList;
     }
 }
