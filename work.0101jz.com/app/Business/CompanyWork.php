@@ -35,6 +35,13 @@ class CompanyWork extends BaseBusiness
         '3' => '按年统计',
     ];
 
+    // 统计总量类型 1 按天统计[当月天的] ; 2 按月统计[当年的]; 3 按年统计
+    public static $countSumArr = [
+        '1' => '当天',
+        '2' => '按月统计',
+        '3' => '按年统计',
+    ];
+
     /**
      * 手机站首页页面初始化要填充的数据
      *

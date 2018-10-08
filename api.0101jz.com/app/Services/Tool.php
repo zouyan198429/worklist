@@ -734,4 +734,42 @@ class Tool
         }
         return $str;
     }
+
+    /**
+     * 功能：获得日期
+     * @param int $dateType 日期类型 1本周一;2 本周日;3 上周一;4 上周日;5 本月一日;6 本月最后一日;7 上月一日;8 上月最后一日
+     * @return mixed $date 日期
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function getDateByType($dateType){
+        switch($dateType){
+            case 1://1本周一;
+                return date('Y-m-d', (time() - ((date('w') == 0 ? 7 : date('w')) - 1) * 24 * 3600)); //w为星期几的数字形式,这里0为周日
+                break;
+            case 2://2 本周日;
+                return date('Y-m-d', (time() + (7 - (date('w') == 0 ? 7 : date('w'))) * 24 * 3600)); //同样使用w,以现在与周日相关天数算
+                break;
+            case 3://3 上周一;
+                return date('Y-m-d', strtotime('-1 monday', time())); //无论今天几号,-1 monday为上一个有效周未
+                break;
+            case 4:// 4 上周日;
+                return date('Y-m-d', strtotime('-1 sunday', time())); //上一个有效周日,同样适用于其它星期;
+                break;
+            case 5:// 5 本月一日;
+                return date('Y-m-d', strtotime(date('Y-m', time()) . '-01 00:00:00')); //直接以strtotime生成;
+                break;
+            case 6:// 6 本月最后一日;
+                return date('Y-m-d', strtotime(date('Y-m', time()) . '-' . date('t', time()) . ' 00:00:00')); //t为当月天数,28至31天
+                break;
+            case 7:// 7 上月一日;
+                return date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m', time()) . '-01 00:00:00'))); //本月一日直接strtotime上减一个月;
+                break;
+            case 8:// 8 上月最后一日
+                return date('Y-m-d', strtotime(date('Y-m', time()) . '-01 00:00:00') - 86400); //本月一日减一天即是上月最后一日;
+                break;
+            default:
+                break;
+        }
+        return '';
+    }
 }

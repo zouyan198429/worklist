@@ -10,9 +10,9 @@ function zhuzhuangtu(yMax,data,dataAxis,id,title){
     var myChart = echarts.init(dom);
     var app = {};
     option = null;
-    var dataAxis = dataAxis;
-    var data = data;
-    var yMax = yMax;
+    // var dataAxis = dataAxis;
+    // var data = data;
+    // var yMax = yMax;
     var dataShadow = [];
 
     for (var i = 0; i < data.length; i++) {
@@ -100,14 +100,18 @@ function zhuzhuangtu(yMax,data,dataAxis,id,title){
     };
 
     // Enable data zoom when user click bar.
-    var zoomSize = 6;
-    myChart.on('click', function (params) {
-        myChart.dispatchAction({
-            type: 'dataZoom',
-            startValue: dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)],
-            endValue: dataAxis[Math.min(params.dataIndex + zoomSize / 2, data.length - 1)]
-        });
-    });
+    // var zoomSize = 6;
+    // myChart.on('click', function (params) {
+    //     console.log(params);
+    //     console.log('data');
+    //     console.log(data);
+    //     console.log(data.length);
+    //     myChart.dispatchAction({
+    //         type: 'dataZoom',
+    //         startValue: dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)],
+    //         endValue: dataAxis[Math.min(params.dataIndex + zoomSize / 2, data.length - 1)]
+    //     });
+    // });
     if (option && typeof option === "object") {
         myChart.setOption(option, true);
     }

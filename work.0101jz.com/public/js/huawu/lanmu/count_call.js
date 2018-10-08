@@ -93,17 +93,21 @@ function ajax_call_count(staff_id, operate_staff_id){
                 var data = result.dataY;// [220, 182, 191, 234, 290, 330, 310, 123, 442, 321, 90, 149, 210, 122, 133, 334, 198, 123, 125, 220];
                 var yMax = result.yMax;// 500;
                 var barGraphId = BAR_GRAPH_ID;// "container";
-                if($(".chart_title").length > 0){
-                    $(".chart_title").html(title);
-                }
                 /*
                 * ymax: 柱状图阴影部分的高度(如果数值高于左边的数字，左边的数字也会增长)
                 * dataAxis：柱状图上的显示的文字(一维数组)
                 * data：柱状图上的数值(一维数组)
                 * barGraphId：div的id名
                 * */
+                console.log(yMax);
+                console.log(data);
+                console.log(dataAxis);
+                console.log(barGraphId);
+                console.log(title);
                 zhuzhuangtu(yMax,data,dataAxis,barGraphId,title);
-
+                if($(".chart_title").length > 0){
+                    $(".chart_title").html(title);
+                }
                 // 列表数据
                 var listObj = $("#dataList");
                 var htmlStr = resolve_baidu_template('baidu_template_data_list',ret.result,'');//解析
