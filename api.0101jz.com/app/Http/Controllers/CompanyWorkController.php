@@ -1092,15 +1092,21 @@ class CompanyWorkController extends CompController
         $staff_id = Common::getInt($request, 'staff_id');// 接收员工id
         $operate_staff_id = Common::getInt($request, 'operate_staff_id');// 添加员工id
 
+        $send_department_id = Common::getInt($request, 'send_department_id');// 派到部门id
+        $send_group_id = Common::getInt($request, 'send_group_id');// 派到小组id
+
+        $department_id = Common::getInt($request, 'department_id');// 部门id
+        $group_id = Common::getInt($request, 'group_id');// 小组id
+
         // 统计工单状态
         $status = [0,1,2,4];
-        $result = CompanyWorkBusiness::getGroupCount($company_id, $status, $staff_id, $operate_staff_id);
+        $result = CompanyWorkBusiness::getGroupCount($company_id, $status, $send_department_id, $send_group_id, $department_id, $group_id, $staff_id, $operate_staff_id);
         // -8重点关注
         $otherWhere = [['is_focus', '=', 1]];
-        $result[-8] = CompanyWorkBusiness::getCount($company_id, $staff_id, [0,1,2], $operate_staff_id, $otherWhere);
+        $result[-8] = CompanyWorkBusiness::getCount($company_id, $send_department_id, $send_group_id, $department_id, $group_id, $staff_id, [0,1,2], $operate_staff_id, $otherWhere);
         // -4过期未处理
         $otherWhere = [['is_overdue', '=', 1]];
-        $result[-4] = CompanyWorkBusiness::getCount($company_id, $staff_id, [0,1,2], $operate_staff_id, $otherWhere);
+        $result[-4] = CompanyWorkBusiness::getCount($company_id, $send_department_id, $send_group_id, $department_id, $group_id, $staff_id, [0,1,2], $operate_staff_id, $otherWhere);
 
         return  okArray($result);
     }
@@ -1119,36 +1125,105 @@ class CompanyWorkController extends CompController
         // operate_no 操作编号
         $operate_no = Common::getInt($request, 'operate_no');
 
+        $send_department_id = Common::getInt($request, 'send_department_id');// 派到部门id
+        $send_group_id = Common::getInt($request, 'send_group_id');// 派到小组id
+
+        $department_id = Common::getInt($request, 'department_id');// 部门id
+        $group_id = Common::getInt($request, 'group_id');// 小组id
+
         $staff_id = Common::getInt($request, 'staff_id');// 接收员工id
         $operate_staff_id = Common::getInt($request, 'operate_staff_id');// 添加员工id
+
+        $begin_date = Common::get($request, 'begin_date');// 开始日期
+        $end_date = Common::get($request, 'end_date');// 结束日期
+
+        $nowTime = time();
+
+        if (!empty($begin_date)) {
+            $begin_date_unix = judgeDate($begin_date);
+            if($begin_date_unix === false){
+                errorArray('开始日期不是有效日期');
+            }
+            if($nowTime < $begin_date_unix){
+                errorArray( '开始日期不能大于当前日期!');
+            }
+        }
+
+        if (!empty($end_date)) {
+            $end_date_unix = judgeDate($end_date);
+            if($end_date_unix === false){
+                errorArray('结束日期不是有效日期');
+            }
+            if($nowTime < $end_date_unix){
+                errorArray('结束日期不能大于当前日期!');
+            }
+        }
+
+
+        if(!empty($begin_date) && !empty($end_date) && $end_date_unix < $begin_date_unix){
+            errorArray('结束日期不能小于开始日期');
+        }
 
         $listData = [];
         //处理状态中的状态统计
         if(($operate_no & 1) == 1 ) {
             // 统计工单状态
             $status = [0, 1, 2, 4];
-            $result = CompanyWorkBusiness::getGroupCount($company_id, $status, $staff_id, $operate_staff_id);
+            $result = CompanyWorkBusiness::getGroupCount($company_id, $status, $send_department_id, $send_group_id, $department_id, $group_id, $staff_id, $operate_staff_id);
             // -8重点关注   ]
             $otherWhere = [['is_focus', '=', 1]];
-            $result[-8] = CompanyWorkBusiness::getCount($company_id, $staff_id, [0, 1, 2], $operate_staff_id, $otherWhere);
+            $result[-8] = CompanyWorkBusiness::getCount($company_id, $send_department_id, $send_group_id, $department_id, $group_id, $staff_id, [0, 1, 2], $operate_staff_id, $otherWhere);
             // -4过期未处理
             $otherWhere = [['is_overdue', '=', 1]];
-            $result[-4] = CompanyWorkBusiness::getCount($company_id, $staff_id, [0, 1, 2], $operate_staff_id, $otherWhere);
+            $result[-4] = CompanyWorkBusiness::getCount($company_id, $send_department_id, $send_group_id, $department_id, $group_id, $staff_id, [0, 1, 2], $operate_staff_id, $otherWhere);
             $listData['status'] = $result;
         }
-        //工单来电统计
+        //工单来电统计-总量统计
         if(($operate_no & 2) == 2 ) {
-            $selectArr = [];
-            $otherWhere = [];
-            $inWhereArr = [];
-            $groupByArr = [];
-            $havingRaw = '';
-            $orderByArr = [];
-            CompanyWorkCallCountBusiness::getCount($company_id, $selectArr, $otherWhere, $inWhereArr, $groupByArr, $havingRaw , $orderByArr);
-
+            $listData['callCount'] = CompanyWorkCallCountBusiness::getCountAmount($company_id, 0, $begin_date, $end_date,  $operate_staff_id, $department_id, $group_id);
+        }
+        //工单来电统计-按日期统计
+        if(($operate_no & 4) == 4 ) {
+            $listData['callCountDay'] = CompanyWorkCallCountBusiness::getCountAmount($company_id, 1, $begin_date, $end_date, $operate_staff_id, $department_id, $group_id);
+        }
+        //工单来电统计-按月统计
+        if(($operate_no & 8) == 8 ) {
+            $listData['callCountMonth'] = CompanyWorkCallCountBusiness::getCountAmount($company_id, 2, $begin_date, $end_date, $operate_staff_id, $department_id, $group_id);
+        }
+        //工单来电统计-按年统计
+        if(($operate_no & 16) == 16 ) {
+            $listData['callCountYear'] = CompanyWorkCallCountBusiness::getCountAmount($company_id, 3, $begin_date, $end_date, $operate_staff_id, $department_id, $group_id);
+        }
+        //工单来电统计-按其它统计
+        if(($operate_no & 32) == 32 ) {
+            $listData['callCountSelf'] = CompanyWorkCallCountBusiness::getCountAmount($company_id, 4, $begin_date, $end_date, $operate_staff_id, $department_id, $group_id);
         }
 
 
+        //工单维修统计-总量统计
+        if(($operate_no & 64) == 64 ) {
+            $listData['repairCount'] = CompanyWorkRepairCountBusiness::getCountAmount($company_id, 0, $begin_date, $end_date,  $staff_id, $department_id, $group_id);
+        }
+
+        //工单维修统计-按日期统计
+        if(($operate_no & 128) == 128 ) {
+            $listData['repairCountDay'] = CompanyWorkRepairCountBusiness::getCountAmount($company_id, 1, $begin_date, $end_date, $staff_id, $department_id, $group_id);
+        }
+
+        //工单维修统计-按月统计
+        if(($operate_no & 256) == 256 ) {
+            $listData['repairCountMonth'] = CompanyWorkRepairCountBusiness::getCountAmount($company_id, 2, $begin_date, $end_date, $staff_id, $department_id, $group_id);
+        }
+
+        //工单维修统计-按年统计
+        if(($operate_no & 512) == 512 ) {
+            $listData['repairCountYear'] = CompanyWorkRepairCountBusiness::getCountAmount($company_id, 3, $begin_date, $end_date, $staff_id, $department_id, $group_id);
+        }
+
+        //工单维修统计-按其它统计
+        if(($operate_no & 1024) == 1024 ) {
+            $listData['repairCountSelf'] = CompanyWorkRepairCountBusiness::getCountAmount($company_id, 4, $begin_date, $end_date, $staff_id, $department_id, $group_id);
+        }
         return  okArray($listData);
     }
 }

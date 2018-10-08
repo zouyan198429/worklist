@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\huawu;
 
 use App\Business\CompanyStaff;
+use App\Business\CompanyWork;
 use App\Http\Controllers\WorksController;
 use App\Services\Common;
 use App\Services\CommonBusiness;
@@ -28,6 +29,14 @@ class IndexController extends WorksController
     {
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
+        $statusArr =  CompanyWork::$status_arr;
+        // if(isset($statusArr[4]))  unset($statusArr[4]);
+        if(isset($statusArr[8]))  unset($statusArr[8]);
+        // if(isset($statusArr[-4]))  unset($statusArr[-4]);
+        $reDataArr['status'] = $statusArr ;
+        $reDataArr['defaultStatus'] = 1;// 列表页默认状态
+        $reDataArr['countStatus'] = [-8,-4,0,1,2,4];// 列表页需要统计的状态数组
+        $reDataArr['countPlayStatus'] = '-8,-4,4';// 需要播放提示声音的状态，多个逗号,分隔
         return view('huawu.index', $reDataArr);
     }
 

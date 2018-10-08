@@ -607,5 +607,91 @@ class Tool
         return self::setRedis($pre, $key, $value, $expire , $operate); // 1天
     }
 
+    /**
+     * 列出日期區間的 所有日期清單
+     * @param string $first 开始日期 YYYY-MM-DD
+     * @param string $last 结束日期 YYYY-MM-DD
+     * @param string $step 步长 '+1 day'
+     * @param string $format 日期格式化 'Y-m-d'
+     * @return array $dates  区间内的日期[含]
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function dateRange($first, $last, $step = '+1 day', $format = 'Y-m-d')
+    {
+        $dates   = [];
+        $current = strtotime($first);
+        $last    = strtotime($last);
 
+        while ($current <= $last) {
+            $dates[] = date($format, $current);
+            $current = strtotime($step, $current);
+        }
+        return $dates;
+    }
+
+
+    /**
+     * 列出日期區間的 所有月清單
+     * @param string $start 开始日期 YYYY-MM-DD
+     * @param string $end 结束日期 YYYY-MM-DD
+     * @return array $dates  区间内的月[含] [201809,201810]
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function showMonthRange($start, $end)
+    {
+        $end = date('Ym', strtotime($end)); // 转换为月
+        $range = [];
+        $i = 0;
+        do {
+            $month = date('Ym', strtotime($start . ' + ' . $i . ' month'));
+            //echo $i . ':' . $month . '<br>';
+            $range[] = $month;
+            $i++;
+        } while ($month < $end);
+
+        return $range;
+    }
+
+    /**
+     * 列出日期區間的 所有年清單
+     * @param string $start 开始日期 YYYY-MM-DD
+     * @param string $end 结束日期 YYYY-MM-DD
+     * @return array $dates  区间内的年[含] [2015,2016,2017,2018]
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function showYearRange($start, $end)
+    {
+        $end = date('Y', strtotime($end)); // 转换为月
+        $range = [];
+        $i = 0;
+        do {
+            $year = date('Y', strtotime($start . ' + ' . $i . ' year'));
+            //echo $i . ':' . $year . '<br>';
+            $range[] = $year;
+            $i++;
+        } while ($year < $end);
+
+        return $range;
+    }
+
+    /**
+     * 你上面的方法我觉得不怎么好，介绍一下我写的一个方法。方法函数如下，这样当你要的结果001的话，方法：dispRepair('1',3,'0')
+     * 功能：补位函数
+     * @param string str 原字符串
+     * @param string len 新字符串长度
+     * @param string $msg 填补字符
+     * @param string $type 类型，0为后补，1为前补
+     * @return array $dates  区间内的年[含] [2015,2016,2017,2018]
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function dispRepair($str, $len, $msg, $type = '1') {
+        $length = $len - strlen($str);
+        if ($length<1) return $str;
+        if ($type == 1) {
+            $str = str_repeat($msg, $length) . $str;
+        } else {
+            $str .= str_repeat($msg, $length);
+        }
+        return $str;
+    }
 }

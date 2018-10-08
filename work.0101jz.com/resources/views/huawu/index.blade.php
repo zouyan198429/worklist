@@ -10,26 +10,26 @@
 	<div class="mm">
 		<h2>信息总揽</h2>
 		<div class="row" >
+			@foreach ($status as $k=>$txt)
+				<div class="col-sm">
+					@if(in_array($k,$countStatus))
+						<p class="layui-badge status_count_{{ $k }}" data-old_count="0">0</p>
+					@endif
+					<h4>{{ $txt }}</h4>
+				</div>
+			@endforeach
+			{{--
 			<div class="col-sm">
 				<p>0</p>
 				<h4>今日受理工单</h4>
 			</div>
-			<div class="col-sm">
-				<p>5</p>
-				<h4>紧急工单</h4>
-			</div>
-			<div class="col-sm">
-				<p>0</p>
-				<h4>昨日遗留工单</h4>
-			</div>
-			<div class="col-sm">
-				<p>0</p>
-				<h4>完成工单</h4>
-			</div>
-
+			--}}
 		</div>
 
 
+	</div>
+	<div style="display:none;">
+		@include('public.scan_sound')
 	</div>
 @endsection
 
@@ -38,4 +38,10 @@
 @endpush
 
 @push('footlast')
+	<script type="text/javascript">
+        const SATUS_COUNT_URL = "{{ url('api/huawu/work/ajax_status_count') }}";// ajax工单状态统计 url
+        const NEED_PLAY_STATUS = "{{ $countPlayStatus }}";// 需要发声的状态，多个逗号,分隔
+
+	</script>
+	<script src="{{ asset('js/huawu/lanmu/index.js') }}"  type="text/javascript"></script>
 @endpush

@@ -83,6 +83,10 @@ class CompanyWorkBusiness extends BaseBusiness
      * 按状态统计工单数量
      *
      * @param int $company_id 公司id
+     * @param int $send_department_id 派到部门id
+     * @param int $send_group_id 派到小组id
+     * @param int $department_id 部门id
+     * @param int $group_id 小组id
      * @param int $staff_id 员工id
      * @param int $status 状态
      * @param int $operate_staff_id 添加员工id
@@ -90,7 +94,7 @@ class CompanyWorkBusiness extends BaseBusiness
      * @return Response
      * @author zouyan(305463219@qq.com)
      */
-    public static function getCount($company_id, $staff_id = 0 , $status = 0, $operate_staff_id = 0, $otherWhere = []){
+    public static function getCount($company_id, $send_department_id = 0, $send_group_id = 0, $department_id = 0, $group_id = 0, $staff_id = 0 , $status = 0, $operate_staff_id = 0, $otherWhere = []){
         $where = [
             ['company_id', '=', $company_id],
             // ['send_staff_id', '=', $staff_id],
@@ -102,6 +106,22 @@ class CompanyWorkBusiness extends BaseBusiness
 
         if(is_numeric($status)){
             array_push($where,['status', '=', $status]);
+        }
+
+        if($send_department_id > 0){
+            array_push($where,['send_department_id', '=', $send_department_id]);
+        }
+
+        if($send_group_id > 0){
+            array_push($where,['send_group_id', '=', $send_group_id]);
+        }
+
+        if($department_id > 0){
+            array_push($where,['department_id', '=', $department_id]);
+        }
+
+        if($group_id > 0){
+            array_push($where,['group_id', '=', $group_id]);
         }
 
         if($staff_id > 0){
@@ -133,13 +153,17 @@ class CompanyWorkBusiness extends BaseBusiness
      *
      * @param int $company_id 公司id
      * @param array $status 状态  一维数组
+     * @param int $send_department_id 派到部门id
+     * @param int $send_group_id 派到小组id
+     * @param int $department_id 部门id
+     * @param int $group_id 小组id
      * @param int $staff_id 接收员工id
      * @param int $operate_staff_id 添加员工id
      * @param array $otherWhere 其它条件[['company_id', '=', $company_id],...]
      * @return array ['状态'=> 数量,...]
      * @author zouyan(305463219@qq.com)
      */
-    public static function getGroupCount($company_id, $status, $staff_id = 0, $operate_staff_id = 0, $otherWhere = []){
+    public static function getGroupCount($company_id, $status, $send_department_id = 0, $send_group_id = 0, $department_id = 0, $group_id = 0, $staff_id = 0, $operate_staff_id = 0, $otherWhere = []){
         $where = [
             ['company_id', '=', $company_id],
             // ['send_staff_id', '=', $staff_id],
@@ -148,6 +172,23 @@ class CompanyWorkBusiness extends BaseBusiness
         if(!empty($otherWhere)){
             $where = array_merge($where, $otherWhere);
         }
+
+        if($send_department_id > 0){
+            array_push($where,['send_department_id', '=', $send_department_id]);
+        }
+
+        if($send_group_id > 0){
+            array_push($where,['send_group_id', '=', $send_group_id]);
+        }
+
+        if($department_id > 0){
+            array_push($where,['department_id', '=', $department_id]);
+        }
+
+        if($group_id > 0){
+            array_push($where,['group_id', '=', $group_id]);
+        }
+
         if($staff_id > 0){
             array_push($where,['send_staff_id', '=', $staff_id]);
         }
