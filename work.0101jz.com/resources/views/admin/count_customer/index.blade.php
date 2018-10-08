@@ -33,7 +33,8 @@
 
 @push('footlast')
 {{--这个js是引用echarts的插件的js--}}
-<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+{{--<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>--}}
+<script type="text/javascript" src="{{asset('js/common/echarts.min.js')}}"></script>
 <script src="{{asset('js/common/graph.js')}}"></script>
 <script type="text/javascript">
 

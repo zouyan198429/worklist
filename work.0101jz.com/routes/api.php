@@ -242,6 +242,7 @@ Route::post('weixiu/work/ajax_doing_list', 'weixiu\WorkController@ajax_doing_lis
 Route::post('weixiu/work/ajax_sure', 'weixiu\WorkController@ajax_sure');// 确认工单地址
 Route::post('weixiu/work/ajax_win', 'weixiu\WorkController@ajax_win');// 工单结单地址
 Route::post('weixiu/work/ajax_status_count', 'weixiu\WorkController@ajax_status_count');// 工单状态统计
+Route::post('weixiu/work/ajax_repair_count', 'weixiu\WorkController@ajax_repair_count');// 工单维修统计
 
 // 系统模块
 Route::post('weixiu/system_module/ajax_get_child', 'weixiu\SystemModuleController@ajax_get_child');// 获得子类部门数组[kv一维数组]

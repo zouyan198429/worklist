@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\weixiu;
 
+use App\Business\CompanyWork;
 use App\Business\CompanyStaffCustomer;
 use App\Http\Controllers\WorksController;
 use Illuminate\Http\Request;
@@ -35,6 +36,8 @@ class CustomerController extends WorksController
     {
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
+        $reDataArr['count_types'] =  CompanyWork::$countTypeArr;
+        $reDataArr['defaultCountType'] = 1;// 列表页默认状态
         return view('weixiu.customer.dayCount', $reDataArr);
     }
 

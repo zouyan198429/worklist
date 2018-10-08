@@ -20,7 +20,8 @@
 	
 </body>
 </html>
-<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+{{--<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>--}}
+<script src="{{asset('js/admin/jquery2.1.4/jquery.min.js')}}"></script>
 <!-- 弹出层-->
 <script src="{{ asset('/static/js/custom/layer/layer.js') }}"></script>
 <!-- 公共方法-->
