@@ -183,7 +183,7 @@ class CompanyWorkRepairCountBusiness extends BaseBusiness
                 $temDataArr['count_month'] = '';
                 break;
             case 3:// 3日期统计[按年]
-                array_push($selectArr, 'count_year', 'count_date');
+                array_push($selectArr, 'count_year');
                 array_push($groupByArr, 'count_year');
                 $orderByArr['count_year'] = 'asc';
                 $temDataArr['count_year'] = '';
@@ -199,7 +199,10 @@ class CompanyWorkRepairCountBusiness extends BaseBusiness
         if(empty($begin_date)){
             $begin_date = $countList[0]['count_date'] ?? '';
             // 没有数据
-            if(empty($begin_date)) return $countList;
+            if(empty($begin_date)){
+                if(empty($end_date)) return $countList;
+                $begin_date = $end_date;
+            }
         }
 
         $formatCountList = [];
@@ -251,5 +254,4 @@ class CompanyWorkRepairCountBusiness extends BaseBusiness
         $countList = $returnData;
         return $countList;
     }
-
 }

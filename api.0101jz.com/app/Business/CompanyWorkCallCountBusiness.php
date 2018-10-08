@@ -199,7 +199,10 @@ class CompanyWorkCallCountBusiness extends BaseBusiness
         if(empty($begin_date)){
             $begin_date = $countList[0]['count_date'] ?? '';
             // 没有数据
-            if(empty($begin_date)) return $countList;
+            if(empty($begin_date)){
+                if(empty($end_date)) return $countList;
+                $begin_date = $end_date;
+            }
         }
 
         $formatCountList = [];

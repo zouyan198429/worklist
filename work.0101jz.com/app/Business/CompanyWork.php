@@ -28,6 +28,13 @@ class CompanyWork extends BaseBusiness
         '8' => '已完成',
     ];
 
+    // 统计类型 1 按天统计[当月天的] ; 2 按月统计[当年的]; 3 按年统计
+    public static $countTypeArr = [
+        '1' => '按天统计',
+        '2' => '按月统计',
+        '3' => '按年统计',
+    ];
+
     /**
      * 手机站首页页面初始化要填充的数据
      *
@@ -584,4 +591,61 @@ class CompanyWork extends BaseBusiness
         // $requestTesUrl = splicQuestAPI($url , $requestData);
         return HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
     }
+
+    /**
+     * 工单状态统计
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param array $params
+        $params = [
+            'operate_no' => '操作编号',
+            'send_department_id' => '派到部门id',
+            'send_group_id' => '派到小组id',
+            'department_id' => '部门id',
+            'group_id' => '小组id',
+            'staff_id' => '接收员工id',
+            'operate_staff_id' => '添加员工id',
+            'begin_date' => '开始日期',
+            'end_date' => '结束日期',
+        ];
+        操作编号的值及下标
+        status 1统计工单状态
+        callCount 2工单来电统计-总量统计
+        callCountDay 4 工单来电统计-按日期统计
+        callCountMonth 8 工单来电统计-按月统计
+        callCountYear 16 工单来电统计-按年统计
+        callCountSelf 32 工单来电统计-按其它统计
+        repairCountDay 128 工单维修统计-按日期统计
+        repairCountMonth 256 工单维修统计-按月统计
+        repairCountYear 512 工单维修统计-按年统计
+        repairCountSelf 1024 工单维修统计-按其它统计
+     * @param int $operate_staff_id 添加员工id
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function workCount(Request $request, Controller $controller, $params = [], $notLog = 0)
+    {
+        $company_id = $controller->company_id;
+        // $staff_id = Common::getInt($request, 'staff_id');// 接收员工id
+        // $operate_staff_id = Common::getInt($request, 'operate_staff_id');// 添加员工id
+        // 参数
+        $requestData = [
+            'company_id' => $company_id,
+            'operate_no' => $params['operate_no'] ?? 0,// 操作编号
+            'send_department_id' => $params['send_department_id'] ?? 0,// 派到部门id
+            'send_group_id' => $params['send_group_id'] ?? 0,// 派到小组id
+            'department_id' => $params['department_id'] ?? 0,// 部门id
+            'group_id' => $params['group_id'] ?? 0,// 小组id
+            'staff_id' =>  $params['staff_id'] ?? 0,// 接收员工id
+            'operate_staff_id' => $params['operate_staff_id'] ?? 0,// 添加员工id
+            'begin_date' => $params['begin_date'] ?? 0,// 开始日期
+            'end_date' => $params['end_date'] ?? 0,// 结束日期
+        ];
+        $url = config('public.apiUrl') . config('apiUrl.apiPath.workCount');
+        // 生成带参数的测试get请求
+        // $requestTesUrl = splicQuestAPI($url , $requestData);
+        return HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
+    }
+
 }

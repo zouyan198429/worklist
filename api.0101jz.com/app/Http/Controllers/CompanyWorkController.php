@@ -1116,6 +1116,17 @@ class CompanyWorkController extends CompController
      *
      * @param int $id
      * @return Response
+        status 1统计工单状态
+        callCount 2工单来电统计-总量统计
+        callCountDay 4 工单来电统计-按日期统计
+        callCountMonth 8 工单来电统计-按月统计
+        callCountYear 16 工单来电统计-按年统计
+        callCountSelf 32 工单来电统计-按其它统计
+        repairCountDay 128 工单维修统计-按日期统计
+        repairCountMonth 256 工单维修统计-按月统计
+        repairCountYear 512 工单维修统计-按年统计
+        repairCountSelf 1024 工单维修统计-按其它统计
+
      * @author zouyan(305463219@qq.com)
      */
     public function workCount(Request $request)

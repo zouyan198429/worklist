@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Business\CompanyWork;
 use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 
@@ -18,6 +19,8 @@ class CountRepairController extends AdminController
     {
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
+        $reDataArr['count_types'] =  CompanyWork::$countTypeArr;
+        $reDataArr['defaultCountType'] = 1;// 列表页默认状态
         return view('admin.count_repair.index', $reDataArr);
     }
 

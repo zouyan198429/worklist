@@ -35,7 +35,7 @@
                 <ul class="submenu">
                     <li><a href="{{ url('admin/count_call') }}"> 来电统计</a></li>
                     <li><a href="{{ url('admin/count_repair') }}"> 维修数据</a></li>
-                    <li><a href="{{ url('admin/count_customer') }}"> 客户数据</a></li>
+                    {{--<li><a href="{{ url('admin/count_customer') }}"> 客户数据</a></li>--}}
                 </ul>
             </li>
             <li><div class="link"><i class="fa fa-cog "></i>系统设置<i class="fa fa-chevron-down"></i></div>

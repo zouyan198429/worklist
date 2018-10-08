@@ -79,7 +79,7 @@
                 <ul class="treeview-menu" style="display: none;">
                     <li><a href="{{ url('manage/count_call') }}"><i class="fa fa-circle-o"></i> 来电统计</a></li>
                     <li><a href="{{ url('manage/count_repair') }}"><i class="fa fa-circle-o"></i> 维修数据</a></li>
-                    <li><a href="{{ url('manage/count_customer') }}"><i class="fa fa-circle-o"></i> 客户数据</a></li>
+                    {{--<li><a href="{{ url('manage/count_customer') }}"><i class="fa fa-circle-o"></i> 客户数据</a></li>--}}
                 </ul>
             </li>
         </ul>

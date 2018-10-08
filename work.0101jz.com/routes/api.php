@@ -58,6 +58,8 @@ Route::post('admin/work/ajax_alist', 'admin\WorkController@ajax_alist');//ajax�
 Route::post('admin/work/ajax_del', 'admin\WorkController@ajax_del');// 删除
 Route::post('admin/work/ajax_save', 'admin\WorkController@ajax_save');// 新加/修改
 Route::post('admin/work/ajax_status_count', 'admin\WorkController@ajax_status_count');// 工单状态统计
+Route::post('admin/work/ajax_work_count', 'admin\WorkController@ajax_work_count');// 工单统计
+Route::post('admin/work/ajax_repair_count', 'admin\WorkController@ajax_repair_count');// 工单维修统计
 
 // 来电分类
 Route::post('admin/work_caller_type/ajax_alist', 'admin\WorkCallerTypeController@ajax_alist');//ajax获得列表数据
@@ -164,6 +166,8 @@ Route::post('manage/work/ajax_alist', 'manage\WorkController@ajax_alist');//ajax
 Route::post('manage/work/ajax_del', 'manage\WorkController@ajax_del');// 删除
 Route::post('manage/work/ajax_save', 'manage\WorkController@ajax_save');// 新加/修改
 Route::post('manage/work/ajax_status_count', 'manage\WorkController@ajax_status_count');// 工单状态统计
+Route::post('manage/work/ajax_work_count', 'manage\WorkController@ajax_work_count');// 工单统计
+Route::post('manage/work/ajax_repair_count', 'manage\WorkController@ajax_repair_count');// 工单维修统计
 
 // 系统模块
 Route::post('manage/system_module/ajax_get_child', 'manage\SystemModuleController@ajax_get_child');// 获得子类部门数组[kv一维数组]

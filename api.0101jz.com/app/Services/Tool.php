@@ -528,7 +528,7 @@ class Tool
      * 一维数组返回指定下标数组的一维数组,-以原数组下标不准，
      *
      * @param array $array 一维数组
-     * @param array $keys 要获取的下标数组 -维
+     * @param array $keys 要获取的下标数组 -维 [ '新下标名' => '原下标名' ]
      * @param boolean $needNotIn  keys在数组中不存在的，false:不要，true：空值
      * @return array 一维数组
      */
@@ -539,11 +539,29 @@ class Tool
                 continue;
             }
         }
-        if(! $needNotIn) return $array;
+        if(! $needNotIn){
+            foreach($keys as $new_k => $old_k ){
+//                if(isset($array[$old_k])){
+                if($new_k != $old_k){
+                    $array[$new_k] = $array[$old_k];
+                    unset($array[$old_k]);
+                }
+//                    continue;
+//                }
+            }
+            return $array;
+        }
 
-        foreach($keys as $k){
-            if(isset($array[$k])) continue;
-            $array[$k] = '';
+        foreach($keys as $new_k => $old_k ){
+            if(isset($array[$old_k])){
+                if($new_k != $old_k){
+                    $array[$new_k] = $array[$old_k];
+                    unset($array[$old_k]);
+                }
+                continue;
+            }
+            $array[$new_k] = '';
+
         }
         return $array;
     }
@@ -552,7 +570,7 @@ class Tool
      * 二维数组返回指定下标数组的新的二维维数组,-以原数组下标为准，
      *
      * @param array $array 二维数组
-     * @param array $keys 要获取的下标数组 -维
+     * @param array $keys 要获取的下标数组 -维[ '新下标名' => '原下标名' ]
      * @param boolean $needNotIn  keys在数组中不存在的，false:不要，true：空值
      * @return array 一维数组
      */
@@ -561,7 +579,25 @@ class Tool
             self::formatArrKeys($array[$k], $keys, $needNotIn );
         }
         return $array;
+    }
 
+    /**
+     * 一维数组转换为键值相同的一维数组
+     *
+     * @param array $array 一维数组
+     * @param boolean $equalType  统计的类型，false:以键为标准，true：以值为标准
+     * @return array 一维数组
+     */
+    public static function arrEqualKeyVal($array,  $equalType = true){
+        $reArr = [];
+        foreach($array as $k => $v){
+            if($equalType){
+                $reArr[$v] = $v;
+            }else{
+                $reArr[$k] = $k;
+            }
+        }
+        return $reArr;
     }
 
     /**
