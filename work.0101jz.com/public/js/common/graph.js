@@ -6,6 +6,7 @@
  * title:图表中的标题
  * */
 function zhuzhuangtu(yMax,data,dataAxis,id,title){
+
     var dom = document.getElementById(id);
     var myChart = echarts.init(dom);
     var app = {};
@@ -100,22 +101,27 @@ function zhuzhuangtu(yMax,data,dataAxis,id,title){
     };
 
     // Enable data zoom when user click bar.
-    // var zoomSize = 6;
-    // myChart.on('click', function (params) {
-    //     console.log(params);
-    //     console.log('data');
-    //     console.log(data);
-    //     console.log(data.length);
-    //     myChart.dispatchAction({
-    //         type: 'dataZoom',
-    //         startValue: dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)],
-    //         endValue: dataAxis[Math.min(params.dataIndex + zoomSize / 2, data.length - 1)]
-    //     });
-    // });
+    var zoomSize = 6;
+    myChart.on('click', function (params) {
+        console.log(params);
+        console.log('data');
+        console.log(data);
+        console.log(data.length);
+        let startValue = dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)];
+        let endValue = dataAxis[Math.min(params.dataIndex + zoomSize / 2, data.length - 1)];
+        console.log('startValue',startValue);
+        console.log('endValue',endValue);
+        myChart.dispatchAction({
+            type: 'dataZoom',
+            startValue: startValue,
+            endValue: endValue
+        });
+    });
     if (option && typeof option === "object") {
         myChart.setOption(option, true);
     }
-}/**
+}
+/**
  * Created by Administrator on 2018/9/15.
  */
 

@@ -80,7 +80,7 @@ class CompanyWorkDoing extends CompanyWork
 ////            $data_list[$k]['company_name'] = $v['company_info']['company_name'] ?? '';
 ////            if(isset($data_list[$k]['company_info'])) unset($data_list[$k]['company_info']);
 //        }
-//        // Tool::formatTwoArrKeys($data_list,['id', 'work_num', 'caller_type_name', 'customer_id', 'customer_name'], false);
+//        // Tool::formatTwoArrKeys($data_list,Tool::arrEqualKeyVal(['id', 'work_num', 'caller_type_name', 'customer_id', 'customer_name']), false);
 //        $result['data_list'] = $data_list;
 //        // return ajaxDataArr(1, $result, '');
 //        // 格式化数据

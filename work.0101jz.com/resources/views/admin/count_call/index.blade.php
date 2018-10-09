@@ -30,7 +30,7 @@
 			</div>
 			</form>
 		</div>
-		<div class="tubiao" id="container" style="height: 100%;height: 500px"></div>
+		<div id="containerParent"></div>
 		<p class="chart_title">{{--2018-05-01--- 2018-05-28(今天)--}}</p>
 		<table class="table2">
 			<thead>

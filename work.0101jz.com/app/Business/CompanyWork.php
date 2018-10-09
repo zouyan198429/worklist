@@ -236,7 +236,7 @@ class CompanyWork extends BaseBusiness
 //            $data_list[$k]['company_name'] = $v['company_info']['company_name'] ?? '';
 //            if(isset($data_list[$k]['company_info'])) unset($data_list[$k]['company_info']);
         }
-        // Tool::formatTwoArrKeys($data_list,['id', 'work_num', 'caller_type_name', 'customer_id', 'customer_name'], false);
+        // Tool::formatTwoArrKeys($data_list,Tool::arrEqualKeyVal(['id', 'work_num', 'caller_type_name', 'customer_id', 'customer_name']), false);
         $result['data_list'] = $data_list;
         // return ajaxDataArr(1, $result, '');
         // 格式化数据
@@ -307,7 +307,7 @@ class CompanyWork extends BaseBusiness
             $temNameArr = [
                 'real_name' => $v['work_log_history_staff_create']['real_name'] . "[" . $v['work_log_history_staff_create']['work_num'] . "；" . $v['work_log_history_staff_create']['mobile'] . "]",
             ];
-            Tool::formatArrKeys($v , $temNeeds);
+            Tool::formatArrKeys($v , Tool::arrEqualKeyVal($temNeeds));
             $temLogs[] = array_merge($v, $temNameArr);
         }
         $resultDatas['logs'] = $temLogs;
@@ -323,7 +323,7 @@ class CompanyWork extends BaseBusiness
                 'send_staff_name' => $v['work_send_history_staff_send']['real_name'] . "[" . $v['work_send_history_staff_send']['work_num'] . "；" . $v['work_send_history_staff_send']['mobile'] . "]",
                 'operate_staff_name' => $v['work_send_history_staff_create']['real_name'] . "(" . $v['work_send_history_staff_create']['work_num'] . "；" . $v['work_send_history_staff_create']['mobile'] . ")",
             ];
-            Tool::formatArrKeys($v , $temNeeds);
+            Tool::formatArrKeys($v , Tool::arrEqualKeyVal($temNeeds));
             $temSends[] = array_merge($v, $temNameArr);
         }
         $resultDatas['sendLogs'] = $temSends;

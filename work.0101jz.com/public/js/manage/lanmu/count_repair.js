@@ -87,6 +87,13 @@ function ajax_call_count(staff_id, operate_staff_id){
                 //alert('失败');
                 err_alert(ret.errorMsg);
             }else{//成功
+                //将原先div清空。
+                $("#containerParent").html('<div class="tubiao" id="container" style="height: 100%;height: 500px"></div>');
+                // var mychart3 = echarts.init(document.getElementById('dotubiaoPie'));
+                // mychart3.clear();//只是清理画布，而不会删除 生成的元素节点
+                // mychart3.setOption(option);
+                // mychart3.on('click', function (params) {//绑定事件
+                // });
                 var result = ret.result;
                 var title = result.title;// "特性示例：渐变色 阴影 点击缩放1";
                 var dataAxis = result.dataAxis;// ['点', '击', '柱', '子', '或', '者', '两', '指', '在', '触', '屏', '上', '滑', '动', '能', '够', '自', '动', '缩', '放'];

@@ -483,7 +483,7 @@ class CompanyWorkController extends CompController
             $staffCustomerData = $customerObj->toArray();
     //        $staffCustomerNeedFields = ['company_id', 'version_num', 'call_number', 'type_id', 'customer_name', 'sex'
     //            , 'city_id', 'area_id', 'address', 'call_num', 'last_call_date', 'operate_staff_id', 'operate_staff_history_id'];
-    //        Tool::formatTwoArrKeys($staffCustomerData, $staffCustomerNeedFields, $needNotIn = false);
+    //        Tool::formatTwoArrKeys($staffCustomerData, Tool::arrEqualKeyVal($staffCustomerNeedFields), $needNotIn = false);
 
             if($staffCustomerData['id']) unset($staffCustomerData['id']);
             if($staffCustomerData['sex_text']) unset($staffCustomerData['sex_text']);
@@ -871,7 +871,7 @@ class CompanyWorkController extends CompController
                 $staffCustomerData = $customerObj->toArray();
                 //        $staffCustomerNeedFields = ['company_id', 'version_num', 'call_number', 'type_id', 'customer_name', 'sex'
                 //            , 'city_id', 'area_id', 'address', 'call_num', 'last_call_date', 'operate_staff_id', 'operate_staff_history_id'];
-                //        Tool::formatTwoArrKeys($staffCustomerData, $staffCustomerNeedFields, $needNotIn = false);
+                //        Tool::formatTwoArrKeys($staffCustomerData, Tool::arrEqualKeyVal($staffCustomerNeedFields), $needNotIn = false);
 
                 if($staffCustomerData['id']) unset($staffCustomerData['id']);
                 if($staffCustomerData['sex_text']) unset($staffCustomerData['sex_text']);

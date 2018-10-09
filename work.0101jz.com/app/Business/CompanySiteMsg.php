@@ -56,7 +56,7 @@ class CompanySiteMsg extends BaseBusiness
 //            $data_list[$k]['company_name'] = $v['company_info']['company_name'] ?? '';
 //            if(isset($data_list[$k]['company_info'])) unset($data_list[$k]['company_info']);
 //        }
-        Tool::formatTwoArrKeys($data_list, ['id', 'msg_name', 'mst_content', 'is_read', 'created_at'], false);
+        Tool::formatTwoArrKeys($data_list,Tool::arrEqualKeyVal(['id', 'msg_name', 'mst_content', 'is_read', 'created_at']), false);
         $result['data_list'] = $data_list;
         // return ajaxDataArr(1, $result, '');
         // 格式化数据
