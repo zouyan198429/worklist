@@ -35,11 +35,140 @@ class CompanyWork extends BaseBusiness
         '3' => '按年统计',
     ];
 
-    // 统计总量类型 1 按天统计[当月天的] ; 2 按月统计[当年的]; 3 按年统计
-    public static $countSumArr = [
-        '1' => '当天',
-        '2' => '按月统计',
-        '3' => '按年统计',
+    // 统计总量类型
+    // [来电] 0自定义时间段 ;1 今日 ; 2 本周; 3 上周 ;4 本月; 5 上月; 6本年; 7 上年
+    // [处理] 8自定义时间段 ;9 今日 ; 10 本周; 11 上周 ;12 本月; 13 上月; 14本年; 15 上年
+    public static $sumTypeArr = [
+        // 来电记录
+        '0' => [
+            'name' => '时间段',
+            'parames' => [
+                'operate_no' => '2048',
+                'sum_operate_no' => '1',
+            ],
+            'dataUbound' => 'callSumDateRange',
+        ],
+        '1' =>  [
+            'name' => '今日',
+            'parames' => [
+                'operate_no' => '2048',
+                'sum_operate_no' => '2',
+            ],
+            'dataUbound' => 'callSumToday',
+        ],
+        '2' =>  [
+            'name' => '本周',
+            'parames' => [
+                'operate_no' => '2048',
+                'sum_operate_no' => '4',
+            ],
+            'dataUbound' => 'callSumCurrentWeek',
+        ],
+        '3' =>  [
+            'name' => '上周',
+            'parames' => [
+                'operate_no' => '2048',
+                'sum_operate_no' => '8',
+            ],
+            'dataUbound' => 'callSumPreWeek',
+        ],
+        '4' =>  [
+            'name' => '本月',
+            'parames' => [
+                'operate_no' => '2048',
+                'sum_operate_no' => '16',
+            ],
+            'dataUbound' => 'callSumCurrentMonth',
+        ],
+        '5' =>  [
+            'name' => '上月',
+            'parames' => [
+                'operate_no' => '2048',
+                'sum_operate_no' => '32',
+            ],
+            'dataUbound' => 'callSumPreMonth',
+        ],
+        '6' =>  [
+            'name' => '本年',
+            'parames' => [
+                'operate_no' => '2048',
+                'sum_operate_no' => '64',
+            ],
+            'dataUbound' => 'callSumCurrentYear',
+        ],
+        '7' =>  [
+            'name' => '上年',
+            'parames' => [
+                'operate_no' => '2048',
+                'sum_operate_no' => '128',
+            ],
+            'dataUbound' => 'callSumPreYear',
+        ],
+        // 工单处理记录
+        '8' => [
+            'name' => '时间段',
+            'parames' => [
+                'operate_no' => '4096',
+                'sum_repair_operate_no' => '1',
+            ],
+            'dataUbound' => 'repairSumDateRange',
+        ],
+        '9' =>  [
+            'name' => '今日',
+            'parames' => [
+                'operate_no' => '4096',
+                'sum_repair_operate_no' => '2',
+            ],
+            'dataUbound' => 'repairSumToday',
+        ],
+        '10' =>  [
+            'name' => '本周',
+            'parames' => [
+                'operate_no' => '4096',
+                'sum_repair_operate_no' => '4',
+            ],
+            'dataUbound' => 'repairSumCurrentWeek',
+        ],
+        '11' =>  [
+            'name' => '上周',
+            'parames' => [
+                'operate_no' => '4096',
+                'sum_repair_operate_no' => '8',
+            ],
+            'dataUbound' => 'repairSumPreWeek',
+        ],
+        '12' =>  [
+            'name' => '本月',
+            'parames' => [
+                'operate_no' => '4096',
+                'sum_repair_operate_no' => '16',
+            ],
+            'dataUbound' => 'repairSumCurrentMonth',
+        ],
+        '13' =>  [
+            'name' => '上月',
+            'parames' => [
+                'operate_no' => '4096',
+                'sum_repair_operate_no' => '32',
+            ],
+            'dataUbound' => 'repairSumPreMonth',
+        ],
+        '14' =>  [
+            'name' => '本年',
+            'parames' => [
+                'operate_no' => '4096',
+                'sum_repair_operate_no' => '64',
+            ],
+            'dataUbound' => 'repairSumCurrentYear',
+        ],
+        '15' =>  [
+            'name' => '上年',
+            'parames' => [
+                'operate_no' => '4096',
+                'sum_repair_operate_no' => '128',
+            ],
+            'dataUbound' => 'repairSumPreYear',
+        ],
     ];
 
     /**
@@ -627,6 +756,27 @@ class CompanyWork extends BaseBusiness
         repairCountMonth 256 工单维修统计-按月统计
         repairCountYear 512 工单维修统计-按年统计
         repairCountSelf 1024 工单维修统计-按其它统计
+        2048 工单数量统计
+        sum_operate_no
+            callSumDateRange 1 工单数量统计-时间段
+            callSumToday 2 工单数量统计-今日
+            callSumCurrentWeek 4 工单数量统计-本周
+            callSumPreWeek 8 工单数量统计-上周
+            callSumCurrentMonth 16 工单数量统计-本月
+            callSumPreMonth 32 工单数量统计-上月
+            callSumCurrentYear 64 工单数量统计-本年
+            callSumPreYear 128 工单数量统计-上年
+        4096 工单维修数量统计
+        sum_repair_operate_no
+            repairSumDateRange 1 工单维修数量统计-时间段
+            repairSumToday 2 工单维修数量统计-今日
+            repairSumCurrentWeek 4 工单数量统计-本周
+            repairSumPreWeek 8 工单维修数量统计-上周
+            repairSumCurrentMonth 16 工单维修数量统计-本月
+            repairSumPreMonth 32 工单维修数量统计-上月
+            repairSumCurrentYear 64 工单维修数量统计-本年
+            repairSumPreYear 128 工单维修数量统计-上年
+     *
      * @param int $operate_staff_id 添加员工id
      * @param int $notLog 是否需要登陆 0需要1不需要
      * @author zouyan(305463219@qq.com)
@@ -640,6 +790,8 @@ class CompanyWork extends BaseBusiness
         $requestData = [
             'company_id' => $company_id,
             'operate_no' => $params['operate_no'] ?? 0,// 操作编号
+            'sum_operate_no' => $params['sum_operate_no'] ?? 0,// 来电数量统计操作编号
+            'sum_repair_operate_no' => $params['sum_repair_operate_no'] ?? 0,// 处理来电数量统计操作编号
             'send_department_id' => $params['send_department_id'] ?? 0,// 派到部门id
             'send_group_id' => $params['send_group_id'] ?? 0,// 派到小组id
             'department_id' => $params['department_id'] ?? 0,// 部门id
@@ -651,8 +803,73 @@ class CompanyWork extends BaseBusiness
         ];
         $url = config('public.apiUrl') . config('apiUrl.apiPath.workCount');
         // 生成带参数的测试get请求
-        // $requestTesUrl = splicQuestAPI($url , $requestData);
+        $requestTesUrl = splicQuestAPI($url , $requestData);
         return HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
+    }
+    /**
+     * 工单状态统计
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param int $staff_id 接收员工id
+     * @param int $operate_staff_id 添加员工id
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @return array [ $sumTypeArr 下标=>['amount' => 0 , 'begin_date' => '', 'end_date' => ''],...]
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function sumCount(Request $request, Controller $controller, $staff_id = 0, $operate_staff_id = 0, $notLog = 0)
+    {
+//        $company_id = $controller->company_id;
+        $begin_date = Common::get($request, 'begin_date');// 开始日期
+        $end_date = Common::get($request, 'end_date');// 结束日期
+        if(empty($begin_date)) $begin_date = date("Y-01-01");
+        if(empty($end_date)) $end_date = date("Y-m-d");
+
+        $sumStatus = Common::get($request, 'sum_status');// $sumTypeArr 下标 统计总量类型;多个用,逗号分隔
+        if(is_string($sumStatus)){
+            $sumStatus = explode(',', $sumStatus);
+        }
+        $nowTime = time();
+        // 判断开始结束日期[ 可为空,有值的话-；4 开始日期 不能大于 >  当前日；32 结束日期 不能大于 >  当前日;256 开始日期 不能大于 >  结束日期]
+        Tool::judgeBeginEndDate($begin_date, $end_date, 4 + 32 + 256);
+        $operate_no = 0;
+        $sum_operate_no = 0;
+        $sum_repair_operate_no = 0;
+        $sumTypeArr = self::$sumTypeArr;
+        foreach($sumStatus as $sum_status){
+           if(!isset($sumTypeArr[$sum_status])) continue;
+            $temStatus = $sumTypeArr[$sum_status];
+            $temOperateNo = $temStatus['parames']['operate_no'] ?? 0;
+            $temSumOperateNo = $temStatus['parames']['sum_operate_no'] ?? 0;
+            $temSumRepairOperateNo = $temStatus['parames']['sum_repair_operate_no'] ?? 0;
+            $operate_no = ($operate_no | $temOperateNo);
+            $sum_operate_no = ($sum_operate_no | $temSumOperateNo);
+            $sum_repair_operate_no = ($sum_repair_operate_no | $temSumRepairOperateNo);
+        }
+
+        $params = [
+            'operate_no' => $operate_no,// 操作编号
+            'sum_operate_no' => $sum_operate_no,// 来电数量统计操作编号
+            'sum_repair_operate_no' => $sum_repair_operate_no,// 处理来电数量统计操作编号
+            'send_department_id' => '0',// 派到部门id
+            'send_group_id' => '0',// 派到小组id
+            'department_id' => '0',// 部门id
+            'group_id' => '0',// 小组id
+            'staff_id' => $staff_id,// 接收员工id
+            'operate_staff_id' => $operate_staff_id,// 添加员工id
+            'begin_date' => $begin_date,// 开始日期
+            'end_date' => $end_date,// 结束日期
+        ];
+        $sumArr = self::workCount($request, $controller, $params);
+        $reData = [];
+        foreach($sumStatus as $sum_status) {
+            if (!isset($sumTypeArr[$sum_status])) continue;
+            $temStatus = $sumTypeArr[$sum_status];
+            $temDataUbound = $temStatus['dataUbound'] ?? 0;
+            $temSumArr = $sumArr[$temDataUbound] ?? ['amount' => 0 , 'begin_date' => '', 'end_date' => ''];
+            $reData[$sum_status] = $temSumArr;
+        }
+        return $reData;
     }
 
 }

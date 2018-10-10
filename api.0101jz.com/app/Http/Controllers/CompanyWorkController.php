@@ -1126,7 +1126,26 @@ class CompanyWorkController extends CompController
         repairCountMonth 256 工单维修统计-按月统计
         repairCountYear 512 工单维修统计-按年统计
         repairCountSelf 1024 工单维修统计-按其它统计
-
+        2048 工单数量统计
+        sum_operate_no
+            callSumDateRange 1 工单数量统计-时间段
+            callSumToday 2 工单数量统计-今日
+            callSumCurrentWeek 4 工单数量统计-本周
+            callSumPreWeek 8 工单数量统计-上周
+            callSumCurrentMonth 16 工单数量统计-本月
+            callSumPreMonth 32 工单数量统计-上月
+            callSumCurrentYear 64 工单数量统计-本年
+            callSumPreYear 128 工单数量统计-上年
+        4096 工单维修数量统计
+        sum_repair_operate_no
+            repairSumDateRange 1 工单维修数量统计-时间段
+            repairSumToday 2 工单维修数量统计-今日
+            repairSumCurrentWeek 4 工单数量统计-本周
+            repairSumPreWeek 8 工单维修数量统计-上周
+            repairSumCurrentMonth 16 工单维修数量统计-本月
+            repairSumPreMonth 32 工单维修数量统计-上月
+            repairSumCurrentYear 64 工单维修数量统计-本年
+            repairSumPreYear 128 工单维修数量统计-上年
      * @author zouyan(305463219@qq.com)
      */
     public function workCount(Request $request)
@@ -1149,31 +1168,9 @@ class CompanyWorkController extends CompController
         $end_date = Common::get($request, 'end_date');// 结束日期
 
         $nowTime = time();
-
-        if (!empty($begin_date)) {
-            $begin_date_unix = judgeDate($begin_date);
-            if($begin_date_unix === false){
-                errorArray('开始日期不是有效日期');
-            }
-            if($nowTime < $begin_date_unix){
-                errorArray( '开始日期不能大于当前日期!');
-            }
-        }
-
-        if (!empty($end_date)) {
-            $end_date_unix = judgeDate($end_date);
-            if($end_date_unix === false){
-                errorArray('结束日期不是有效日期');
-            }
-            if($nowTime < $end_date_unix){
-                errorArray('结束日期不能大于当前日期!');
-            }
-        }
-
-
-        if(!empty($begin_date) && !empty($end_date) && $end_date_unix < $begin_date_unix){
-            errorArray('结束日期不能小于开始日期');
-        }
+        // 判断开始结束日期[ 可为空,有值的话-；4 开始日期 不能大于 >  当前日；32 结束日期 不能大于 >  当前日;256 开始日期 不能大于 >  结束日期]
+        Tool::judgeBeginEndDate($begin_date, $end_date, 4 + 32 + 256);
+        // errorArray('结束日期不能小于开始日期');
 
         $listData = [];
         //处理状态中的状态统计
@@ -1213,28 +1210,198 @@ class CompanyWorkController extends CompController
 
         //工单维修统计-总量统计
         if(($operate_no & 64) == 64 ) {
-            $listData['repairCount'] = CompanyWorkRepairCountBusiness::getCountAmount($company_id, 0, $begin_date, $end_date,  $staff_id, $department_id, $group_id);
+            $listData['repairCount'] = CompanyWorkRepairCountBusiness::getCountAmount($company_id, 0, $begin_date, $end_date,  $staff_id, $send_department_id, $send_group_id);
         }
 
         //工单维修统计-按日期统计
         if(($operate_no & 128) == 128 ) {
-            $listData['repairCountDay'] = CompanyWorkRepairCountBusiness::getCountAmount($company_id, 1, $begin_date, $end_date, $staff_id, $department_id, $group_id);
+            $listData['repairCountDay'] = CompanyWorkRepairCountBusiness::getCountAmount($company_id, 1, $begin_date, $end_date, $staff_id, $send_department_id, $send_group_id);
         }
 
         //工单维修统计-按月统计
         if(($operate_no & 256) == 256 ) {
-            $listData['repairCountMonth'] = CompanyWorkRepairCountBusiness::getCountAmount($company_id, 2, $begin_date, $end_date, $staff_id, $department_id, $group_id);
+            $listData['repairCountMonth'] = CompanyWorkRepairCountBusiness::getCountAmount($company_id, 2, $begin_date, $end_date, $staff_id, $send_department_id, $send_group_id);
         }
 
         //工单维修统计-按年统计
         if(($operate_no & 512) == 512 ) {
-            $listData['repairCountYear'] = CompanyWorkRepairCountBusiness::getCountAmount($company_id, 3, $begin_date, $end_date, $staff_id, $department_id, $group_id);
+            $listData['repairCountYear'] = CompanyWorkRepairCountBusiness::getCountAmount($company_id, 3, $begin_date, $end_date, $staff_id, $send_department_id, $send_group_id);
         }
 
         //工单维修统计-按其它统计
         if(($operate_no & 1024) == 1024 ) {
-            $listData['repairCountSelf'] = CompanyWorkRepairCountBusiness::getCountAmount($company_id, 4, $begin_date, $end_date, $staff_id, $department_id, $group_id);
+            $listData['repairCountSelf'] = CompanyWorkRepairCountBusiness::getCountAmount($company_id, 4, $begin_date, $end_date, $staff_id, $send_department_id, $send_group_id);
+        }
+        // 2048 工单数量统计
+        if(($operate_no & 2048) == 2048 ) {
+            // sum_operate_no 数量统计操作编号
+            $sum_operate_no = Common::getInt($request, 'sum_operate_no');
+            // 1 工单数量统计-时间段
+            if(($sum_operate_no & 1) == 1 ) {
+                $listData['callSumDateRange'] = [
+                    'begin_date' => $begin_date,
+                    'end_date' => $end_date,
+                    'amount' => CompanyWorkCallCountBusiness::getCountAmount($company_id, 0, $begin_date, $end_date, $operate_staff_id, $department_id, $group_id),
+                ];
+            }
+            // 2 工单数量统计-今日
+            if(($sum_operate_no & 2) == 2 ) {
+                $tem_begin_date = date("Y-m-d");
+                $tem_end_date = date("Y-m-d");
+                $listData['callSumToday'] = [
+                    'begin_date' => $tem_begin_date,
+                    'end_date' => $tem_end_date,
+                    'amount' => CompanyWorkCallCountBusiness::getCountAmount($company_id, 0, $tem_begin_date, $tem_end_date, $operate_staff_id, $department_id, $group_id),
+                ];
+            }
+            // 4 工单数量统计-本周
+            if(($sum_operate_no & 4) == 4 ) {
+                $tem_begin_date = Tool::getDateByType(1);// 1本周一
+                $tem_end_date = Tool::getDateByType(2);// 2 本周日;
+                $listData['callSumCurrentWeek'] = [
+                    'begin_date' => $tem_begin_date,
+                    'end_date' => $tem_end_date,
+                    'amount' => CompanyWorkCallCountBusiness::getCountAmount($company_id, 0, $tem_begin_date, $tem_end_date, $operate_staff_id, $department_id, $group_id),
+                ];
+            }
+            // 8 工单数量统计-上周
+            if(($sum_operate_no & 8) == 8 ) {
+                $tem_begin_date = Tool::getDateByType(3);//3 上周一;
+                $tem_end_date = Tool::getDateByType(4);// 4 上周日;
+                $listData['callSumPreWeek'] = [
+                    'begin_date' => $tem_begin_date,
+                    'end_date' => $tem_end_date,
+                    'amount' => CompanyWorkCallCountBusiness::getCountAmount($company_id, 0, $tem_begin_date, $tem_end_date, $operate_staff_id, $department_id, $group_id),
+                ];
+            }
+            // 16 工单数量统计-本月
+            if(($sum_operate_no & 16) == 16 ) {
+                $tem_begin_date = Tool::getDateByType(5);// 5 本月一日;
+                $tem_end_date = Tool::getDateByType(6);// 6 本月最后一日;
+                $listData['callSumCurrentMonth'] = [
+                    'begin_date' => $tem_begin_date,
+                    'end_date' => $tem_end_date,
+                    'amount' => CompanyWorkCallCountBusiness::getCountAmount($company_id, 0, $tem_begin_date, $tem_end_date, $operate_staff_id, $department_id, $group_id),
+                ];
+            }
+            // 32 工单数量统计-上月
+            if(($sum_operate_no & 32) == 32 ) {
+                $tem_begin_date = Tool::getDateByType(7);// 7 上月一日;
+                $tem_end_date = Tool::getDateByType(8);// 8 上月最后一日
+                $listData['callSumPreMonth'] = [
+                    'begin_date' => $tem_begin_date,
+                    'end_date' => $tem_end_date,
+                    'amount' => CompanyWorkCallCountBusiness::getCountAmount($company_id, 0, $tem_begin_date, $tem_end_date, $operate_staff_id, $department_id, $group_id),
+                ];
+            }
+            // 64 工单数量统计-本年
+            if(($sum_operate_no & 64) == 64 ) {
+                $tem_begin_date = Tool::getDateByType(9);// 9 本年一日
+                $tem_end_date = Tool::getDateByType(10);// 10 本年最后一日
+                $listData['callSumCurrentYear'] = [
+                    'begin_date' => $tem_begin_date,
+                    'end_date' => $tem_end_date,
+                    'amount' => CompanyWorkCallCountBusiness::getCountAmount($company_id, 0, $tem_begin_date, $tem_end_date, $operate_staff_id, $department_id, $group_id),
+                ];
+            }
+            // 128 工单数量统计-上年
+            if(($sum_operate_no & 128) == 128 ) {
+                $tem_begin_date = Tool::getDateByType(11);//11 上年一日
+                $tem_end_date = Tool::getDateByType(12);// 12 上年最后一日
+                $listData['callSumPreYear'] = [
+                    'begin_date' => $tem_begin_date,
+                    'end_date' => $tem_end_date,
+                    'amount' => CompanyWorkCallCountBusiness::getCountAmount($company_id, 0, $tem_begin_date, $tem_end_date, $operate_staff_id, $department_id, $group_id),
+                ];
+            }
+
+        }
+
+        // 4096 工单维修数量统计
+        if(($operate_no & 4096) == 4096 ) {
+            // sum_operate_no 数量统计操作编号
+            $sum_repair_operate_no = Common::getInt($request, 'sum_repair_operate_no');
+            // 1 工单维修数量统计-时间段
+            if(($sum_repair_operate_no & 1) == 1 ) {
+                $listData['repairSumDateRange'] = [
+                    'begin_date' => $begin_date,
+                    'end_date' => $end_date,
+                    'amount' => CompanyWorkRepairCountBusiness::getCountAmount($company_id, 0, $begin_date, $end_date, $staff_id, $send_department_id, $send_group_id),
+                ];
+            }
+            // 2 工单维修数量统计-今日
+            if(($sum_repair_operate_no & 2) == 2 ) {
+                $tem_begin_date = date("Y-m-d");
+                $tem_end_date = date("Y-m-d");
+                $listData['repairSumToday'] = [
+                    'begin_date' => $tem_begin_date,
+                    'end_date' => $tem_end_date,
+                    'amount' => CompanyWorkRepairCountBusiness::getCountAmount($company_id, 0, $tem_begin_date, $tem_end_date, $staff_id, $send_department_id, $send_group_id),
+                ];
+            }
+            // 4 工单数量统计-本周
+            if(($sum_repair_operate_no & 4) == 4 ) {
+                $tem_begin_date = Tool::getDateByType(1);// 1本周一
+                $tem_end_date = Tool::getDateByType(2);// 2 本周日;
+                $listData['repairSumCurrentWeek'] = [
+                    'begin_date' => $tem_begin_date,
+                    'end_date' => $tem_end_date,
+                    'amount' => CompanyWorkRepairCountBusiness::getCountAmount($company_id, 0, $tem_begin_date, $tem_end_date, $staff_id, $send_department_id, $send_group_id),
+                ];
+            }
+            // 8 工单维修数量统计-上周
+            if(($sum_repair_operate_no & 8) == 8 ) {
+                $tem_begin_date = Tool::getDateByType(3);//3 上周一;
+                $tem_end_date = Tool::getDateByType(4);// 4 上周日;
+                $listData['repairSumPreWeek'] = [
+                    'begin_date' => $tem_begin_date,
+                    'end_date' => $tem_end_date,
+                    'amount' => CompanyWorkRepairCountBusiness::getCountAmount($company_id, 0, $tem_begin_date, $tem_end_date, $staff_id, $send_department_id, $send_group_id),
+                ];
+            }
+            // 16 工单维修数量统计-本月
+            if(($sum_repair_operate_no & 16) == 16 ) {
+                $tem_begin_date = Tool::getDateByType(5);// 5 本月一日;
+                $tem_end_date = Tool::getDateByType(6);// 6 本月最后一日;
+                $listData['repairSumCurrentMonth'] = [
+                    'begin_date' => $tem_begin_date,
+                    'end_date' => $tem_end_date,
+                    'amount' => CompanyWorkRepairCountBusiness::getCountAmount($company_id, 0, $tem_begin_date, $tem_end_date, $staff_id, $send_department_id, $send_group_id),
+                ];
+            }
+            // 32 工单维修数量统计-上月
+            if(($sum_repair_operate_no & 32) == 32 ) {
+                $tem_begin_date = Tool::getDateByType(7);// 7 上月一日;
+                $tem_end_date = Tool::getDateByType(8);// 8 上月最后一日
+                $listData['repairSumPreMonth'] = [
+                    'begin_date' => $tem_begin_date,
+                    'end_date' => $tem_end_date,
+                    'amount' => CompanyWorkRepairCountBusiness::getCountAmount($company_id, 0, $tem_begin_date, $tem_end_date, $staff_id, $send_department_id, $send_group_id),
+                ];
+            }
+            // 64 工单维修数量统计-本年
+            if(($sum_repair_operate_no & 64) == 64 ) {
+                $tem_begin_date = Tool::getDateByType(9);// 9 本年一日
+                $tem_end_date = Tool::getDateByType(10);// 10 本年最后一日
+                $listData['repairSumCurrentYear'] = [
+                    'begin_date' => $tem_begin_date,
+                    'end_date' => $tem_end_date,
+                    'amount' => CompanyWorkRepairCountBusiness::getCountAmount($company_id, 0, $tem_begin_date, $tem_end_date, $staff_id, $send_department_id, $send_group_id),
+                ];
+            }
+            // 128 工单维修数量统计-上年
+            if(($sum_repair_operate_no & 128) == 128 ) {
+                $tem_begin_date = Tool::getDateByType(11);//11 上年一日
+                $tem_end_date = Tool::getDateByType(12);// 12 上年最后一日
+                $listData['repairSumPreYear'] = [
+                    'begin_date' => $tem_begin_date,
+                    'end_date' => $tem_end_date,
+                    'amount' => CompanyWorkRepairCountBusiness::getCountAmount($company_id, 0, $tem_begin_date, $tem_end_date, $staff_id, $send_department_id, $send_group_id),
+                ];
+            }
+
         }
         return  okArray($listData);
     }
+
 }

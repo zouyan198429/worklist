@@ -734,7 +734,7 @@ class Tool
 
     /**
      * 功能：获得日期
-     * @param int $dateType 日期类型 1本周一;2 本周日;3 上周一;4 上周日;5 本月一日;6 本月最后一日;7 上月一日;8 上月最后一日
+     * @param int $dateType 日期类型 1本周一;2 本周日;3 上周一;4 上周日;5 本月一日;6 本月最后一日;7 上月一日;8 上月最后一日;9 本年一日;10 本年最后一日;11 上年一日;12 上年最后一日
      * @return mixed $date 日期
      * @author zouyan(305463219@qq.com)
      */
@@ -747,10 +747,12 @@ class Tool
                 return date('Y-m-d', (time() + (7 - (date('w') == 0 ? 7 : date('w'))) * 24 * 3600)); //同样使用w,以现在与周日相关天数算
                 break;
             case 3://3 上周一;
-                return date('Y-m-d', strtotime('-1 monday', time())); //无论今天几号,-1 monday为上一个有效周未
+                // return date('Y-m-d', strtotime('-1 wednesday', time())); //无论今天几号,-1 monday为上一个有效周未
+                return date('Y-m-d', (time() - ((date('w') == 0 ? 7 : date('w')) - 1) * 24 * 3600) - 7*24*60*60); //本周一 减七天;
                 break;
             case 4:// 4 上周日;
-                return date('Y-m-d', strtotime('-1 sunday', time())); //上一个有效周日,同样适用于其它星期;
+                // return date('Y-m-d', strtotime('-1 sunday', time())); //上一个有效周日,同样适用于其它星期;
+                return date('Y-m-d', (time() - ((date('w') == 0 ? 7 : date('w')) - 1) * 24 * 3600) - 1*24*60*60); //本周一 减一天;
                 break;
             case 5:// 5 本月一日;
                 return date('Y-m-d', strtotime(date('Y-m', time()) . '-01 00:00:00')); //直接以strtotime生成;
@@ -764,9 +766,138 @@ class Tool
             case 8:// 8 上月最后一日
                 return date('Y-m-d', strtotime(date('Y-m', time()) . '-01 00:00:00') - 86400); //本月一日减一天即是上月最后一日;
                 break;
+            case 9:// 9 本年一日
+                return date("Y-01-01");
+                break;
+            case 10:// 10 本年最后一日
+                return date("Y-12-31");
+                break;
+            case 11:// 11 上年一日
+                return date('Y-01-01', strtotime(date('Y-m-d') . ' -1 year'));
+                break;
+            case 12:// 12 上年最后一日
+                return date('Y-12-31', strtotime(date('Y-m-d') . ' -1 year'));
+                break;
             default:
                 break;
         }
         return '';
+    }
+
+    /**
+     * 功能：开始、结束日期 判断
+     * @param string $begin_date 开始日期
+     * @param string $end_date 结束日期
+     * @param int $judge_type 1 判断开始日期不能为空 ; 2 判断结束日期不能为空；
+     *                        4 开始日期 不能大于 >  当前日；8 开始日期 不能等于 =  当前日；16 开始日期 不能小于 <  当前日
+     *                        32 结束日期 不能大于 >  当前日；64 结束日期 不能等于 =  当前日；128 结束日期 不能小于 <  当前日
+     *                        256 开始日期 不能大于 >  结束日期；512 开始日期 不能等于 =  结束日期；1024 开始日期 不能小于 <  结束日期
+     * @param string $errDo 错误处理方式 1 throws 2直接返回错误
+     * @param string $nowTime 比较日期 格式 Y-m-d,默认为当前日期 Y-m-d
+     * @param string $dateName 日期(默认); 时间
+     * @return boolean 结果 true通过判断; sting 具体错误 ； throws 错误
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function judgeBeginEndDate($begin_date, $end_date, $judge_type = 0, $errDo = 1, $nowTime = '', $dateName = '日期' ){
+//        $begin_date = Common::get($request, 'begin_date');// 开始日期
+//        $end_date = Common::get($request, 'end_date');// 结束日期
+        if(empty($nowTime)) $nowTime = date('Y-m-d');
+        $nowTimeUnix = judgeDate($nowTime);
+
+        if( ($judge_type & 1) == 1 && empty($begin_date)){// 1 判断开始日期不能为空
+            $errMsg = '开始' . $dateName . '不能为空!';
+            if($errDo == 1) throws($errMsg);
+            return $errMsg;
+        }
+
+        if (!empty($begin_date)) {
+            $begin_date_unix = judgeDate($begin_date);
+            if($begin_date_unix === false){
+                $errMsg = '开始' . $dateName . '不是有效' . $dateName . '!';
+                if($errDo == 1) throws($errMsg);
+                return $errMsg;
+            }
+            // 4 开始日期 不能大于 >  当前日
+            if(($judge_type & 4) == 4 && $begin_date_unix > $nowTimeUnix ){
+                $errMsg = '开始' . $dateName . '不能大于' . $dateName . '[' . $nowTime . ']!';
+                if($errDo == 1) throws($errMsg);
+                return $errMsg;
+            }
+
+            // 8 开始日期 不能等于 =  当前日
+            if(($judge_type & 8) == 8 && $begin_date_unix == $nowTimeUnix ){
+                $errMsg = '开始' . $dateName . '不能等于' . $dateName . '[' . $nowTime . ']!';
+                if($errDo == 1) throws($errMsg);
+                return $errMsg;
+            }
+
+            // 16 开始日期 不能小于 <  当前日
+            if(($judge_type & 16) == 16 && $begin_date_unix < $nowTimeUnix ){
+                $errMsg = '开始' . $dateName . '不能小于' . $dateName . '[' . $nowTime . ']!';
+                if($errDo == 1) throws($errMsg);
+                return $errMsg;
+            }
+        }
+
+        if( ($judge_type & 2) == 2 && empty($end_date)){//2 判断结束日期不能为空；
+            $errMsg = '结束' . $dateName . '不能为空!';
+            if($errDo == 1) throws($errMsg);
+            return $errMsg;
+        }
+
+        if (!empty($end_date)) {
+            $end_date_unix = judgeDate($end_date);
+            if($end_date_unix === false){
+                $errMsg = '结束' . $dateName . '不是有效' . $dateName . '!';
+                if($errDo == 1) throws($errMsg);
+                return $errMsg;
+            }
+
+            // 32 结束日期 不能大于 >  当前日
+            if(($judge_type & 32) == 32 && $end_date_unix > $nowTimeUnix ){
+                $errMsg = '结束' . $dateName . '不能大于' . $dateName . '[' . $nowTime . ']!';
+                if($errDo == 1) throws($errMsg);
+                return $errMsg;
+            }
+
+            // 64 结束日期 不能等于 =  当前日
+            if(($judge_type & 64) == 64 && $end_date_unix == $nowTimeUnix ){
+                $errMsg = '结束' . $dateName . '不能等于' . $dateName . '[' . $nowTime . ']!';
+                if($errDo == 1) throws($errMsg);
+                return $errMsg;
+            }
+
+            // 128 结束日期 不能小于 <  当前日
+            if(($judge_type & 128) == 128 && $end_date_unix < $nowTimeUnix ){
+                $errMsg = '结束' . $dateName . '不能小于' . $dateName . '[' . $nowTime . ']!';
+                if($errDo == 1) throws($errMsg);
+                return $errMsg;
+            }
+        }
+
+        if(!empty($begin_date) && !empty($end_date) ){
+
+            // 256 开始日期 不能大于 >  结束日期；
+            if(($judge_type & 256) == 256 && $begin_date_unix > $end_date_unix ){
+                $errMsg = '开始' . $dateName . '不能大于结束' . $dateName . '!';
+                if($errDo == 1) throws($errMsg);
+                return $errMsg;
+            }
+
+            // 512 开始日期 不能等于 =  结束日期；
+            if(($judge_type & 512) == 512 && $begin_date_unix == $end_date_unix ){
+                $errMsg = '开始' . $dateName . '不能等于结束' . $dateName . '!';
+                if($errDo == 1) throws($errMsg);
+                return $errMsg;
+            }
+
+            // 1024 开始日期 不能小于 <  结束日期
+            if(($judge_type & 1024) == 1024 && $begin_date_unix < $end_date_unix ){
+                $errMsg = '开始' . $dateName . '不能小于结束' . $dateName . '!';
+                if($errDo == 1) throws($errMsg);
+                return $errMsg;
+            }
+        }
+        return true;
     }
 }

@@ -288,6 +288,7 @@ Route::post('m/work/ajax_doing_list', 'm\WorkController@ajax_doing_list');// 根
 Route::post('m/work/ajax_sure', 'm\WorkController@ajax_sure');// 确认工单地址
 Route::post('m/work/ajax_win', 'm\WorkController@ajax_win');// 工单结单地址
 Route::post('m/work/ajax_status_count', 'm\WorkController@ajax_status_count');// 工单状态统计
+Route::post('m/work/ajax_work_sum', 'm\WorkController@ajax_work_sum');// 工单数量统计
 
 // 系统模块
 Route::post('m/system_module/ajax_get_child', 'm\SystemModuleController@ajax_get_child');// 获得子类部门数组[kv一维数组]

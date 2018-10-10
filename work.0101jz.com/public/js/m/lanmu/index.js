@@ -131,8 +131,8 @@ function ajax_msg_list(from_id ,staff_id, operate_staff_id){
                     var htmlStr = resolve_baidu_template('baidu_template_msg_list',ret.result,'');//解析
                     msgObj.prepend(htmlStr);
                     if(from_id == 1 ){// 播放
-                        console.log('msg-播放提示音');
-                        run_sound('new_order');
+                        // console.log('msg-播放提示音');
+                        // run_sound('new_order');
                     }
                 }
                 var del_ids = ret.result.del_ids;// 移除对象id

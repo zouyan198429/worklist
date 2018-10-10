@@ -6,6 +6,7 @@ use App\Business\CompanyWork;
 use App\Http\Controllers\WorksController;
 use App\Services\Common;
 use App\Services\CommonBusiness;
+use App\Services\Tool;
 use Illuminate\Http\Request;
 
 class WorkController extends WorksController
@@ -153,4 +154,19 @@ class WorkController extends WorksController
         return ajaxDataArr(1, $countArr, '');
     }
 
+    /**
+     * ajax获得工单处理数量统计
+     *
+     * @param Request $request
+     * @param int $staff_id 接收员工id
+     * @param int $operate_staff_id 添加员工id
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function ajax_work_sum(Request $request){
+        $this->InitParams($request);
+        $user_id = $this->user_id;
+        $countArr = CompanyWork::sumCount($request, $this,$user_id,0);
+        return ajaxDataArr(1, $countArr, '');
+    }
 }

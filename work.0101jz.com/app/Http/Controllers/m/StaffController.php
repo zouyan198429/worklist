@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\m;
 
+use App\Business\CompanyWork;
 use App\Business\CompanyDepartment;
 use App\Business\CompanyStaff;
 use App\Http\Controllers\WorksController;
@@ -24,6 +25,8 @@ class StaffController extends WorksController
         $reDataArr = $this->reDataArr;
         $user_info = $this->user_info;
         $reDataArr = array_merge($reDataArr, $user_info);
+        $reDataArr['sumStatus'] =  CompanyWork::$sumTypeArr;
+        $reDataArr['ajaxSumStatus'] = [9,10,12];// 列表页需要统计数量的数组
         return view('mobile.staff.index', $reDataArr);
     }
 

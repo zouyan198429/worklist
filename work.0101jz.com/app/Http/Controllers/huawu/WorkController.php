@@ -381,30 +381,9 @@ class WorkController extends WorksController
 
         $nowTime = time();
 
-        if (!empty($begin_date)) {
-            $begin_date_unix = judgeDate($begin_date);
-            if($begin_date_unix === false){
-                return ajaxDataArr(0, null, '开始日期不是有效日期！');
-            }
-            if($nowTime < $begin_date_unix){
-                return ajaxDataArr(0, null, '开始日期不能大于当前日期！');
-            }
-        }
-
-        if (!empty($end_date)) {
-            $end_date_unix = judgeDate($end_date);
-            if($end_date_unix === false){
-                return ajaxDataArr(0, null, '结束日期不是有效日期！');
-            }
-            if($nowTime < $end_date_unix){
-                return ajaxDataArr(0, null, '结束日期不能大于当前日期！');
-            }
-        }
-
-
-        if(!empty($begin_date) && !empty($end_date) && $end_date_unix < $begin_date_unix){
-            return ajaxDataArr(0, null, '结束日期不能小于开始日期！');
-        }
+        // 判断开始结束日期[可为空,有值的话-；4 开始日期 不能大于 >  当前日；32 结束日期 不能大于 >  当前日;256 开始日期 不能大于 >  结束日期]
+        Tool::judgeBeginEndDate($begin_date, $end_date, 4 + 32 + 256);
+        // ajaxDataArr(0, null, '结束日期不能小于开始日期！');
 
         // 按天统计[当前天的] ;按月统计[当年的]; 按年统计  ,外加按时间段[暂不处理]
         $params = [

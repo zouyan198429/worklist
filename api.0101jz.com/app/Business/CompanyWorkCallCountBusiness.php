@@ -57,7 +57,7 @@ class CompanyWorkCallCountBusiness extends BaseBusiness
     }
 
     /**
-     * 统计工单
+     * 统计工单-分组
      *
      * @param int $company_id 公司id
      * @param array $selectArr 返回字段数组 一维
@@ -106,6 +106,39 @@ class CompanyWorkCallCountBusiness extends BaseBusiness
     }
 
     /**
+     * 统计工单
+     *
+     * @param int $company_id 公司id
+     * @param array $otherWhere 其它条件[['company_id', '=', $company_id],...]
+     * @param array $inWhereArr in条件 一维数组 ['字段'->[数组值]]
+     * @return array
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function getSumCount($company_id, $otherWhere = [], $inWhereArr = [])
+    {
+        $where = [
+            ['company_id', '=', $company_id],
+            // ['send_staff_id', '=', $staff_id],
+        ];
+        if (!empty($otherWhere)) {
+            $where = $otherWhere;// array_merge($where, $otherWhere);
+        }
+
+//        $select = 'sum(amount) as amount ';
+//        array_push($selectArr, $select);
+
+        $obj = CompanyWorkCallCount::where($where);
+        //    ->select(DB::raw(implode(',', $selectArr)));
+        foreach($inWhereArr as $field => $inWhere){
+            $obj->whereIn($field,$inWhere);
+        }
+
+        $sumAmount = $obj->sum('amount');
+
+        return $sumAmount;
+    }
+
+    /**
      * 统计工单 --总量统计、按日期统计
      *
      * @param int $company_id 公司id
@@ -130,30 +163,38 @@ class CompanyWorkCallCountBusiness extends BaseBusiness
         $temDataArr = ['amount' => 0];
         if($company_id > 0){
             array_push($otherWhere, ['company_id', '=', $company_id]);
-            array_push($selectArr, 'company_id');
-            array_push($groupByArr, 'company_id');
-            $temDataArr['company_id'] = $company_id;
+            if($count_type !== 0){
+                array_push($selectArr, 'company_id');
+                array_push($groupByArr, 'company_id');
+                $temDataArr['company_id'] = $company_id;
+            }
         }
 
         if($operate_staff_id > 0){// 操作人员统计
             array_push($otherWhere, ['operate_staff_id', '=', $operate_staff_id]);
-            array_push($selectArr, 'operate_staff_id');
-            array_push($groupByArr, 'operate_staff_id');
-            $temDataArr['operate_staff_id'] = $operate_staff_id;
+            if($count_type !== 0) {
+                array_push($selectArr, 'operate_staff_id');
+                array_push($groupByArr, 'operate_staff_id');
+                $temDataArr['operate_staff_id'] = $operate_staff_id;
+            }
         }
 
         if($department_id > 0){// 部门统计
             array_push($otherWhere, ['department_id', '=', $department_id]);
-            array_push($selectArr, 'department_id');
-            array_push($groupByArr, 'department_id');
-            $temDataArr['department_id'] = $department_id;
+            if($count_type !== 0) {
+                array_push($selectArr, 'department_id');
+                array_push($groupByArr, 'department_id');
+                $temDataArr['department_id'] = $department_id;
+            }
         }
 
         if($group_id > 0){// 小组统计
             array_push($otherWhere, ['group_id', '=', $group_id]);
-            array_push($selectArr, 'group_id');
-            array_push($groupByArr, 'group_id');
-            $temDataArr['group_id'] = $group_id;
+            if($count_type !== 0) {
+                array_push($selectArr, 'group_id');
+                array_push($groupByArr, 'group_id');
+                $temDataArr['group_id'] = $group_id;
+            }
         }
 
         if(!empty($begin_date)){
@@ -164,6 +205,10 @@ class CompanyWorkCallCountBusiness extends BaseBusiness
 
         if(!empty($end_date)){
             array_push($otherWhere, ['count_date', '<=', $end_date]);
+        }
+
+        if(!empty($begin_date) && $begin_date == $end_date){
+            array_push($otherWhere, ['count_date', '=', $begin_date]);
         }
 
         switch ($count_type)
@@ -190,8 +235,11 @@ class CompanyWorkCallCountBusiness extends BaseBusiness
                 break;
             default:
         }
-        $countList = self::getCount($company_id, $selectArr, $otherWhere, $inWhereArr, $groupByArr, $havingRaw , $orderByArr);
-
+        if($count_type !== 0) {
+            $countList = self::getCount($company_id, $selectArr, $otherWhere, $inWhereArr, $groupByArr, $havingRaw, $orderByArr);
+        }else{
+            $countList = self::getSumCount($company_id, $otherWhere, $inWhereArr);
+        }
         //直接返回
         if( !in_array($count_type, [1,2,3]) ) return $countList;
 
