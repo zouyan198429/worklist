@@ -36,7 +36,7 @@ class CustomerController extends WorksController
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
         $reDataArr['count_types'] =  CompanyWork::$countTypeArr;
-        $reDataArr['defaultCountType'] = 3;// 列表页默认状态
+        $reDataArr['defaultCountType'] = 1;// 列表页默认状态
         return view('huawu.customer.dayCount', $reDataArr);
     }
 
