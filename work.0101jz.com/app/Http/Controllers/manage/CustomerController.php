@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\manage;
 
 use App\Http\Controllers\AdminController;
+use App\Services\Common;
+use App\Services\Tool;
 use Illuminate\Http\Request;
 use App\Business\CompanyCustomer;
 
@@ -19,6 +21,8 @@ class CustomerController extends AdminController
     {
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
+        $reDataArr['selTypes'] =  CompanyCustomer::$selTypes;
+        $reDataArr['defaultSelType'] = 1;// 列表页默认状态
         return view('manage.customer.index', $reDataArr);
     }
 
@@ -62,4 +66,24 @@ class CustomerController extends AdminController
     {
     }
 
+    /**
+     * ajax标记/取消标记
+     *
+     * @param int $id
+     * @return Response
+     * @author zouyan(305463219@qq.com)
+     */
+    public function ajax_is_tab(Request $request)
+    {
+        $this->InitParams($request);
+        $id = Common::getInt($request, 'id');
+        // Common::judgeEmptyParams($request, 'id', $id);
+        $is_tab = Common::getInt($request, 'is_tab');
+        Tool::dataValid([["input"=>$is_tab,"require"=>"true","validator"=>"custom","regexp"=>"/^([01])$/","message"=>'标签值必须为01']]);
+        $saveData = [
+            'is_tab' => (1- $is_tab),
+        ];
+        $resultDatas = CompanyCustomer::replaceById($request, $this, $saveData, $id);
+        return ajaxDataArr(1, $resultDatas, '');
+    }
 }

@@ -129,6 +129,7 @@ Route::post('admin/problem/reply_ajax_save', 'admin\ProblemController@reply_ajax
 //客户
 Route::post('admin/customer/ajax_alist', 'admin\CustomerController@ajax_alist');//ajax获得列表数据
 Route::post('admin/customer/ajax_biaoji', 'admin\CustomerController@ajax_biaoji');//ajax标记
+Route::post('admin/customer/ajax_is_tab', 'admin\CustomerController@ajax_is_tab');//ajax标记
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //web-manage
@@ -155,6 +156,7 @@ Route::post('manage/problem/reply_ajax_save', 'manage\ProblemController@reply_aj
 //客户
 Route::post('manage/customer/ajax_alist', 'manage\CustomerController@ajax_alist');//ajax获得列表数据
 Route::post('manage/customer/ajax_biaoji', 'manage\CustomerController@ajax_biaoji');//ajax标记
+Route::post('manage/customer/ajax_is_tab', 'manage\CustomerController@ajax_is_tab');//ajax标记
 
 // 区域
 Route::post('manage/area/ajax_get_child', 'manage\AreaController@ajax_get_child');// 获得子类部门数组[kv一维数组]
@@ -188,6 +190,7 @@ Route::post('huawu/department/ajax_get_child', 'huawu\DepartmentController@ajax_
 //客户
 Route::post('huawu/customer/ajax_alist', 'huawu\CustomerController@ajax_alist');//ajax获得列表数据
 Route::post('huawu/customer/ajax_biaoji', 'huawu\CustomerController@ajax_biaoji');//ajax标记
+Route::post('huawu/customer/ajax_is_tab', 'huawu\CustomerController@ajax_is_tab');//ajax标记
 
 // 区域
 Route::post('huawu/area/ajax_get_child', 'huawu\AreaController@ajax_get_child');// 获得子类部门数组[kv一维数组]
@@ -224,6 +227,7 @@ Route::post('weixiu/department/ajax_get_child', 'weixiu\DepartmentController@aja
     // piwik.com
 Route::post('weixiu/customer/ajax_alist', 'weixiu\CustomerController@ajax_alist');//ajax获得列表数据
 Route::post('weixiu/customer/ajax_biaoji', 'weixiu\CustomerController@ajax_biaoji');//ajax标记
+Route::post('weixiu/customer/ajax_is_tab', 'weixiu\CustomerController@ajax_is_tab');//ajax标记
 
 
 // 区域

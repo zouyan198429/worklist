@@ -2,6 +2,7 @@
 // 客户表
 namespace App\Business;
 
+use App\Services\Common;
 use App\Services\CommonBusiness;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as Controller;
@@ -12,6 +13,10 @@ use App\Http\Controllers\BaseController as Controller;
 class CompanyCustomer extends BaseBusiness
 {
     protected static $model_name = 'CompanyCustomer';
+    public static $selTypes = [
+        '1' => '全部客户',
+        '2' => '多次来电客户',
+    ];
 
     /**
      * 获得列表数据--所有数据
@@ -44,6 +49,24 @@ class CompanyCustomer extends BaseBusiness
         ];// 查询条件参数
         if(empty($queryParams)){
             $queryParams = $defaultQueryParams;
+        }
+        $sel_type = Common::get($request, 'sel_type');
+        $field = Common::get($request, 'field');
+        $keyWord = Common::get($request, 'keyWord');
+
+        switch ($sel_type)
+        {
+            case 1:// 1 全部客户
+
+                break;
+            case 2:// 2多次来电客户
+                array_push($queryParams['where'],['call_num', '>' , 1]);
+                break;
+            default:
+        }
+
+        if(!empty($field) && !empty($keyWord)){
+            array_push($queryParams['where'],[$field, 'like' , '%' . $keyWord . '%']);
         }
         // $relations = ['CompanyInfo'];// 关系
         // $relations = ['customerType'];//['CompanyInfo'];// 关系

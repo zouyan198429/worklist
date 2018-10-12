@@ -20,8 +20,14 @@ class CompanyCustomer extends BaseModel
         '2' => '女',
     ];
 
+    // 标记
+    protected $is_tab_arr = [
+        '0' => '未标记',
+        '1' => '已标记',
+    ];
+
     // 表里没有的字段
-    protected $appends = ['sex_text'];
+    protected $appends = ['sex_text','is_tab_text'];
 
     /**
      * 获取性别文字
@@ -31,6 +37,16 @@ class CompanyCustomer extends BaseModel
     public function getSexTextAttribute()
     {
         return $this->sex_arr[$this->sex] ?? '';
+    }
+
+    /**
+     * 获取标记文字
+     *
+     * @return string
+     */
+    public function getIsTabTextAttribute()
+    {
+        return $this->is_tab_arr[$this->is_tab] ?? '';
     }
 
     /**

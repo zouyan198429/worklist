@@ -487,6 +487,7 @@ class CompanyWorkController extends CompController
 
             if($staffCustomerData['id']) unset($staffCustomerData['id']);
             if($staffCustomerData['sex_text']) unset($staffCustomerData['sex_text']);
+            if($staffCustomerData['is_tab_text']) unset($staffCustomerData['is_tab_text']);
             if($staffCustomerData['created_at']) unset($staffCustomerData['created_at']);
             if($staffCustomerData['updated_at']) unset($staffCustomerData['updated_at']);
             $batchModifyStaffCustomer = $staffCustomerData;
@@ -875,6 +876,7 @@ class CompanyWorkController extends CompController
 
                 if($staffCustomerData['id']) unset($staffCustomerData['id']);
                 if($staffCustomerData['sex_text']) unset($staffCustomerData['sex_text']);
+                if($staffCustomerData['is_tab_text']) unset($staffCustomerData['is_tab_text']);
                 if($staffCustomerData['created_at']) unset($staffCustomerData['created_at']);
                 if($staffCustomerData['updated_at']) unset($staffCustomerData['updated_at']);
                 $batchModifyStaffCustomer = $staffCustomerData;

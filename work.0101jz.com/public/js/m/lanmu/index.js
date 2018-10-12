@@ -4,7 +4,7 @@ $(function(){
     $('.search_frm').trigger("click");// 触发搜索事件
     ajax_status_count(0, 0, 0);//ajax工单状态统计
     ajax_msg_list(0 ,0, 0);// ajax 消息列表
-    reset_list(false);
+    // reset_list(false);
     // 自动更新数据
     var autoObj = new Object();
     autoObj.orderProcessList = function(){

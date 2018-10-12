@@ -5,6 +5,8 @@ namespace App\Http\Controllers\huawu;
 use App\Business\CompanyWork;
 use App\Business\CompanyStaffCustomer;
 use App\Http\Controllers\WorksController;
+use App\Services\Common;
+use App\Services\Tool;
 use Illuminate\Http\Request;
 
 
@@ -22,6 +24,8 @@ class CustomerController extends WorksController
     {
         $this->InitParams($request);
         $reDataArr = $this->reDataArr;
+        $reDataArr['selTypes'] =  CompanyStaffCustomer::$selTypes;
+        $reDataArr['defaultSelType'] = 1;// 列表页默认状态
         return view('huawu.customer.index', $reDataArr);
     }
     /**
@@ -81,4 +85,24 @@ class CustomerController extends WorksController
     {
     }
 
+    /**
+     * ajax标记/取消标记
+     *
+     * @param int $id
+     * @return Response
+     * @author zouyan(305463219@qq.com)
+     */
+    public function ajax_is_tab(Request $request)
+    {
+        $this->InitParams($request);
+        $id = Common::getInt($request, 'id');
+        // Common::judgeEmptyParams($request, 'id', $id);
+        $is_tab = Common::getInt($request, 'is_tab');
+        Tool::dataValid([["input"=>$is_tab,"require"=>"true","validator"=>"custom","regexp"=>"/^([01])$/","message"=>'标签值必须为01']]);
+        $saveData = [
+            'is_tab' => (1- $is_tab),
+        ];
+        $resultDatas = CompanyStaffCustomer::replaceById($request, $this, $saveData, $id);
+        return ajaxDataArr(1, $resultDatas, '');
+    }
 }

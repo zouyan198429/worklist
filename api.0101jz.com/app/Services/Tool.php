@@ -903,4 +903,35 @@ class Tool
         }
         return true;
     }
+
+    /**
+     * 功能：验证数据
+     * @param array $valiDateParam 需要验证的条件
+    $valiDateParam= [
+    //["input"=>$_POST["title"],"require"=>"true","message"=>'闪购名称不能为空'],  -- 必填  -- require是否必填，可以与下面的一方一起参与验证
+    ["input"=>$_POST["state"],"require"=>"false","validator"=>"custom","regexp"=>"/^([01]|10)$/","message"=>'闪购状态值有误'],--正则
+    ["input"=>$_POST["title"],"require"=>"false","validator"=>"length","min"=>"1","max"=>"160","message"=>'闪购名称长度为1~ 160个字符'],--判断长度
+    ["input"=>$_POST["title"],"require"=>"false","validator"=>"compare","operator"=>"比较符>=<=","to"=>"被比较值","message"=>'闪购名称不能大于10'],--比较
+    ["input"=>$_POST["title"],"require"=>"false","validator"=>"range","min"=>"最小值1","max"=>"最大值10","message"=>'闪购值必须大于等于1且小于等于10'],--范围
+    ["input"=>$_POST["market_id"],"require"=>"false","validator"=>"integer","message"=>'闪购地编号必须为数值'], --配置好的
+    ];
+     * @param string $errDo 错误处理方式 1 throws 2直接返回错误
+     * @return string  错误信息 ，没有错，则为空
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function dataValid($valiDateParam = [], $errDo = 1) {
+        if(empty($valiDateParam) || (!is_array($valiDateParam))){
+            return false;
+        }
+        $validateObj = new Validate();
+        $validateObj->validateparam = $valiDateParam;
+        // return $validateObj->validate();
+        $error = $validateObj->validate();
+        if ($error != ''){
+            if($errDo == 1) throws($error);
+            return $error;
+            // output_error($error);
+        }
+        return '';
+    }
 }
