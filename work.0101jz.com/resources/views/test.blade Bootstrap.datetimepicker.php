@@ -17,8 +17,8 @@
     <script type="text/javascript" src="{{asset('datetimepicker/js/bootstrap-datetimepicker.js')}}" charset="UTF-8"></script>
     <script type="text/javascript" src="{{asset('datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js')}}" charset="UTF-8"></script>
 	<script>
-        //const SAVE_URL = "{ { url('api/handles/' . $pro_unit_id . '/ajax_save') }}";
-        //const LIST_URL = "{ {url('handles/' . $pro_unit_id)}}";
+        //var SAVE_URL = "{ { url('api/handles/' . $pro_unit_id . '/ajax_save') }}";
+        //var LIST_URL = "{ {url('handles/' . $pro_unit_id)}}";
         // 仅选择日期
         $(".form-date").datetimepicker(
             {

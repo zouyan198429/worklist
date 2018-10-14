@@ -12,6 +12,9 @@
                 <div class="link"><a href="{{ url('admin/problem') }}" ><i class="fa fa-file-text-o "></i>回馈问题</a></div>
             </li>
             <li>
+                <div class="link"><a href="{{ url('admin/notice') }}" ><i class="fa fa-bullhorn fa-fw "></i>通知公告</a></div>
+            </li>
+            <li>
                 <div class="link"><i class="fa fa-address-card-o"></i><a href="{{ url('admin/customer') }}">客户管理</a></i></div>
             </li>
             <li>

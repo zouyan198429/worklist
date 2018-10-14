@@ -90,31 +90,35 @@ Class Validate{
             return false;
         }
         foreach($this->validateparam as $k=>$v){//遍历参数
-            $v['validator'] = strtolower($v['validator']);//validator 的值转为小写
+            $judgeVal = $v['input'];
+
             if (!isset($v['require']) || $v['require'] == ""){//必填为空，则必填 require 赋值为 false
                 $v['require'] = false;
             }
-
-            if ($this->bn_is_empty($v['input']) && $v['require'] == "true"){// $v['input']== ""  [必填但是值已经为空]值为空，且必填时, 给 result 赋值 false ,否则为 true			
+            // 判断是否必填
+            if ($this->bn_is_empty($judgeVal) && $v['require'] == "true"){// $judgeVal == ""  [必填但是值已经为空]值为空，且必填时, 给 result 赋值 false ,否则为 true
                 $this->validateparam[$k]['result'] = false;
             }else{
                 $this->validateparam[$k]['result'] = true;
             }
-            if ($this->validateparam[$k]['result'] && $v['input'] != ""){//result 值为true 且有值，才进行判断
-                switch($v['validator']){//根据validator进行判断
+            // 不为空，判断具体验证
+            if ($this->validateparam[$k]['result'] && $judgeVal != ""){//result 值为true 且有值，才进行判断
+                $temValidator = $v['validator'] ?? '';
+                $temValidator = strtolower($temValidator);//validator 的值转为小写
+                switch($temValidator){//根据validator进行判断
                     case "custom": //正则验证 validator=“custom”  regexp=""
-                        $this->validateparam[$k]['result'] = $this->check($v['input'],$v['regexp']);
+                        $this->validateparam[$k]['result'] = $this->check($judgeVal,$v['regexp']);
                         break;
                     case "compare"://比较 validator=“compare”  operator="比较符" to="被比较值"
                         if ($v['operator'] != ""){//比较符不为空
-                            eval("\$result = '" . $v['input'] . "'" . $v['operator'] . "'" . $v['to'] . "'" . ";" );
-                            $this->validateparam[$k]['result'] = $result;	
+                            eval("\$result = '" . $judgeVal . "'" . $v['operator'] . "'" . $v['to'] . "'" . ";" );
+                            $this->validateparam[$k]['result'] = $result;
                         }
                         break;
                     case "length"://判断长度  validator=“length”  min="最小值" max="最大值"
                         //判断编码取字符串长度
-                        $input_encode = mb_detect_encoding($v['input'],array('UTF-8','GBK','ASCII',));//获得字符的编码
-                        $input_length = mb_strlen($v['input'],$input_encode);//获得长度
+                        $input_encode = mb_detect_encoding($judgeVal,array('UTF-8','GBK','ASCII',));//获得字符的编码
+                        $input_length = mb_strlen($judgeVal,$input_encode);//获得长度
                         if (intval($v['min']) >= 0 && intval($v['max']) > intval($v['min'])){//最小值>=0 且 最大值>最小值
                             $this->validateparam[$k]['result'] = ($input_length >= intval($v['min']) && $input_length <= intval($v['max']));
                         }
@@ -125,16 +129,17 @@ Class Validate{
 
                     case "range"://范围 validator=“range” min="最小值" max="最大值"
                         if (intval($v['min']) >= 0 && intval($v['max']) > intval($v['min'])){//最小值>=0 且 最大值>最小值
-                            $this->validateparam[$k]['result'] = (intval($v['input']) >= intval($v['min']) && intval($v['input']) <= intval($v['max']));
+                            $this->validateparam[$k]['result'] = (intval($judgeVal) >= intval($v['min']) && intval($judgeVal) <= intval($v['max']));
                         }
                         else if (intval($v['min']) >= 0 && intval($v['max']) <= intval($v['min'])){//最小值>=0 且 最大值<=最小值 ，按 等于最小值(==)判断
-                            $this->validateparam[$k]['result'] = (intval($v['input']) == intval($v['min']));
+                            $this->validateparam[$k]['result'] = (intval($judgeVal) == intval($v['min']));
                         }else if( intval($v['max']) > intval($v['min'])){// 最大值>最小值
-                            $this->validateparam[$k]['result'] = (intval($v['input']) >= intval($v['min']) && intval($v['input']) <= intval($v['max']));
+                            $this->validateparam[$k]['result'] = (intval($judgeVal) >= intval($v['min']) && intval($judgeVal) <= intval($v['max']));
                         }
                         break;
                     default://默认 validator="" $this->validator的下标值
-                        $this->validateparam[$k]['result'] = $this->check($v['input'],$this->validator[$v['validator']]);
+                        $selValidator = $this->validator[$temValidator] ?? '';
+                        $this->validateparam[$k]['result'] = $this->check($judgeVal,$selValidator);
                 }
             }
         }

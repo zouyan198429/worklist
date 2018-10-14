@@ -37,8 +37,8 @@
 
 @push('footlast')
 	<script type="text/javascript">
-        const SATUS_COUNT_URL = "{{ url('api/weixiu/work/ajax_status_count') }}";// ajax工单状态统计 url
-        const NEED_PLAY_STATUS = "{{ $countPlayStatus }}";// 需要发声的状态，多个逗号,分隔
+        var SATUS_COUNT_URL = "{{ url('api/weixiu/work/ajax_status_count') }}";// ajax工单状态统计 url
+        var NEED_PLAY_STATUS = "{{ $countPlayStatus }}";// 需要发声的状态，多个逗号,分隔
 
 	</script>
 	<script src="{{ asset('js/weixiu/lanmu/index.js') }}"  type="text/javascript"></script>

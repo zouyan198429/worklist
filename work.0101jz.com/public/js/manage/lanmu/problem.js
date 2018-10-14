@@ -27,6 +27,12 @@ $(function(){
     document.write("    %>");
     document.write("");
     document.write("    <tr>");
+    document.write("            <td>");
+    document.write("                <label class=\"pos-rel\">");
+    document.write("                    <input  onclick=\"action.seledSingle(this)\" type=\"checkbox\" class=\"ace check_item\" <%if( false &&  !can_modify){%> disabled <%}%>  value=\"<%=item.id%>\"\/>");
+    document.write("                  <span class=\"lbl\"><\/span>");
+    document.write("                <\/label>");
+    document.write("            <\/td>");
     document.write("        <td><%=item.type_name%>\/<%=item.business_name%><\/td>");
     document.write("        <td><%=item.content%><\/td>");
     // document.write("        <td><%=item.reply_content%><\/td>");

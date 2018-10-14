@@ -63,10 +63,10 @@
 	<script type="text/javascript" src="{{asset('js/common/echarts.min.js')}}"></script>
 	<script type="text/javascript" src="{{asset('js/common/graph.js')}}"></script>
 	<script type="text/javascript">
-        const WORK_COUNT_URL = "{{ url('api/manage/work/ajax_work_count') }}";// ajax工单统计 url
-        const BAR_GRAPH_ID = "container";// 柱状图id
-        const BEGIN_DATE = "{{ $begin_date or '' }}" ;//开始日期
-        const END_DATE = "{{ $end_date or '' }}" ;//结束日期
+        var WORK_COUNT_URL = "{{ url('api/manage/work/ajax_work_count') }}";// ajax工单统计 url
+        var BAR_GRAPH_ID = "container";// 柱状图id
+        var BEGIN_DATE = "{{ $begin_date or '' }}" ;//开始日期
+        var END_DATE = "{{ $end_date or '' }}" ;//结束日期
 
 	</script>
 	<script src="{{ asset('js/manage/lanmu/count_call.js') }}"  type="text/javascript"></script>

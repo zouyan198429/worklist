@@ -57,6 +57,29 @@ class CustomerController extends WorksController
         return  CompanyStaffCustomer::getList($request, $this, 2 + 4, [], ['customerType'] );
     }
 
+    /**
+     * 导出
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function export(Request $request){
+        $this->InitParams($request);
+        CompanyStaffCustomer::getList($request, $this, 1 + 0);
+    }
+
+    /**
+     * 导入模版
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function import_template(Request $request){
+        $this->InitParams($request);
+        CompanyStaffCustomer::importTemplate($request, $this);
+    }
 
 
     /**

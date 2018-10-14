@@ -712,11 +712,20 @@ class CommonBusiness
      * @param int $notLog 是否需要登陆 0需要1不需要
      * @author zouyan(305463219@qq.com)
      */
-    public static function ResourceDelById($id, $companyId = null,$notLog = 0){
+    public static function ResourceDelById($id, $companyId = null, $notLog = 0){
         $model_name = 'Resource';
         // 获得数据记录
         $relations = '';
-        $info = self::getinfoApi($model_name, $relations, $companyId , $id, $notLog);
+        if(is_numeric($companyId) && $companyId > 0){
+            // 判断权限
+            $judgeData = [
+                'company_id' => $companyId,
+            ];
+            $info = CommonBusiness::judgePower($id, $judgeData, $model_name, $companyId, $relations, $notLog);
+        }else{
+            $info = self::getinfoApi($model_name, $relations, $companyId , $id, $notLog);
+        }
+
         if(empty($info)){
             // throws('资源记录[' . $id . ']不存在!', $this->source);
             throws('资源记录[' . $id . ']不存在!');
@@ -877,12 +886,13 @@ class CommonBusiness
     /**
      * 判断权限
      *
-     * @param int $id id
+     * @param int $id id ,多个用,号分隔
      * @param array $judgeArr 需要判断的下标[字段名]及值 一维数组
      * @param string $model_name 模型名称
      * @param int $companyId 企业id
      * @param json/array $relations 要查询的与其它表的关系
      * @param int $notLog 是否需要登陆 0需要1不需要
+     * @return array 一维数组[单条] 二维数组[多条]
      * @author zouyan(305463219@qq.com)
      */
     public static function judgePower($id, $judgeArr = [] , $model_name = '', $company_id = '', $relations = '', $notLog  = 0){
@@ -890,11 +900,33 @@ class CommonBusiness
 //        if(empty($model_name)){
 //            $model_name = $this->model_name;
 //        }
-        // 获得当前记录
-        $infoData =  self::getinfoApi($model_name, $relations, $company_id , $id, $notLog);
-
-        self::judgePowerByObj($infoData, $judgeArr);
-        return $infoData;
+        $dataList = [];
+        $isSingle = true;// 是否单条记录 true:是;false：否
+        if (strpos($id, ',') === false) { // 单条
+            // 获得当前记录
+            $dataList[] =  self::getinfoApi($model_name, $relations, $company_id , $id, $notLog);
+        }else{
+            $isSingle = false;
+            $queryParams =  [
+                'where' => [
+                    //['company_id', $company_id],
+                    //['mobile', $keyword],
+                ],
+//            'select' => [
+//                'id','company_id','type_name','sort_num'
+//            ],
+                // 'orderBy' => ['id'=>'desc'],
+            ];
+            if($company_id != ''){
+                array_push($queryParams['where'],['company_id', $company_id]);
+            }
+            $queryParams['whereIn']['id'] = explode(',',$id);
+            $dataList = self::ajaxGetAllList($model_name, [], $company_id,$queryParams ,$relations, $notLog );
+        }
+        foreach($dataList as $infoData){
+            self::judgePowerByObj($infoData, $judgeArr);
+        }
+        return $isSingle ? $dataList[0] : $dataList;
     }
 
     public static function judgePowerByObj($infoData, $judgeArr = [] ){

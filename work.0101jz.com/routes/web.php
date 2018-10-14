@@ -106,7 +106,14 @@ Route::get('admin/count_repair', 'admin\CountRepairController@index');//count_Re
 Route::get('admin/lore_type', 'admin\LoreTypeController@index');//know_class.html 知识分类
 Route::get('admin/lore_type/add/{id}', 'admin\LoreTypeController@add');// 知识分类--添加
 
-Route::get('admin/lore', 'admin\LoreController@index');//know_list.html 在线学习
+// 知识
+Route::get('admin/lore/add/{id}', 'admin\LoreController@add');//know_add.html 在线学习-添加
+Route::get('admin/lore', 'admin\LoreController@index');//know_list.html  在线学习-列表
+Route::get('admin/lore/info/{id}', 'admin\LoreController@info');//know_view.html 在线学习-详情
+//通知公告
+Route::get('admin/notice/add/{id}', 'admin\NoticeController@add');//添加
+Route::get('admin/notice', 'admin\NoticeController@index');//列表
+Route::get('admin/notice/info/{id}', 'admin\NoticeController@info');//详情
 
 // 反馈分类
 Route::get('admin/problem_type', 'admin\ProblemTypeController@index');//class_order.html 反馈分类
@@ -132,6 +139,7 @@ Route::get('admin/paper', 'admin\PaperController@index');//x_testpaper_list.html
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //web-manage
+Route::get('manage/testUpfile', 'manage\IndexController@testUpfile');// 测试
 Route::get('manage', 'manage\IndexController@index');//main_admin.html -首页
 Route::get('manage/login', 'manage\IndexController@login');//login.html 登陆
 Route::get('manage/logout', 'manage\IndexController@logout');// 注销
@@ -144,19 +152,27 @@ Route::get('manage/count_call', 'manage\CountCallController@index');//count_call
 Route::get('manage/count_customer', 'manage\CountCustomerController@index');///count_Customer.html 来电统计--客户
 Route::get('manage/count_repair', 'manage\CountRepairController@index');//count_Repair.html 来电统计
 //学习
-Route::get('manage/lore/add', 'manage\LoreController@add');//know_add.html 在线学习-添加
+Route::get('manage/lore/add/{id}', 'manage\LoreController@add');//know_add.html 在线学习-添加
 Route::get('manage/lore', 'manage\LoreController@index');//know_list.html  在线学习-列表
 Route::get('manage/lore/list', 'manage\LoreController@list');////study.html 在线学习
-Route::get('manage/lore/info', 'manage\LoreController@info');//know_view.html 在线学习-详情
+Route::get('manage/lore/info/{id}', 'manage\LoreController@info');//know_view.html 在线学习-详情
+//通知公告
+Route::get('manage/notice/add/{id}', 'manage\NoticeController@add');//添加
+Route::get('manage/notice', 'manage\NoticeController@index');//列表
+Route::get('manage/notice/info/{id}', 'manage\NoticeController@info');//详情
 //客户
 Route::get('manage/customer', 'manage\CustomerController@index');//m_customer_all.html 客户管理
 //反馈
 Route::get('manage/problem', 'manage\ProblemController@index');//m_problem.html 反馈问题 - 列表 /该模块的首页
 Route::get('manage/problem/reply/{id}', 'manage\ProblemController@reply');//m_problem.html 反馈问题 - 回复
+Route::get('manage/problem/export', 'manage\ProblemController@export');//colleague.html 导出
+Route::get('manage/problem/import_template', 'manage\ProblemController@import_template');// -导入模版
 //同事
 Route::get('manage/staff/list', 'manage\StaffController@list');//m_staff.html 我的同事--管理
 Route::get('manage/staff', 'manage\StaffController@index');//colleague.html 我的同事--列表
 Route::get('manage/staff/add/{id}', 'manage\StaffController@add');//m_staff_add.html 添加员工
+Route::get('manage/staff/export', 'manage\StaffController@export');//colleague.html 我的同事--导出
+Route::get('manage/staff/import_template', 'manage\StaffController@import_template');//colleague.html 我的同事--导入模版
 //工单
 Route::get('manage/work', 'manage\WorkController@index');//m_work_monitor.html 工单管理
 Route::get('manage/work/list', 'manage\WorkController@list');//Repair_list.html 我的工单
@@ -195,9 +211,14 @@ Route::get('huawu/exam/doing', 'huawu\ExamController@doing');//examin_do.html �
 Route::get('huawu/exam/win', 'huawu\ExamController@win');//examin_over.html 在线考试
 //反馈
 Route::get('huawu/problem/add', 'huawu\ProblemController@add');//feedback.html 在线反馈
+
 //学习
-Route::get('huawu/lore', 'huawu\LoreController@index');//study.html 在线学习
-Route::get('huawu/lore/info', 'huawu\LoreController@info');//know_view.html 在线学习
+Route::get('huawu/lore', 'huawu\LoreController@index');//know_list.html  在线学习-列表
+Route::get('huawu/lore/info/{id}', 'huawu\LoreController@info');//know_view.html 在线学习-详情
+
+//通知公告
+Route::get('huawu/notice', 'huawu\NoticeController@index');//列表
+Route::get('huawu/notice/info/{id}', 'huawu\NoticeController@info');//详情
 //工单
 Route::get('huawu/work', 'huawu\WorkController@index');//m_work_monitor.html 工单管理
 Route::get('huawu/work/list', 'huawu\WorkController@list');///Repair_list.html 我的工单
@@ -233,8 +254,12 @@ Route::get('weixiu/work/list', 'weixiu\WorkController@list');///Repair_list.html
 Route::get('weixiu/work/info/{id}', 'weixiu\WorkController@info');//work_add.html 工单--详情
 Route::get('weixiu/work/win/{id}', 'weixiu\WorkController@win');// 结单
 //学习
-Route::get('weixiu/lore', 'weixiu\LoreController@index');//study.html 在线学习
-Route::get('weixiu/lore/info', 'weixiu\LoreController@info');//know_view.html 在线学习
+Route::get('weixiu/lore', 'weixiu\LoreController@index');//know_list.html  在线学习-列表
+Route::get('weixiu/lore/info/{id}', 'weixiu\LoreController@info');//know_view.html 在线学习-详情
+
+//通知公告
+Route::get('weixiu/notice', 'weixiu\NoticeController@index');//列表
+Route::get('weixiu/notice/info/{id}', 'weixiu\NoticeController@info');//详情
 //帮助中心
 Route::get('weixiu/help', 'weixiu\HelpController@index');// 帮助中心
 
@@ -247,7 +272,7 @@ Route::get('app/info', 'app\IndexController@info');//myinfo.html 我的详情
 Route::get('app/customer', 'app\CustomerController@index');//customer_all.html 客户列表
 //学习
 Route::get('app/lore', 'app\LoreController@index');//study.html 学习列表
-Route::get('app/lore/info', 'app\LoreController@info');//know_view.html 知识详情
+Route::get('app/lore/info/{id}', 'app\LoreController@info');//know_view.html 知识详情
 //反馈
 Route::get('app/problem/add', 'app\ProblemController@add');//problem.html 反馈问题
 //工单
@@ -274,8 +299,13 @@ Route::get('m/problem/add/{id}', 'm\ProblemController@add');//feedback.html 问�
 Route::get('m/exam', 'm\ExamController@index');//kaoshi.html 在线考试 --考试列表
 Route::get('m/exam_score', 'm\ExamController@score');//kaoshi-cj.html 考试成绩-成绩列表
 Route::get('m/exam_search', 'm\ExamController@search');//kaoshi-cj-view.html  考试成绩-维修业务知识测评--成绩查询
+//学习
 Route::get('m/lore', 'm\LoreController@index');//study.html 学习中心--知识列表
-Route::get('m/lore/info', 'm\LoreController@info');//study_view.html 学习中心-知识详情页
+Route::get('m/lore/info/{id}', 'm\LoreController@info');//study_view.html 学习中心-知识详情页
+
+//通知公告
+Route::get('m/notice', 'm\NoticeController@index');//列表
+Route::get('m/notice/info/{id}', 'm\NoticeController@info');//详情
 // 工单
 Route::get('m/work/win/{id}', 'm\WorkController@win');// 结单
 //帮助中心

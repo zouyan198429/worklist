@@ -4,6 +4,8 @@ namespace App\Business;
 
 use App\Services\Common;
 use App\Services\CommonBusiness;
+use App\Services\Excel\ImportExport;
+use App\Services\Tool;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as Controller;
 
@@ -73,7 +75,14 @@ class BaseBusiness
         }else{
             $resultDatas = $result;
             //if ($total <= 0 ) {
-            $total = count($resultDatas);
+            if(is_array($resultDatas)){
+                $total = count($resultDatas);
+            }elseif(is_numeric($resultDatas)){
+                $total = $resultDatas;
+                $resultDatas = [];
+            }else{
+                $resultDatas = [];
+            }
             //}
             if($total > 0) $pagesize = $total;
         }
@@ -120,40 +129,53 @@ class BaseBusiness
     }
 
     /**
-     * 删除单条数据
+     * 删除单条数据--兼容批量删除
      *
      * @param Request $request 请求信息
      * @param Controller $controller 控制对象
      * @param string $model_name 模型名称
-     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @param int $notLog 是否需要登陆 0需要1不需要 2已经判断权限，不用判断权限
      * @return  array 列表数据
      * @author zouyan(305463219@qq.com)
      */
     public static function delAjaxBase(Request $request, Controller $controller, $model_name, $notLog = 0){
 
-        $id = Common::getInt($request, 'id');
+        $id = Common::get($request, 'id');
+        Tool::dataValid([["input"=>$id,"require"=>"true","validator"=>"","message"=>'参数id值不能为空']]);
+
         $company_id = $controller->company_id;
 
         // 判断权限
-        $judgeData = [
-            'company_id' => $company_id,
-        ];
-        $relations = '';
-        CommonBusiness::judgePower($id, $judgeData, $model_name, $company_id, $relations, $notLog);
+        if(($notLog & 2) == 2 ) {
+            $notLog = $notLog - 2 ;
+        }else{
+            $judgeData = [
+                'company_id' => $company_id,
+            ];
+            $relations = '';
+            CommonBusiness::judgePower($id, $judgeData, $model_name, $company_id, $relations, $notLog);
+        }
 
         $queryParams =[// 查询条件参数
             'where' => [
-                ['id', $id],
+                // ['id', $id],
                 ['company_id', $company_id]
             ]
         ];
+        if (strpos($id, ',') === false) { // 单条
+            array_push($queryParams['where'],['id', $id]);
+        }else{
+            $queryParams['whereIn']['id'] = explode(',',$id);
+        }
+
         $resultDatas = CommonBusiness::ajaxDelApi($model_name, $company_id , $queryParams, $notLog);
 
         return ajaxDataArr(1, $resultDatas, '');
     }
 
+
     /**
-     * 删除单条数据---总系统类表
+     * 删除单条数据---总系统类表--兼容批量删除
      *
      * @param Request $request 请求信息
      * @param Controller $controller 控制对象
@@ -176,10 +198,15 @@ class BaseBusiness
 
         $queryParams =[// 查询条件参数
             'where' => [
-                ['id', $id],
+//                ['id', $id],
 //                ['company_id', $company_id]
             ]
         ];
+        if (strpos($id, ',') === false) { // 单条
+            array_push($queryParams['where'],['id', $id]);
+        }else{
+            $queryParams['whereIn']['id'] = explode(',',$id);
+        }
         $resultDatas = CommonBusiness::ajaxDelApi($model_name, $company_id , $queryParams, $notLog);
 
         return ajaxDataArr(1, $resultDatas, '');
@@ -226,6 +253,41 @@ class BaseBusiness
         }
         return $resultDatas;
     }
+
+    /**
+     * 通过id同步修改关系接口
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param string $model_name 模型名称
+     * @param array $syncParams 要保存或修改的数组
+     * @param int $id id
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @return  mixed 单条数据 - -维数组 为0 新加，返回新的对象数组[-维],  > 0 ：修改对应的记录，返回true
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function saveSyncById(Request $request, Controller $controller, $model_name, $syncParams, &$id, $notLog = 0){
+        $company_id = $controller->company_id;
+        return CommonBusiness::saveSyncByIdApi($model_name, $id, $syncParams, $company_id, $notLog);
+    }
+
+    /**
+     * 通过id移除关系接口
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param string $model_name 模型名称
+     * @param array $syncParams 要保存或修改的数组
+     * @param int $id id
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @return  mixed 单条数据 - -维数组 为0 新加，返回新的对象数组[-维],  > 0 ：修改对应的记录，返回true
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function detachById(Request $request, Controller $controller, $modelName, $id, $detachParams, $notLog = 0){
+        $company_id = $controller->company_id;
+        return CommonBusiness::detachByIdApi($modelName, $id, $detachParams, $company_id, $notLog);
+    }
+
 
     /**
      * 根据id新加或修改单条数据-id 为0 新加，返回新的对象数组[-维],  > 0 ：修改对应的记录，返回true

@@ -37,8 +37,8 @@
 <script src="{{ asset('/static/js/custom/ajaxpage.js') }}"></script>
 <!-- 新加入 end-->
 <script>
-    const LOGIN_URL = "{{ url('api/huawu/ajax_login') }}";
-    const INDEX_URL = "{{url('huawu')}}";
+    var LOGIN_URL = "{{ url('api/huawu/ajax_login') }}";
+    var INDEX_URL = "{{url('huawu')}}";
 
 </script>
 <script src="{{ asset('/js/common/login.js') }}"  type="text/javascript"></script>

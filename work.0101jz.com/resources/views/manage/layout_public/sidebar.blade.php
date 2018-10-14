@@ -21,7 +21,7 @@
                 </a>
             </li>            
             <li>
-                <a href="{{ url('manage/lore/list') }}">
+                <a href="{{ url('manage/notice') }}">
                     <i class="fa fa-bullhorn fa-fw" aria-hidden="true"></i>
                     <span>通知公告</span>
                 </a>

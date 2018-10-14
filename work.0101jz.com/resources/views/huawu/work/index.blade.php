@@ -108,23 +108,25 @@
 	<link rel="stylesheet" href="{{asset('layui-v2.4.3/layui/css/layui.css')}}">
 	<script type="text/javascript">
         var OPERATE_TYPE = <?php echo isset($operate_type)?$operate_type:0; ?>;
-        const AUTO_READ_FIRST = false;//自动读取第一页 true:自动读取 false:指定地方读取
-        const AJAX_URL = "{{ url('api/huawu/work/ajax_alist') }}";//ajax请求的url
-        const ADD_URL = "{{ url('huawu/work/add/0') }}"; //添加url
-        const SHOW_URL = "{{url('huawu/work/info/')}}/";//显示页面地址前缀 + id
-        const SHOW_URL_TITLE = "工单详情" ;// 详情弹窗显示提示
-        const EDIT_URL = "{{url('huawu/work/add/')}}/";//修改页面地址前缀 + id
-        const DEL_URL = "{{ url('api/huawu/work/ajax_del') }}";//删除页面地址
-        const BATCH_DEL_URL = "{{ url('api/huawu/work/ajax_del') }}";//批量删除页面地址
-        const EXPORT_EXCEL_URL = "{{ url('huawu/work/add/0') }}"; //"{{ url('api/huawu/work/export') }}";//导出EXCEL地址
-        const IMPORT_EXCEL_URL = "{{ url('huawu/work/add/0') }}"; //"{{ url('api/huawu/work/import') }}";//导入EXCEL地址
+        var AUTO_READ_FIRST = false;//自动读取第一页 true:自动读取 false:指定地方读取
+        var AJAX_URL = "{{ url('api/huawu/work/ajax_alist') }}";//ajax请求的url
+        var ADD_URL = "{{ url('huawu/work/add/0') }}"; //添加url
+        var SHOW_URL = "{{url('huawu/work/info/')}}/";//显示页面地址前缀 + id
+        var SHOW_URL_TITLE = "工单详情" ;// 详情弹窗显示提示
+        var SHOW_CLOSE_OPERATE = 0 ;// 详情弹窗operate_num关闭时的操作0不做任何操作1刷新当前页面2刷新当前列表页面
+        var EDIT_URL = "{{url('huawu/work/add/')}}/";//修改页面地址前缀 + id
+        var DEL_URL = "{{ url('api/huawu/work/ajax_del') }}";//删除页面地址
+        var BATCH_DEL_URL = "{{ url('api/huawu/work/ajax_del') }}";//批量删除页面地址
+        var EXPORT_EXCEL_URL = "{{ url('huawu/work/export') }}";//导出EXCEL地址
+        var IMPORT_EXCEL_TEMPLATE_URL = "{{ url('huawu/work/import_template') }}";//导入EXCEL模版地址
+        var IMPORT_EXCEL_URL = "{{ url('api/huawu/work/import') }}";//导入EXCEL地址
 
-        const REPLY_URL = "{{ url('huawu/work/reply/')}}/";// 回复地址
-        const REPLY_TITLE = "回访";
+        var REPLY_URL = "{{ url('huawu/work/reply/')}}/";// 回复地址
+        var REPLY_TITLE = "回访";
 
 
-        const SATUS_COUNT_URL = "{{ url('api/huawu/work/ajax_status_count') }}";// ajax工单状态统计 url
-        const NEED_PLAY_STATUS = "{{ $countPlayStatus }}";// 需要发声的状态，多个逗号,分隔
+        var SATUS_COUNT_URL = "{{ url('api/huawu/work/ajax_status_count') }}";// ajax工单状态统计 url
+        var NEED_PLAY_STATUS = "{{ $countPlayStatus }}";// 需要发声的状态，多个逗号,分隔
 	</script>
 	<script src="{{asset('js/common/list.js')}}"></script>
 	<script src="{{ asset('js/huawu/lanmu/work.js') }}"  type="text/javascript"></script>

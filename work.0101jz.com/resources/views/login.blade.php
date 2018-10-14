@@ -41,8 +41,8 @@
 @push('footscripts')
 
 <script>
-    const LOGIN_URL = '{{ url('api/accounts/ajax_login') }}';
-    const INDEX_URL = "{{url('/')}}";
+    var LOGIN_URL = '{{ url('api/accounts/ajax_login') }}';
+    var INDEX_URL = "{{url('/')}}";
 </script>
 <script src="{{ asset('/js/lanmu/login.js') }}"  type="text/javascript"></script>
 @endpush

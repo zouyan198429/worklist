@@ -40,8 +40,8 @@
 <script src="{{ asset('/static/js/custom/ajaxpage.js') }}"></script>
 <!-- 新加入 end-->
 <script>
-    const LOGIN_URL = "{{ url('api/m/ajax_login') }}";
-    const INDEX_URL = "{{url('m')}}";
+    var LOGIN_URL = "{{ url('api/m/ajax_login') }}";
+    var INDEX_URL = "{{url('m')}}";
 
 </script>
 <script src="{{ asset('/js/common/login.js') }}"  type="text/javascript"></script>

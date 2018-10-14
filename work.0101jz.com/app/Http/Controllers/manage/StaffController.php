@@ -7,6 +7,7 @@ use App\Business\CompanyPosition;
 use App\Business\CompanyStaff;
 use App\Http\Controllers\AdminController;
 use App\Services\Common;
+use App\Services\Tool;
 use Illuminate\Http\Request;
 
 class StaffController extends AdminController
@@ -88,6 +89,31 @@ class StaffController extends AdminController
         $this->InitParams($request);
         return  CompanyStaff::getList($request, $this, 2 + 4);
     }
+
+    /**
+     * 导出
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function export(Request $request){
+        $this->InitParams($request);
+        CompanyStaff::getList($request, $this, 1 + 0);
+    }
+
+    /**
+     * 导入模版
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function import_template(Request $request){
+        $this->InitParams($request);
+        CompanyStaff::importTemplate($request, $this);
+    }
+
 
     /**
      * 子帐号管理-删除

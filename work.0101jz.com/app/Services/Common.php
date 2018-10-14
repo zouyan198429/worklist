@@ -370,8 +370,14 @@ class Common
         */
         // 查询条件
         self::resolveSqlParams($modelObj, $queryParams);
+        $limit = $queryParams['limit'] ?? 0;
+        $offset = $queryParams['offset'] ?? 0;
+        $isChunk = true;// 是否分批获取 true 分批获取，false:直接获取
+        if($limit > 0 || $offset > 0){
+            $isChunk = false;
+        }
 
-        if (true) {// 在处理大量数据集合时能够有效减少内存消耗
+        if ($isChunk) {// 在处理大量数据集合时能够有效减少内存消耗
             $requestData = collect([]);
             $modelObj->chunk(200, function ($flights) use (&$requestData, $relations) {
                 self::resolveRelations($flights, $relations);

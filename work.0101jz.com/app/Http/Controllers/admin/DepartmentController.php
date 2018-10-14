@@ -64,6 +64,30 @@ class DepartmentController extends AdminController
     }
 
     /**
+     * 导出
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function export(Request $request){
+        $this->InitParams($request);
+        CompanyDepartment::getList($request, $this, 1 + 0);
+    }
+
+    /**
+     * 导入模版
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function import_template(Request $request){
+        $this->InitParams($request);
+        CompanyDepartment::importTemplate($request, $this);
+    }
+
+    /**
      * ajax获得获得子类部门数据--一维
      *
      * @param Request $request

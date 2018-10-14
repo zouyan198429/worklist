@@ -191,9 +191,9 @@ class ImportExport
      * 导出
      * @param string $file_dir 文件路径 保存成文件时指定文件路么 上传全路径 E:/www/shoping/web/data/upload/
      * @param string $create_filename 生成的文件名，可为空，如果文件名为空，则文件名默认按日期的形式生成[注意名称不能有扩展名]
-     * @param array $dataArr 需要导出的数据
+     * @param array $dataArr 需要导出的数据,如果数据为空数组，则只写表头
      * @param int $type 类型1 数据为二维数组，自动分sheet ；2 数据为三维数组,每一维就是一个sheet
-     * @param array $headArr 需要导出的表头 $type=1:一维数组 ;type=2，二维数组，下标从0开始...
+     * @param array $headArr 需要导出的表头 不需要则为空数组 ["name"=>'姓名', "chinese"=>'语文', "maths"=>'数学', "english"=>'外语'] $type=1:一维数组 ;type=2，二维数组，下标从0开始...
      * @param int $save_type 保存类型0网页数据流生成，1生成文件 ;2保存为xls
      * @param array $other_arr  其它参数
      *  $other_arr= array(
@@ -216,6 +216,23 @@ class ImportExport
         }else{
             $fileName = $create_filename . '.' . $expand;
         }
+        $hasData = true;
+        if(empty($dataArr) && (!empty($headArr))){// 如果数据为空数组，则只写表头
+            $hasData = false;
+            if($type == 1 ) {// 一维数组
+                $dataArr = [$headArr];
+            }else{// 二维数组  [['work_num'=>'工号', 'department_name'=>'部门'],['work_num'=>'工号1', 'department_name'=>'部门2']]
+                // [[['work_num'=>'工号', 'department_name'=>'部门']],[['work_num'=>'工号1', 'department_name'=>'部门2']]];
+                foreach($headArr as $temHead){
+                    if(!is_array($temHead)){
+                        array_push($dataArr,[$headArr]);
+                        break;
+                    }else{
+                        array_push($dataArr,[$temHead]);
+                    }
+                }
+            }
+        }
 
         $spreadsheet = new Spreadsheet();
         $sheet_title = "";
@@ -228,6 +245,7 @@ class ImportExport
             $bigDataArr = $dataArr;
         }
         $sheetCount = count($bigDataArr);
+
         $num = 1;
         foreach($bigDataArr as $bigKey => $temDataArr){
             if($num == 1){// 第一次，使用默认创建的表格
@@ -254,6 +272,7 @@ class ImportExport
                 $temHeadArr = $headArr;
 
             }
+            $temHeadKeys = array_keys($temHeadArr);// 需要的下标,可能为空，则直接列出数据，否则：列出指定的数据
             if(count($temHeadArr) > 0){
                 $col_i = 1;
                 $key = ord("A");
@@ -276,12 +295,22 @@ class ImportExport
 
                 $row_num++;
             }
-
+            if(!$hasData) continue;// 只要表头
+            // 数据内容
             if(count($temDataArr) > 0){
 
                 // $row_num = 1;
                 $dataRowNum = $row_num;
+                // 第一列
                 foreach($temDataArr as $row_k => $row_v){
+                    // 每一行
+                    if(!empty($temHeadKeys)){// 有指定列
+                        $tem_row_v = [];
+                        foreach($temHeadKeys as $temKey){
+                            $tem_row_v[$temKey] = $row_v[$temKey] ?? [];
+                        }
+                        $row_v = $tem_row_v;
+                    }
                     $key = ord("A");
                     foreach($row_v as $col_k => $col_v){
                         $colum = chr($key);

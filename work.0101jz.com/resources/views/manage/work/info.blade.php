@@ -1,4 +1,4 @@
-@extends('layouts.huawualert')
+@extends('layouts.managealert')
 
 @push('headscripts')
 	{{--  本页单独使用 --}}

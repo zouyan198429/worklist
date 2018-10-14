@@ -25,7 +25,7 @@ class CommonController extends CompController
      * @param string $Model_name model名称
      * @param string $queryParams 条件数组/json字符
      * @param string $relations 关系数组/json字符
-     * @return Response
+     * @return mixed Response
      * @author zouyan(305463219@qq.com)
      */
 //    public function index(Request $request)
@@ -78,7 +78,7 @@ class CommonController extends CompController
      * @param string $Model_name model名称
      * @param string $queryParams 条件数组/json字符
      * @param string $relations 关系数组/json字符
-     * @return Response
+     * @return mixed Response
      * @author zouyan(305463219@qq.com)
      */
 //    public function admin(Request $request)
@@ -117,7 +117,7 @@ class CommonController extends CompController
      * @param string $Model_name model名称
      * @param string $queryParams 条件数组/json字符
      * @param string $relations 关系数组/json字符
-     * @return Response
+     * @return mixed Response
      * @author zouyan(305463219@qq.com)
      */
     public function all(Request $request)
@@ -133,7 +133,7 @@ class CommonController extends CompController
      * @param string $Model_name model名称
      * @param string $queryParams 条件数组/json字符
      * @param string $relations 关系数组/json字符
-     * @return Response
+     * @return mixed mixed Response
      * @author zouyan(305463219@qq.com)
      */
     public function list(Request $request)
@@ -149,7 +149,7 @@ class CommonController extends CompController
      * @param string $Model_name model名称
      * @param int $id
      * @param string $relations 关系数组/json字符
-     * @return Response
+     * @return  mixed Response
      * @author zouyan(305463219@qq.com)
      */
     public function getInfo(Request $request)
@@ -164,7 +164,7 @@ class CommonController extends CompController
      * @param int $company_id 公司id
      * @param string $Model_name model名称
      * @param string $dataParams 字段数组/json字符
-     * @return Response
+     * @return mixed Response
      * @author zouyan(305463219@qq.com)
      */
     public function add(Request $request)
@@ -179,7 +179,7 @@ class CommonController extends CompController
      * @param int $company_id 公司id
      * @param string $Model_name model名称
      * @param string $dataParams 字段数组/json字符
-     * @return Response
+     * @return mixed Response
      * @author zouyan(305463219@qq.com)
      */
     public function addBath(Request $request)
@@ -194,7 +194,7 @@ class CommonController extends CompController
      * @param int $company_id 公司id
      * @param string $Model_name model名称
      * @param string $dataParams 字段数组/json字符
-     * @return Response
+     * @return mixed Response
      * @author zouyan(305463219@qq.com)
      */
     public function addBathByPrimaryKey(Request $request)
@@ -209,7 +209,7 @@ class CommonController extends CompController
      * @param string $Model_name model名称
      * @param string $dataParams 字段数组/json字符
      * @param string $queryParams 条件数组/json字符
-     * @return Response
+     * @return mixed Response
      * @author zouyan(305463219@qq.com)
      */
     public function save(Request $request)
@@ -225,7 +225,7 @@ class CommonController extends CompController
      * @param string $Model_name model名称
      * @param string $primaryKey 主键字段,默认为id
      * @param string $dataParams 主键及要修改的字段值 二维数组 数组/json字符
-     * @return Response
+     * @return mixed Response
      * @author zouyan(305463219@qq.com)
      */
     public function saveBathById(Request $request)
@@ -241,7 +241,7 @@ class CommonController extends CompController
      * @param string $Model_name model名称
      * @param string $dataParams 字段数组/json字符
      * @param string $queryParams 条件数组/json字符
-     * @return Response
+     * @return mixed Response
      * @author zouyan(305463219@qq.com)
      */
     public function saveById(Request $request)
@@ -260,7 +260,7 @@ class CommonController extends CompController
      * @param string incDecField 增减字段
      * @param string incDecVal 增减值
      * @param string modifFields 修改的其它字段 -没有，则传空数组json
-     * @return Response
+     * @return mixed Response
      * @author zouyan(305463219@qq.com)
      */
     public function saveDecIncByQuery(Request $request)
@@ -305,7 +305,7 @@ class CommonController extends CompController
             ],
         ],
     ];
-     * @return Response
+     * @return mixed Response
      * @author zouyan(305463219@qq.com)
      */
     public function saveDecIncByArr(Request $request)
@@ -319,7 +319,7 @@ class CommonController extends CompController
      * @param int $company_id 公司id
      * @param string $Model_name model名称
      * @param string $queryParams 条件数组/json字符
-     * @return Response
+     * @return mixed Response
      * @author zouyan(305463219@qq.com)
      */
     public function del(Request $request)
@@ -335,7 +335,7 @@ class CommonController extends CompController
      * @param string $Model_name model名称
      * @param int $id
      * @param string/array $synces 同步关系数组/json字符
-     * @return Response
+     * @return mixed Response
      * @author zouyan(305463219@qq.com)
      */
     public function sync(Request $request)
@@ -351,7 +351,7 @@ class CommonController extends CompController
      * @param string $Model_name model名称
      * @param int $id
      * @param string/array $detaches 移除关系数组/json字符 空：移除所有，id数组：移除指定的
-     * @return Response
+     * @return mixed Response
      * @author zouyan(305463219@qq.com)
      */
     public function detach(Request $request)
@@ -371,7 +371,7 @@ class CommonController extends CompController
      * @param string $historyTable 历史表名字
      * @param array $historySearch 历史表查询字段[一维数组][一定要包含主表id的] +  版本号(不用传，自动会加上)
      * @param array $ignoreFields 忽略都有的字段中，忽略主表中的记录 [一维数组]
-     * @return int 历史表id
+     * @return  int 历史表id
      * @author zouyan(305463219@qq.com)
      */
     public function getHistoryId(Request $request)

@@ -10,6 +10,21 @@ use Illuminate\Http\Request;
 
 class IndexController extends AdminController
 {
+
+    /**
+     * 测试图片上传
+     *
+     * @param int $id
+     * @return Response
+     * @author zouyan(305463219@qq.com)
+     */
+    public function testUpfile(Request $request)
+    {
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        return view('manage.testUpfile',$reDataArr);
+    }
+
     /**
      * 首页
      *

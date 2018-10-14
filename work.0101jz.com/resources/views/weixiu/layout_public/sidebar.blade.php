@@ -30,6 +30,12 @@
                 </a>
             </li>
             <li>
+                <a href="{{ url('weixiu/notice') }}">
+                    <i class="fa fa-bullhorn fa-fw" aria-hidden="true"></i>
+                    <span>通知公告</span>
+                </a>
+            </li>
+            <li>
                 <a href="{{ url('weixiu/staff') }}">
                     <i class="fa fa-address-book-o fa-fw" aria-hidden="true"></i>
                     <span>我的同事</span>

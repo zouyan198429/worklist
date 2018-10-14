@@ -529,37 +529,18 @@ class Tool
      * @return array 一维数组
      */
     public static function formatArrKeys(&$array, $keys, $needNotIn = false){
-        foreach($array as $k => $v){
-            if(!in_array($k , $keys )){
-                unset($array[$k]);
-                continue;
-            }
-        }
-        if(! $needNotIn){
-            foreach($keys as $new_k => $old_k ){
-//                if(isset($array[$old_k])){
-                    if($new_k != $old_k){
-                        $array[$new_k] = $array[$old_k];
-                        unset($array[$old_k]);
-                    }
-//                    continue;
-//                }
-            }
-            return $array;
-        }
-
-        foreach($keys as $new_k => $old_k ){
-            if(isset($array[$old_k])){
-                if($new_k != $old_k){
-                    $array[$new_k] = $array[$old_k];
-                    unset($array[$old_k]);
+        $newArr = [];
+        foreach($keys as $new_k => $old_k){
+            if(!isset($array[$old_k])){// 不存在
+                if($needNotIn){// true：空值
+                    $newArr[$new_k] = '';
                 }
-                continue;
+            }else{// 存在
+                $newArr[$new_k] = $array[$old_k];
             }
-            $array[$new_k] = '';
-
         }
-        return $array;
+        $array = $newArr;
+        return $newArr;
     }
 
     /**

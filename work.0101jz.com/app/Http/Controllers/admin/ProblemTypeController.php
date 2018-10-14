@@ -66,6 +66,30 @@ class ProblemTypeController extends AdminController
     }
 
     /**
+     * 导出
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function export(Request $request){
+        $this->InitParams($request);
+        CompanyProblemType::getList($request, $this, 1 + 0);
+    }
+
+    /**
+     * 导入模版
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function import_template(Request $request){
+        $this->InitParams($request);
+        CompanyProblemType::importTemplate($request, $this);
+    }
+
+    /**
      * ajax保存数据
      *
      * @param int $id

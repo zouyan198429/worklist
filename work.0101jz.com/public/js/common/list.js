@@ -1,16 +1,16 @@
 
 
-const DYNAMIC_PAGE_BAIDU_TEMPLATE= "";//"baidu_template_data_page";//分页百度模板id
-const DYNAMIC_TABLE = 'dynamic-table';//动态表格id
-const DYNAMIC_BAIDU_TEMPLATE = "baidu_template_data_list";//百度模板id
-const DYNAMIC_TABLE_BODY = "data_list";//数据列表id
-const DYNAMIC_LODING_BAIDU_TEMPLATE = "baidu_template_data_loding";//加载中百度模板id
-const DYNAMIC_BAIDU_EMPTY_TEMPLATE = "baidu_template_data_empty";//没有数据记录百度模板id
-const FRM_IDS = "search_frm";//需要读取的表单的id，多个用,号分隔
-const SURE_FRM_IDS = "search_sure_form";//确认搜索条件需要读取的表单的id，多个用,号分隔
-const PAGE_ID = "page";//当前页id
-const PAGE_SIZE = Math.ceil(parseInt($('#pagesize').val()));;//每页显示数量
-const TOTAL_ID = "total";//总记录数量[特别说明:小于0,需要从数据库重新获取]
+var DYNAMIC_PAGE_BAIDU_TEMPLATE= "";//"baidu_template_data_page";//分页百度模板id
+var DYNAMIC_TABLE = 'dynamic-table';//动态表格id
+var DYNAMIC_BAIDU_TEMPLATE = "baidu_template_data_list";//百度模板id
+var DYNAMIC_TABLE_BODY = "data_list";//数据列表id
+var DYNAMIC_LODING_BAIDU_TEMPLATE = "baidu_template_data_loding";//加载中百度模板id
+var DYNAMIC_BAIDU_EMPTY_TEMPLATE = "baidu_template_data_empty";//没有数据记录百度模板id
+var FRM_IDS = "search_frm";//需要读取的表单的id，多个用,号分隔
+var SURE_FRM_IDS = "search_sure_form";//确认搜索条件需要读取的表单的id，多个用,号分隔
+var PAGE_ID = "page";//当前页id
+var PAGE_SIZE = Math.ceil(parseInt($('#pagesize').val()));;//每页显示数量
+var TOTAL_ID = "total";//总记录数量[特别说明:小于0,需要从数据库重新获取]
 
  $(function(){
      if(AUTO_READ_FIRST){// 自动读取第一页
@@ -56,13 +56,32 @@ var action = {
         go(ADD_URL);
         return false;
     },
-    show : function(id){
+    show : function(id){// 弹窗显示
+        //获得表单各name的值
+        var data = parent.get_frm_values(SURE_FRM_IDS);// {}
+        console.log(SHOW_URL);
+        console.log(data);
+        var url_params = parent.get_url_param(data);
+        var weburl = SHOW_URL + id + '?' + url_params;
+        console.log(weburl);
         // go(SHOW_URL + id);
         // location.href='/pms/Supplier/show?supplier_id='+id;
-        var weburl = SHOW_URL + id;
+        // var weburl = SHOW_URL + id;
         // var weburl = '/pms/Supplier/show?supplier_id='+id+"&operate_type=1";
         var tishi = SHOW_URL_TITLE;//"查看供应商";
-        layeriframe(weburl,tishi,950,600,0);
+        layeriframe(weburl,tishi,950,600,SHOW_CLOSE_OPERATE);
+        return false;
+    },
+    urlshow : function(id){// url显示
+        //获得表单各name的值
+        var data = parent.get_frm_values(SURE_FRM_IDS);// {}
+        console.log(SHOW_URL);
+        console.log(data);
+        var url_params = parent.get_url_param(data);
+        var weburl = SHOW_URL + id + '?' + url_params;
+        console.log(weburl);
+        // var weburl = SHOW_URL + id;
+        go(weburl);
         return false;
     },
     edit : function(id){
@@ -162,9 +181,57 @@ var action = {
         return false;
 
     },
-    exportExcel:function(obj) {// 导出EXCEL
+    batchExportExcel:function(obj) {// 导出EXCEL-按条件
         var recordObj = $(obj);
-        go(EXPORT_EXCEL_URL);
+        var index_query = layer.confirm('确定导出当前查询记录？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            //获得搜索表单的值
+            append_sure_form(SURE_FRM_IDS,FRM_IDS);//把搜索表单值转换到可以查询用的表单中
+            //获得表单各name的值
+            var data = get_frm_values(SURE_FRM_IDS);// {}
+            data['is_export'] = 1;
+            console.log(EXPORT_EXCEL_URL);
+            console.log(data);
+            var url_params = get_url_param(data);
+            var url = EXPORT_EXCEL_URL + '?' + url_params;
+            console.log(url);
+            go(url);
+            // go(EXPORT_EXCEL_URL);
+            layer.close(index_query);
+        }, function(){
+        });
+        return false;
+    },
+    exportExcel:function(obj) {// 导出EXCEL-按选择
+        var recordObj = $(obj);
+        var index_query = layer.confirm('确定导出当前选择记录？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            var ids = get_list_checked(DYNAMIC_TABLE_BODY,1,1);
+            console.log('ids',ids);
+            if( ids==''){
+                err_alert('请选择需要操作的数据');
+                return false;
+            }
+            //获得表单各name的值
+            var data = get_frm_values(SURE_FRM_IDS);// {}
+            data['is_export'] = 1;
+            data['ids'] = ids;
+            console.log(EXPORT_EXCEL_URL);
+            console.log(data);
+            var url_params = get_url_param(data);
+            var url = EXPORT_EXCEL_URL + '?' + url_params;
+            console.log(url);
+            go(url);
+            layer.close(index_query);
+        }, function(){
+        });
+        return false;
+    },
+    importExcelTemplate:function(obj) {// 导入EXCEL--模版
+        var recordObj = $(obj);
+        go(IMPORT_EXCEL_TEMPLATE_URL);
         return false;
     },
     importExcel:function(obj) {// 导入EXCEL
@@ -198,6 +265,8 @@ function operate_ajax(operate_type,id){
         default:
             break;
     }
+    console.log('ajax_url:',ajax_url);
+    console.log('data:',data);
     var layer_index = layer.load();//layer.msg('加载中', {icon: 16});
     $.ajax({
         'type' : 'POST',
@@ -205,6 +274,7 @@ function operate_ajax(operate_type,id){
         'data' : data,
         'dataType' : 'json',
         'success' : function(ret){
+            console.log('ret:',ret);
             if(!ret.apistatus){//失败
                 //alert('失败');
                 // countdown_alert(ret.errorMsg,0,5);

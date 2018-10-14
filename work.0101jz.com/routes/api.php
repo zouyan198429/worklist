@@ -16,13 +16,17 @@ use Illuminate\Http\Request;
 // Route::post('file/upload', 'IndexController@upload');
 Route::post('upload', 'UploadController@index');
 // Route::post('upload/test', 'UploadController@test');
-Route::post('upload/ajax_del', 'UploadController@ajax_del');// 根据id删除文件
 // excel
 Route::get('excel/test','ExcelController@test');
 Route::get('excel/export','ExcelController@export'); // 导出
 Route::get('excel/import','ExcelController@import'); // 导入
+
 //
 // admin
+// 上传图片
+Route::post('admin/upload', 'admin\UploadController@index');
+Route::post('admin/upload/ajax_del', 'admin\UploadController@ajax_del');// 根据id删除文件
+
 // 登陆
 Route::post('admin/ajax_login', 'admin\IndexController@ajax_login');// 登陆
 Route::post('admin/ajax_password_save', 'admin\IndexController@ajax_password_save');// 修改密码
@@ -104,6 +108,15 @@ Route::post('admin/lore_type/ajax_alist', 'admin\LoreTypeController@ajax_alist')
 Route::post('admin/lore_type/ajax_del', 'admin\LoreTypeController@ajax_del');// 删除
 Route::post('admin/lore_type/ajax_save', 'admin\LoreTypeController@ajax_save');// 新加/修改
 
+//通知公告
+Route::post('admin/notice/ajax_alist', 'admin\NoticeController@ajax_alist');//ajax获得列表数据
+Route::post('admin/notice/ajax_del', 'admin\NoticeController@ajax_del');// 删除
+Route::post('admin/notice/ajax_save', 'admin\NoticeController@ajax_save');// 新加/修改
+//学习
+Route::post('admin/lore/ajax_alist', 'admin\LoreController@ajax_alist');//ajax获得列表数据
+Route::post('admin/lore/ajax_del', 'admin\LoreController@ajax_del');// 删除
+Route::post('admin/lore/ajax_save', 'admin\LoreController@ajax_save');// 新加/修改
+
 // 试题分类
 Route::post('admin/subject_type/ajax_alist', 'admin\SubjectTypeController@ajax_alist');//ajax获得列表数据
 Route::post('admin/subject_type/ajax_del', 'admin\SubjectTypeController@ajax_del');// 删除
@@ -133,6 +146,10 @@ Route::post('admin/customer/ajax_is_tab', 'admin\CustomerController@ajax_is_tab'
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //web-manage
+// 上传图片
+Route::post('manage/upload', 'manage\UploadController@index');
+Route::post('manage/upload/ajax_del', 'manage\UploadController@ajax_del');// 根据id删除文件
+
 // 登陆
 Route::post('manage/ajax_login', 'manage\IndexController@ajax_login');// 登陆
 Route::post('manage/ajax_password_save', 'manage\IndexController@ajax_password_save');// 修改密码
@@ -142,6 +159,14 @@ Route::post('manage/staff/ajax_del', 'manage\StaffController@ajax_del');// 删�
 Route::post('manage/staff/ajax_save', 'manage\StaffController@ajax_save');// 新加/修改
 Route::post('manage/staff/ajax_get_child', 'manage\StaffController@ajax_get_child');// 根据部门id,小组id获得子类员工数组[kv一维数组]
 Route::post('manage/staff/ajax_get_areachild', 'manage\StaffController@ajax_get_areachild');// 根据区县id,街道id获得子类员工数组[kv一维数组]
+//通知公告
+Route::post('manage/notice/ajax_alist', 'manage\NoticeController@ajax_alist');//ajax获得列表数据
+Route::post('manage/notice/ajax_del', 'manage\NoticeController@ajax_del');// 删除
+Route::post('manage/notice/ajax_save', 'manage\NoticeController@ajax_save');// 新加/修改
+//学习
+Route::post('manage/lore/ajax_alist', 'manage\LoreController@ajax_alist');//ajax获得列表数据
+Route::post('manage/lore/ajax_del', 'manage\LoreController@ajax_del');// 删除
+Route::post('manage/lore/ajax_save', 'manage\LoreController@ajax_save');// 新加/修改
 
 // 部门
 Route::post('manage/department/ajax_get_child', 'manage\DepartmentController@ajax_get_child');// 获得子类部门数组[kv一维数组]
@@ -175,6 +200,10 @@ Route::post('manage/work/ajax_repair_count', 'manage\WorkController@ajax_repair_
 Route::post('manage/system_module/ajax_get_child', 'manage\SystemModuleController@ajax_get_child');// 获得子类部门数组[kv一维数组]
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// 上传图片
+Route::post('huawu/upload', 'huawu\UploadController@index');
+Route::post('huawu/upload/ajax_del', 'huawu\UploadController@ajax_del');// 根据id删除文件
+
 //web-huawu 客服
 Route::post('huawu/ajax_login', 'huawu\IndexController@ajax_login');// 登陆
 Route::post('huawu/ajax_password_save', 'huawu\IndexController@ajax_password_save');// 修改密码
@@ -191,6 +220,11 @@ Route::post('huawu/department/ajax_get_child', 'huawu\DepartmentController@ajax_
 Route::post('huawu/customer/ajax_alist', 'huawu\CustomerController@ajax_alist');//ajax获得列表数据
 Route::post('huawu/customer/ajax_biaoji', 'huawu\CustomerController@ajax_biaoji');//ajax标记
 Route::post('huawu/customer/ajax_is_tab', 'huawu\CustomerController@ajax_is_tab');//ajax标记
+
+//通知公告
+Route::post('huawu/notice/ajax_alist', 'huawu\NoticeController@ajax_alist');//ajax获得列表数据
+//学习
+Route::post('huawu/lore/ajax_alist', 'huawu\LoreController@ajax_alist');//ajax获得列表数据
 
 // 区域
 Route::post('huawu/area/ajax_get_child', 'huawu\AreaController@ajax_get_child');// 获得子类部门数组[kv一维数组]
@@ -212,6 +246,9 @@ Route::post('huawu/work/ajax_status_count', 'huawu\WorkController@ajax_status_co
 Route::post('huawu/work/ajax_work_count', 'huawu\WorkController@ajax_work_count');// 工单统计
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //web-weixiu 维修
+// 上传图片
+Route::post('weixiu/upload', 'weixiu\UploadController@index');
+Route::post('weixiu/upload/ajax_del', 'weixiu\UploadController@ajax_del');// 根据id删除文件
 // 登陆
 Route::post('weixiu/ajax_login', 'weixiu\IndexController@ajax_login');// 登陆
 Route::post('weixiu/ajax_password_save', 'weixiu\IndexController@ajax_password_save');// 修改密码
@@ -222,6 +259,11 @@ Route::post('weixiu/staff/ajax_get_areachild', 'weixiu\StaffController@ajax_get_
 
 // 部门
 Route::post('weixiu/department/ajax_get_child', 'weixiu\DepartmentController@ajax_get_child');// 获得子类部门数组[kv一维数组]
+
+//通知公告
+Route::post('weixiu/notice/ajax_alist', 'weixiu\NoticeController@ajax_alist');//ajax获得列表数据
+//学习
+Route::post('weixiu/lore/ajax_alist', 'weixiu\LoreController@ajax_alist');//ajax获得列表数据
 
 //客户
     // piwik.com
@@ -268,6 +310,9 @@ Route::post('app/ajax_login', 'app\IndexController@ajax_login');// 登陆
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //m
+// 上传图片
+Route::post('m/upload', 'm\UploadController@index');
+Route::post('m/upload/ajax_del', 'm\UploadController@ajax_del');// 根据id删除文件
 Route::post('m/ajax_login', 'm\IndexController@ajax_login');// 登陆
 Route::post('m/ajax_password_save', 'm\IndexController@ajax_password_save');// 修改密码
 //同事
@@ -283,6 +328,11 @@ Route::post('m/area/ajax_get_child', 'm\AreaController@ajax_get_child');// 获�
 
 // 工单分类
 Route::post('m/work_type/ajax_get_child', 'm\WorkTypeController@ajax_get_child');// 获得子类部门数组[kv一维数组]
+
+//通知公告
+Route::post('m/notice/ajax_alist', 'm\NoticeController@ajax_alist');//ajax获得列表数据
+//学习
+Route::post('m/lore/ajax_alist', 'm\LoreController@ajax_alist');//ajax获得列表数据
 
 // 工单
 Route::post('m/work/ajax_alist', 'm\WorkController@ajax_alist');//ajax获得列表数据

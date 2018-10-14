@@ -373,10 +373,32 @@ class Common
         ];
         $relations = ['siteResources','CompanyInfo.proUnits.proRecords','CompanyInfo.companyType'];
         */
+        // 有count下标则是查询数量--是否是查询总数
+        if(isset($queryParams['count'])){
+            if (isset($queryParams['count'])) unset($queryParams['count']);
+            if (isset($queryParams['limit'])) unset($queryParams['limit']);
+            if (isset($queryParams['offset'])) unset($queryParams['offset']);
+            if (isset($queryParams['take'])) unset($queryParams['take']);
+            if (isset($queryParams['skip'])) unset($queryParams['skip']);
+            if (isset($queryParams['orderBy'])) {
+                $limitParams['orderBy'] = $queryParams['orderBy'];
+                unset($queryParams['orderBy']);
+            }
+            // 获得总数量
+            self::resolveSqlParams($modelObj, $queryParams);
+            return $modelObj->count();
+        }
+
         // 查询条件
         self::resolveSqlParams($modelObj, $queryParams);
+        $limit = $queryParams['limit'] ?? 0;
+        $offset = $queryParams['offset'] ?? 0;
+        $isChunk = true;// 是否分批获取 true 分批获取，false:直接获取
+        if($limit > 0 || $offset > 0){
+            $isChunk = false;
+        }
 
-        if (true) {// 在处理大量数据集合时能够有效减少内存消耗
+        if ($isChunk) {// 在处理大量数据集合时能够有效减少内存消耗
             $requestData = collect([]);
             $modelObj->chunk(500, function ($flights) use (&$requestData, $relations) {
                 self::resolveRelations($flights, $relations);

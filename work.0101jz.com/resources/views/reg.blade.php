@@ -56,8 +56,8 @@
 <!-- BaiduTemplate-->
 <script src="{{ asset('/static/js/custom/baiduTemplate.js') }}"></script>
 <script>
-    const REG_URL = '{{ url('api/accounts/ajax_reg') }}';
-    const LOGIN_URL = "{{url('login')}}";
+    var REG_URL = '{{ url('api/accounts/ajax_reg') }}';
+    var LOGIN_URL = "{{url('login')}}";
 
 </script>
 <script src="{{ asset('/js/lanmu/reg.js') }}"  type="text/javascript"></script>

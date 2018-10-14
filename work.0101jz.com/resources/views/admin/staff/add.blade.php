@@ -109,9 +109,9 @@
 @push('footlast')
 
 	<script type="text/javascript">
-        const SAVE_URL = "{{ url('api/admin/staff/ajax_save') }}";// ajax保存记录地址
-        const LIST_URL = "{{url('admin/staff')}}";//保存成功后跳转到的地址
-		const REL_CHANGE = {
+        var SAVE_URL = "{{ url('api/admin/staff/ajax_save') }}";// ajax保存记录地址
+        var LIST_URL = "{{url('admin/staff')}}";//保存成功后跳转到的地址
+        var REL_CHANGE = {
 		    'department':{
 		        'child_sel_name': 'group_id',// 第二级下拉框的name
                 'child_sel_txt': {'': "请选择班组" },// 第二级下拉框的{值:请选择文字名称}

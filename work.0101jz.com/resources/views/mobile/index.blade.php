@@ -69,26 +69,28 @@
 @push('footlast')
     <script type="text/javascript">
         var OPERATE_TYPE = <?php echo isset($operate_type)?$operate_type:0; ?>;
-        const AUTO_READ_FIRST = false;//自动读取第一页 true:自动读取 false:指定地方读取
-        const AJAX_URL = "{{ url('api/m/work/ajax_doing_list') }}";//ajax请求的url
-        {{--const ADD_URL = "{{ url('m/work/add/0') }}"; //添加url--}}
-        {{--const SHOW_URL = "{{url('m/work/info/')}}/";//显示页面地址前缀 + id--}}
-        {{--const SHOW_URL_TITLE = "" ;// 详情弹窗显示提示--}}
-        {{--const EDIT_URL = "{{url('m/work/add/')}}/";//修改页面地址前缀 + id--}}
-        {{--const DEL_URL = "{{ url('api/m/work/ajax_del') }}";//删除页面地址--}}
-        {{--const BATCH_DEL_URL = "{{ url('api/m/work/ajax_del') }}";//批量删除页面地址--}}
-        {{--const EXPORT_EXCEL_URL = "{{ url('m/work/add/0') }}"; //"{{ url('api/m/work/export') }}";//导出EXCEL地址--}}
-        {{--const IMPORT_EXCEL_URL = "{{ url('m/work/add/0') }}"; //"{{ url('api/m/work/import') }}";//导入EXCEL地址--}}
+        var AUTO_READ_FIRST = false;//自动读取第一页 true:自动读取 false:指定地方读取
+        var AJAX_URL = "{{ url('api/m/work/ajax_doing_list') }}";//ajax请求的url
+        {{--var ADD_URL = "{{ url('m/work/add/0') }}"; //添加url--}}
+        {{--var SHOW_URL = "{{url('m/work/info/')}}/";//显示页面地址前缀 + id--}}
+        {{--var SHOW_URL_TITLE = "" ;// 详情弹窗显示提示--}}
+		{{-- var SHOW_CLOSE_OPERATE = 0 ;// 详情弹窗operate_num关闭时的操作0不做任何操作1刷新当前页面2刷新当前列表页面--}}
+        {{--var EDIT_URL = "{{url('m/work/add/')}}/";//修改页面地址前缀 + id--}}
+        {{--var DEL_URL = "{{ url('api/m/work/ajax_del') }}";//删除页面地址--}}
+        {{--var BATCH_DEL_URL = "{{ url('api/m/work/ajax_del') }}";//批量删除页面地址--}}
+        {{--var EXPORT_EXCEL_URL = "{{ url('m/work/export') }}";//导出EXCEL地址--}}
+{{--        var IMPORT_EXCEL_TEMPLATE_URL = "{{ url('m/work/import_template') }}";//导入EXCEL模版地址--}}
+        {{--var IMPORT_EXCEL_URL = "{{ url('api/m/work/import') }}";//导入EXCEL地址--}}
 
-    const SURE_MSG_URL = "{{ url('api/m/msg/ajax_save') }}/";// ajax确认消息地址
-    const SURE_WORK_URL = "{{ url('api/m/work/ajax_sure') }}/";// ajax确认工单地址
-    const WIN_WORK_URL = "{{ url('api/m/work/ajax_win') }}/";// ajax工单结单地址
-    const WIN_WORK_PAGE_URL = "{{ url('m/work/win') }}/";// ajax工单结单地址
+        var SURE_MSG_URL = "{{ url('api/m/msg/ajax_save') }}/";// ajax确认消息地址
+        var SURE_WORK_URL = "{{ url('api/m/work/ajax_sure') }}/";// ajax确认工单地址
+        var WIN_WORK_URL = "{{ url('api/m/work/ajax_win') }}/";// ajax工单结单地址
+        var WIN_WORK_PAGE_URL = "{{ url('m/work/win') }}/";// ajax工单结单地址
 
-        const SATUS_COUNT_URL = "{{ url('api/m/work/ajax_status_count') }}";// ajax工单状态统计 url
-        const NEED_PLAY_STATUS = "{{ $countPlayStatus }}";// 需要发声的状态，多个逗号,分隔
+        var SATUS_COUNT_URL = "{{ url('api/m/work/ajax_status_count') }}";// ajax工单状态统计 url
+        var NEED_PLAY_STATUS = "{{ $countPlayStatus }}";// 需要发声的状态，多个逗号,分隔
 
-		const MSG_LIST_URL = "{{ url('api/m/msg/ajax_alist') }}";// ajax最新消息 url
+        var MSG_LIST_URL = "{{ url('api/m/msg/ajax_alist') }}";// ajax最新消息 url
 
 </script>
  <script src="{{asset('js/common/list.js')}}"></script>

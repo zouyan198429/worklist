@@ -39,6 +39,30 @@ class StaffController extends WorksController
     }
 
     /**
+     * 导出
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function export(Request $request){
+        $this->InitParams($request);
+        CompanyStaff::getList($request, $this, 1 + 0);
+    }
+
+    /**
+     * 导入模版
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function import_template(Request $request){
+        $this->InitParams($request);
+        CompanyStaff::importTemplate($request, $this);
+    }
+
+    /**
      * ajax根据部门id,小组id获得所属部门小组下的员工数组[kv一维数组]
      *
      * @param Request $request

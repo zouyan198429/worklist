@@ -39,8 +39,8 @@
 @push('footlast')
 
 	<script type="text/javascript">
-        const SAVE_URL = "{{ url('api/weixiu/work/ajax_win') }}";// ajax保存记录地址
-        // const LIST_URL = "{{url('weixiu/work')}}";//保存成功后跳转到的地址
+        var SAVE_URL = "{{ url('api/weixiu/work/ajax_win') }}";// ajax保存记录地址
+        // var LIST_URL = "{{url('weixiu/work')}}";//保存成功后跳转到的地址
 	</script>
 	<script src="{{ asset('js/weixiu/lanmu/work_win.js') }}"  type="text/javascript"></script>
 @endpush

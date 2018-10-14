@@ -1,4 +1,4 @@
-@extends('layouts.huawu')
+@extends('layouts.huawualert')
 
 @push('headscripts')
 {{--  本页单独使用 --}}
@@ -6,27 +6,34 @@
 
 @section('content')
 
-	<div id="crumb"><i class="fa fa-reorder fa-fw" aria-hidden="true"></i> 在线学习 <a href="{{ url('huawu/lore') }}" class="btn" >返回</a></div>
+	<div id="crumb"><i class="fa fa-reorder fa-fw" aria-hidden="true"></i> 在线学习 </div>
 	<div class="mm" id="know_view">
 
-		<h1>企业品牌推广战略存在的问题?</h1>
+		<h1>{{ $title or '' }}</h1>
 		<div class="content">
-			<p>中国市场的品牌现状
-				　<p>1)国内企业品牌的建立</p>
-			　　<p>在经历了市场的残酷无情与变化无常之后，无数个企业倒下了，也有无数个企业站起来，更有部分中国优秀企业进入了品牌成长的快车道，他们的品牌已经开始在消费者的心目中形成或深或浅、或大或小的积淀，这个期间较有代表性的企业有：海尔、海信、乐百氏、伊利、李宁、万科......以广告为例，2001年中国市场排名为前10位企业，无一例外都是本地品牌，本土品牌已经成为市场角逐的主角。</p>
-			　　<p>2002年7月，全球领先的研究公司AC尼尔森发布的“放眼中国市场”的报告显示，作为世界最具活力的快速，并对国际生产商形成了巨大压力，频频出现的个人护肤用品的前五位品牌排行榜中，舒蕾、大宝、小护士、雕牌等不仅家喻户晓，而且在市场的份额上也超过了国外品牌。</p>
-			　　<p>2)国际企业品牌的渗入</p>
-			　　<p>中国市场经济改革开放20年，使国际化企业在中国站稳了脚跟，从完全的西方品牌到东方文化模式与消费者形态的结合，许多国际品牌位居中国消费者所认可的行业领袖地位，其市场操作和企业品牌策略的科学、完整和全面到位的执行，使中国品牌自叹不如。从家电类的索尼、松下、西门子到通信类的摩托罗拉、诺基亚、三星，从饮料的可口可乐、百事可乐到食品类的麦当劳、肯德基，从洗涤类的宝洁公司到服饰类的耐克、皮尔卡丹，国际著名品牌已全面进入中国消费市场并且位列品牌排序的尖端，并在经济全球一休化的背景下，将赢得更多的喝彩和经济收益。</p>
-			　<p>3)品牌竞争是市场生存法则</p>
-			　<p>中国市场的消费状况，在经历了衣食温饱之后，出现了购买力的相对不足现状，市场的表现为相对的供大于求。几乎每一类产品都存在着品牌多、生产多、积压多的问题，谁能把商品卖出去，谁就能拯救一个企业，谁就能保护一个品牌。</p>
-			　<p>从世界的范畴来看，企业生产资源的整合，生产规模和效益的进一步提高，品牌的聚合和集中所运行的都是一个规律。在市场上，各类产品的品牌将进一步集中，每类产品也只有存有几个品牌，国内企业要获得生存的空间和价值，其市场竞争就要以品牌竞争为归结点，并整合产品质量、技术、人才、价格、服务、管理、促销等竞争手段。品牌竞争更是一个国际竞争的问题，只有建立在高品位、高层次上的靠技术、策划、管理、营销、品牌战略发展的企业良性循环之中。
-			<p>品牌竞争，在今天已成为企业的“生存法规”。</p>
+			{!! $content or '' !!}
 
 		</div>
-		<p class="tip">阅读：388  上传：李明思</p>
+		<p class="tip">阅读：{{ $volume or '' }}  上传：{{ $real_name or '' }}</p>
 		<div class="fanye">
-			<p>上一篇：<a href="{{ url('huawu/lore/info') }}" >企业品牌推广的战略选择</a></p>
-			<p>下一篇：<a href="{{ url('huawu/lore/info') }}" >网络口碑营销传播的实例独家分析</a></p>
+			@if (count($preList) > 0)
+				<p>上一篇：
+					@foreach ($preList as $pre)
+						<a href="javascript:void(0);"   onclick="action.near({{ $pre['id'] or '' }})">{{ $pre['title'] or '' }}</a>
+					@endforeach
+				</p>
+			@else
+				<p>上一篇：已经是第一篇了</p>
+			@endif
+			@if (count($nextList) > 0)
+				<p>下一篇：
+					@foreach ($nextList as $next)
+						<a href="javascript:void(0);"  onclick="action.near({{ $next['id'] or '' }})">{{ $next['title'] or '' }}</a>
+					@endforeach
+				</p>
+			@else
+				<p>下一篇：已经是最后一篇了</p>
+			@endif
 		</div>
 
 	</div>
@@ -37,4 +44,25 @@
 @endpush
 
 @push('footlast')
+	<script>
+        var SHOW_URL = "{{url('huawu/lore/info/')}}/";//显示页面地址前缀 + id
+        var SUBMIT_FORM = true;//防止多次点击提交
+
+        //业务逻辑部分
+        var action = {
+            near : function(id){// 上一条，下一条
+                console.log('id', id);
+                //获得表单各name的值
+                var data = parent.get_frm_values(parent.SURE_FRM_IDS);// {}
+                console.log(SHOW_URL);
+                console.log(data);
+                var url_params = parent.get_url_param(data);
+                var url = SHOW_URL + id + '?' + url_params;
+                console.log(url);
+                // go(url);
+                location.href = url;// '/pms/Supplier/show?supplier_id='+id;
+                return false;
+            }
+        };
+	</script>
 @endpush

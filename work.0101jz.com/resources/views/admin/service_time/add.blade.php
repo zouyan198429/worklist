@@ -45,8 +45,8 @@
 
 @push('footlast')
 	<script type="text/javascript">
-        const SAVE_URL = "{{ url('api/admin/service_time/ajax_save') }}";// ajax保存记录地址
-        const LIST_URL = "{{url('admin/service_time')}}";//保存成功后跳转到的地址
+        var SAVE_URL = "{{ url('api/admin/service_time/ajax_save') }}";// ajax保存记录地址
+        var LIST_URL = "{{url('admin/service_time')}}";//保存成功后跳转到的地址
 
 	</script>
 	<script src="{{ asset('/js/admin/lanmu/service_time_edit.js') }}"  type="text/javascript"></script>

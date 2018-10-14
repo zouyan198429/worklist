@@ -216,21 +216,42 @@ function get_frm_kv(frm_ids){
 //返回参数字串:name=user_id&value=10
 function get_frm_param(frm_ids){
     var data = get_frm_values(frm_ids);//{};
+    return get_url_param(data);
+    // var newurl="";
+    // var tem_name,tem_value;
+    // for(var p in data){
+    //     tem_name = p;
+    //     tem_value = data[p];
+    // if(tem_value == '') continue;
+    // if(newurl=="")
+    // {
+		// newurl=tem_name+"="+encodeURIComponent(tem_value);
+    // }else{
+		// newurl=newurl+"&"+tem_name+"="+encodeURIComponent(tem_value);
+    // }
+    // }
+    // return newurl;
+}
+// 根据dat拼接参数,自动过滤''值参数
+// 数据对象 {'键'=>'值'}
+//返回参数字串:name=user_id&value=10
+function get_url_param(data){
     var newurl="";
     var tem_name,tem_value;
     for(var p in data){
         tem_name = p;
         tem_value = data[p];
-	if(tem_value == '') continue;
-	if(newurl=="")
-	{
-		newurl=tem_name+"="+encodeURIComponent(tem_value);
-	}else{
-		newurl=newurl+"&"+tem_name+"="+encodeURIComponent(tem_value);
-	}
+        if(tem_value == '') continue;
+        if(newurl=="")
+        {
+            newurl=tem_name+"="+encodeURIComponent(tem_value);
+        }else{
+            newurl=newurl+"&"+tem_name+"="+encodeURIComponent(tem_value);
+        }
     }
     return newurl;
 }
+
 //reFromSearchAction将搜索框转换为地址形式以便搜索引警用
 //filename 搜索结果文件名称
 //obj 搜索框form
@@ -1081,7 +1102,7 @@ function resolve_baidu_template(template_id,json_data,html_id){
 //iframe的宽[数字]
 //iframe的高[数字]
 //tishi 标题
-//operate_num关闭时的操作0不做任何操作1刷新当前页面
+//operate_num关闭时的操作0不做任何操作1刷新当前页面2刷新当前列表页面
 //sure_close_tishi 关闭窗口提示文字
 function layeriframe(weburl,tishi,heightnum,widthnum,operate_num,sure_close_tishi){
 	 layer.open({
@@ -1119,11 +1140,15 @@ function layeriframe(weburl,tishi,heightnum,widthnum,operate_num,sure_close_tish
                             layer.close(index_query);
                             switch (operate_num){
                                     case 0:
-                                      break;
+                                        break;
                                     case 1:
-                                      //刷新当前页面
-                                      parent.location.reload()
-                                      break;
+                                          //刷新当前页面
+                                          parent.location.reload();
+                                          break;
+                                    case 2:
+                                        //刷新当前列表页面
+                                        parent.reset_list(true);
+                                        break;
                                     default:
                             }
                             layer.close(index);

@@ -72,7 +72,7 @@ class ExcelController extends Controller
     public function export(){
         $dataJson = '[{"name":"\u738b\u4e8c\u5c0f","chinese":"82","maths":"78","english":"65"},{"name":"\u674e\u4e07\u8c6a","chinese":"68","maths":"87","english":"79"},{"name":"\u5f20\u4e09\u4e30","chinese":"89","maths":"90","english":"98"},{"name":"\u738b\u8001\u4e94","chinese":"68","maths":"81","english":"72"}]';
         $dataArr = json_decode($dataJson, true);
-        $headArr = ['姓名', '语文', '数学', '外语'];
+        $headArr = ["name"=>'姓名', "chinese"=>'语文', "maths"=>'数学', "english"=>'外语'];
         ImportExport::export('','学生成绩表',$dataArr,1, $headArr, 1, ['sheet_title' => '学生成绩表']);
 
     }
