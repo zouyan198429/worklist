@@ -11,6 +11,10 @@
         <!-- 没有 版 -->
     <script type="text/template"  id="baidu_template_data_loding_null">
     </script>
+        <!-- li 版 -->
+    <script type="text/template"  id="baidu_template_data_loding_li">
+        <li class="loding">信息努力加载中.......</li>
+    </script>
     <!-- 加载中模板部分 结束-->
     <!-- 没有数据记录模板部分 开始-->
         <!-- tr 版 -->
@@ -23,6 +27,10 @@
     </script>
         <!-- 没有内容 版 -->
     <script type="text/template"  id="baidu_template_data_empty_null">
+    </script>
+        <!-- li 版 -->
+    <script type="text/template"  id="baidu_template_data_empty_li">
+        <li class="loding list_empty">当前没有您要查询的记录！</li>
     </script>
     <!-- 没有数据记录模板部分 结束-->
     <!-- 列表分页模板部分 开始-->

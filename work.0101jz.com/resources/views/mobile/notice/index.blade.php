@@ -61,6 +61,8 @@
         var IMPORT_EXCEL_TEMPLATE_URL = "{{ url('m/notice/import_template') }}";//导入EXCEL模版地址
         var IMPORT_EXCEL_URL = "{{ url('api/m/notice/import') }}";//导入EXCEL地址
 
+        var DYNAMIC_LODING_BAIDU_TEMPLATE = "baidu_template_data_loding_li";//加载中百度模板id
+        var DYNAMIC_BAIDU_EMPTY_TEMPLATE = "baidu_template_data_empty_li";//没有数据记录百度模板id
 	</script>
 	<script src="{{asset('js/common/list.js')}}"></script>
 	<script src="{{ asset('js/m/lanmu/notice.js') }}"  type="text/javascript"></script>

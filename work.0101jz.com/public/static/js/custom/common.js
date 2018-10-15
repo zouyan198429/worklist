@@ -1807,6 +1807,10 @@ function getdiffdate(stime,etime){
     document.write("    <!-- 没有 版 -->");
     document.write("    <script type=\"text\/template\"  id=\"baidu_template_data_loding_null\">");
     document.write("    <\/script>");
+    document.write("        <!-- li 版 -->");
+    document.write("    <script type=\"text\/template\"  id=\"baidu_template_data_loding_li\">");
+    document.write("        <li class=\"loding\">信息努力加载中.......<\/li>");
+    document.write("    <\/script>");
     document.write("    <!-- 加载中模板部分 结束-->");
     document.write("    <!-- 没有数据记录模板部分 开始-->");
     document.write("<!-- tr 版 -->");
@@ -1819,6 +1823,10 @@ function getdiffdate(stime,etime){
     document.write("<\/script>");
     document.write("    <!-- 没有内容 版 -->");
     document.write("    <script type=\"text\/template\"  id=\"baidu_template_data_empty_null\">");
+    document.write("    <\/script>");
+    document.write("        <!-- li 版 -->");
+    document.write("    <script type=\"text\/template\"  id=\"baidu_template_data_empty_li\">");
+    document.write("        <li class=\"loding list_empty\">当前没有您要查询的记录！<\/li>");
     document.write("    <\/script>");
     document.write("    <!-- 没有数据记录模板部分 结束-->");
     document.write("    <!-- 列表分页模板部分 开始-->");
