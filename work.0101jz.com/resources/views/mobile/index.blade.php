@@ -106,6 +106,10 @@
         var MSG_LIST_URL = "{{ url('api/m/msg/ajax_alist') }}";// ajax最新消息 url
 
         var SHOW_URL = "{{url('m/notice/info/')}}/";//显示页面地址前缀 + id
+
+
+        var DYNAMIC_LODING_BAIDU_TEMPLATE = "baidu_template_data_loding_div";//加载中百度模板id
+        var DYNAMIC_BAIDU_EMPTY_TEMPLATE = "baidu_template_data_empty_div";//没有数据记录百度模板id
 </script>
  <script src="{{asset('js/common/list.js')}}"></script>
  <script src="{{asset('js/m/lanmu/index.js')}}"></script>

@@ -1,20 +1,6 @@
-<!-- 前端模板部分 -->
-<!-- 列表模板部分 开始  <! -- 模板中可以用HTML注释 -- >  或  <%* 这是模板自带注释格式 *%>-->
-<script type="text/template"  id="baidu_template_data_list">
-    <%for(var i = 0; i<data_list.length;i++){
-    var item = data_list[i];
-    can_modify = true;
-    %>
-    <li>
-        <a href="javascript:void(0);"  onclick="action.show(<%=item.id%>)">
-            <div class="title" >
-                <p><i class="fa fa-angle-right  fa-fw" aria-hidden="true"></i> <%=item.title%></p>
-                <span><%=item.level_num_text%></span>
-            </div>
-            <div class="view"><i class="fa fa-eye fa-fw" aria-hidden="true"></i> <%=item.volume%></div>
-        </a>
-    </li>
-    <%}%>
-</script>
-<!-- 列表模板部分 结束-->
-<!-- 前端模板结束 -->
+    <!-- 没有 版 -->
+    <script type="text/template"  id="baidu_template_data_loding_null">
+    </script>
+    <!-- 没有内容 版 -->
+    <script type="text/template"  id="baidu_template_data_empty_null">
+    </script>

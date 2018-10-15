@@ -1,12 +1,28 @@
 <!-- 前端模板开始 -->
     <!-- 加载中模板部分 开始-->
+        <!-- tr 版 -->
     <script type="text/template"  id="baidu_template_data_loding">
         <tr><td colspan="14" align="center">信息努力加载中.......</td></tr>
     </script>
+        <!-- div 版 -->
+    <script type="text/template"  id="baidu_template_data_loding_div">
+        <div class="loding">信息努力加载中.......</div>
+    </script>
+        <!-- 没有 版 -->
+    <script type="text/template"  id="baidu_template_data_loding_null">
+    </script>
     <!-- 加载中模板部分 结束-->
     <!-- 没有数据记录模板部分 开始-->
+        <!-- tr 版 -->
     <script type="text/template"  id="baidu_template_data_empty">
         <tr><td colspan="14" align="center">当前没有您要查询的记录！</td></tr>
+    </script>
+        <!-- div 版 -->
+    <script type="text/template"  id="baidu_template_data_empty_div">
+        <div class="loding list_empty">当前没有您要查询的记录！</div>
+    </script>
+        <!-- 没有内容 版 -->
+    <script type="text/template"  id="baidu_template_data_empty_null">
     </script>
     <!-- 没有数据记录模板部分 结束-->
     <!-- 列表分页模板部分 开始-->
