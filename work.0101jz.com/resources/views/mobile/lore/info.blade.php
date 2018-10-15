@@ -39,8 +39,9 @@
 				@endif
 			</div>
 
+		</section>
 	</div>
-	</div>
+	@include('mobile.layout_public.menu', ['menu_id' => 2])
 @endsection
 
 

@@ -34,7 +34,7 @@
 		<div class="fd ">
 			<div class="pagination"></div>
 		</div>
-		@include('mobile.layout_public.menu', ['menu_id' => 2])
+		@include('mobile.layout_public.menu', ['menu_id' => 5])
 
 
 
