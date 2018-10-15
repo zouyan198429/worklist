@@ -25,8 +25,6 @@
 			<tr>
 				<th>标题</th>
 				<th  width="180px">上传时间</th>
-				<th>上传人</th>
-				<th>阅读量</th>
 			</tr>
 			</thead>
 			<tbody id="data_list">
@@ -63,7 +61,7 @@
         var ADD_URL = "{{ url('huawu/notice/add/0') }}"; //添加url
         var SHOW_URL = "{{url('huawu/notice/info/')}}/";//显示页面地址前缀 + id
         var SHOW_URL_TITLE = "通知公告详情" ;// 详情弹窗显示提示
-        var SHOW_CLOSE_OPERATE = 2 ;// 详情弹窗operate_num关闭时的操作0不做任何操作1刷新当前页面2刷新当前列表页面
+        var SHOW_CLOSE_OPERATE = 0 ;// 详情弹窗operate_num关闭时的操作0不做任何操作1刷新当前页面2刷新当前列表页面
         var EDIT_URL = "{{url('huawu/notice/add/')}}/";//修改页面地址前缀 + id
         var DEL_URL = "{{ url('api/huawu/notice/ajax_del') }}";//删除页面地址
         var BATCH_DEL_URL = "{{ url('api/huawu/notice/ajax_del') }}";//批量删除页面地址

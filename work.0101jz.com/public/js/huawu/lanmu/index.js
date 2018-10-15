@@ -82,3 +82,21 @@ function ajax_status_count(from_id ,staff_id, operate_staff_id){
     });
     return false;
 }
+
+function get_frm_values(frm_ids){
+    return {};
+}
+//业务逻辑部分
+var otheraction = {
+    show : function(id){// 弹窗显示
+        var weburl = NOTICE_SHOW_URL + id ;
+        console.log(weburl);
+        // go(SHOW_URL + id);
+        // location.href='/pms/Supplier/show?supplier_id='+id;
+        // var weburl = SHOW_URL + id;
+        // var weburl = '/pms/Supplier/show?supplier_id='+id+"&operate_type=1";
+        var tishi = '最新公告';//"查看供应商";
+        layeriframe(weburl,tishi,950,600,0);
+        return false;
+    },
+};

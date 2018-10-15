@@ -114,10 +114,10 @@ class LoreController extends AdminController
         $reDataArr = array_merge($reDataArr, $resultDatas);
 
         // 上一条
-        $preList = CompanyLore::getNearList($request, $this, $id, 1, 1, [], '');
+        $preList = CompanyLore::getNearList($request, $this, $id, 1, 1, 0, [], '');
         $reDataArr['preList'] = $preList;
         // 下一条
-        $nextList = CompanyLore::getNearList($request, $this, $id, 2, 1, [], '');
+        $nextList = CompanyLore::getNearList($request, $this, $id, 2, 1, 0, [], '');
         $reDataArr['nextList'] = $nextList;
         return view('manage.lore.info', $reDataArr);
     }

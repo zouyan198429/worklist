@@ -77,6 +77,8 @@ class CompanyNotice extends BaseBusiness
             if(isset($data_list[$k]['oprate_staff_history'])) unset($data_list[$k]['oprate_staff_history']);
             // 去掉内容
             if(isset($data_list[$k]['content'])) unset($data_list[$k]['content']);
+            // 格式添加日期
+            if(isset($v['created_at'])) $data_list[$k]['created_at_ym'] = judgeDate($v['created_at'], 'Y-m');
 //            // 公司名称
 //            $data_list[$k]['company_name'] = $v['company_info']['company_name'] ?? '';
 //            if(isset($data_list[$k]['company_info'])) unset($data_list[$k]['company_info']);
@@ -128,15 +130,16 @@ class CompanyNotice extends BaseBusiness
      * @param Request $request 请求信息
      * @param Controller $controller 控制对象
      * @param int $id 当前记录id
-     * @param int $nearType 类型 1:前**条[默认]；2后**条
+     * @param int $nearType 类型 1:前**条[默认]；2后**条 ; 4 最新几条;8 有count下标则是查询数量, 返回的数组中total 就是真实的数量
      * @param int $limit 数量 **条
+     * @param int $offset 偏移数量
      * @param string $queryParams 条件数组/json字符
      * @param mixed $relations 关系
      * @param int $notLog 是否需要登陆 0需要1不需要
      * @return  array 列表数据 - 二维数组
      * @author zouyan(305463219@qq.com)
      */
-    public static function getNearList(Request $request, Controller $controller, $id = 0, $nearType = 1, $limit = 1, $queryParams = [], $relations = '', $notLog = 0)
+    public static function getNearList(Request $request, Controller $controller, $id = 0, $nearType = 1, $limit = 1, $offset = 0, $queryParams = [], $relations = '', $notLog = 0)
     {
         $company_id = $controller->company_id;
         // 前**条[默认]
@@ -153,16 +156,27 @@ class CompanyNotice extends BaseBusiness
 //            'orderBy' => ['sort_num'=>'desc','id'=>'desc'],
             'orderBy' => ['id'=>'asc'],
             'limit' => $limit,
-            'offset' => 0,
+            'offset' => $offset,
             // 'count'=>'0'
         ];
-        if($nearType == 1){// 前**条
+        if(($nearType & 1) == 1){// 前**条
             $defaultQueryParams['orderBy'] = ['id'=>'asc'];
             array_push($defaultQueryParams['where'],['id', '>', $id]);
-        }else{// 后*条
+        }
+
+        if(($nearType & 2) == 2){// 后*条
             array_push($defaultQueryParams['where'],['id', '<', $id]);
             $defaultQueryParams['orderBy'] = ['id'=>'desc'];
         }
+
+        if(($nearType & 4) == 4){// 4 最新几条
+            $defaultQueryParams['orderBy'] = ['id'=>'desc'];
+        }
+
+        if(($nearType & 8) == 8){// 8 有count下标则是查询数量, 返回的数组中total 就是真实的数量
+            $defaultQueryParams['count'] = 0;
+        }
+
         if(empty($queryParams)){
             $queryParams = $defaultQueryParams;
         }

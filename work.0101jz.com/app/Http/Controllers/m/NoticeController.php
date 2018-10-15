@@ -55,10 +55,10 @@ class NoticeController extends WorksController
         $reDataArr = array_merge($reDataArr, $resultDatas);
 
         // 上一条
-        $preList = CompanyNotice::getNearList($request, $this, $id, 1, 1, [], '');
+        $preList = CompanyNotice::getNearList($request, $this, $id, 1, 1, 0, [], '');
         $reDataArr['preList'] = $preList;
         // 下一条
-        $nextList = CompanyNotice::getNearList($request, $this, $id, 2, 1, [], '');
+        $nextList = CompanyNotice::getNearList($request, $this, $id, 2, 1, 0, [], '');
         $reDataArr['nextList'] = $nextList;
         return view('mobile.notice.info', $reDataArr);
     }

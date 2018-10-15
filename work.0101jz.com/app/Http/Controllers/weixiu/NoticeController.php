@@ -55,10 +55,10 @@ class NoticeController extends WorksController
         $reDataArr = array_merge($reDataArr, $resultDatas);
 
         // 上一条
-        $preList = CompanyNotice::getNearList($request, $this, $id, 1, 1, [], '');
+        $preList = CompanyNotice::getNearList($request, $this, $id, 1, 1, 0, [], '');
         $reDataArr['preList'] = $preList;
         // 下一条
-        $nextList = CompanyNotice::getNearList($request, $this, $id, 2, 1, [], '');
+        $nextList = CompanyNotice::getNearList($request, $this, $id, 2, 1, 0, [], '');
         $reDataArr['nextList'] = $nextList;
         return view('weixiu.notice.info', $reDataArr);
     }
@@ -72,7 +72,7 @@ class NoticeController extends WorksController
      */
     public function ajax_alist(Request $request){
         $this->InitParams($request);
-        return  CompanyNotice::getList($request, $this, 2 + 4, [], ['oprateStaffHistory']);
+        return  CompanyNotice::getList($request, $this, 2 + 4, []);// , ['oprateStaffHistory']
     }
 
 

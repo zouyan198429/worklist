@@ -14,6 +14,19 @@
 		<div class="logo">
 			<img src="http://ofn8u9rp0.bkt.clouddn.com/logo-ydapp3.png" alt="移动工单管理系统">
 		</div>
+		@if(isset($noticeList) && count($noticeList) > 0)
+		<div class="box" id="indmess" style="margin-bottom: 22px;">
+			<ul  data-old_msg="0">
+				@foreach ($noticeList as $notice)
+				<li class="item" >
+					<div class="con"  onclick="action.urlshow({{ $notice['id'] or '' }})">  <i class="fa fa-bell-o  fa-fw" aria-hidden="true"></i>{{ $notice['title'] or '' }} [{{ $notice['created_at_ym'] or '' }}]</div>
+					{{--<div class="btnbox2"><a href="#" class="btn smg_sure" >收到</a></div>--}}
+					<div class="c"></div>
+				</li>
+				@endforeach
+			</ul>
+		</div>
+		@endif
 		<div class="box" id="indmess">
 			<ul id="msgList" data-old_msg="0">
 			</ul>
@@ -92,6 +105,7 @@
 
         var MSG_LIST_URL = "{{ url('api/m/msg/ajax_alist') }}";// ajax最新消息 url
 
+        var SHOW_URL = "{{url('m/notice/info/')}}/";//显示页面地址前缀 + id
 </script>
  <script src="{{asset('js/common/list.js')}}"></script>
  <script src="{{asset('js/m/lanmu/index.js')}}"></script>

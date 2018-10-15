@@ -15,8 +15,6 @@
     document.write("        <tr>");
     document.write("            <td><a href=\"javascript:void(0);\" onclick=\"action.show(<%=item.id%>)\"><%=item.title%></a><\/td>");
     document.write("            <td><%=item.created_at%><\/td>");
-    document.write("            <td><%=item.real_name%><\/td>");
-    document.write("            <td><%=item.volume%><\/td>");
     document.write("        <\/tr>");
     document.write("    <%}%>");
     document.write("<\/script>");

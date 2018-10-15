@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\huawu;
 
+use App\Business\CompanyNotice;
 use App\Business\CompanyStaff;
 use App\Business\CompanyWork;
 use App\Http\Controllers\WorksController;
@@ -37,6 +38,9 @@ class IndexController extends WorksController
         $reDataArr['defaultStatus'] = 1;// 列表页默认状态
         $reDataArr['countStatus'] = [-8,-4,0,1,2,4];// 列表页需要统计的状态数组
         $reDataArr['countPlayStatus'] = '-8,-4,4';// 需要播放提示声音的状态，多个逗号,分隔
+        // 最新6条公告
+        $reDataArr['noticeList'] =  CompanyNotice::getNearList($request, $this, 0, 4, 6, 0, [], '');
+
         return view('huawu.index', $reDataArr);
     }
 

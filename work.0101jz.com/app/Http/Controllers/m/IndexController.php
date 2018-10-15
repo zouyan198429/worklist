@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\m;
 
+use App\Business\CompanyNotice;
 use App\Business\CompanySiteMsg;
 use App\Business\CompanyStaff;
 use App\Business\CompanyWork;
@@ -34,6 +35,8 @@ class IndexController extends WorksController
         $reDataArr['countStatus'] = [-8,-4,0,1,2,4];// 列表页需要统计的状态数组
         $reDataArr['countPlayStatus'] = '-8,-4,1';// 需要播放提示声音的状态，多个逗号,分隔 状态2的声音不需要。
         $reDataArr['msgList'] = [];
+        // 最新6条公告
+        $reDataArr['noticeList'] =  CompanyNotice::getNearList($request, $this, 0, 4, 2, 0, [], '');
         return view('mobile.index', $reDataArr);
     }
 

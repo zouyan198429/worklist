@@ -25,7 +25,9 @@
 		<div class="row" >
 				<div class="col-xs-12">
 					<ul class="indgg">
-						<li><span class="date">10-22</span><div class="title">公告标题</div></li>
+						@foreach ($noticeList as $notice)
+						<li><span class="date">{{ $notice['created_at_ym'] or '' }}</span><div class="title" onclick="otheraction.show({{ $notice['id'] or '' }})">{{ $notice['title'] or '' }}</div></li>
+						@endforeach
 					</ul>
 				</div>
 		</div>
@@ -43,6 +45,8 @@
 	<script type="text/javascript">
         var SATUS_COUNT_URL = "{{ url('api/weixiu/work/ajax_status_count') }}";// ajax工单状态统计 url
         var NEED_PLAY_STATUS = "{{ $countPlayStatus }}";// 需要发声的状态，多个逗号,分隔
+
+        var NOTICE_SHOW_URL = "{{url('weixiu/notice/info/')}}/";//显示页面地址前缀 + id
 
 	</script>
 	<script src="{{ asset('js/weixiu/lanmu/index.js') }}"  type="text/javascript"></script>
