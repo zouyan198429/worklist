@@ -28,6 +28,18 @@
 
 
 	</div>
+
+	<div class="mm">
+		<h3>最新公告</h3>		
+		<div class="row" >
+				<div class="col-xs-12">
+					<ul class="indgg">
+						<li><span class="date">10-22</span><div class="title">公告标题</div></li>
+					</ul>
+				</div>
+		</div>
+	</div>
+
 	<div style="display:none;">
 		@include('public.scan_sound')
 	</div>
