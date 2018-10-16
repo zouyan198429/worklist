@@ -596,12 +596,16 @@ class Tool
      * @param string $cacheKey 键
      * @param array $paramKeyValArr 会作为键的关键参数值数组 --一维数组
      * @param int 选填 $operate 操作 1 转为json 2 序列化 ;
+     * @param keyPush 键加入无素 1 $pre 键前缀 2 当前控制器方法名;
      * @return mixed ;; false失败
      */
-    public static function getCacheData($pre, &$cacheKey, $paramKeyValArr, $operate){
-        $actionMethod = self::getActionMethod();// 当前控制器方法名
-        array_push($paramKeyValArr, $pre);
-        array_push($paramKeyValArr, $actionMethod);
+    public static function getCacheData($pre, &$cacheKey, $paramKeyValArr, $operate, $keyPush = 0){
+        if( ($keyPush & 1) == 1)  array_push($paramKeyValArr, $pre);
+
+        if( ($keyPush & 2) == 2){
+            $actionMethod = self::getActionMethod();// 当前控制器方法名  App\Http\Controllers\weixiu\IndexController@index
+            array_push($paramKeyValArr, $actionMethod);
+        }
         $temArr = [];
         foreach ( $paramKeyValArr as $k => $v) {
             if(! is_string($v) && ! is_numeric($v)){

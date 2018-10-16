@@ -57,7 +57,7 @@ class CompanyWorkController extends CompController
             $cachePre = __FUNCTION__;// 缓存前缀
             $cacheKey = '';// 缓存键[没算前缀]
             $paramKeyValArr = $request->input();//[$company_id, $operate_no];// 关键参数  $request->input()
-            $cacheResult =$this->getCacheData($cachePre,$cacheKey, $paramKeyValArr );
+            $cacheResult =$this->getCacheData($cachePre,$cacheKey, $paramKeyValArr, 1, 1 + 2 );
             if($cacheResult !== false) return $cacheResult;
         }
 

@@ -42,11 +42,12 @@ class ApiController extends Controller
      * @param string $cacheKey 键
      * @param array $paramKeyValArr 会作为键的关键参数值数组 --一维数组
      * @param int 选填 $operate 操作 1 转为json 2 序列化 ;
+     * @param keyPush 键加入无素 1 $pre 键前缀 2 当前控制器方法名;
      * @return mixed  ; false失败
      * @author zouyan(305463219@qq.com)
      */
-    public function getCacheData($pre, &$cacheKey, $paramKeyValArr, $operate = 1){
-         return Tool::getCacheData($pre, $cacheKey, $paramKeyValArr, $operate);
+    public function getCacheData($pre, &$cacheKey, $paramKeyValArr, $operate = 1, $keyPush = 0){
+         return Tool::getCacheData($pre, $cacheKey, $paramKeyValArr, $operate, $keyPush);
     }
 
     /**

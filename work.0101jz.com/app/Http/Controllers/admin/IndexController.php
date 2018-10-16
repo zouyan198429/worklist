@@ -22,7 +22,6 @@ class IndexController extends AdminController
     public function index(Request $request)
     {
         $this->InitParams($request);
-
         $reDataArr = $this->reDataArr;
         $statusArr =  CompanyWork::$status_arr;
         // if(isset($statusArr[4]))  unset($statusArr[4]);

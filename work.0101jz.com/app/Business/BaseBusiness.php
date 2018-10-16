@@ -288,6 +288,41 @@ class BaseBusiness
         return CommonBusiness::detachByIdApi($modelName, $id, $detachParams, $company_id, $notLog);
     }
 
+    /**
+     * 获得历史员工记录id, 可缓存
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @return  int 历史员工记录id
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function getStaffHistoryId(Request $request, Controller $controller){
+        $company_id = $controller->company_id;
+        $operate_staff_id = $controller->operate_staff_id;
+        // 获得 redis缓存数据  ; 1:缓存读,读到则直接返回
+        if( ($controller->cache_sel & 1) == 1){
+            $cachePre = 'operate_staff_history_id' ;// __FUNCTION__;// 缓存前缀
+            $cacheKey = '';// 缓存键[没算前缀]
+            $paramKeyValArr = [$company_id, $operate_staff_id];//[$company_id, $operate_no];// 关键参数  $request->input()
+            $cacheResult =$controller->getCacheData($cachePre,$cacheKey, $paramKeyValArr,2, 1);
+            if($cacheResult !== false) {
+                return $cacheResult;
+            }
+        }
+
+
+        // 获得操作员工历史记录id
+        $operate_staff_history_id = self::getHistoryId($request, $controller, 'CompanyStaff', $operate_staff_id
+            , 'CompanyStaffHistory', 'company_staff_history', ['company_id' => $company_id,'staff_id' => $operate_staff_id], []
+            , $company_id, 0);
+
+        // 缓存数据 10分钟
+        if( ($controller->cache_sel & 2) == 2) {
+            $controller->setCacheData($cachePre, $cacheKey, $operate_staff_history_id, 10*60, 2);
+        }
+        return $operate_staff_history_id;
+
+    }
 
     /**
      * 根据id新加或修改单条数据-id 为0 新加，返回新的对象数组[-维],  > 0 ：修改对应的记录，返回true
@@ -301,10 +336,7 @@ class BaseBusiness
     public static function addOprate(Request $request, Controller $controller, &$saveData){
         $company_id = $controller->company_id;
         $operate_staff_id = $controller->operate_staff_id;
-        // 获得操作员工历史记录id
-        $operate_staff_history_id = self::getHistoryId($request, $controller, 'CompanyStaff', $operate_staff_id
-            , 'CompanyStaffHistory', 'company_staff_history', ['company_id' => $company_id,'staff_id' => $operate_staff_id], []
-            , $company_id, 0);
+        $operate_staff_history_id = self::getStaffHistoryId($request, $controller);
         // 加入操作人员信息
         $oprateArr = [
             'operate_staff_id' => $controller->operate_staff_id,
