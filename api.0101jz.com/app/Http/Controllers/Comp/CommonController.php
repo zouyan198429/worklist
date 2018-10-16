@@ -369,8 +369,8 @@ class CommonController extends CompController
      * @param mixed $primaryVal 主表对象主键值
      * @param string $historyObj 历史表对象名称
      * @param string $historyTable 历史表名字
-     * @param array $historySearch 历史表查询字段[一维数组][一定要包含主表id的] +  版本号(不用传，自动会加上)
-     * @param array $ignoreFields 忽略都有的字段中，忽略主表中的记录 [一维数组]
+     * @param array $historySearch 历史表查询字段[一维数组][一定要包含主表id的] +  版本号(不用传，自动会加上) 格式 ['字段1'=>'字段1的值','字段2'=>'字段2的值' ... ]
+     * @param array $ignoreFields 忽略都有的字段中，忽略主表中的记录 [一维数组] 格式 ['字段1','字段2' ... ]
      * @return  int 历史表id
      * @author zouyan(305463219@qq.com)
      */
@@ -421,8 +421,8 @@ class CommonController extends CompController
      * @param mixed $primaryVal 主表对象主键值
      * @param obj $historyObj 历史表对象
      * @param string $historyTable 历史表名字
-     * @param array $historySearch 历史表查询字段[一维数组][一定要包含主表id的] +  版本号(不用传，自动会加上)
-     * @param array $ignoreFields 忽略都有的字段中，忽略主表中的记录 [一维数组] - 一般会有 [历史表中对应主表的id字段]
+     * @param array $historySearch 历史表查询字段[一维数组][一定要包含主表id的] +  版本号(不用传，自动会加上)格式 ['字段1'=>'字段1的值','字段2'=>'字段2的值' ... ]
+     * @param array $ignoreFields 忽略都有的字段中，忽略主表中的记录 [一维数组] - 一般会有 [历史表中对应主表的id字段] 格式 ['字段1','字段2' ... ]
      * @param int $forceIncVersion 如果需要主表版本号+1,是否更新主表 1 更新 ;0 不更新
      * @return array 不同字段的内容 数组 [ '字段名' => ['原表中的值','历史表中的值']]; 空数组：不用版本号+1;非空数组：版本号+1
      * @author zouyan(305463219@qq.com)

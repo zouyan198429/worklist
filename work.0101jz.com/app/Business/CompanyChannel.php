@@ -259,7 +259,7 @@ class CompanyChannel extends BaseBusiness
             $saveData = array_merge($saveData, $addNewData);
         }
         // 加入操作人员信息
-        // self::addOprate($request, $controller, $saveData);
+         self::addOprate($request, $controller, $saveData);
         // 新加或修改
         return self::replaceByIdBase($request, $controller, self::$model_name, $saveData, $id, $notLog);
     }

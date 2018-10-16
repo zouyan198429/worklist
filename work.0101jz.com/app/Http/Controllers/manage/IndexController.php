@@ -131,7 +131,7 @@ class IndexController extends AdminController
     {
         // $this->InitParams($request);
         // $company_id = $this->company_id;
-        return SiteAdmin::login($request, $this);
+        return SiteAdmin::login($request, $this, false);
     }
 
     /**

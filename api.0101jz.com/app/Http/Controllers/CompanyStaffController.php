@@ -8,6 +8,7 @@ use App\Business\CompanyDepartmentBusiness;
 use App\Business\CompanyPositionBusiness;
 use App\Business\CompanyStaffBusiness;
 use App\Business\CompanyStaffChannelBusiness;
+use App\Models\SiteAdmin;
 use App\Services\Common;
 use Illuminate\Http\Request;
 
@@ -34,6 +35,7 @@ class CompanyStaffController extends CompController
         set_time_limit(0);   // 设置脚本最大执行时间 为0 永不过期
         $company_id = $this->company_id;
         $staff_id = Common::getInt($request, 'staff_id');// 操作员工
+        $admin_type = Common::getInt($request, 'admin_type');// 类型
         $save_data = Common::get($request, 'save_data');
         Common::judgeEmptyParams($request, 'save_data', $save_data);
         // json 转成数组
@@ -151,6 +153,7 @@ class CompanyStaffController extends CompController
 
             $temStaff = [
                 'company_id' => $company_id,
+                'admin_type' => $admin_type,
                 'admin_username' => $mobile,
                 'admin_password' => 'abc123456',
                 'work_num' => $work_num,
@@ -169,5 +172,72 @@ class CompanyStaffController extends CompController
         }
         return  okArray($ExistWorkNumMobile);
 
+    }
+
+    /**
+     * 管理员转为员工
+     *
+     * @param int $id
+     * @return Response
+     * @author zouyan(305463219@qq.com)
+     */
+    public function adminStaff(Request $request)
+    {
+        $this->InitParams($request);
+        $adminList = SiteAdmin::get();
+        $staffObj = null;
+        Common::getObjByModelName('CompanyStaff', $staffObj);
+        foreach($adminList as $admin){
+            $searchConditon = [
+                'company_id' => $admin->company_id,
+                'admin_type' => $admin->admin_type,
+                'admin_username' => $admin->admin_username,
+            ];
+            $updateFields = [
+                // 'admin_username' => $admin->admin_username,
+                'admin_password' => $admin->admin_password,
+                'real_name' => $admin->real_name,
+                'operate_staff_id' => $admin->operate_staff_id,
+                'operate_staff_history_id' => $admin->operate_staff_history_id,
+                'created_at' => $admin->created_at,
+                'updated_at' => $admin->updated_at,
+            ];
+            // $updateFields = $searchConditon;
+            $newStaffObj = null;
+            $newStaffObj = Common::firstOrCreate($staffObj, $searchConditon, $updateFields );
+            $staffHistoryObj = null;
+            // 获是员工历史记录id-- 操作员工
+            CompanyStaffBusiness::getHistoryStaff($newStaffObj , $staffHistoryObj, $newStaffObj->company_id, $newStaffObj->id );
+        }
+    }
+
+    /**
+     * getHistoryStaff
+     *
+     * @param int $id
+     * @return Response
+     * @author zouyan(305463219@qq.com)
+     */
+    public function getHistoryStaff(Request $request)
+    {
+        $this->InitParams($request);
+        $company_id = $this->company_id;
+        $staff_id = Common::getInt($request, 'staff_id');// 操作员工
+
+        // 获是员工历史记录id-- 操作员工
+        $staffObj = null;
+        //        Common::getObjByModelName("CompanyStaff", $staffObj);
+        $staffHistoryObj = null;
+        //        Common::getObjByModelName("CompanyStaffHistory", $staffHistoryObj);
+        //        $StaffHistorySearch = [
+        //            'company_id' => $company_id,
+        //            'staff_id' => $staff_id,
+        //        ];
+        //
+        //        Common::getHistory($staffObj, $staff_id, $staffHistoryObj,'company_staff_history', $StaffHistorySearch, []);
+
+        // $this->getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id);
+        CompanyStaffBusiness::getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id );
+        return okArray($staffHistoryObj);
     }
 }

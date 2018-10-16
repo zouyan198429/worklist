@@ -299,10 +299,16 @@ class BaseBusiness
      * @author zouyan(305463219@qq.com)
      */
     public static function addOprate(Request $request, Controller $controller, &$saveData){
+        $company_id = $controller->company_id;
+        $operate_staff_id = $controller->operate_staff_id;
+        // 获得操作员工历史记录id
+        $operate_staff_history_id = self::getHistoryId($request, $controller, 'CompanyStaff', $operate_staff_id
+            , 'CompanyStaffHistory', 'company_staff_history', ['company_id' => $company_id,'staff_id' => $operate_staff_id], []
+            , $company_id, 0);
         // 加入操作人员信息
         $oprateArr = [
             'operate_staff_id' => $controller->operate_staff_id,
-            'operate_staff_history_id' => $controller->operate_staff_history_id,
+            'operate_staff_history_id' => $operate_staff_history_id,// $controller->operate_staff_history_id,
         ];
         $isMultiArr = false; // true:二维;false:一维
         foreach($saveData as $k => $v){
@@ -323,4 +329,42 @@ class BaseBusiness
         return $saveData;
     }
 
+    /**
+     * 对比主表和历史表是否相同，相同：不更新版本号，不同：版本号+1
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param string $mainObj 主表对象名称
+     * @param mixed $primaryVal 主表对象主键值
+     * @param string $historyObj 历史表对象名称
+     * @param obj $HistoryTableName 历史表名字
+     * @param array $historySearch 历史表查询字段[一维数组][一定要包含主表id的] +  版本号(不用传，自动会加上)  格式 ['字段1'=>'字段1的值','字段2'=>'字段2的值' ... ]
+     * @param array $ignoreFields 忽略都有的字段中，忽略主表中的记录 [一维数组] 格式 ['字段1','字段2' ... ]
+     * @param int $forceIncVersion 如果需要主表版本号+1,是否更新主表 1 更新 ;0 不更新
+     * @param int $companyId 企业id
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @return  int 历史记录表id
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function compareHistoryOrUpdateVersion(Request $request, Controller $controller, $mainObj, $primaryVal, $historyObj, $HistoryTableName, $historySearch, $ignoreFields = [], $forceIncVersion= 1, $companyId = null , $notLog = 0){
+        return CommonBusiness::compareHistoryOrUpdateVersionApi($mainObj, $primaryVal, $historyObj, $HistoryTableName, $historySearch, $ignoreFields, $forceIncVersion, $companyId, $notLog);
+    }
+
+    /**
+     * 根据主表id，获得对应的历史表id
+     *
+     * @param string $mainObj 主表对象名称
+     * @param mixed $primaryVal 主表对象主键值
+     * @param string $historyObj 历史表对象名称
+     * @param obj $HistoryTableName 历史表名字
+     * @param array $historySearch 历史表查询字段[一维数组][一定要包含主表id的] +  版本号(不用传，自动会加上) 格式 ['字段1'=>'字段1的值','字段2'=>'字段2的值' ... ]
+     * @param array $ignoreFields 忽略都有的字段中，忽略主表中的记录 [一维数组] 格式 ['字段1','字段2' ... ]
+     * @param int $companyId 企业id
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @return  int 历史记录表id
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function getHistoryId(Request $request, Controller $controller, $mainObj, $primaryVal, $historyObj, $HistoryTableName, $historySearch, $ignoreFields = [], $companyId = null , $notLog = 0){
+        return CommonBusiness::getHistoryIdApi($mainObj, $primaryVal, $historyObj, $HistoryTableName, $historySearch, $ignoreFields, $companyId, $notLog);
+    }
 }

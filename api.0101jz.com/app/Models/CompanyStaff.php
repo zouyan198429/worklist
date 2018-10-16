@@ -13,6 +13,13 @@ class CompanyStaff extends BaseModel
      */
     protected $table = 'company_staff';
 
+    // 2超级管理员 1管理员 0客服
+    protected $type_arr = [
+        '0' => '客服',
+        '1' => '管理员',
+        '2' => '超级管理员',
+    ];
+
     // 状态
     protected $account_status_arr = [
         '0' => '正常',
@@ -40,7 +47,7 @@ class CompanyStaff extends BaseModel
     protected $hidden = ['admin_password'];
 
     // 表里没有的字段
-    protected $appends = ['account_statu_text', 'issuper_text', 'sex_text'];
+    protected $appends = ['account_statu_text', 'issuper_text', 'sex_text', 'type_text'];
 
     /**
      * 设置帐号的密码md5加密
@@ -53,6 +60,15 @@ class CompanyStaff extends BaseModel
         $this->attributes['admin_password'] = md5($value);
     }
 
+    /**
+     * 获取用户的状态文字
+     *
+     * @return string
+     */
+    public function getTypeTextAttribute()
+    {
+        return $this->type_arr[$this->admin_type] ?? '';
+    }
     /**
      * 获取用户的状态文字
      *
@@ -135,6 +151,14 @@ class CompanyStaff extends BaseModel
     public function staffPosition()
     {
         return $this->belongsTo('App\Models\CompanyPosition', 'position_id', 'id');
+    }
+
+    /**
+     * 获取员工对应的公司--一维
+     */
+    public function staffCompany()
+    {
+        return $this->belongsTo('App\Models\Company', 'company_id', 'id');
     }
 
     /**

@@ -15,4 +15,11 @@ class Company extends BaseModel
     protected $table = 'company';
 
 
+    /**
+     * 获取公司的员工-二维
+     */
+    public function companyStaff()
+    {
+        return $this->hasMany('App\Models\CompanyStaff', 'company_id', 'id');
+    }
 }

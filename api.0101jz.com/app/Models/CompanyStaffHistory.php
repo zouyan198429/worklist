@@ -13,6 +13,13 @@ class CompanyStaffHistory extends BaseModel
      */
     protected $table = 'company_staff_history';
 
+    // 2超级管理员 1管理员 0客服
+    protected $type_arr = [
+        '0' => '客服',
+        '1' => '管理员',
+        '2' => '超级管理员',
+    ];
+
     // 状态
     protected $account_status_arr = [
         '0' => '正常',
@@ -40,7 +47,7 @@ class CompanyStaffHistory extends BaseModel
     protected $hidden = ['admin_password'];
 
     // 表里没有的字段
-    protected $appends = ['account_statu_text', 'issuper_text', 'sex_text'];
+    protected $appends = ['account_statu_text', 'issuper_text', 'sex_text', 'type_text'];
 
     /**
      * 设置帐号的密码md5加密
@@ -51,6 +58,16 @@ class CompanyStaffHistory extends BaseModel
     public function setAdminPasswordAttribute($value)
     {
         $this->attributes['admin_password'] = md5($value);
+    }
+
+    /**
+     * 获取用户的状态文字
+     *
+     * @return string
+     */
+    public function getTypeTextAttribute()
+    {
+        return $this->type_arr[$this->admin_type] ?? '';
     }
 
     /**

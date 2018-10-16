@@ -13,10 +13,11 @@ use App\Http\Controllers\BaseController as Controller;
  */
 class SiteAdmin extends BaseBusiness
 {
-    protected static $model_name = 'SiteAdmin';
+    // protected static $model_name = 'SiteAdmin';
+    protected static $model_name = 'CompanyStaff';
 
     public static $admin_types = [
-       // '0' => '客服',
+       // '0' => '员工',
         '1' => '管理员',
         '2' => '超级管理员',
     ];
@@ -26,10 +27,12 @@ class SiteAdmin extends BaseBusiness
      *
      * @param Request $request 请求信息
      * @param Controller $controller 控制对象
+     * @param boolean $judgeSuper 控制对象
+     *
      * @return  array 用户数组
      * @author zouyan(305463219@qq.com)
      */
-    public static function login(Request $request, Controller $controller){
+    public static function login(Request $request, Controller $controller, $judgeSuper = true){
         $admin_username = Common::get($request, 'admin_username');
         $admin_password = Common::get($request, 'admin_password');
 //        $preKey = Common::get($request, 'preKey');// 0 小程序 1后台
@@ -37,14 +40,17 @@ class SiteAdmin extends BaseBusiness
 //            $preKey = 1;
 //        }
         // 数据验证 TODO
-        $company_id = config('public.company_id');
+        // $company_id = config('public.company_id');
         $queryParams = [
             'where' => [
-                ['company_id',$company_id],
+                // ['company_id',$company_id],
                 ['admin_username',$admin_username],
                 ['admin_password',md5($admin_password)],
             ],
-            'select' => ['id','company_id','admin_username','real_name','admin_type'],
+            'whereIn' => [
+                'admin_type' => array_keys(self::$admin_types),
+            ],
+            // 'select' => ['id','company_id','admin_username','real_name','admin_type'],
             // 'limit' => 1
         ];
         $pageParams = [
@@ -52,13 +58,17 @@ class SiteAdmin extends BaseBusiness
             'pagesize' => 1,
             'total' => 1,
         ];
-        $resultDatas = CommonBusiness::ajaxGetList('SiteAdmin', $pageParams, 0,$queryParams ,'', 1);
+        $relations = ['staffCompany'];
+        $resultDatas = CommonBusiness::ajaxGetList(self::$model_name, $pageParams, 0,$queryParams ,$relations, 1);
 
         $dataList = $resultDatas['dataList'] ?? [];
         $userInfo = $dataList[0] ?? [];
         if(empty($dataList) || count($dataList) <= 0 || empty($userInfo)){
             throws('用户名或密码有误！');
         }
+        $admin_type = $userInfo['admin_type'] ?? '';
+        if($judgeSuper && $admin_type != 2)  throws('您不是超级管理员，没有权限访问！');
+
         // 保存session
         // 存储数据到session...
         if (!session_id()) session_start(); // 初始化session
@@ -150,6 +160,9 @@ class SiteAdmin extends BaseBusiness
             'where' => [
                 ['company_id', $company_id],
                 //['mobile', $keyword],
+            ],
+            'whereIn' => [
+                'admin_type' => array_keys(self::$admin_types),
             ],
 //            'select' => [
 //                'id','company_id','type_name','sort_num'
@@ -248,6 +261,9 @@ class SiteAdmin extends BaseBusiness
             'where' => [
                 ['company_id', $company_id],
 //                ['id', '>', $id],
+            ],
+            'whereIn' => [
+                'admin_type' => array_keys(self::$admin_types),
             ],
 //            'select' => [
 //                'id','company_id','type_name','sort_num'
@@ -411,6 +427,9 @@ class SiteAdmin extends BaseBusiness
             'where' => [
                 ['company_id', $company_id],
                 ['admin_username',$username],
+            ],
+            'whereIn' => [
+                'admin_type' => array_keys(self::$admin_types),
             ],
             // 'limit' => 1
         ];

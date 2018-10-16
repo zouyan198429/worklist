@@ -33,5 +33,6 @@ return [
             'initMobileWork' => 'work/mobile_index',// 手机站首页初始化数据
             'saveProblem' => 'problem/add_save',// 反馈问题添加/修改
             'staffImport' => 'staff/bathImport',// 批量导入员工
+            'staffHistory' => 'staff/getHistoryStaff',// 获得操作员工历史
         ],
     ];

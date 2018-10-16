@@ -16,6 +16,12 @@ use App\Http\Controllers\BaseController as Controller;
 class CompanyStaff extends BaseBusiness
 {
     protected static $model_name = 'CompanyStaff';
+    public static $admin_type = 0;
+    public static $admin_types = [
+         '0' => '员工',
+//        '1' => '管理员',
+//        '2' => '超级管理员',
+    ];
     /**
      * 登录
      * @author zouyan(305463219@qq.com)
@@ -32,21 +38,22 @@ class CompanyStaff extends BaseBusiness
         }
         // 数据验证 TODO
 
-        $company_id = config('public.company_id');
+        // $company_id = config('public.company_id');
 
         $modelName = self::$model_name;
         // 查询用户名是否有
         $queryParams = [
             'where' => [
-                ['company_id',$company_id],
+                // ['company_id',$company_id],
                 ['admin_username',$admin_username],
                 ['admin_password',md5($admin_password)],
+                 ['admin_type',self::$admin_type],
             ],
-            'select' => [
-                'id','company_id','admin_username','real_name','issuper','account_status','work_num',
-                'department_id','group_id','position_id','sex'
-                ,'tel','mobile','qq_number','lastlogintime'
-            ],
+//            'select' => [
+//                'id','company_id','admin_username','real_name','issuper','account_status','work_num',
+//                'department_id','group_id','position_id','sex'
+//                ,'tel','mobile','qq_number','lastlogintime'
+//            ],
 //            'orWhere' => [
 //                ['mobile',$admin_username],
 //                ['admin_password',md5($admin_password)],
@@ -58,7 +65,7 @@ class CompanyStaff extends BaseBusiness
             'pagesize' => 1,
             'total' => 1,
         ];
-        $relations = ['staffDepartment', 'staffGroup', 'staffPosition' ];// , 'staffRoles'
+        $relations = ['staffDepartment', 'staffGroup', 'staffPosition', 'staffCompany'];// , 'staffRoles'
         //if($preKey == 0) {
         //$relations = '';//['CompanyInfo.CompanyRank'];
         //}
@@ -70,9 +77,10 @@ class CompanyStaff extends BaseBusiness
             // 查询手机号是否有
             $queryParams = [
                 'where' => [
-                    ['company_id',$company_id],
+                    //['company_id',$company_id],
                     ['mobile', $admin_username],
                     ['admin_password', md5($admin_password)],
+                    ['admin_type',self::$admin_type],
                 ],
 //                'select' => [
 //                    'id','company_id','real_name',
@@ -95,6 +103,7 @@ class CompanyStaff extends BaseBusiness
         }
 
         $account_id = $userInfo['id'] ?? 0;
+        $company_id = $userInfo['company_id'] ?? 0;
         $account_status = $userInfo['account_status'] ?? 1;
         if($account_status != 0){
             throws('账号已冻结！');
@@ -211,6 +220,7 @@ class CompanyStaff extends BaseBusiness
             'where' => [
                 ['company_id', $company_id],
                 ['city_id', $city_id],
+                ['admin_type',self::$admin_type],
             ],
 //            'select' => [
 //                'id','company_id', 'admin_username', 'real_name','mobile'
@@ -269,6 +279,7 @@ class CompanyStaff extends BaseBusiness
             'where' => [
                 ['company_id', $company_id],
                 ['department_id', $department_id],
+                ['admin_type',self::$admin_type],
             ],
 //            'select' => [
 //                'id','company_id', 'admin_username', 'real_name','mobile'
@@ -306,6 +317,7 @@ class CompanyStaff extends BaseBusiness
             'where' => [
                 ['company_id', $company_id],
                 //['mobile', $keyword],
+                ['admin_type',self::$admin_type],
             ],
 //            'select' => [
 //                'id','company_id','type_name','sort_num'
@@ -423,6 +435,7 @@ class CompanyStaff extends BaseBusiness
             'where' => [
                 ['company_id', $company_id],
 //                ['id', '>', $id],
+                ['admin_type',self::$admin_type],
             ],
 //            'select' => [
 //                'id','company_id','type_name','sort_num'
@@ -583,6 +596,7 @@ class CompanyStaff extends BaseBusiness
         }else {// 新加;要加入的特别字段
             $addNewData = [
                 'company_id' => $company_id,
+                'admin_type' => self::$admin_type,
             ];
             $saveData = array_merge($saveData, $addNewData);
         }
@@ -668,6 +682,7 @@ class CompanyStaff extends BaseBusiness
                 'where' => [
                     ['id',$id],
                     ['admin_password',md5($old_password)],
+                    // ['admin_type',self::$admin_type],
                 ],
                 // 'limit' => 1
             ];
@@ -701,6 +716,7 @@ class CompanyStaff extends BaseBusiness
             'where' => [
                 ['company_id', $company_id],
                 [$fieldName,$fieldVal],
+                ['admin_type',self::$admin_type],
             ],
             // 'limit' => 1
         ];
@@ -737,6 +753,7 @@ class CompanyStaff extends BaseBusiness
         $requestData = [
             'company_id' => $company_id,
             'staff_id' =>  $controller->user_id,
+            'admin_type' =>  self::$admin_type,
             'save_data' => $saveData,
         ];
         $url = config('public.apiUrl') . config('apiUrl.apiPath.staffImport');

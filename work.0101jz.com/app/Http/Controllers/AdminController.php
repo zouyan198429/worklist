@@ -19,7 +19,7 @@ class AdminController extends BaseController
 //                redirect('login');
 //            }
         }
-        $company_id = $userInfo['id'] ?? null;//Common::getInt($request, 'company_id');
+        $company_id = $userInfo['company_id'] ?? null;//Common::getInt($request, 'company_id');
         if(empty($company_id) || (!is_numeric($company_id))){
             throws('非法请求！');
 //            if(isAjax()){
@@ -32,8 +32,8 @@ class AdminController extends BaseController
         $this->user_info =$userInfo;
         $this->user_id = $userInfo['id'] ?? '';
         $this->operate_staff_id = $this->user_id;
-        $this->operate_staff_history_id = $this->user_id;
-        $company_id = config('public.company_id');
+        // $this->operate_staff_history_id = $this->user_id;
+        // $company_id = config('public.company_id');
         $this->company_id =  $company_id;//'99999';//
 
         $real_name = $userInfo['real_name'] ?? '';
