@@ -49,7 +49,7 @@ class NoticeController extends WorksController
             $saveData = [
                 'volume' => $volume + 1,
             ];
-            CompanyNotice::replaceById($request, $this, $saveData, $id);
+            CompanyNotice::replaceById($request, $this, $saveData, $id, false);
             $resultDatas['volume'] = $volume + 1;
         }
         $reDataArr = array_merge($reDataArr, $resultDatas);

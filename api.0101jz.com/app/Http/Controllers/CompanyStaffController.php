@@ -181,35 +181,35 @@ class CompanyStaffController extends CompController
      * @return Response
      * @author zouyan(305463219@qq.com)
      */
-    public function adminStaff(Request $request)
-    {
-        $this->InitParams($request);
-        $adminList = SiteAdmin::get();
-        $staffObj = null;
-        Common::getObjByModelName('CompanyStaff', $staffObj);
-        foreach($adminList as $admin){
-            $searchConditon = [
-                'company_id' => $admin->company_id,
-                'admin_type' => $admin->admin_type,
-                'admin_username' => $admin->admin_username,
-            ];
-            $updateFields = [
-                // 'admin_username' => $admin->admin_username,
-                'admin_password' => $admin->admin_password,
-                'real_name' => $admin->real_name,
-                'operate_staff_id' => $admin->operate_staff_id,
-                'operate_staff_history_id' => $admin->operate_staff_history_id,
-                'created_at' => $admin->created_at,
-                'updated_at' => $admin->updated_at,
-            ];
-            // $updateFields = $searchConditon;
-            $newStaffObj = null;
-            $newStaffObj = Common::firstOrCreate($staffObj, $searchConditon, $updateFields );
-            $staffHistoryObj = null;
-            // 获是员工历史记录id-- 操作员工
-            CompanyStaffBusiness::getHistoryStaff($newStaffObj , $staffHistoryObj, $newStaffObj->company_id, $newStaffObj->id );
-        }
-    }
+//    public function adminStaff(Request $request)
+//    {
+//        $this->InitParams($request);
+//        $adminList = SiteAdmin::get();
+//        $staffObj = null;
+//        Common::getObjByModelName('CompanyStaff', $staffObj);
+//        foreach($adminList as $admin){
+//            $searchConditon = [
+//                'company_id' => $admin->company_id,
+//                'admin_type' => $admin->admin_type,
+//                'admin_username' => $admin->admin_username,
+//            ];
+//            $updateFields = [
+//                // 'admin_username' => $admin->admin_username,
+//                'admin_password' => $admin->admin_password,
+//                'real_name' => $admin->real_name,
+//                'operate_staff_id' => $admin->operate_staff_id,
+//                'operate_staff_history_id' => $admin->operate_staff_history_id,
+//                'created_at' => $admin->created_at,
+//                'updated_at' => $admin->updated_at,
+//            ];
+//            // $updateFields = $searchConditon;
+//            $newStaffObj = null;
+//            $newStaffObj = Common::firstOrCreate($staffObj, $searchConditon, $updateFields );
+//            $staffHistoryObj = null;
+//            // 获是员工历史记录id-- 操作员工
+//            CompanyStaffBusiness::getHistoryStaff($newStaffObj , $staffHistoryObj, $newStaffObj->company_id, $newStaffObj->id );
+//        }
+//    }
 
     /**
      * getHistoryStaff

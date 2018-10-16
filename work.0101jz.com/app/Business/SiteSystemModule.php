@@ -326,11 +326,12 @@ class SiteSystemModule extends BaseBusiness
      * @param Controller $controller 控制对象
      * @param array $saveData 要保存或修改的数组
      * @param int $id id
+     * @param boolean $modifAddOprate 修改时是否加操作人，true:加;false:不加[默认]
      * @param int $notLog 是否需要登陆 0需要1不需要
      * @return  array 单条数据 - -维数组 为0 新加，返回新的对象数组[-维],  > 0 ：修改对应的记录，返回true
      * @author zouyan(305463219@qq.com)
      */
-    public static function replaceById(Request $request, Controller $controller, $saveData, &$id, $notLog = 0){
+    public static function replaceById(Request $request, Controller $controller, $saveData, &$id, $modifAddOprate = false, $notLog = 0){
         $company_id = $controller->company_id;
         if($id > 0){
             // 判断权限
@@ -339,15 +340,16 @@ class SiteSystemModule extends BaseBusiness
 //            ];
 //            $relations = '';
 //            CommonBusiness::judgePower($id, $judgeData, self::$model_name, $company_id, $relations, $notLog);
+              // if($modifAddOprate) self::addOprate($request, $controller, $saveData);
 
         }else {// 新加;要加入的特别字段
 //            $addNewData = [
 //                'company_id' => $company_id,
 //            ];
 //            $saveData = array_merge($saveData, $addNewData);
+            // 加入操作人员信息
+            // self::addOprate($request, $controller, $saveData);
         }
-        // 加入操作人员信息
-        // self::addOprate($request, $controller, $saveData);
         // 新加或修改
         return self::replaceByIdBase($request, $controller, self::$model_name, $saveData, $id, $notLog);
     }

@@ -108,7 +108,7 @@ class LoreController extends AdminController
             $saveData = [
                 'volume' => $volume + 1,
             ];
-            CompanyLore::replaceById($request, $this, $saveData, $id);
+            CompanyLore::replaceById($request, $this, $saveData, $id, false);
             $resultDatas['volume'] = $volume + 1;
         }
         $reDataArr = array_merge($reDataArr, $resultDatas);
