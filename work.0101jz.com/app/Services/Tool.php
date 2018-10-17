@@ -918,7 +918,7 @@ class Tool
     }
 
     /**
-     * 功能：验证数据
+     * 功能：获得框文件夹绝对路径
      * @param string $pathKey 路径关键字
      *       app   app目录的绝对路径 srv/www/work/work.0101jz.com/app
      *       base  项目根目录的绝对路径 /srv/www/work/work.0101jz.com
@@ -974,6 +974,5 @@ class Tool
                 break;
         }
         return $returnPath;
-
     }
 }
