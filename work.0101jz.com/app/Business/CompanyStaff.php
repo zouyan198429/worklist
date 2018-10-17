@@ -748,7 +748,7 @@ class CompanyStaff extends BaseBusiness
      * @param int $notLog 是否需要登陆 0需要1不需要
      * @author zouyan(305463219@qq.com)
      */
-    public static function staffImport(Request $request, Controller $controller, $saveData , $notLog = 0)
+    public static function import(Request $request, Controller $controller, $saveData , $notLog = 0)
     {
         $company_id = $controller->company_id;
         // 参数
@@ -762,6 +762,47 @@ class CompanyStaff extends BaseBusiness
         // 生成带参数的测试get请求
         // $requestTesUrl = splicQuestAPI($url , $requestData);
         return HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
+    }
+
+    /**
+     * 批量导入员工--通过文件路径
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param string $fileName 文件全路径
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function staffImportByFile(Request $request, Controller $controller, $fileName = '', $notLog = 0){
+        // $fileName = 'staffs.xlsx';
+        $dataStartRow = 1;// 数据开始的行号[有抬头列，从抬头列开始],从1开始
+        // 需要的列的值的下标关系：一、通过列序号[1开始]指定；二、通过专门的列名指定;三、所有列都返回[文件中的行列形式],$headRowNum=0 $headArr=[]
+        $headRowNum = 1;//0:代表第一种方式，其它数字：第二种方式; 1开始 -必须要设置此值，$headArr 参数才起作用
+        // 下标对应关系,如果设置了，则只获取设置的列的值
+        // 方式一格式：['1' => 'name'，'2' => 'chinese',]
+        // 方式二格式: ['姓名' => 'name'，'语文' => 'chinese',]
+        $headArr = [
+            '县区' => 'department',
+            '归属营业厅或片区' => 'group',
+            '姓名或渠道名称' => 'channel',
+            //'姓名' => 'real_name',
+            '工号' => 'work_num',
+            '职务' => 'position',
+            '手机号' => 'mobile',
+            '性别' => 'sex',
+        ];
+//        $headArr = [
+//            '1' => 'name',
+//            '2' => 'chinese',
+//            '3' => 'maths',
+//            '4' => 'english',
+//        ];
+        try{
+            $dataArr = ImportExport::import($fileName, $dataStartRow, $headRowNum, $headArr);
+        } catch ( \Exception $e) {
+            throws($e->getMessage());
+        }
+        return self::import($request, $controller, $dataArr, $notLog);
     }
 
 }

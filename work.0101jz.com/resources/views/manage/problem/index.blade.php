@@ -32,6 +32,7 @@
 			<button class="btn btn-success  btn-xs export_excel"  onclick="action.exportExcel(this)" >导出[勾选]</button>
 			{{--<button class="btn btn-success  btn-xs import_excel"  onclick="action.importExcelTemplate(this)">导入模版[EXCEL]</button>--}}
 			{{--<button class="btn btn-success  btn-xs import_excel"  onclick="action.importExcel(this)">导入</button>--}}
+			{{--<div style="display:none;" ><input type="file" class="import_file img_input"></div>--} }{ {  --导入file对象--}}
 		</div>
 
 		<table   id="dynamic-table" class="table2">
@@ -107,6 +108,7 @@
 	var EXPORT_EXCEL_URL = "{{ url('manage/problem/export') }}";//导出EXCEL地址
     var IMPORT_EXCEL_TEMPLATE_URL = "{{ url('manage/problem/import_template') }}";//导入EXCEL模版地址
 	var IMPORT_EXCEL_URL = "{{ url('api/manage/problem/import') }}";//导入EXCEL地址
+    var IMPORT_EXCEL_CLASS = "import_file";// 导入EXCEL的file的class
 
     var REPLY_URL = "{{ url('manage/problem/reply/')}}/";// 回复地址
     var REPLY_TITLE = "回复";

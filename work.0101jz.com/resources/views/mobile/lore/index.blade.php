@@ -76,6 +76,7 @@
         var EXPORT_EXCEL_URL = "{{ url('m/lore/export') }}";//导出EXCEL地址
         var IMPORT_EXCEL_TEMPLATE_URL = "{{ url('m/lore/import_template') }}";//导入EXCEL模版地址
         var IMPORT_EXCEL_URL = "{{ url('api/m/lore/import') }}";//导入EXCEL地址
+        var IMPORT_EXCEL_CLASS = "import_file";// 导入EXCEL的file的class
 
         var DYNAMIC_LODING_BAIDU_TEMPLATE = "baidu_template_data_loding_li";//加载中百度模板id
         var DYNAMIC_BAIDU_EMPTY_TEMPLATE = "baidu_template_data_empty_li";//没有数据记录百度模板id

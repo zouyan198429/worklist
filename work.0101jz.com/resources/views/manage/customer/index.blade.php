@@ -94,6 +94,7 @@
 	var EXPORT_EXCEL_URL = "{{ url('manage/customer/export') }}";//导出EXCEL地址
     var IMPORT_EXCEL_TEMPLATE_URL = "{{ url('manage/customer/import_template') }}";//导入EXCEL模版地址
 	var IMPORT_EXCEL_URL = "{{ url('api/manage/customer/import') }}";//导入EXCEL地址
+    var IMPORT_EXCEL_CLASS = "import_file";// 导入EXCEL的file的class
 
     var TAG_URL = "{{ url('api/manage/customer/ajax_is_tab') }}";//ajax请求标记的url
 

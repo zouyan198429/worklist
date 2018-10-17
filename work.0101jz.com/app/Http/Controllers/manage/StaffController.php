@@ -5,6 +5,7 @@ namespace App\Http\Controllers\manage;
 use App\Business\CompanyDepartment;
 use App\Business\CompanyPosition;
 use App\Business\CompanyStaff;
+use App\Business\Resource;
 use App\Http\Controllers\AdminController;
 use App\Services\Common;
 use App\Services\Tool;
@@ -114,6 +115,25 @@ class StaffController extends AdminController
         CompanyStaff::importTemplate($request, $this);
     }
 
+
+    /**
+     * 单文件上传-导入excel
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function import(Request $request)
+    {
+        $this->InitParams($request);
+        // 上传并保存文件
+        $result = Resource::fileSingleUpload($request, $this, 1);
+        if($result['apistatus'] == 0) return $result;
+        // 文件上传成功
+        $fileName = Tool::getPath('public') . '/' . $result['result']['filePath'];
+        $resultDatas = CompanyStaff::staffImportByFile($request, $this, $fileName);
+        return ajaxDataArr(1, $resultDatas, '');
+    }
 
     /**
      * 子帐号管理-删除

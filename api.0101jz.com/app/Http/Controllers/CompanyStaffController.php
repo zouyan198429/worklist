@@ -45,6 +45,10 @@ class CompanyStaffController extends CompController
             $group = $info['group'] ?? '';// 小组名称
             $channel = $info['channel'] ?? ''; // 渠道名称
             $real_name = $info['real_name'] ?? '';// 用户名
+            if(empty($real_name)){
+                $real_name = $channel;
+                $save_data[$k]['real_name'] = $channel;
+            }
             $work_num = $info['work_num'] ?? '';// 工号
             $position = $info['position'] ?? '';// 职位
             $mobile = $info['mobile'] ?? '';// 手机号
@@ -75,6 +79,10 @@ class CompanyStaffController extends CompController
             $group = $info['group'] ?? '';// 小组名称
             $channel = $info['channel'] ?? ''; // 渠道名称
             $real_name = $info['real_name'] ?? '';// 用户名
+            if(empty($real_name)){
+                $real_name = $channel;
+                $save_data[$k]['real_name'] = $channel;
+            }
             $work_num = $info['work_num'] ?? '';// 工号
             $position = $info['position'] ?? '';// 职位
             $mobile = $info['mobile'] ?? '';// 手机号
@@ -141,15 +149,15 @@ class CompanyStaffController extends CompController
 
             // 处理渠道id
             $channel_id = 0;
-            $channelKey = $department . '_' . $group . '_' . $channel;
-            if(!empty($channel) && isset($channelArr[$channelKey])) {
-                $channel_id = $channelArr[$channelKey];
-            }elseif(!empty($channel)){
-                $channelObj = CompanyChannelBusiness::firstOrCreate($company_id, $department_id, $group_id, $channel);
-                $channel_id = $channelObj->id;
-                $channelArr[$channelKey] = $channel_id;
-            }
-            $save_data[$k]['channel_id'] = $channel_id;
+//            $channelKey = $department . '_' . $group . '_' . $channel;
+//            if(!empty($channel) && isset($channelArr[$channelKey])) {
+//                $channel_id = $channelArr[$channelKey];
+//            }elseif(!empty($channel)){
+//                $channelObj = CompanyChannelBusiness::firstOrCreate($company_id, $department_id, $group_id, $channel);
+//                $channel_id = $channelObj->id;
+//                $channelArr[$channelKey] = $channel_id;
+//            }
+//            $save_data[$k]['channel_id'] = $channel_id;
 
             $temStaff = [
                 'company_id' => $company_id,
@@ -168,7 +176,7 @@ class CompanyStaffController extends CompController
             $staffObj = CompanyStaffBusiness::firstOrCreate($company_id, $temStaff);
             $staff_id = $staffObj->id;
             // 保存员工管理渠道
-            CompanyStaffChannelBusiness::firstOrCreate($company_id, $department_id, $group_id, $channel_id, $staff_id);
+            // CompanyStaffChannelBusiness::firstOrCreate($company_id, $department_id, $group_id, $channel_id, $staff_id);
         }
         return  okArray($ExistWorkNumMobile);
 

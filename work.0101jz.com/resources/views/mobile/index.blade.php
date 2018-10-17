@@ -94,6 +94,7 @@
         {{--var EXPORT_EXCEL_URL = "{{ url('m/work/export') }}";//导出EXCEL地址--}}
 {{--        var IMPORT_EXCEL_TEMPLATE_URL = "{{ url('m/work/import_template') }}";//导入EXCEL模版地址--}}
         {{--var IMPORT_EXCEL_URL = "{{ url('api/m/work/import') }}";//导入EXCEL地址--}}
+		{{--var IMPORT_EXCEL_CLASS = "import_file";// 导入EXCEL的file的class--}}
 
         var SURE_MSG_URL = "{{ url('api/m/msg/ajax_save') }}/";// ajax确认消息地址
         var SURE_WORK_URL = "{{ url('api/m/work/ajax_sure') }}/";// ajax确认工单地址

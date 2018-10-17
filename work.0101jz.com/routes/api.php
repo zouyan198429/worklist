@@ -148,6 +148,7 @@ Route::post('admin/customer/ajax_is_tab', 'admin\CustomerController@ajax_is_tab'
 //web-manage
 // 上传图片
 Route::post('manage/upload', 'manage\UploadController@index');
+Route::post('manage/uploadSingle', 'manage\UploadController@uploadSingle');// 单文件上传
 Route::post('manage/upload/ajax_del', 'manage\UploadController@ajax_del');// 根据id删除文件
 
 // 登陆
@@ -157,8 +158,10 @@ Route::post('manage/ajax_password_save', 'manage\IndexController@ajax_password_s
 Route::post('manage/staff/ajax_alist', 'manage\StaffController@ajax_alist');//ajax获得列表数据
 Route::post('manage/staff/ajax_del', 'manage\StaffController@ajax_del');// 删除
 Route::post('manage/staff/ajax_save', 'manage\StaffController@ajax_save');// 新加/修改
+Route::post('manage/staff/import', 'manage\StaffController@import');// 导入excel
 Route::post('manage/staff/ajax_get_child', 'manage\StaffController@ajax_get_child');// 根据部门id,小组id获得子类员工数组[kv一维数组]
 Route::post('manage/staff/ajax_get_areachild', 'manage\StaffController@ajax_get_areachild');// 根据区县id,街道id获得子类员工数组[kv一维数组]
+
 //通知公告
 Route::post('manage/notice/ajax_alist', 'manage\NoticeController@ajax_alist');//ajax获得列表数据
 Route::post('manage/notice/ajax_del', 'manage\NoticeController@ajax_del');// 删除

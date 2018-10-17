@@ -31,6 +31,20 @@ class UploadController extends AdminController
     }
 
     /**
+     * 单文件上传
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function uploadSingle(Request $request)
+    {
+        $this->InitParams($request);
+        return Resource::fileSingleUpload($request, $this, 0);
+    }
+
+
+    /**
      * 根据资源id，删除资源[删除文件和数据记录]
      *
      * @param Request $request

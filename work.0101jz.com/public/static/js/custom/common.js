@@ -1793,6 +1793,76 @@ function getdiffdate(stime,etime){
     console.log(diffdate);
 }
 
+// 单个文件上传
+// fileObj 文件上传对象
+// ajaxUrl 上传文件处理url
+// operate_num 关闭时的操作0不做任何操作1刷新当前页面2刷新当前列表页面--当前页 ; 4 刷新当前列表页面-第一页
+// otherParams 其它参数 {'键':值,...}
+function upLoadFileSingle(fileObj, ajaxUrl, operate_num, otherParams) {
+    if (fileObj.files.length == 0) {
+        return false;
+    }
+    var data = new FormData();
+
+    data.append('photo', fileObj.files[0]);
+    //            data.append('allowTypes', 'jpg|png');
+    //            data.append('size', 1024*2);
+    //data.append('maxWidth', 800);
+    //data.append('maxHeight', 800);
+    //            data.append('upload_type', upload_type);
+    // 其它参数
+    for(var p in otherParams){
+        tem_name = p;
+        tem_value = otherParams[p];
+        if(tem_value == '') continue;
+        data.append(tem_name, tem_value);
+    }
+    var layer_index = layer.load();
+    console.log(ajaxUrl);
+    console.log(data);
+    $.ajax({
+        url: ajaxUrl,// '/public/AjaxData/uploadImg2',
+        type: 'POST',
+        data: data,
+        cache: false,
+        contentType: false, //不可缺
+        processData: false, //不可缺
+        dataType: 'json',
+        success: function (ret) {
+            console.log(ret);
+            if (!ret.apistatus) {
+                err_alert(ret.errorMsg);
+            } else {
+                layer.msg('处理成功！', {
+                    icon: 1,
+                    shade: 0.3,
+                    time: 4000 //2秒关闭（如果不配置，默认是3秒）
+                }, function(){
+                    switch (operate_num){
+                        case 0:
+                            break;
+                        case 1:
+                            //刷新当前页面
+                            location.reload();
+                            break;
+                        case 2:
+                            //刷新当前列表页面--当前页
+                            reset_list(true);
+                            break;
+                        case 4:
+                            //刷新当前列表页面-第一页
+                            reset_list(false);
+                            break;
+                        default:
+                    }
+                    fileObj.value = ''; //虽然file的value不能设为有字符的值，但是可以设置为空值
+                });
+            }
+            layer.close(layer_index)//手动关闭
+        }
+    });
+}
+
 (function() {
     document.write("<!-- 前端模板开始 -->");
     document.write("    <!-- 加载中模板部分 开始-->");

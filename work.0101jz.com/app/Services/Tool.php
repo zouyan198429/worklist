@@ -916,4 +916,64 @@ class Tool
          }
          return '';
     }
+
+    /**
+     * 功能：验证数据
+     * @param string $pathKey 路径关键字
+     *       app   app目录的绝对路径 srv/www/work/work.0101jz.com/app
+     *       base  项目根目录的绝对路径 /srv/www/work/work.0101jz.com
+     *       base   'public'  相对于应用目录的给定文件生成绝对路径 /srv/www/work/work.0101jz.com/public
+     *       config 应用配置目录的绝对路径  /srv/www/work/work.0101jz.com/config
+     *       database 应用数据库目录的绝对路径 /srv/www/work/work.0101jz.com/database
+     *       public public目录的绝对路径 /srv/www/work/work.0101jz.com/public
+     *       storage   storage目录的绝对路径 /srv/www/work/work.0101jz.com/storage
+     *       storage    'app/file.txt'   还可以使用storage_path函数生成相对于storage目录的给定文件的绝对路径 /srv/www/work/work.0101jz.com/storage/app/file.txt
+     * @param string $dir 目录或文件
+     * @return string  绝对路径
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function getPath($pathKey = '', $dir = ''){
+        $returnPath = '';
+        switch (strtolower($pathKey)) {
+            case 'app':
+                // app_path();//app目录的绝对路径 srv/www/work/work.0101jz.com/app
+                $returnPath = app_path();
+                break;
+            case 'base':
+                // base_path();// 项目根目录的绝对路径 /srv/www/work/work.0101jz.com
+                // $path = base_path('vendor/bin'); // 相对于应用目录的给定文件生成绝对路径
+                //    base_path('public') ;// /srv/www/work/work.0101jz.com/public
+                if(empty($dir)){
+                    $returnPath = base_path();
+                }else{
+                    $returnPath = base_path($dir);
+                }
+                break;
+            case 'config':
+                // config_path();  // 应用配置目录的绝对路径  /srv/www/work/work.0101jz.com/config
+                $returnPath = config_path();
+                break;
+            case 'database':
+                // database_path();// 应用数据库目录的绝对路径 /srv/www/work/work.0101jz.com/database
+                $returnPath = database_path();
+                break;
+            case 'public':
+                // public_path(); // public目录的绝对路径 /srv/www/work/work.0101jz.com/public
+                $returnPath = public_path();
+                break;
+            case 'storage':
+                // storage_path(); // storage目录的绝对路径 /srv/www/work/work.0101jz.com/storage
+                // storage_path('app/file.txt')还可以使用storage_path函数生成相对于storage目录的给定文件的绝对路径 /srv/www/work/work.0101jz.com/storage/app/file.txt
+                if(empty($dir)){
+                    $returnPath = storage_path();
+                }else{
+                    $returnPath = storage_path($dir);
+                }
+                break;
+            default:
+                break;
+        }
+        return $returnPath;
+
+    }
 }

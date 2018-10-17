@@ -47,6 +47,7 @@
         var EXPORT_EXCEL_URL = "{{ url('manage/tags/export') }}";//导出EXCEL地址
         var IMPORT_EXCEL_TEMPLATE_URL = "{{ url('manage/tags/import_template') }}";//导入EXCEL模版地址
         var IMPORT_EXCEL_URL = "{{ url('api/manage/tags/import') }}";//导入EXCEL地址
+        var IMPORT_EXCEL_CLASS = "import_file";// 导入EXCEL的file的class
 
 	</script>
 	<script src="{{asset('js/common/list.js')}}"></script>

@@ -226,6 +226,9 @@ class Resource extends BaseBusiness
      */
     public static function uploadFile(Request $request, Controller $controller, $resource_type = 0)
     {
+//        $controller->company_id = 1;
+//        $controller->operate_staff_id = 1502;
+
         $company_id = $controller->company_id;
 
         ini_set('memory_limit','1024M');    // 临时设置最大内存占用为 3072M 3G
@@ -362,7 +365,35 @@ class Resource extends BaseBusiness
             return $errArr;
         }
     }
+    /**
+     * 上传文件 --plupload
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param int $resource_type 资源类型
+     * @return  array 列表数据
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function fileSingleUpload(Request $request, Controller $controller, $resource_type = 0)
+    {
+        try{
+            $result = self::uploadFile($request, $controller, $resource_type);
+            $sucArr = [
+                'id' => $result['id'] , // 文件在服务器上的唯一标识
+                'url'=> url($result['savPath'] . $result['saveName']),//'http://example.com/file-10001.jpg',// 文件的下载地址
+                'filePath' => $result['savPath'] . $result['saveName'],
+                'store_result' => $result['store_result'],
+                'resource_name' => $result['name'],
+                'created_at' =>  date('Y-m-d H:i:s',time()),
+            ];
+            Log::info('上传文件日志-成功',$sucArr);
+            return ajaxDataArr(1, $sucArr, '');
 
+        } catch ( \Exception $e) {
+            Log::info('上传文件日志-失败',[$e->getMessage()]);
+            return ajaxDataArr(0, null,$e->getMessage());
+        }
+    }
     /**
      * 删除单条数据
      *

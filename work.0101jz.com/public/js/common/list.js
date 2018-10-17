@@ -11,7 +11,7 @@ var SURE_FRM_IDS = "search_sure_form";//确认搜索条件需要读取的表单�
 var PAGE_ID = "page";//当前页id
 var PAGE_SIZE = Math.ceil(parseInt($('#pagesize').val()));;//每页显示数量
 var TOTAL_ID = "total";//总记录数量[特别说明:小于0,需要从数据库重新获取]
-
+var IMPORT_EXCEL_CLASS = IMPORT_EXCEL_CLASS || "import_file";// 导入EXCEL的file的class
  $(function(){
      if(AUTO_READ_FIRST){// 自动读取第一页
          //读取第一页数据
@@ -24,6 +24,21 @@ var TOTAL_ID = "total";//总记录数量[特别说明:小于0,需要从数据库
         append_sure_form(SURE_FRM_IDS,FRM_IDS);//把搜索表单值转换到可以查询用的表单中
         reset_list(false);
     });
+
+     // 单独图片上传/导入文件
+     $(document).on("change","." + IMPORT_EXCEL_CLASS,function(){// change
+         var fileObj = this;
+         if (fileObj.files.length == 0) {
+             return false;
+         }
+         var index_query = layer.confirm('确定导入/上传选择文件吗？', {
+             btn: ['确定','取消'] //按钮
+         }, function(){
+             upLoadFileSingle(fileObj, IMPORT_EXCEL_URL, 4, {});
+             layer.close(index_query);
+         }, function(){
+         });
+     });
 });
 
 
@@ -236,7 +251,8 @@ var action = {
     },
     importExcel:function(obj) {// 导入EXCEL
         var recordObj = $(obj);
-        go(IMPORT_EXCEL_URL);
+        // go(IMPORT_EXCEL_URL);
+        $('.import_file').trigger("click");// 触发搜索事件
         return false;
     },
 };
