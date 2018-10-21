@@ -258,6 +258,21 @@ class CompanyWork extends BaseBusiness
         if(!empty($field) && !empty($keyWord)){
             array_push($queryParams['where'],[$field, 'like' , '%' . $keyWord . '%']);
         }
+
+        $begin_date = Common::get($request, 'begin_date');// 开始日期
+        $end_date = Common::get($request, 'end_date');// 结束日期
+        $today_date = date("Y-m-d");
+        // 判断开始结束日期[ 可为空,有值的话-；4 开始日期 不能大于 >  当前日；32 结束日期 不能大于 >  当前日;256 开始日期 不能大于 >  结束日期]
+        Tool::judgeBeginEndDate($begin_date, $end_date, 4 + 32 + 256);
+        if(!empty($begin_date)) {
+            $begin_date = judge_date($begin_date, 'Y-m-d H:i:s');
+            array_push($queryParams['where'],['created_at', '>=' , $begin_date]);
+        }
+        if(!empty($end_date)) {
+            $end_date = judge_date(day_format_time(2, $end_date, 0), 'Y-m-d H:i:s');
+            array_push($queryParams['where'],['created_at', '<' , $end_date]);
+        }
+
         $ids = Common::get($request, 'ids');// 多个用逗号分隔,
         if (!empty($ids)) {
             if (strpos($ids, ',') === false) { // 单条
@@ -278,11 +293,23 @@ class CompanyWork extends BaseBusiness
             // 加上 work_id字段
             if(! isset($data_list[$k]['work_id'])) $data_list[$k]['work_id'] = $v['id'];
 
-            // 去掉内容
-           // if(isset($data_list[$k]['content'])) unset($data_list[$k]['content']);
-            if(isset($data_list[$k]['win_content'])) unset($data_list[$k]['win_content']);
-            if(isset($data_list[$k]['reply_content'])) unset($data_list[$k]['reply_content']);
+            if($isExport == 1) {
+                $content = $v['content'] ?? '';
+                $data_list[$k]['content'] = replace_enter_char($content, 2);
 
+                $win_content = $v['win_content'] ?? '';
+                $data_list[$k]['win_content'] = replace_enter_char($win_content, 2);
+
+                $reply_content = $v['reply_content'] ?? '';
+                $data_list[$k]['reply_content'] = replace_enter_char($reply_content, 2);
+            }else{
+                // 去掉内容
+                // if(isset($data_list[$k]['content'])) unset($data_list[$k]['content']);
+                if(isset($data_list[$k]['win_content'])) unset($data_list[$k]['win_content']);
+                if(isset($data_list[$k]['reply_content'])) unset($data_list[$k]['reply_content']);
+
+
+            }
             // 添加员工名称
             $data_list[$k]['real_name'] = ($v['work_history_staff_create']['real_name'] ?? '') . '[' .  ($v['work_history_staff_create']['work_num'] ?? '') . '；' .  ($v['work_history_staff_create']['mobile'] ?? '') . ']';
             if(isset($data_list[$k]['work_history_staff_create'])) unset($data_list[$k]['work_history_staff_create']);
@@ -299,8 +326,12 @@ class CompanyWork extends BaseBusiness
         $result['data_list'] = $data_list;
         // 导出功能
         if($isExport == 1){
-//            $headArr = ['work_num'=>'工号', 'department_name'=>'部门'];
-//            ImportExport::export('','excel文件名称',$data_list,1, $headArr, 0, ['sheet_title' => 'sheet名称']);
+            $headArr = ['work_num'=>'工单号', 'status_text'=>'状态', 'call_number'=>'来电号码', 'contact_number'=>'联系电话', 'caller_type_name'=>'工单来源', 'type_name'=>'工单类型',
+                        'business_name'=>'工单业务', 'content'=>'工单内容', 'city_name'=>'客户区县', 'area_name'=>'客户街道', 'address'=>'客户地址',
+                        'created_at'=>'下单时间', 'time_name'=>'工单等级', 'expiry_time'=>'到期时间', 'department_name'=>'派单人县区', 'group_name'=>'派单人归属营业厅或片区',
+                        'real_name'=>'派单人姓名或渠道名称', 'send_department_name'=>'收单人县区', 'send_group_name'=>'收单人归属营业厅或片区', 'send_real_name'=>'收单人姓名或渠道名称',
+                 'win_content'=>'结单内容', 'reply_content'=>'回访内容'];
+            ImportExport::export('','工单',$data_list,1, $headArr, 0, ['sheet_title' => '工单']);
             die;
         }
         // 非导出功能

@@ -21,7 +21,7 @@
 							<option value="{{ $k }}"  >{{ $txt }}</option>
 						@endforeach
 					</select>
-					<input type="text" value=""  name="keyWord"  placeholder="客户电话"/>
+					<input type="text" value=""  name="keyWord"  placeholder="问题内容"/>
 					<button class="btn btn-normal search_frm " >搜索</button>
 				</div>
 			</form>

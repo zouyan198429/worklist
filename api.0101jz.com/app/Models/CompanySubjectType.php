@@ -13,4 +13,19 @@ class CompanySubjectType extends BaseModel
      */
     protected $table = 'company_subject_type';
 
+    /**
+     * 获取试题分类的试题-二维
+     */
+    public function typeSubject()
+    {
+        return $this->hasMany('App\Models\CompanySubject', 'type_id', 'id');
+    }
+
+    /**
+     * 获取试题分类的试题历史-二维
+     */
+    public function typeSubjectHistory()
+    {
+        return $this->hasMany('App\Models\CompanySubjectHistory', 'type_id', 'id');
+    }
 }

@@ -1,7 +1,36 @@
 
 var SUBMIT_FORM = true;//防止多次点击提交
 $(function(){
-    $('.search_frm').trigger("click");// 触发搜索事件
+    //查询
+    $('.search_frm_self').click(function(){
+        // 开始日期
+        var begin_date = $('input[name=begin_date]').val();
+        if(!judge_validate(4,'开始日期',begin_date,false,'date','','')){
+            return false;
+        }
+
+        // 结束日期
+        var end_date = $('input[name=end_date]').val();
+        if(!judge_validate(4,'结束日期',end_date,false,'date','','')){
+            return false;
+        }
+
+        if( end_date !== ''){
+            if(begin_date == ''){
+                layer_alert("请选择开始日期",3,0);
+                return false;
+            }
+            if( !judge_validate(4,'结束日期必须',end_date,true,'data_size',begin_date,5)){
+                return false;
+            }
+        }
+        $("#"+PAGE_ID).val(1);//重归第一页
+        //获得搜索表单的值
+        append_sure_form(SURE_FRM_IDS,FRM_IDS);//把搜索表单值转换到可以查询用的表单中
+        reset_list(false);
+    });
+
+    $('.search_frm_self').trigger("click");// 触发搜索事件
     ajax_status_count(0, 0, 0);//ajax工单状态统计
     // reset_list(false);
     // 自动更新数据
@@ -94,10 +123,29 @@ $(function(){
         obj.siblings().removeClass("on");
         obj.addClass("on");
         $('select[name=status]').val(status);
-        $(".search_frm").click();
+        $(".search_frm_self").click();
         return false;
     });
 
+    //执行一个laydate实例
+    // 开始日期
+    laydate.render({
+        elem: '.begin_date' //指定元素
+        ,type: 'date'
+        ,value: BEGIN_DATE// '2018-08-18' //必须遵循format参数设定的格式
+        // ,min: get_now_format()//'2017-1-1'
+        ,max: get_now_format()//'2017-12-31'
+        ,calendar: true//是否显示公历节日
+    });
+    // 结束日期
+    laydate.render({
+        elem: '.end_date' //指定元素
+        ,type: 'date'
+        ,value: END_DATE// '2018-08-18' //必须遵循format参数设定的格式
+        // ,min: get_now_format()//'2017-1-1'
+        ,max: get_now_format()//'2017-12-31'
+        ,calendar: true//是否显示公历节日
+    });
 });
 
 (function() {
@@ -112,6 +160,12 @@ $(function(){
     document.write("    %>");
     document.write("");
     document.write("    <tr>");
+    document.write("            <td>");
+    document.write("                <label class=\"pos-rel\">");
+    document.write("                    <input  onclick=\"action.seledSingle(this)\" type=\"checkbox\" class=\"ace check_item\" <%if( false &&  !can_modify){%> disabled <%}%>  value=\"<%=item.id%>\"\/>");
+    document.write("                  <span class=\"lbl\"><\/span>");
+    document.write("                <\/label>");
+    document.write("            <\/td>");
     document.write("        <td><%=item.work_num%>");
     document.write("        <br\/><%=item.call_number%>");
     document.write("            <%if( item.contact_number != ''){%>");

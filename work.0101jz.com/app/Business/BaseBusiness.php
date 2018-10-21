@@ -371,7 +371,7 @@ class BaseBusiness
      * @param string $historyObj 历史表对象名称
      * @param obj $HistoryTableName 历史表名字
      * @param array $historySearch 历史表查询字段[一维数组][一定要包含主表id的] +  版本号(不用传，自动会加上)  格式 ['字段1'=>'字段1的值','字段2'=>'字段2的值' ... ]
-     * @param array $ignoreFields 忽略都有的字段中，忽略主表中的记录 [一维数组] 格式 ['字段1','字段2' ... ]
+     * @param array $ignoreFields 忽略都有的字段中，忽略主表中的记录 [一维数组] 必须会有 [历史表中对应主表的id字段]  格式 ['字段1','字段2' ... ]
      * @param int $forceIncVersion 如果需要主表版本号+1,是否更新主表 1 更新 ;0 不更新
      * @param int $companyId 企业id
      * @param int $notLog 是否需要登陆 0需要1不需要

@@ -175,6 +175,12 @@ class CompanyStaffController extends CompController
             ];
             $staffObj = CompanyStaffBusiness::firstOrCreate($company_id, $temStaff);
             $staff_id = $staffObj->id;
+
+            // 判断版本号是否要+1
+            $vStaffObj = null;
+            $vStaffHistoryObj = null;
+            CompanyStaffBusiness::compareHistoryOrUpdateVersion($vStaffObj , $vStaffHistoryObj, $company_id, $staff_id);
+
             // 保存员工管理渠道
             // CompanyStaffChannelBusiness::firstOrCreate($company_id, $department_id, $group_id, $channel_id, $staff_id);
         }

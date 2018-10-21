@@ -605,7 +605,16 @@ class CompanyStaff extends BaseBusiness
             self::addOprate($request, $controller, $saveData);
         }
         // 新加或修改
-        return self::replaceByIdBase($request, $controller, self::$model_name, $saveData, $id, $notLog);
+        $result = self::replaceByIdBase($request, $controller, self::$model_name, $saveData, $id, $notLog);
+
+        // 判断版本号是否要+1
+        $historySearch = [
+            'company_id' => $company_id,
+            'staff_id' => $id,
+        ];
+        self::compareHistoryOrUpdateVersion($request, $controller, 'CompanyStaff' , $id, 'CompanyStaffHistory'
+            , 'company_staff_history', $historySearch, ['staff_id'], 1, $company_id);
+        return $result;
     }
     /**
      * 按部门分组同事/员工数据

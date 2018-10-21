@@ -13,4 +13,11 @@ class CompanySubjectAnswerHistory extends BaseModel
      */
     protected $table = 'company_subject_answer_history';
 
+    /**
+     * 获取答案历史对应的答案--一维
+     */
+    public function historyAnswer()
+    {
+        return $this->belongsTo('App\Models\CompanySubjectAnswer', 'answer_id', 'id');
+    }
 }

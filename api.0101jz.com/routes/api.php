@@ -62,6 +62,8 @@ Route::post('work/workCount', 'CompanyWorkController@workCount');//工单统计
 // 统计
 Route::post('work/statusCount', 'CompanyWorkController@statusCount');//工单状态统计
 
+// 试题
+Route::any('subject/add_save', 'CompanySubjectController@add_save');//试题添加/修改
 
 // 员工
 Route::post('staff/bathImport', 'CompanyStaffController@bathImport');//批量导入
@@ -69,7 +71,7 @@ Route::any('staff/adminStaff', 'CompanyStaffController@adminStaff');//管理员�
 Route::post('staff/getHistoryStaff', 'CompanyStaffController@getHistoryStaff');//获得操作员工历史
 
 // 问题反馈
-Route::post('problem/add_save', 'CompanyProblemController@add_save');//工单添加/修改
+Route::post('problem/add_save', 'CompanyProblemController@add_save');//问题反馈添加/修改
 
 Route::post('proUnit/countLabels', 'CompanyProUnitController@countLabels');// 统计生产单元下的标签
 

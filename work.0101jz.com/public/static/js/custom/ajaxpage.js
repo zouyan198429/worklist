@@ -162,6 +162,7 @@ function append_sure_form(search_sure_form,frm_ids){
     }
     var baidu_template_id ="baidu_template_search_sure_form";
     var sure_frm_json = get_frm_kv(frm_ids);
+    console.log('sure_frm_json', sure_frm_json);
     sure_frm_json['search_sure_form']=search_sure_form;
     html_frm = resolve_baidu_template(baidu_template_id,sure_frm_json,'');//解析
     if($('#modal_show_id_before').length>0){

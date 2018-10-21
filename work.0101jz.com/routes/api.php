@@ -121,6 +121,11 @@ Route::post('admin/lore/ajax_save', 'admin\LoreController@ajax_save');// 新加/
 Route::post('admin/subject_type/ajax_alist', 'admin\SubjectTypeController@ajax_alist');//ajax获得列表数据
 Route::post('admin/subject_type/ajax_del', 'admin\SubjectTypeController@ajax_del');// 删除
 Route::post('admin/subject_type/ajax_save', 'admin\SubjectTypeController@ajax_save');// 新加/修改
+//试题
+Route::any('admin/subject/ajax_alist', 'admin\SubjectController@ajax_alist');//ajax获得列表数据
+Route::post('admin/subject/ajax_del', 'admin\SubjectController@ajax_del');// 删除
+Route::any('admin/subject/ajax_save', 'admin\SubjectController@ajax_save');// 新加/修改
+
 //同事
 Route::post('admin/staff/ajax_alist', 'admin\StaffController@ajax_alist');//ajax获得列表数据
 Route::post('admin/staff/ajax_del', 'admin\StaffController@ajax_del');// 删除
@@ -170,6 +175,11 @@ Route::post('manage/notice/ajax_save', 'manage\NoticeController@ajax_save');// �
 Route::post('manage/lore/ajax_alist', 'manage\LoreController@ajax_alist');//ajax获得列表数据
 Route::post('manage/lore/ajax_del', 'manage\LoreController@ajax_del');// 删除
 Route::post('manage/lore/ajax_save', 'manage\LoreController@ajax_save');// 新加/修改
+
+//试题
+Route::any('manage/subject/ajax_alist', 'manage\SubjectController@ajax_alist');//ajax获得列表数据
+Route::post('manage/subject/ajax_del', 'manage\SubjectController@ajax_del');// 删除
+Route::any('manage/subject/ajax_save', 'manage\SubjectController@ajax_save');// 新加/修改
 
 // 部门
 Route::post('manage/department/ajax_get_child', 'manage\DepartmentController@ajax_get_child');// 获得子类部门数组[kv一维数组]

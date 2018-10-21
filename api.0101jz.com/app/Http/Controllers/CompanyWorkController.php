@@ -449,7 +449,7 @@ class CompanyWorkController extends CompController
                 'customer_id' => $customer_id,
             ];
 
-            $customerIgnoreFields = ['call_num', 'last_call_date'];
+            $customerIgnoreFields = ['customer_id', 'call_num', 'last_call_date'];
             $customerIsUpdate = false;// 客户表是否更新,false:没有更新,true：有更新
             $diffDataArr = Common::compareHistoryOrUpdateVersion($customerObj, $customer_id,
                 $compareHistoryObj,'company_customer_history',

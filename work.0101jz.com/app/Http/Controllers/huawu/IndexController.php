@@ -68,7 +68,7 @@ class IndexController extends WorksController
             'staff_id' => $staff_id,
         ];
         // 获得历史表id
-         $resultDatas =  CommonBusiness::getHistoryIdApi($mainObj, $primaryVal, $historyObj, $HistoryTableName, $historySearch, [], $company_id , 0);
+         $resultDatas =  CommonBusiness::getHistoryIdApi($mainObj, $primaryVal, $historyObj, $HistoryTableName, $historySearch, ['staff_id'], $company_id , 0);
         // 版本号是否自加1
         //$ignoreFields = ['lastlogintime'];
         // $resultDatas =  CommonBusiness::compareHistoryOrUpdateVersionApi($mainObj, $primaryVal, $historyObj, $HistoryTableName, $historySearch, $ignoreFields, 1, $company_id , 0);

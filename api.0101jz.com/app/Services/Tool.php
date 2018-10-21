@@ -978,4 +978,48 @@ class Tool
         }
         return $returnPath;
     }
+
+    /**
+     * 功能：对二维数组,按指定多个下标进行排序
+     * @param array $data 需要排序的二维数组[如数据表数据-二维数据]
+     * @param array  $keys ,用来排序的字段
+     *      key:字段下标 ;
+     *      sort:排序顺序标志;asc[按照上升顺序排序]-默认,desc[按照下降顺序排序]；
+     *      type: 排序类型标志;regular[将项目按照通常方法比较]-默认,numeric[将项目按照数值比较],string[将项目按照字符串比较]
+     *      array(
+     *          array(key=>col1, sort=>desc),
+     *          array(key=>col2, type=>numeric)
+     *      )
+     * @return array 排序后的二维数组
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function php_multisort($data, $keys){
+        // List As Columns
+        foreach ($data as $key => $row) {
+            foreach ($keys as $k){
+                $cols[$k['key']][$key] = $row[$k['key']];
+            }
+        }
+        // List original keys
+        $idkeys=array_keys($data);
+        // Sort Expression
+        $i=0;
+        $sort = '';
+        foreach ($keys as $k){
+            if($i>0){$sort.=',';}
+            $sort.='$cols["'.$k['key'].'"]';
+            if($k['sort']){$sort.=',SORT_'.strtoupper($k['sort']);}
+            if($k['type']){$sort.=',SORT_'.strtoupper($k['type']);}
+            $i++;
+        }
+        $sort.=',$idkeys';
+        // Sort Funct
+        $sort='array_multisort('.$sort.');';
+        eval($sort);
+        // Rebuild Full Array
+        foreach($idkeys as $idkey){
+            $result[$idkey]=$data[$idkey];
+        }
+        return $result;
+    }
 }

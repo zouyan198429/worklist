@@ -79,7 +79,7 @@ class CompanyProblem extends BaseBusiness
 
         $work_type_id = Common::get($request, 'work_type_id');
         $field = Common::get($request, 'field');
-        if(empty($field)) $field = "call_number";
+        if(empty($field)) $field = "content";
         $keyWord = Common::get($request, 'keyWord');
 
         if(!empty($work_type_id)){

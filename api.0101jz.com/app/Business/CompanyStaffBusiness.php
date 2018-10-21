@@ -44,6 +44,39 @@ class CompanyStaffBusiness extends BaseBusiness
     }
 
     /**
+     * 试题答案获得主表+历史表对象
+     *
+     * @param obj $obj 主对象
+     * @param obj $historyObj 历史对象
+     * @param int $company_id 公司id
+     * @param int $main_id 试题答案id
+     * @return int 试题答案历史记录id
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function compareHistoryOrUpdateVersion(&$obj = null , &$historyObj = null, $company_id = 0, $main_id = 0){
+        // 判断版本号是否要+1
+        //$obj = null;
+        Common::getObjByModelName("CompanyStaff", $obj);
+
+        $historyObj = null;
+        Common::getObjByModelName("CompanyStaffHistory", $historyObj);
+        $historySearch = [
+            'company_id' => $company_id,
+            'staff_id' => $main_id,
+        ];
+
+        $ignoreFields = ['staff_id'];
+        $diffDataArr = Common::compareHistoryOrUpdateVersion($obj, $main_id,
+            $historyObj,'company_staff_history',
+            $historySearch, $ignoreFields, 0);
+        if(! empty($diffDataArr)){// 客户有新信息，版本号+1
+            // 对比主表和历史表是否相同，相同：不更新版本号，不同：版本号+1
+            $obj->version_num++ ;
+            $obj->save();
+        }
+    }
+
+    /**
      * 判断工号是否已经存在
      *
      * @param int $company_id 公司id
