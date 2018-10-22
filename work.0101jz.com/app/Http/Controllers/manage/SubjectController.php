@@ -65,45 +65,6 @@ class SubjectController extends AdminController
         $reDataArr['type_kv'] = CompanySubjectType::getListKeyVal($request, $this, 1 + 0);
         return view('manage.subject.add', $reDataArr);
     }
-//
-//    /**
-//     * 显示
-//     *
-//     * @param Request $request
-//     * @return mixed
-//     * @author zouyan(305463219@qq.com)
-//     */
-//    public function info(Request $request, $id = 0)
-//    {
-//        $this->InitParams($request);
-//        $reDataArr = $this->reDataArr;
-//
-//        // 详情信息
-//        $resultDatas = [
-//            'id'=>$id,
-//        ];
-//
-//        if ($id > 0) { // 获得详情数据
-//            $resultDatas =CompanySubject::getInfoData($request, $this, $id, ['oprateStaffHistory', 'lorePositions']);
-//            // 修改点击点
-//            $id = $resultDatas['id'] ??  0;
-//            $volume = $resultDatas['volume'] ??  0;
-//            $saveData = [
-//                'volume' => $volume + 1,
-//            ];
-//            CompanySubject::replaceById($request, $this, $saveData, $id, false);
-//            $resultDatas['volume'] = $volume + 1;
-//        }
-//        $reDataArr = array_merge($reDataArr, $resultDatas);
-//
-//        // 上一条
-//        $preList = CompanySubject::getNearList($request, $this, $id, 1, 1, 0, [], '');
-//        $reDataArr['preList'] = $preList;
-//        // 下一条
-//        $nextList = CompanySubject::getNearList($request, $this, $id, 2, 1, 0, [], '');
-//        $reDataArr['nextList'] = $nextList;
-//        return view('manage.lore.info', $reDataArr);
-//    }
 
     /**
      * ajax获得客户列表数据

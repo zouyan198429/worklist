@@ -12,12 +12,12 @@
 			<div class="top-title">详情页</div>
 		</div>
 		<section class="main" id="know-view" >
-			<h1>{{ $title or '' }}</h1>
+			<h1>{{ $info['title'] or '' }}</h1>
 			<div class="content">
-				{!! $content or '' !!}
+				{!! $info['content'] or '' !!}
 
 			</div>
-			<p class="tip">阅读：{{ $volume or '' }}  上传：{{ $real_name or '' }}</p>
+			<p class="tip">阅读：{{ $info['volume'] or '' }}  上传：{{ $info['real_name'] or '' }}</p>
 			<div class="fanye">
 				@if (count($preList) > 0)
 					<p>上一篇：

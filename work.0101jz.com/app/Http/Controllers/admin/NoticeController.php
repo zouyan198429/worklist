@@ -64,22 +64,23 @@ class NoticeController extends AdminController
         $reDataArr = $this->reDataArr;
 
         // 详情信息
-        $resultDatas = [
+        $infoDatas = [
             'id'=>$id,
         ];
 
         if ($id > 0) { // 获得详情数据
-            $resultDatas =CompanyNotice::getInfoData($request, $this, $id, ['oprateStaffHistory']);
+            $infoDatas =CompanyNotice::getInfoData($request, $this, $id, ['oprateStaffHistory']);
             // 修改点击点
-            $id = $resultDatas['id'] ??  0;
-            $volume = $resultDatas['volume'] ??  0;
+            $id = $infoDatas['id'] ??  0;
+            $volume = $infoDatas['volume'] ??  0;
             $saveData = [
                 'volume' => $volume + 1,
             ];
             CompanyNotice::replaceById($request, $this, $saveData, $id, false);
-            $resultDatas['volume'] = $volume + 1;
+            $infoDatas['volume'] = $volume + 1;
         }
-        $reDataArr = array_merge($reDataArr, $resultDatas);
+        // $reDataArr = array_merge($reDataArr, $infoDatas);
+        $reDataArr['info'] = $infoDatas;
 
         // 上一条
         $preList = CompanyNotice::getNearList($request, $this, $id, 1, 1, 0, [], '');

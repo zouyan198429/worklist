@@ -9,12 +9,12 @@
 	<div id="crumb"><i class="fa fa-reorder fa-fw" aria-hidden="true"></i> 在线学习 </div>
 	<div class="mm" id="know_view">
 
-		<h1 style="color:#000;">{{ $title or '' }}</h1>
+		<h1 style="color:#000;">{{ $info['title'] or '' }}</h1>
 		<div class="content">
-			{!! $content or '' !!}
+			{!! $info['content'] or '' !!}
 
 		</div>
-		<p class="tip">阅读：{{ $volume or '' }}  上传：{{ $real_name or '' }}</p>
+		<p class="tip">阅读：{{ $info['volume'] or '' }}  上传：{{ $info['real_name'] or '' }}</p>
 		<div class="fanye">
 			@if (count($preList) > 0)
 				<p>上一篇：

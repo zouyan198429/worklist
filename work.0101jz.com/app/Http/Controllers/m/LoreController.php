@@ -47,23 +47,23 @@ class LoreController extends WorksController
         $type_id = Common::getInt($request, 'type_id');
         $reDataArr['type_id'] = $type_id;
         // 详情信息
-        $resultDatas = [
+        $infoDatas = [
             'id'=>$id,
         ];
 
         if ($id > 0) { // 获得详情数据
-            $resultDatas =CompanyLore::getInfoData($request, $this, $id, ['oprateStaffHistory', 'lorePositions']);
+            $infoDatas =CompanyLore::getInfoData($request, $this, $id, ['oprateStaffHistory', 'lorePositions']);
             // 修改点击点
-            $id = $resultDatas['id'] ??  0;
-            $volume = $resultDatas['volume'] ??  0;
+            $id = $infoDatas['id'] ??  0;
+            $volume = $infoDatas['volume'] ??  0;
             $saveData = [
                 'volume' => $volume + 1,
             ];
             CompanyLore::replaceById($request, $this, $saveData, $id, false);
-            $resultDatas['volume'] = $volume + 1;
+            $infoDatas['volume'] = $volume + 1;
         }
-        $reDataArr = array_merge($reDataArr, $resultDatas);
-
+        // $reDataArr = array_merge($reDataArr, $infoDatas);
+        $reDataArr['info'] = $infoDatas;
         // 上一条
         $preList = CompanyLore::getNearList($request, $this, $id, 1, 1, 0, [], '');
         $reDataArr['preList'] = $preList;
