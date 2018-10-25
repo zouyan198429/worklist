@@ -1147,7 +1147,7 @@ function layeriframe(weburl,tishi,heightnum,widthnum,operate_num,sure_close_tish
                                           break;
                                     case 2:
                                         //刷新当前列表页面
-                                        parent.reset_list(true);
+                                        parent.reset_list(true, true);
                                         break;
                                     default:
                             }
@@ -1649,7 +1649,8 @@ function judge_list_checked(body_data_id,ele_type){
     var re_result = false;
     body_obj.find('input:checkbox').each(function(){
         var tem_val = $(this).val();
-        if ($(this).is(':checked')) {
+        console.log('disabled', $(this).prop('disabled'));
+        if ($(this).is(':checked') && (!$(this).prop('disabled')) ) {
             //alert('选中'+tem_val);
             re_result = true;
             return true;
@@ -1681,7 +1682,8 @@ function get_list_checked(body_data_id,ele_type,check_type){
     body_obj.find('input:checkbox').each(function(){
         var tem_val = $(this).val();
         var is_need = false;
-        if ($(this).is(':checked') && ( (check_type & 1) == 1)) {
+        console.log('disabled', $(this).prop('disabled'));
+        if ( $(this).is(':checked') && (!$(this).prop('disabled'))  && ( (check_type & 1) == 1) ) {
             is_need = true;
         }else{
             if( (check_type & 2) == 2){
@@ -1847,11 +1849,11 @@ function upLoadFileSingle(fileObj, ajaxUrl, operate_num, otherParams) {
                             break;
                         case 2:
                             //刷新当前列表页面--当前页
-                            reset_list(true);
+                            reset_list(true, true);
                             break;
                         case 4:
                             //刷新当前列表页面-第一页
-                            reset_list(false);
+                            reset_list(false, true);
                             break;
                         default:
                     }

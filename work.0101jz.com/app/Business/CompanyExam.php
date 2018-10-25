@@ -15,6 +15,13 @@ class CompanyExam extends BaseBusiness
 {
     protected static $model_name = 'CompanyExam';
 
+    // 状态1待考试2考试中3已考试
+    public static $status_arr = [
+        '1' => '待考试',
+        '2' => '考试中',
+        '3' => '已考试',
+    ];
+
     /**
      * 获得列表数据--所有数据
      *
@@ -48,6 +55,18 @@ class CompanyExam extends BaseBusiness
             $queryParams = $defaultQueryParams;
         }
         // $params = self::formatListParams($request, $controller, $queryParams);
+
+        $status = Common::getInt($request, 'status');
+        if( $status > 0){
+            array_push($queryParams['where'],['status', $status]);
+        }
+
+        $field = Common::get($request, 'field');
+        $keyWord = Common::get($request, 'keyWord');
+        if(!empty($field) && !empty($keyWord)){
+            array_push($queryParams['where'],[$field, 'like' , '%' . $keyWord . '%']);
+        }
+
         $ids = Common::get($request, 'ids');// 多个用逗号分隔,
         if (!empty($ids)) {
             if (strpos($ids, ',') === false) { // 单条
@@ -64,16 +83,26 @@ class CompanyExam extends BaseBusiness
 
         // 格式化数据
         $data_list = $result['data_list'] ?? [];
-//        foreach($data_list as $k => $v){
+        foreach($data_list as $k => $v){
+            // 添加人
+            $data_list[$k]['real_name'] = $v['oprate_staff_history']['real_name'] ?? '';
+            if(isset($data_list[$k]['oprate_staff_history'])) unset($data_list[$k]['oprate_staff_history']);
+            // 试卷历史名称
+            $data_list[$k]['history_paper_name'] = $v['exam_paper_history']['paper_name'] ?? '';
+            $data_list[$k]['paper_history_id'] = $v['exam_paper_history']['id'] ?? '';
+            $data_list[$k]['history_paper_id'] = $v['exam_paper_history']['paper_id'] ?? '';
+
 //            // 公司名称
 //            $data_list[$k]['company_name'] = $v['company_info']['company_name'] ?? '';
 //            if(isset($data_list[$k]['company_info'])) unset($data_list[$k]['company_info']);
-//        }
-//        $result['data_list'] = $data_list;
+        }
+        $result['data_list'] = $data_list;
         // 导出功能
         if($isExport == 1){
-//            $headArr = ['work_num'=>'工号', 'department_name'=>'部门'];
-//            ImportExport::export('','excel文件名称',$data_list,1, $headArr, 0, ['sheet_title' => 'sheet名称']);
+            $headArr = ['exam_num'=>'场次', 'exam_subject'=>'考试主题', 'exam_begin_time'=>'开考时间', 'exam_minute'=>'考试时长'
+                , 'exam_end_time'=>'结束时间', 'history_paper_name'=>'试卷', 'pass_score'=>'及格分数', 'subject_num'=>'参与人数'
+                , 'status_text'=>'状态', 'created_at'=>'添加时间', 'real_name'=>'添加人'];
+            ImportExport::export('','考试管理',$data_list,1, $headArr, 0, ['sheet_title' => '考试管理']);
             die;
         }
         // 非导出功能

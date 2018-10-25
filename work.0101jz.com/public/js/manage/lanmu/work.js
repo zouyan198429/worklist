@@ -27,12 +27,12 @@ $(function(){
         $("#"+PAGE_ID).val(1);//重归第一页
         //获得搜索表单的值
         append_sure_form(SURE_FRM_IDS,FRM_IDS);//把搜索表单值转换到可以查询用的表单中
-        reset_list(false);
+        reset_list(false, true);
     });
 
     $('.search_frm_self').trigger("click");// 触发搜索事件
     ajax_status_count(0, 0, 0);//ajax工单状态统计
-    // reset_list(false);
+    // reset_list(false, true);
     // 自动更新数据
     var autoObj = new Object();
     autoObj.orderProcessList = function(){
@@ -94,7 +94,7 @@ function ajax_status_count(from_id ,staff_id, operate_staff_id){
                         // 刷新列表-当前页
                         if( from_id == 1 && selected_status == temStatus){
                             console.log('刷新列表-当前页');
-                            reset_list(true);
+                            reset_list(true, true);
                         }
                     }
                 }

@@ -128,11 +128,12 @@ Route::get('admin/exam', 'admin\ExamController@index');//x_examination_list.html
 Route::get('admin/exam/add', 'admin\ExamController@add');//x_examination_add.html  试次添加
 
 //试题
-Route::get('admin/subject', 'admin\SubjectController@index');//x_questions.html 试题管理-导入
+Route::get('admin/subject', 'admin\SubjectController@index');//x_questions.html 试题管理
 Route::get('admin/subject/add/{id}', 'admin\SubjectController@add');//x_questions_add.html 试题添加
 Route::get('admin/subject/info/{id}', 'admin\SubjectController@info');//-详情
 Route::get('admin/subject/export', 'admin\SubjectController@export');//--导出
 Route::get('admin/subject/import_template', 'admin\SubjectController@import_template');//--导入模版
+Route::get('admin/subject/select', 'admin\SubjectController@select');//x_questions.html 试题选择-弹窗
 
 // 试题分类
 Route::get('admin/subject_type', 'admin\SubjectTypeController@index');//x_questions_class.html 试题分类
@@ -184,17 +185,23 @@ Route::get('manage/work/list', 'manage\WorkController@list');//Repair_list.html 
 Route::get('manage/work/info/{id}', 'manage\WorkController@info');//work_add.html 工单--详情
 Route::get('manage/work/export', 'manage\WorkController@export');//导出
 //考次试卷
-Route::get('manage/exam/add', 'manage\ExamController@add');//x_examination_add.html 试题添加
+Route::get('manage/exam/add/{id}', 'manage\ExamController@add');//x_examination_add.html 试题添加
 Route::get('manage/exam', 'manage\ExamController@index');//x_examination_list.html 试题管理
+Route::get('manage/exam/info/{id}', 'manage\ExamController@info');//-详情
+Route::get('manage/exam/export', 'manage\ExamController@export');//--导出
 //试题
 Route::get('manage/subject', 'manage\SubjectController@index');//x_questions.html 试题管理-导入
 Route::get('manage/subject/add/{id}', 'manage\SubjectController@add');//x_questions_add.html 试题添加
 Route::get('manage/subject/info/{id}', 'manage\SubjectController@info');//-详情
 Route::get('manage/subject/export', 'manage\SubjectController@export');//--导出
 Route::get('manage/subject/import_template', 'manage\SubjectController@import_template');//--导入模版
+Route::get('manage/subject/select', 'manage\SubjectController@select');//x_questions.html 试题选择-弹窗
 // 试卷
-Route::get('manage/paper/add', 'manage\PaperController@add');//x_testpaper_add.html 试卷添加
 Route::get('manage/paper', 'manage\PaperController@index');//x_testpaper_list.html 试卷列表
+Route::get('manage/paper/add/{id}', 'manage\PaperController@add');//x_testpaper_add.html 试卷添加
+Route::get('manage/paper/info/{id}', 'manage\PaperController@info');//-详情
+Route::get('manage/paper/export', 'manage\PaperController@export');//--导出
+
 //成线
 Route::get('manage/exam_score', 'manage\ExamScoreController@index');//examin_cj.html 试题管理--成线列表
 

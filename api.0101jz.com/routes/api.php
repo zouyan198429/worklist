@@ -64,6 +64,7 @@ Route::post('work/statusCount', 'CompanyWorkController@statusCount');//工单状
 
 // 试题
 Route::any('subject/add_save', 'CompanySubjectController@add_save');//试题添加/修改
+Route::any('subject/getSubjectByIds', 'CompanySubjectController@getSubjectByIds');//通过id获得试题
 
 // 员工
 Route::post('staff/bathImport', 'CompanyStaffController@bathImport');//批量导入

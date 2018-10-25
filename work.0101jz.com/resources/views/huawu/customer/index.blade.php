@@ -82,6 +82,7 @@
 <script type="text/javascript">
 	var OPERATE_TYPE = <?php echo isset($operate_type)?$operate_type:0; ?>;
     var AUTO_READ_FIRST = false;//自动读取第一页 true:自动读取 false:指定地方读取
+    var LIST_FUNCTION_NAME = "reset_list";// 列表刷新函数名称, 需要列表刷新同步时，使用自定义方法reset_list_self；异步时没有必要自定义
 	var AJAX_URL = "{{ url('api/huawu/customer/ajax_alist') }}";//ajax请求的url
 	var ADD_URL = "{{ url('huawu/customer/add/0') }}"; //添加url
 	var SHOW_URL = "{{url('huawu/customer/info/')}}/"; //显示页面地址前缀 + id

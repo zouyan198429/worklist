@@ -991,6 +991,7 @@ class Tool
      * @author zouyan(305463219@qq.com)
      */
     public static function php_multisort($data, $keys){
+        if(empty($data) || (!is_array($data)))  return $data;
         // List As Columns
         foreach ($data as $key => $row) {
             foreach ($keys as $k){

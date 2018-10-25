@@ -107,44 +107,7 @@ class CompanySubject extends BaseBusiness
             $data_list[$k]['type_name'] = $v['answer_type']['type_name'] ?? '';
             if(isset($data_list[$k]['answer_type'])) unset($data_list[$k]['answer_type']);
             // 答案信息
-            if(isset($data_list[$k]['subject_answer']) && count($data_list[$k]['subject_answer']) > 0){
-                $subject_answer = $data_list[$k]['subject_answer'];
-                $orderKeys = self::$orderKeys;
-                $subject_answer = Tool::php_multisort($subject_answer, $orderKeys);
-                $answers = [];
-                $rightAnswers = [];
-                $key = ord("A");
-                $answerSplit = self::$answerSplit; //分隔符
-                foreach($subject_answer as $answer){
-                    $colum = chr($key);
-                    if($isExport == 1){// 导出
-                        array_push($answers, $answer['answer_content'] . $answerSplit . ($answer['is_right'] == 1 ? '√' : '×') );
-                    }else{
-                        array_push($answers, $colum . '、' .$answer['answer_content'] . '   ' . ($answer['is_right'] == 1 ? '<span class="right">√</span>' : '<span class="wrong">×</span>') );
-                    }
-                    if($answer['is_right'] == 1) array_push($rightAnswers, $colum);
-                    $key += 1;
-                }
-                $data_list[$k]['answer_right'] = implode('、', $rightAnswers);
-
-                if($isExport == 1) {// 导出
-                    $data_list[$k]['answer_txt'] = implode(PHP_EOL, $answers);
-                }else{
-                    $data_list[$k]['answer_txt'] = implode('<br/>', $answers);
-                }
-                unset($data_list[$k]['subject_answer']);
-            }
-            $subject_type = $v['subject_type'] ?? '';
-            $answer = $v['answer'] ?? '';
-            if($subject_type == 4 && in_array($answer,array_keys(self::$answerJudge))){
-                if($isExport == 1) {// 导出
-                    $answerTxt = ($answer == 1) ? '√' : '×';
-                }else{
-                    $answerTxt = ($answer == 1) ? '<span class="right">√</span>' : '<span class="wrong">×</span>';
-                }
-                $data_list[$k]['answer_txt'] = $answerTxt;
-                $data_list[$k]['answer_right'] = $answerTxt;
-            }
+            self::formatAnswer($request, $controller, $data_list[$k], $isExport);
 //            // 公司名称
 //            $data_list[$k]['company_name'] = $v['company_info']['company_name'] ?? '';
 //            if(isset($data_list[$k]['company_info'])) unset($data_list[$k]['company_info']);
@@ -158,6 +121,62 @@ class CompanySubject extends BaseBusiness
         }
         // 非导出功能
         return ajaxDataArr(1, $result, '');
+    }
+    /**
+     * 格式化 答案信息
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param object $subjectInfo 试题信息
+     * @param int $isExport 是否导出 0非导出 ；1导出数据
+     * @return  array 列表数据
+     * @author zouyan(305463219@qq.com)
+     */
+    //
+    // $subjectInfo
+    public static function formatAnswer(Request $request, Controller $controller, &$subjectInfo, $isExport = 0){
+
+        if(isset($subjectInfo['subject_answer']) && count($subjectInfo['subject_answer']) > 0){
+            $subject_answer = $subjectInfo['subject_answer'];
+            $orderKeys = self::$orderKeys;
+            $subject_answer = Tool::php_multisort($subject_answer, $orderKeys);
+            $subjectInfo['subject_answer'] = $subject_answer;
+            $answers = [];
+            $rightAnswers = [];
+            $key = ord("A");
+            $answerSplit = self::$answerSplit; //分隔符
+            foreach($subject_answer as $an_k => $answer){
+                $colum = chr($key);
+                if($isExport == 1){// 导出
+                    array_push($answers, $answer['answer_content'] . $answerSplit . ($answer['is_right'] == 1 ? '√' : '×') );
+                }else{
+                    array_push($answers, $colum . '、' .$answer['answer_content'] . '   ' . ($answer['is_right'] == 1 ? '<span class="right">√</span>' : '<span class="wrong">×</span>') );
+                }
+                if($answer['is_right'] == 1) array_push($rightAnswers, $colum);
+                $subjectInfo['subject_answer'][$an_k]['colum'] = $colum;
+                $key += 1;
+            }
+            $subjectInfo['answer_right'] = implode('、', $rightAnswers);
+
+            if($isExport == 1) {// 导出
+                $subjectInfo['answer_txt'] = implode(PHP_EOL, $answers);
+            }else{
+                $subjectInfo['answer_txt'] = implode('<br/>', $answers);
+            }
+            // unset($subjectInfo['subject_answer']);
+        }
+        $subject_type = $subjectInfo['subject_type'] ?? '';
+        $answer = $subjectInfo['answer'] ?? '';
+        if($subject_type == 4 && in_array($answer,array_keys(self::$answerJudge))){
+            if($isExport == 1) {// 导出
+                $answerTxt = ($answer == 1) ? '√' : '×';
+            }else{
+                $answerTxt = ($answer == 1) ? '<span class="right">√</span>' : '<span class="wrong">×</span>';
+            }
+            $subjectInfo['answer_txt'] = $answerTxt;
+            $subjectInfo['answer_right'] = $answerTxt;
+        }
+        return $subjectInfo;
     }
 
     /**
@@ -328,9 +347,13 @@ class CompanySubject extends BaseBusiness
                 array_push($answers, $temArr);
                 $key += 1;
             }
-            unset($resultDatas['subject_answer']);
+            // unset($resultDatas['subject_answer']);
         }
         $resultDatas['answer_list'] = $answers;
+
+        // 类型名称
+        $resultDatas['type_name'] = $resultDatas['answer_type']['type_name'] ?? '';
+        if(isset($resultDatas['answer_type'])) unset($resultDatas['answer_type']);
 
         return $resultDatas;
     }

@@ -31,6 +31,25 @@ class SubjectController extends AdminController
     }
 
     /**
+     * 试题选择-弹窗
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function select(Request $request)
+    {
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        $reDataArr['selTypes'] =  CompanySubject::$selTypes;
+        $reDataArr['defaultSelType'] = Common::getInt($request, 'subject_type');// 列表页默认状态
+
+        // 分类一维数组[$k=>$v]
+        $reDataArr['type_kv'] = CompanySubjectType::getListKeyVal($request, $this, 1 + 0);
+        $reDataArr['default_type_kv'] = 0;// 分类默认值
+        return view('manage.subject.select', $reDataArr);
+    }
+    /**
      * 添加
      *
      * @param Request $request

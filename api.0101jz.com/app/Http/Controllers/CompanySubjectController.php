@@ -162,5 +162,59 @@ class CompanySubjectController extends CompController
         if(!$hasTwoArr) $reObject = $reObject[0] ?? [];// 一维数组
         return  okArray($reObject);
     }
+    /**
+     * 通过id获得试题
+     *
+     * @param int $id
+     * @return Response
+     * @author zouyan(305463219@qq.com)
+     */
+    public function getSubjectByIds(Request $request)
+    {
+        $this->InitParams($request);
+        $company_id = $this->company_id;
+        // $problem_id = Common::getInt($request, 'id');
+        $staff_id = Common::getInt($request, 'staff_id');// 操作员工
+        $ids = Common::get($request, 'ids');
+        Common::judgeEmptyParams($request, 'ids', $ids);
+        $relations = Common::get($request, 'relations');
+        if(!empty($relations))   jsonStrToArr($relations , 1, '参数[relations]格式有误!');// json 转成数组
 
+        $subjectObj = null;
+        Common::getObjByModelName("CompanySubject", $subjectObj);
+        $queryParams = [
+            'where' => [
+                ['company_id', $company_id],
+                // ['id', '1'],
+                // ['phonto_name', 'like', '%知的标题1%']
+            ],
+            // 'orderBy' => ['id'=>'desc','company_id'=>'asc'],
+        ];
+        if (strpos($ids, ',') === false) { // 单条
+            array_push($queryParams['where'],['id', $ids]);
+        }else{
+            $queryParams['whereIn']['id'] = explode(',',$ids);
+        }
+
+        $relations = ['subjectAnswer', 'answerType'];
+        $requestData = Common::getAllModelDatas($subjectObj, $queryParams, $relations)->toArray();;
+        // 试题历史
+        foreach($requestData as $k => $v){
+            $subjectId = $v['id'] ?? 0;
+            $title = $v['title'] ?? '';
+            // 类型名称
+            $requestData[$k]['type_name'] = $v['answer_type']['type_name'] ?? '';
+            if(isset($requestData[$k]['answer_type'])) unset($requestData[$k]['answer_type']);
+            // 获得试题历史
+            $temSubjectObj = null;
+            $subjectHistoryObj = null;
+            CompanySubjectBusiness::getHistoryStaff($temSubjectObj,$subjectHistoryObj, $company_id, $subjectId);
+            $subjectHistoryId = $subjectHistoryObj->id;
+            if($subjectHistoryId <= 0) throws('记录[' . $title . ']历史记录不存在');
+            $requestData[$k]['subject_history_id'] = $subjectHistoryId;
+            $requestData[$k]['subject_id'] = $subjectId;
+            $requestData[$k]['now_subject'] = 0;// 最新的试题 0没有变化 ;1 已经删除  2 试题不同  4 答案不同
+        }
+        return okArray($requestData);
+    }
 }

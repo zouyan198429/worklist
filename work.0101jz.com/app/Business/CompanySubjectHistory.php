@@ -1,10 +1,12 @@
 <?php
-// 试题历史
+// 试题
 namespace App\Business;
 
 use App\Services\Common;
 use App\Services\CommonBusiness;
 use App\Services\Excel\ImportExport;
+use App\Services\HttpRequest;
+use App\Services\Tool;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as Controller;
 
@@ -15,6 +17,23 @@ class CompanySubjectHistory extends BaseBusiness
 {
     protected static $model_name = 'CompanySubjectHistory';
 
+    // 题目类型1单选；2多选；4判断
+    public static $selTypes = [
+        '1' => '单选',
+        '2' => '多选',
+        '4' => '判断',
+    ];
+    // 判断题答案
+    public static $answerJudge = [
+        '0' => '错',
+        '1' => '对',
+    ];
+    public static $answerSplit = '||->'; //答案分隔符
+
+    public static $orderKeys = [
+        ['key' => 'sort_num', 'sort' => 'desc', 'type' => 'numeric'],
+        ['key' => 'id', 'sort' => 'asc', 'type' => 'numeric'],
+    ];
     /**
      * 获得列表数据--所有数据
      *
@@ -48,6 +67,22 @@ class CompanySubjectHistory extends BaseBusiness
             $queryParams = $defaultQueryParams;
         }
         // $params = self::formatListParams($request, $controller, $queryParams);
+
+        $subject_type = Common::getInt($request, 'subject_type');
+        if($subject_type > 0){
+            array_push($queryParams['where'],['subject_type', $subject_type]);
+        }
+
+        $type_id = Common::getInt($request, 'type_id');
+        if($type_id > 0){
+            array_push($queryParams['where'],['type_id', $type_id]);
+        }
+
+        $title = Common::get($request, 'title');
+        if(!empty($title)){
+            array_push($queryParams['where'],['title', 'like' , '%' . $title . '%']);
+        }
+
         $ids = Common::get($request, 'ids');// 多个用逗号分隔,
         if (!empty($ids)) {
             if (strpos($ids, ',') === false) { // 单条
@@ -64,16 +99,61 @@ class CompanySubjectHistory extends BaseBusiness
 
         // 格式化数据
         $data_list = $result['data_list'] ?? [];
-//        foreach($data_list as $k => $v){
+        foreach($data_list as $k => $v){
+            // 添加人
+            $data_list[$k]['real_name'] = $v['oprate_staff_history']['real_name'] ?? '';
+            if(isset($data_list[$k]['oprate_staff_history'])) unset($data_list[$k]['oprate_staff_history']);
+            // 类型名称
+            $data_list[$k]['type_name'] = $v['answer_type']['type_name'] ?? '';
+            if(isset($data_list[$k]['answer_type'])) unset($data_list[$k]['answer_type']);
+            // 答案信息
+            if(isset($data_list[$k]['subject_answer']) && count($data_list[$k]['subject_answer']) > 0){
+                $subject_answer = $data_list[$k]['subject_answer'];
+                $orderKeys = self::$orderKeys;
+                $subject_answer = Tool::php_multisort($subject_answer, $orderKeys);
+                $answers = [];
+                $rightAnswers = [];
+                $key = ord("A");
+                $answerSplit = self::$answerSplit; //分隔符
+                foreach($subject_answer as $answer){
+                    $colum = chr($key);
+                    if($isExport == 1){// 导出
+                        array_push($answers, $answer['answer_content'] . $answerSplit . ($answer['is_right'] == 1 ? '√' : '×') );
+                    }else{
+                        array_push($answers, $colum . '、' .$answer['answer_content'] . '   ' . ($answer['is_right'] == 1 ? '<span class="right">√</span>' : '<span class="wrong">×</span>') );
+                    }
+                    if($answer['is_right'] == 1) array_push($rightAnswers, $colum);
+                    $key += 1;
+                }
+                $data_list[$k]['answer_right'] = implode('、', $rightAnswers);
+
+                if($isExport == 1) {// 导出
+                    $data_list[$k]['answer_txt'] = implode(PHP_EOL, $answers);
+                }else{
+                    $data_list[$k]['answer_txt'] = implode('<br/>', $answers);
+                }
+                unset($data_list[$k]['subject_answer']);
+            }
+            $subject_type = $v['subject_type'] ?? '';
+            $answer = $v['answer'] ?? '';
+            if($subject_type == 4 && in_array($answer,array_keys(self::$answerJudge))){
+                if($isExport == 1) {// 导出
+                    $answerTxt = ($answer == 1) ? '√' : '×';
+                }else{
+                    $answerTxt = ($answer == 1) ? '<span class="right">√</span>' : '<span class="wrong">×</span>';
+                }
+                $data_list[$k]['answer_txt'] = $answerTxt;
+                $data_list[$k]['answer_right'] = $answerTxt;
+            }
 //            // 公司名称
 //            $data_list[$k]['company_name'] = $v['company_info']['company_name'] ?? '';
 //            if(isset($data_list[$k]['company_info'])) unset($data_list[$k]['company_info']);
-//        }
-//        $result['data_list'] = $data_list;
+        }
+        $result['data_list'] = $data_list;
         // 导出功能
         if($isExport == 1){
-//            $headArr = ['work_num'=>'工号', 'department_name'=>'部门'];
-//            ImportExport::export('','excel文件名称',$data_list,1, $headArr, 0, ['sheet_title' => 'sheet名称']);
+            $headArr = ['type_text'=>'类型', 'type_name'=>'分类', 'title'=>'题目', 'answer_txt'=>'答案'];
+            ImportExport::export('','题目',$data_list,1, $headArr, 0, ['sheet_title' => '题目']);
             die;
         }
         // 非导出功能
@@ -189,9 +269,9 @@ class CompanySubjectHistory extends BaseBusiness
      */
     public static function importTemplate(Request $request, Controller $controller)
     {
-//        $headArr = ['work_num'=>'工号', 'department_name'=>'部门'];
-//        $data_list = [];
-//        ImportExport::export('','员工导入模版',$data_list,1, $headArr, 0, ['sheet_title' => '员工导入模版']);
+        $headArr = ['type_text'=>'类型', 'type_name'=>'分类', 'title'=>'题目', 'answer_txt'=>'答案'];
+        $data_list = [];
+        ImportExport::export('','试题导入模版',$data_list,1, $headArr, 0, ['sheet_title' => '试题导入模版']);
         die;
     }
     /**
@@ -228,6 +308,30 @@ class CompanySubjectHistory extends BaseBusiness
             'company_id' => $company_id,
         ];
         CommonBusiness::judgePowerByObj($resultDatas, $judgeData );
+
+        // 答案信息
+        $answers = [];
+        if(isset($resultDatas['subject_answer']) && count($resultDatas['subject_answer']) > 0 ){
+            $subject_answer = $resultDatas['subject_answer'];
+            $orderKeys = self::$orderKeys;
+            $subject_answer = Tool::php_multisort($subject_answer, $orderKeys);
+            $key = ord("A");
+            $answerSplit = self::$answerSplit; //分隔符
+            foreach($subject_answer as $answer){
+                $colum = chr($key);
+                $temArr = [
+                    'id' => $answer['id'],
+                    'colum' => $colum,
+                    'answer_content' => $answer['answer_content'],
+                    'is_right' => $answer['is_right'],
+                ];
+                array_push($answers, $temArr);
+                $key += 1;
+            }
+            unset($resultDatas['subject_answer']);
+        }
+        $resultDatas['answer_list'] = $answers;
+
         return $resultDatas;
     }
 
@@ -264,5 +368,56 @@ class CompanySubjectHistory extends BaseBusiness
         }
         // 新加或修改
         return self::replaceByIdBase($request, $controller, self::$model_name, $saveData, $id, $notLog);
+    }
+
+
+    /**
+     * 根据id新加或修改单条数据-id 为0 新加，返回新的对象数组[-维],  > 0 ：修改对应的记录，返回true
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param array $saveData 要保存或修改的数组
+     * @param int $id id
+     * @param boolean $modifAddOprate 修改时是否加操作人，true:加;false:不加[默认]
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @return  array 单条数据 - -维数组 为0 新加，返回新的对象数组[-维],  > 0 ：修改对应的记录，返回true
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function saveById(Request $request, Controller $controller, $saveData, &$id, $modifAddOprate = false, $notLog = 0){
+        $company_id = $controller->company_id;
+        if($id > 0){
+            // 判断权限
+            $judgeData = [
+                'company_id' => $company_id,
+            ];
+            $relations = '';
+            CommonBusiness::judgePower($id, $judgeData, self::$model_name, $company_id, $relations, $notLog);
+            // if($modifAddOprate) self::addOprate($request, $controller, $saveData);
+        }else {// 新加;要加入的特别字段
+            $addNewData = [
+                'company_id' => $company_id,
+            ];
+            $saveData = array_merge($saveData, $addNewData);
+            // 加入操作人员信息
+            // self::addOprate($request, $controller, $saveData);
+        }
+        // 新加或修改
+        // return self::replaceByIdBase($request, $controller, self::$model_name, $saveData, $id, $notLog);
+
+        // 参数
+        $requestData = [
+            // 'id' => $id,
+            'company_id' => $company_id,
+            'staff_id' =>  $controller->user_id,
+            'save_data' => $saveData,
+        ];
+        $url = config('public.apiUrl') . config('apiUrl.apiPath.saveSubject');
+        // 生成带参数的测试get请求
+        $requestTesUrl = splicQuestAPI($url , $requestData);
+        $result = HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
+        if($id <= 0){
+            $id = $result['id'] ?? 0;
+        }
+        return $result;
     }
 }

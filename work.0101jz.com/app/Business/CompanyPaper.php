@@ -5,6 +5,8 @@ namespace App\Business;
 use App\Services\Common;
 use App\Services\CommonBusiness;
 use App\Services\Excel\ImportExport;
+use App\Services\HttpRequest;
+use App\Services\Tool;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as Controller;
 
@@ -14,6 +16,17 @@ use App\Http\Controllers\BaseController as Controller;
 class CompanyPaper extends BaseBusiness
 {
     protected static $model_name = 'CompanyPaper';
+
+    // 试题顺序0固定顺序1随机顺序
+    public static $order_type_arr = [
+        '0' => '固定顺序',
+        '1' => '随机顺序',
+    ];
+
+    // subject_types 字段大分隔符
+    public static $bigSplitType = '<##>';
+    // subject_types 字段小分隔符
+    public static $smallSplitType = '||>';
 
     /**
      * 获得列表数据--所有数据
@@ -48,6 +61,16 @@ class CompanyPaper extends BaseBusiness
             $queryParams = $defaultQueryParams;
         }
         // $params = self::formatListParams($request, $controller, $queryParams);
+        $subject_order_type = Common::get($request, 'subject_order_type');
+        if(is_numeric($subject_order_type) && $subject_order_type >= 0){
+            array_push($queryParams['where'],['subject_order_type', $subject_order_type]);
+        }
+
+        $paper_name = Common::get($request, 'paper_name');
+        if(!empty($paper_name)){
+            array_push($queryParams['where'],['paper_name', 'like' , '%' . $paper_name . '%']);
+        }
+
         $ids = Common::get($request, 'ids');// 多个用逗号分隔,
         if (!empty($ids)) {
             if (strpos($ids, ',') === false) { // 单条
@@ -64,16 +87,49 @@ class CompanyPaper extends BaseBusiness
 
         // 格式化数据
         $data_list = $result['data_list'] ?? [];
-//        foreach($data_list as $k => $v){
+        foreach($data_list as $k => $v){
+            // 添加人
+            $data_list[$k]['real_name'] = $v['oprate_staff_history']['real_name'] ?? '';
+            if(isset($data_list[$k]['oprate_staff_history'])) unset($data_list[$k]['oprate_staff_history']);
+            // 试题
+            $subject_types = $v['subject_types'] ?? '';
+            $subjectTypes = [];
+            $subjectTypeTextArr = [];
+            if(!empty($subject_types)){
+                $bigArr = explode(self::$bigSplitType, $subject_types);
+
+                foreach($bigArr as $b_k => $small){
+                    if(!empty($small)){
+                        $smallArr = explode(self::$smallSplitType, $small);
+                        $temArr = [
+                            'type_id' => $smallArr[0] ?? 0,
+                            'type_name' => $smallArr[1] ?? '',
+                            'subject_count' => $smallArr[2] ?? 0,
+                            'subject_score' => $smallArr[3] ?? 0,
+                        ];
+                        array_push($subjectTypes, $temArr);
+                        $temText = $temArr['type_name'] . ':共' . $temArr['subject_count'] . '题,总分' . $temArr['subject_score'] ;
+                        array_push($subjectTypeTextArr, $temText);
+                    }
+                }
+            }
+            $data_list[$k]['subjectTypes'] = $subjectTypes;
+            if($isExport == 1) {// 导出
+                $data_list[$k]['subjectTypeText'] = implode(PHP_EOL, $subjectTypeTextArr);
+            }else{
+                $data_list[$k]['subjectTypeText'] = implode('<br/>', $subjectTypeTextArr);
+            }
 //            // 公司名称
 //            $data_list[$k]['company_name'] = $v['company_info']['company_name'] ?? '';
 //            if(isset($data_list[$k]['company_info'])) unset($data_list[$k]['company_info']);
-//        }
-//        $result['data_list'] = $data_list;
+        }
+        $result['data_list'] = $data_list;
         // 导出功能
         if($isExport == 1){
-//            $headArr = ['work_num'=>'工号', 'department_name'=>'部门'];
-//            ImportExport::export('','excel文件名称',$data_list,1, $headArr, 0, ['sheet_title' => 'sheet名称']);
+
+            $headArr = ['paper_name'=>'试卷名称', 'order_type_text'=>'试题顺序', 'subjectTypeText'=>'试题', 'subject_amount'=>'试题总数'
+                , 'total_score'=>'试题总分', 'created_at'=>'添加时间', 'real_name'=>'添加人'];
+            ImportExport::export('','试卷',$data_list,1, $headArr, 0, ['sheet_title' => '试卷']);
             die;
         }
         // 非导出功能
@@ -228,7 +284,289 @@ class CompanyPaper extends BaseBusiness
             'company_id' => $company_id,
         ];
         CommonBusiness::judgePowerByObj($resultDatas, $judgeData );
+
+        // 试题
+        $subject_types = $resultDatas['subject_types'] ?? '';
+        $subjectTypes = [];
+        $subjectTypeTextArr = [];
+        if(!empty($subject_types)){
+            $bigArr = explode(self::$bigSplitType, $subject_types);
+
+            foreach($bigArr as $b_k => $small){
+                if(!empty($small)){
+                    $smallArr = explode(self::$smallSplitType, $small);
+                    $temArr = [
+                        'type_id' => $smallArr[0] ?? 0,
+                        'type_name' => $smallArr[1] ?? '',
+                        'subject_count' => $smallArr[2] ?? 0,
+                        'subject_score' => $smallArr[3] ?? 0,
+                    ];
+                    array_push($subjectTypes, $temArr);
+                    $temText = $temArr['type_name'] . ':共' . $temArr['subject_count'] . '题,总分' . $temArr['subject_score'] ;
+                    array_push($subjectTypeTextArr, $temText);
+                }
+            }
+        }
+        $resultDatas['subjectTypes'] = $subjectTypes;
+        $resultDatas['subjectTypeText'] = implode('<br/>', $subjectTypeTextArr);
         return $resultDatas;
+    }
+
+    /**
+     * 根据id获得单条数据的试题信息
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param int $oprateNo 操作类型 1 试卷使用[考试]--试卷历史 2 试卷修改--试卷
+     * @param int $id id
+     * @param mixed $relations 关系
+     * @return  array 单条数据 - -维数组
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function getSubjectData(Request $request, Controller $controller, $operate_no = 1, $id = '', $relations = ''){
+        $company_id = $controller->company_id;
+        if(empty($id)) $id = Common::get($request, 'id');// 试卷id 或 试卷历史id
+        if(($operate_no & 2) == 2 ){// 试卷
+            $paperInfo = self::getInfoData($request, $controller, $id, $relations);
+        }else{// 试卷历史
+            $paperInfo = CompanyPaperHistory::getInfoData($request, $controller, $id, $relations);
+            $paperInfo['paper_history_id'] = $paperInfo['id'] ?? '';
+            $paperInfo['id'] =  $paperInfo['paper_id'] ?? '';
+        }
+        $subjectTypes = $paperInfo['subjectTypes'] ?? [];
+        $formatSubjectTypes = [];
+        foreach($subjectTypes as $k => $v){
+            $formatSubjectTypes[$v['type_id']] = $v;
+        }
+        $subject_ids = $paperInfo['subject_ids'] ?? '';//  试题id,多个逗号,分隔
+        $subjectIds = explode(',', $subject_ids);
+
+        $subject_history_ids = $paperInfo['subject_history_ids'] ?? '';//  试题历史id,多个逗号,分隔
+        $subjectHistoryIds = explode(',', $subject_history_ids);
+
+        $formatSubjectHistorys = []; // 格式化的历史试题
+        $formatAnswerHistorys = [];// 格式化历史答案
+        if(!empty($subject_history_ids)){
+            // 获得历史试题
+            $queryParams = [
+                'where' => [
+                    ['company_id', $company_id],
+//                ['id', '>', $id],
+                ],
+                'whereIn' => [
+                    'id' => $subjectHistoryIds,
+                ],
+//            'select' => [
+//                'id','company_id','type_name','sort_num'
+//                //,'operate_staff_id','operate_staff_history_id'
+//                ,'created_at'
+//            ],
+//            'orderBy' => ['sort_num'=>'desc','id'=>'desc'],
+                //'orderBy' => ['id'=>'asc'],
+                //'limit' => $limit,
+                //'offset' => $offset,
+                // 'count'=>'0'
+            ];
+            $temRelations = ['answerType'];
+            $resultList = CompanySubjectHistory::getList($request, $controller, 1 + 0, $queryParams, $temRelations);
+            $subjectHistorys = $resultList['result']['data_list'] ?? [];
+            $answerHistoryIdsStr = [];
+            foreach($subjectHistorys as $k => $v){
+                $temAnswerHistoryId = $v['answer_history_ids'] ?? '';
+                if(!empty($temAnswerHistoryId)) array_push($answerHistoryIdsStr,$temAnswerHistoryId);
+                $formatSubjectHistorys[$v['id']] = $v;
+            }
+            if(!empty($answerHistoryIdsStr)){// 获得答案
+                $answerHistoryIds = explode(',', implode(',', $answerHistoryIdsStr));
+                // 获得历史试题
+                $queryParams = [
+                    'where' => [
+                        ['company_id', $company_id],
+//                ['id', '>', $id],
+                    ],
+                    'whereIn' => [
+                        'id' => $answerHistoryIds,
+                    ],
+//            'select' => [
+//                'id','company_id','type_name','sort_num'
+//                //,'operate_staff_id','operate_staff_history_id'
+//                ,'created_at'
+//            ],
+//            'orderBy' => ['sort_num'=>'desc','id'=>'desc'],
+                    //'orderBy' => ['id'=>'asc'],
+                    //'limit' => $limit,
+                    //'offset' => $offset,
+                    // 'count'=>'0'
+                ];
+                $temAnswerHistoryRelations = '';
+                // if(($operate_no & 2) == 2 ) $temAnswerHistoryRelations = ['historyAnswer', 'answerSubject'];
+                $resultList = CompanySubjectAnswerHistory::getList($request, $controller, 1 + 0, $queryParams, $temAnswerHistoryRelations);
+                $answerHistorys = $resultList['result']['data_list'] ?? [];
+                foreach($answerHistorys as $answer_k => $answer_v){
+                    $formatAnswerHistorys[$answer_v['id']] = $answer_v;
+                }
+            }
+
+        }
+        $subjectArr = [];
+        // 历史试题
+        $serialNum = 1;
+        foreach($subjectHistoryIds as $temSubjectHistoryId){
+            $historySubject = $formatSubjectHistorys[$temSubjectHistoryId] ?? [];
+            $answer_history_ids = $historySubject['answer_history_ids'] ?? '';
+            $historySubject['subject_history_id'] = $temSubjectHistoryId;
+            // 试题答案
+            $temHistoryAnswer = [];
+            if(!empty($answer_history_ids)){
+                $historyAnswerIds = explode(',', $answer_history_ids);
+                foreach($historyAnswerIds as $historyAnswerId){
+                    $historyAnswer =$formatAnswerHistorys[$historyAnswerId] ?? [];
+                    $historyAnswer['id'] = $historyAnswer['answer_id'] ?? '';
+                    if(empty($historyAnswer)) continue;
+                    $historyAnswer['answer_history_id'] = $historyAnswerId;
+                    array_push($temHistoryAnswer, $historyAnswer);
+                }
+            }
+            $historySubject['id'] = $historySubject['subject_id'] ?? '';
+            // if(!empty($temHistoryAnswer)) $temHistoryAnswer = Tool::php_multisort($temHistoryAnswer, CompanySubject::$orderKeys);
+            $historySubject['subject_answer'] = $temHistoryAnswer;
+            CompanySubject::formatAnswer($request, $controller, $historySubject, 0);
+            // 当前题的分数
+            $temSubjectType = $historySubject['subject_type'] ?? '';
+            $subject_count = $formatSubjectTypes[$temSubjectType]['subject_count'] ?? 0;// 题数量
+            $subject_score = $formatSubjectTypes[$temSubjectType]['subject_score'] ?? 0;// 题分数
+            $subject_type_name = $formatSubjectTypes[$temSubjectType]['type_name'] ?? 0;// 题类型
+            $score = 0;
+            if($subject_count > 0) $score = round($subject_score / $subject_count,3);
+            $historySubject['score'] = $score;
+            $historySubject['subject_type_name'] = $subject_type_name;
+            $historySubject['serial_num'] = $serialNum;
+            array_push($subjectArr, $historySubject);
+            $serialNum++;
+        }
+
+        // 获得最新的试题及答案
+        if(($operate_no & 2) == 2 && !empty($subject_ids)){
+            // 获得试题及答案
+            $queryParams = [
+                'where' => [
+                    ['company_id', $company_id],
+//                ['id', '>', $id],
+                ],
+                'whereIn' => [
+                    'id' => $subjectIds,
+                ],
+//            'select' => [
+//                'id','company_id','type_name','sort_num'
+//                //,'operate_staff_id','operate_staff_history_id'
+//                ,'created_at'
+//            ],
+//            'orderBy' => ['sort_num'=>'desc','id'=>'desc'],
+                //'orderBy' => ['id'=>'asc'],
+                //'limit' => $limit,
+                //'offset' => $offset,
+                // 'count'=>'0'
+            ];
+            $temRelations = ['subjectAnswer'];
+            $resultList = CompanySubject::getList($request, $controller, 1 + 0, $queryParams, $temRelations);
+            $subject = $resultList['result']['data_list'] ?? [];
+            $formatSubject = [];// 格式化试题
+            foreach($subject as $v){
+                $subject_answer = $v['subject_answer'] ?? [];// 答案
+                $v['answer_version'] = array_column($subject_answer, 'version_num');
+                $formatSubject[$v['id']] = $v;
+            }
+            // 比较试题及答案
+            foreach($subjectArr as $k => $v){
+                $temSubjectId = $v['subject_id'] ?? '';
+                $temNowSubject = $formatSubject[$temSubjectId] ?? [];
+                if(empty($temNowSubject)) {// 最新的试题 0没有变化 ;1 已经删除  2 试题不同  4 答案不同
+                    $subjectArr[$k]['now_subject'] = 1;
+                    continue;
+                }
+                if($v['version_num'] != $temNowSubject['version_num']){
+                    $subjectArr[$k]['now_subject'] = 2;
+                    continue;
+                }
+                // 判断答案版本号
+
+                $historyAnswerVersion = array_column($v['subject_answer'],'version_num');
+                $nowAnswerVersions = $temNowSubject['answer_version'];
+                if( !empty(array_diff_assoc($historyAnswerVersion, $nowAnswerVersions)) || !empty(array_diff_assoc($nowAnswerVersions, $historyAnswerVersion)) ){
+                    $subjectArr[$k]['now_subject'] = 4;
+                    continue;
+                }
+                // 相同
+                $subjectArr[$k]['now_subject'] = 0;
+
+            }
+        }
+
+        $paperInfo['subject_list'] = $subjectArr;
+
+        return $paperInfo;
+    }
+
+    /**
+     * 根据id获得单条数据的试题信息
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param int $id id  试题 id
+     * @param mixed $relations 关系
+     * @return  array 单条数据 - -维数组
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function updateSubjectData(Request $request, Controller $controller, $id = '', $relations = '')
+    {
+        $company_id = $controller->company_id;
+        if (empty($id)) $id = Common::getInt($request, 'id');// 试卷id
+        $relations = ['subjectAnswer', 'answerType'];
+        $infoDatas = CompanySubject::getInfoData($request, $controller, $id, $relations);
+        // 获得试题历史id
+        $subject_history_id = self::getHistoryId($request, $controller, 'CompanySubject', $id
+            , 'CompanySubjectHistory', 'company_subject_history', ['company_id' => $company_id,'subject_id' => $id], []
+            , $company_id, 0);
+        $infoDatas['subject_id'] = $infoDatas['id'] ?? 0;
+        $infoDatas['subject_history_id'] = $subject_history_id ;
+        $infoDatas['now_subject'] = 0;// 最新的试题 0没有变化 ;1 已经删除  2 试题不同  4 答案不同
+
+        CompanySubject::formatAnswer($request, $controller, $infoDatas, 0);
+        return $infoDatas;
+
+    }
+
+    /**
+     * 根据id获得单条数据的试题信息
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param string $id id  试题 id,多个,号分隔
+     * @param mixed $relations 关系
+     * @return  array 单条数据 - -维数组
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function addSubjectData(Request $request, Controller $controller, $id = '', $relations = '')
+    {
+        $company_id = $controller->company_id;
+        if (empty($id)) $id = Common::get($request, 'id');// 试卷id
+
+        // 参数
+        $requestData = [
+            'company_id' => $company_id,
+            'staff_id' =>  $controller->user_id,
+            'ids' =>  $id,// explode(',' , $id),
+            'relations' => $relations,
+        ];
+        $url = config('public.apiUrl') . config('apiUrl.apiPath.getSubjectByIds');
+        // 生成带参数的测试get请求
+        // $requestTesUrl = splicQuestAPI($url , $requestData);
+        $subjectList = HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
+        foreach($subjectList as $k => $v){
+            CompanySubject::formatAnswer($request, $controller, $subjectList[$k], 0);
+        }
+        return $subjectList;
+
     }
 
     /**

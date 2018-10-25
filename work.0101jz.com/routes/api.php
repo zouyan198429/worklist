@@ -180,6 +180,17 @@ Route::post('manage/lore/ajax_save', 'manage\LoreController@ajax_save');// 新�
 Route::any('manage/subject/ajax_alist', 'manage\SubjectController@ajax_alist');//ajax获得列表数据
 Route::post('manage/subject/ajax_del', 'manage\SubjectController@ajax_del');// 删除
 Route::any('manage/subject/ajax_save', 'manage\SubjectController@ajax_save');// 新加/修改
+//试卷
+Route::any('manage/paper/ajax_alist', 'manage\PaperController@ajax_alist');//ajax获得列表数据
+Route::post('manage/paper/ajax_del', 'manage\PaperController@ajax_del');// 删除
+Route::any('manage/paper/ajax_save', 'manage\PaperController@ajax_save');// 新加/修改
+Route::any('manage/paper/ajax_get_subject', 'manage\PaperController@ajax_get_subject');//ajax获得试题数据-根据试卷id
+Route::any('manage/paper/ajax_update_subject', 'manage\PaperController@ajax_update_subject');//ajax更新试题数据-根据试卷id
+Route::any('manage/paper/ajax_add_subject', 'manage\PaperController@ajax_add_subject');//ajax增加试题数据-根据试卷id,多个,号分隔
+//考次试卷
+Route::any('manage/exam/ajax_alist', 'manage\ExamController@ajax_alist');//ajax获得列表数据
+Route::post('manage/exam/ajax_del', 'manage\ExamController@ajax_del');// 删除
+Route::any('manage/exam/ajax_save', 'manage\ExamController@ajax_save');// 新加/修改
 
 // 部门
 Route::post('manage/department/ajax_get_child', 'manage\DepartmentController@ajax_get_child');// 获得子类部门数组[kv一维数组]

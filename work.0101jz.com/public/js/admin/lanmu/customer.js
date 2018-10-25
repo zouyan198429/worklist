@@ -2,7 +2,7 @@
 var SUBMIT_FORM = true;//防止多次点击提交
 $(function(){
     $('.search_frm').trigger("click");// 触发搜索事件
-    // reset_list(false);
+    // reset_list(false, true);
     //提交
     $(document).on("click",".selType_click",function(){
         var obj = $(this);
@@ -103,7 +103,7 @@ function list_operate_ajax(operate_type,id,data){
                 }
                 // countdown_alert(msg,1,5);
                 layer_alert(msg,1,0);
-                reset_list(true);
+                reset_list(true, true);
             }
             layer.close(layer_index)//手动关闭
         }

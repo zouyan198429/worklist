@@ -13,8 +13,9 @@
 //page_id 当前页id ---ok
 //pagesize 每页显示的数量 ---ok
 //total_id 总记录数量id[特别说明:小于0,需要从数据库重新获取]---ok
+// ajax_async ajax 同步/导步执行 //false:同步;true:异步
 //return 返回 null
-function ajaxPageList(dynamic_id,baidu_template_page,ajax_url,is_read_page,frm_ids,reset_total,baidu_template,body_data_id,baidu_template_loding,baidu_template_empty,page_id,pagesize,total_id)
+function ajaxPageList(dynamic_id,baidu_template_page,ajax_url,is_read_page,frm_ids,reset_total,baidu_template,body_data_id,baidu_template_loding,baidu_template_empty,page_id,pagesize,total_id, ajax_async)
 {
     //加载中..
     //加载层-默认风格
@@ -64,6 +65,7 @@ function ajaxPageList(dynamic_id,baidu_template_page,ajax_url,is_read_page,frm_i
     console.log(ajax_url);
     console.log(data);
     $.ajax({
+        'async': ajax_async,// true,//false:同步;true:异步
         'type' : 'POST',
         'url' : ajax_url,//'/pms/Supplier/ajax_alist',
         'data' : data,
@@ -102,11 +104,14 @@ function ajaxPageList(dynamic_id,baidu_template_page,ajax_url,is_read_page,frm_i
                                     $('#'+page_id).val(pg);
                                 }
                                 // 调用ajax重载数据
-                                ajaxPageList(
-                                    dynamic_id,baidu_template_page,ajax_url,true,frm_ids,
-                                    false,baidu_template,body_data_id,baidu_template_loding,baidu_template_empty,
-                                    page_id,pagesize,total_id
-                                );
+                                // reset_list(true, ajax_async);
+                                console.log(LIST_FUNCTION_NAME);
+                                eval( LIST_FUNCTION_NAME + '(' + true +', ' + ajax_async +')');
+                                // ajaxPageList(
+                                //     dynamic_id,baidu_template_page,ajax_url,true,frm_ids,
+                                //     false,baidu_template,body_data_id,baidu_template_loding,baidu_template_empty,
+                                //     page_id,pagesize,total_id,ajax_async
+                                // );
                             }
                         });
                     });
@@ -128,11 +133,14 @@ function ajaxPageList(dynamic_id,baidu_template_page,ajax_url,is_read_page,frm_i
                                 $('#'+page_id).val(page);
                             }
                             // 根据页数据更新数据
-                            ajaxPageList(
-                                dynamic_id,baidu_template_page,ajax_url,true,frm_ids,
-                                false,baidu_template,body_data_id,baidu_template_loding,baidu_template_empty,
-                                page_id,pagesize,total_id
-                            );
+                            // reset_list(true, ajax_async);
+                            console.log(LIST_FUNCTION_NAME);
+                            eval( LIST_FUNCTION_NAME + '(' + true +', ' + ajax_async +')');
+                            // ajaxPageList(
+                            //     dynamic_id,baidu_template_page,ajax_url,true,frm_ids,
+                            //     false,baidu_template,body_data_id,baidu_template_loding,baidu_template_empty,
+                            //     page_id,pagesize,total_id,ajax_async
+                            // );
                         });
                     });
                 }else{

@@ -1,3 +1,13 @@
+
+//重载列表
+//is_read_page 是否读取当前页,否则为第一页 true:读取,false默认第一页
+// ajax_async ajax 同步/导步执行 //false:同步;true:异步  需要列表刷新同步时，使用自定义方法reset_list_self；异步时没有必要自定义
+// function reset_list_self(is_read_page, ajax_async){
+//     console.log('is_read_page', typeof(is_read_page));
+//     console.log('ajax_async', typeof(ajax_async));
+//     reset_list(is_read_page, false);
+// }
+
 (function() {
     document.write("");
     document.write("    <!-- 前端模板部分 -->");

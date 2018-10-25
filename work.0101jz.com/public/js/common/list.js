@@ -1,5 +1,6 @@
 
 
+var LIST_FUNCTION_NAME = LIST_FUNCTION_NAME || "reset_list";// 列表刷新函数名称
 var DYNAMIC_PAGE_BAIDU_TEMPLATE= "";//"baidu_template_data_page";//分页百度模板id
 var DYNAMIC_TABLE = 'dynamic-table';//动态表格id
 var DYNAMIC_BAIDU_TEMPLATE = "baidu_template_data_list";//百度模板id
@@ -11,18 +12,22 @@ var SURE_FRM_IDS = "search_sure_form";//确认搜索条件需要读取的表单�
 var PAGE_ID = "page";//当前页id
 var PAGE_SIZE = Math.ceil(parseInt($('#pagesize').val()));;//每页显示数量
 var TOTAL_ID = "total";//总记录数量[特别说明:小于0,需要从数据库重新获取]
+var AJAX_ASYNC = AJAX_ASYNC || true;//ajax_async ajax 同步/导步执行 //false:同步;true:异步
 var IMPORT_EXCEL_CLASS = IMPORT_EXCEL_CLASS || "import_file";// 导入EXCEL的file的class
+
  $(function(){
      if(AUTO_READ_FIRST){// 自动读取第一页
          //读取第一页数据
-         ajaxPageList(DYNAMIC_TABLE,DYNAMIC_PAGE_BAIDU_TEMPLATE,AJAX_URL,false,SURE_FRM_IDS,true,DYNAMIC_BAIDU_TEMPLATE,DYNAMIC_TABLE_BODY,DYNAMIC_LODING_BAIDU_TEMPLATE,DYNAMIC_BAIDU_EMPTY_TEMPLATE,PAGE_ID,PAGE_SIZE,TOTAL_ID);
+         ajaxPageList(DYNAMIC_TABLE,DYNAMIC_PAGE_BAIDU_TEMPLATE,AJAX_URL,false,SURE_FRM_IDS,true,DYNAMIC_BAIDU_TEMPLATE,DYNAMIC_TABLE_BODY,DYNAMIC_LODING_BAIDU_TEMPLATE,DYNAMIC_BAIDU_EMPTY_TEMPLATE,PAGE_ID,PAGE_SIZE,TOTAL_ID,AJAX_ASYNC);
      }
     //查询
     $('.search_frm').click(function(){
         $("#"+PAGE_ID).val(1);//重归第一页
         //获得搜索表单的值
         append_sure_form(SURE_FRM_IDS,FRM_IDS);//把搜索表单值转换到可以查询用的表单中
-        reset_list(false);
+        // reset_list(false, true);
+        console.log(LIST_FUNCTION_NAME);
+        eval( LIST_FUNCTION_NAME + '(' + false +', ' + true +')');
     });
 
      // 单独图片上传/导入文件
@@ -44,9 +49,14 @@ var IMPORT_EXCEL_CLASS = IMPORT_EXCEL_CLASS || "import_file";// 导入EXCEL的fi
 
 //重载列表
 //is_read_page 是否读取当前页,否则为第一页 true:读取,false默认第一页
-function reset_list(is_read_page){
+// ajax_async ajax 同步/导步执行 //false:同步;true:异步
+function reset_list(is_read_page, ajax_async){
+    if(typeof(is_read_page) != 'boolean')  is_read_page =  false;
+    if(typeof(ajax_async) != 'boolean') ajax_async =  true;
+    console.log('is_read_page=', is_read_page);
+    console.log('ajax_async=', ajax_async);
     //重新读取数据
-    ajaxPageList(DYNAMIC_TABLE,DYNAMIC_PAGE_BAIDU_TEMPLATE,AJAX_URL,is_read_page,SURE_FRM_IDS,true,DYNAMIC_BAIDU_TEMPLATE,DYNAMIC_TABLE_BODY,DYNAMIC_LODING_BAIDU_TEMPLATE,DYNAMIC_BAIDU_EMPTY_TEMPLATE,PAGE_ID,PAGE_SIZE,TOTAL_ID);
+    ajaxPageList(DYNAMIC_TABLE,DYNAMIC_PAGE_BAIDU_TEMPLATE,AJAX_URL,is_read_page,SURE_FRM_IDS,true,DYNAMIC_BAIDU_TEMPLATE,DYNAMIC_TABLE_BODY,DYNAMIC_LODING_BAIDU_TEMPLATE,DYNAMIC_BAIDU_EMPTY_TEMPLATE,PAGE_ID,PAGE_SIZE,TOTAL_ID, ajax_async);
 }
 
 //删除 -> 确定按钮
@@ -180,7 +190,9 @@ var action = {
         $("#"+PAGE_ID).val(1);//重归第一页
         //获得搜索表单的值
         append_sure_form(SURE_FRM_IDS,FRM_IDS);//把搜索表单值转换到可以查询用的表单中
-        reset_list(false);
+        // reset_list(false, true);
+        console.log(LIST_FUNCTION_NAME);
+        eval( LIST_FUNCTION_NAME + '(' + false +', ' + true +')');
     },
     batchDel:function(obj) {// 批量删除
         var recordObj = $(obj);
@@ -302,7 +314,9 @@ function operate_ajax(operate_type,id){
                 }
                 // countdown_alert(msg,1,5);
                 layer_alert(msg,1,0);
-                reset_list(true);
+                // reset_list(true, true);
+                console.log(LIST_FUNCTION_NAME);
+                eval( LIST_FUNCTION_NAME + '(' + true +', ' + true +')');
             }
             layer.close(layer_index)//手动关闭
         }

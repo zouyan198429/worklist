@@ -1,10 +1,11 @@
 <?php
-// 试卷历史
+// 试卷
 namespace App\Business;
 
 use App\Services\Common;
 use App\Services\CommonBusiness;
 use App\Services\Excel\ImportExport;
+use App\Services\Tool;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as Controller;
 
@@ -14,6 +15,17 @@ use App\Http\Controllers\BaseController as Controller;
 class CompanyPaperHistory extends BaseBusiness
 {
     protected static $model_name = 'CompanyPaperHistory';
+
+    // 试题顺序0固定顺序1随机顺序
+    public static $order_type_arr = [
+        '0' => '固定顺序',
+        '1' => '随机顺序',
+    ];
+
+    // subject_types 字段大分隔符
+    public static $bigSplitType = '<##>';
+    // subject_types 字段小分隔符
+    public static $smallSplitType = '||>';
 
     /**
      * 获得列表数据--所有数据
@@ -48,6 +60,16 @@ class CompanyPaperHistory extends BaseBusiness
             $queryParams = $defaultQueryParams;
         }
         // $params = self::formatListParams($request, $controller, $queryParams);
+        $subject_order_type = Common::get($request, 'subject_order_type');
+        if(is_numeric($subject_order_type) && $subject_order_type >= 0){
+            array_push($queryParams['where'],['subject_order_type', $subject_order_type]);
+        }
+
+        $paper_name = Common::get($request, 'paper_name');
+        if(!empty($paper_name)){
+            array_push($queryParams['where'],['paper_name', 'like' , '%' . $paper_name . '%']);
+        }
+
         $ids = Common::get($request, 'ids');// 多个用逗号分隔,
         if (!empty($ids)) {
             if (strpos($ids, ',') === false) { // 单条
@@ -64,16 +86,49 @@ class CompanyPaperHistory extends BaseBusiness
 
         // 格式化数据
         $data_list = $result['data_list'] ?? [];
-//        foreach($data_list as $k => $v){
+        foreach($data_list as $k => $v){
+            // 添加人
+            $data_list[$k]['real_name'] = $v['oprate_staff_history']['real_name'] ?? '';
+            if(isset($data_list[$k]['oprate_staff_history'])) unset($data_list[$k]['oprate_staff_history']);
+            // 试题
+            $subject_types = $v['subject_types'] ?? '';
+            $subjectTypes = [];
+            $subjectTypeTextArr = [];
+            if(!empty($subject_types)){
+                $bigArr = explode(self::$bigSplitType, $subject_types);
+
+                foreach($bigArr as $b_k => $small){
+                    if(!empty($small)){
+                        $smallArr = explode(self::$smallSplitType, $small);
+                        $temArr = [
+                            'type_id' => $smallArr[0] ?? 0,
+                            'type_name' => $smallArr[1] ?? '',
+                            'subject_count' => $smallArr[2] ?? 0,
+                            'subject_score' => $smallArr[3] ?? 0,
+                        ];
+                        array_push($subjectTypes, $temArr);
+                        $temText = $temArr['type_name'] . ':共' . $temArr['subject_count'] . '题,总分' . $temArr['subject_score'] ;
+                        array_push($subjectTypeTextArr, $temText);
+                    }
+                }
+            }
+            $data_list[$k]['subjectTypes'] = $subjectTypes;
+            if($isExport == 1) {// 导出
+                $data_list[$k]['subjectTypeText'] = implode(PHP_EOL, $subjectTypeTextArr);
+            }else{
+                $data_list[$k]['subjectTypeText'] = implode('<br/>', $subjectTypeTextArr);
+            }
 //            // 公司名称
 //            $data_list[$k]['company_name'] = $v['company_info']['company_name'] ?? '';
 //            if(isset($data_list[$k]['company_info'])) unset($data_list[$k]['company_info']);
-//        }
-//        $result['data_list'] = $data_list;
+        }
+        $result['data_list'] = $data_list;
         // 导出功能
         if($isExport == 1){
-//            $headArr = ['work_num'=>'工号', 'department_name'=>'部门'];
-//            ImportExport::export('','excel文件名称',$data_list,1, $headArr, 0, ['sheet_title' => 'sheet名称']);
+
+            $headArr = ['paper_name'=>'试卷名称', 'order_type_text'=>'试题顺序', 'subjectTypeText'=>'试题', 'subject_amount'=>'试题总数'
+                , 'total_score'=>'试题总分', 'created_at'=>'添加时间', 'real_name'=>'添加人'];
+            ImportExport::export('','试卷',$data_list,1, $headArr, 0, ['sheet_title' => '试卷']);
             die;
         }
         // 非导出功能
@@ -228,6 +283,31 @@ class CompanyPaperHistory extends BaseBusiness
             'company_id' => $company_id,
         ];
         CommonBusiness::judgePowerByObj($resultDatas, $judgeData );
+
+        // 试题
+        $subject_types = $resultDatas['subject_types'] ?? '';
+        $subjectTypes = [];
+        $subjectTypeTextArr = [];
+        if(!empty($subject_types)){
+            $bigArr = explode(self::$bigSplitType, $subject_types);
+
+            foreach($bigArr as $b_k => $small){
+                if(!empty($small)){
+                    $smallArr = explode(self::$smallSplitType, $small);
+                    $temArr = [
+                        'type_id' => $smallArr[0] ?? 0,
+                        'type_name' => $smallArr[1] ?? '',
+                        'subject_count' => $smallArr[2] ?? 0,
+                        'subject_score' => $smallArr[3] ?? 0,
+                    ];
+                    array_push($subjectTypes, $temArr);
+                    $temText = $temArr['type_name'] . ':共' . $temArr['subject_count'] . '题,总分' . $temArr['subject_score'] ;
+                    array_push($subjectTypeTextArr, $temText);
+                }
+            }
+        }
+        $resultDatas['subjectTypes'] = $subjectTypes;
+        $resultDatas['subjectTypeText'] = implode('<br/>', $subjectTypeTextArr);
         return $resultDatas;
     }
 
@@ -253,6 +333,7 @@ class CompanyPaperHistory extends BaseBusiness
             $relations = '';
             CommonBusiness::judgePower($id, $judgeData, self::$model_name, $company_id, $relations, $notLog);
             if($modifAddOprate) self::addOprate($request, $controller, $saveData);
+
         }else {// 新加;要加入的特别字段
             $addNewData = [
                 'company_id' => $company_id,
