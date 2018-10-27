@@ -34,7 +34,10 @@ return [
             'saveProblem' => 'problem/add_save',// 反馈问题添加/修改
             'staffImport' => 'staff/bathImport',// 批量导入员工
             'staffHistory' => 'staff/getHistoryStaff',// 获得操作员工历史
+            'getStaffByIds' => 'staff/getStaffByIds',// 通过id获得员工历史
             'saveSubject' => 'subject/add_save',// 试题添加/修改
             'getSubjectByIds' => 'subject/getSubjectByIds',// 通过id获得试题
+            'saveExam' => 'subject/saveExam',// 保存考试
+
         ],
     ];

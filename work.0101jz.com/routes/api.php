@@ -166,7 +166,7 @@ Route::post('manage/staff/ajax_save', 'manage\StaffController@ajax_save');// 新
 Route::post('manage/staff/import', 'manage\StaffController@import');// 导入excel
 Route::post('manage/staff/ajax_get_child', 'manage\StaffController@ajax_get_child');// 根据部门id,小组id获得子类员工数组[kv一维数组]
 Route::post('manage/staff/ajax_get_areachild', 'manage\StaffController@ajax_get_areachild');// 根据区县id,街道id获得子类员工数组[kv一维数组]
-
+Route::any('manage/staff/ajax_get_ids', 'manage\StaffController@ajax_get_ids');// 获得查询所有记录的id字符串，多个逗号分隔
 //通知公告
 Route::post('manage/notice/ajax_alist', 'manage\NoticeController@ajax_alist');//ajax获得列表数据
 Route::post('manage/notice/ajax_del', 'manage\NoticeController@ajax_del');// 删除
@@ -191,6 +191,9 @@ Route::any('manage/paper/ajax_add_subject', 'manage\PaperController@ajax_add_sub
 Route::any('manage/exam/ajax_alist', 'manage\ExamController@ajax_alist');//ajax获得列表数据
 Route::post('manage/exam/ajax_del', 'manage\ExamController@ajax_del');// 删除
 Route::any('manage/exam/ajax_save', 'manage\ExamController@ajax_save');// 新加/修改
+Route::any('manage/exam/ajax_get_staff', 'manage\ExamController@ajax_get_staff');//ajax初始化参考人员地址-根据考试id
+Route::any('manage/exam/ajax_add_staff', 'manage\ExamController@ajax_add_staff');//ajax添加员工地址-根据试卷id,多个,号分隔
+Route::any('manage/exam/ajax_add_paper', 'manage\ExamController@ajax_add_paper');//ajax添加/修改试卷地址
 
 // 部门
 Route::post('manage/department/ajax_get_child', 'manage\DepartmentController@ajax_get_child');// 获得子类部门数组[kv一维数组]

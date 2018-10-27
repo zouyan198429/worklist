@@ -706,6 +706,7 @@ function judge_int(value){
 }
 //正整数 positive_int >0正整数[全是数字且>0]
 function judge_positive_int(value){
+    console.log('value',value);
    var reg2 = /^\d+$/;// /^\d+(\.\d{0,})?$/
    if(reg2.test(value) && value>0){
        return true;

@@ -5,6 +5,7 @@ namespace App\Business;
 use App\Services\Common;
 use App\Services\CommonBusiness;
 use App\Services\Excel\ImportExport;
+use App\Services\HttpRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as Controller;
 
@@ -257,6 +258,21 @@ class CompanyExam extends BaseBusiness
             'company_id' => $company_id,
         ];
         CommonBusiness::judgePowerByObj($resultDatas, $judgeData );
+        $resultDatas['paper_name'] = $resultDatas['exam_paper_history']['paper_name'] ?? '';
+        $now_paper = 0;// 最新的试题 0没有变化 ;1 已经删除  2 试卷不同
+        if(isset($resultDatas['exam_paper_history']) && isset($resultDatas['exam_paper'])){
+            $history_version_num = $resultDatas['exam_paper_history']['version_num'] ?? '';
+            $version_num = $resultDatas['exam_paper']['version_num'] ?? '';
+            if(empty($resultDatas['exam_paper'])){
+                $now_paper = 1;
+            }elseif($version_num != '' && $history_version_num != $version_num){
+                $now_paper = 2;
+            }
+        }
+        $resultDatas['now_paper'] = $now_paper;
+        // if( isset($resultDatas['exam_paper_history']))  unset($resultDatas['exam_paper_history']);
+        // if( isset($resultDatas['exam_paper']))  unset($resultDatas['exam_paper']);
+        // pr($resultDatas);
         return $resultDatas;
     }
 
@@ -293,5 +309,116 @@ class CompanyExam extends BaseBusiness
         }
         // 新加或修改
         return self::replaceByIdBase($request, $controller, self::$model_name, $saveData, $id, $notLog);
+    }
+
+    /**
+     * 根据id获得单条数据的试题信息
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param int $id id  试卷 id
+     * @param mixed $relations 关系
+     * @return  array 单条数据 - -维数组
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function addPaperData(Request $request, Controller $controller, $id = '', $relations = '')
+    {
+        $company_id = $controller->company_id;
+        if (empty($id)) $id = Common::get($request, 'id');// 试卷id
+
+        $relations = '';
+        $infoDatas = CompanyPaper::getInfoData($request, $controller, $id, $relations);
+        // 获得试卷历史id
+        $paper_history_id = self::getHistoryId($request, $controller, 'CompanyPaper', $id
+            , 'CompanyPaperHistory', 'company_paper_history', ['company_id' => $company_id,'paper_id' => $id], []
+            , $company_id, 0);
+        $infoDatas['paper_id'] = $infoDatas['id'] ?? 0;
+        $infoDatas['paper_history_id'] = $paper_history_id ;
+        $infoDatas['now_paper'] = 0;// 最新的试题 0没有变化 ;1 已经删除  2 试卷不同
+
+        return $infoDatas;
+
+    }
+
+    /**
+     * 根据id获得单条数据的员工信息
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param string $id id  试题 id,多个,号分隔
+     * @param mixed $relations 关系
+     * @return  array 单条数据 - -维数组
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function addStaffData(Request $request, Controller $controller, $id = '', $relations = '')
+    {
+        $company_id = $controller->company_id;
+        if (empty($id)) $id = Common::get($request, 'id');// 试卷id
+
+        // 参数
+        $requestData = [
+            'company_id' => $company_id,
+            'staff_id' =>  $controller->user_id,
+            'ids' =>  $id,// explode(',' , $id),
+            'relations' => $relations,
+        ];
+        $url = config('public.apiUrl') . config('apiUrl.apiPath.getStaffByIds');
+        // 生成带参数的测试get请求
+        // $requestTesUrl = splicQuestAPI($url , $requestData);
+        $staffList = HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
+//        foreach($staffList as $k => $v){
+//
+//        }
+        return $staffList;
+    }
+
+    /**
+     * 根据id新加或修改单条数据-id 为0 新加，返回新的对象数组[-维],  > 0 ：修改对应的记录，返回true
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param array $saveData 要保存或修改的数组
+     * @param int $id id
+     * @param boolean $modifAddOprate 修改时是否加操作人，true:加;false:不加[默认]
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @return  array 单条数据 - -维数组 为0 新加，返回新的对象数组[-维],  > 0 ：修改对应的记录，返回true
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function saveById(Request $request, Controller $controller, $saveData, &$id, $modifAddOprate = false, $notLog = 0){
+        $company_id = $controller->company_id;
+        if($id > 0){
+            // 判断权限
+            $judgeData = [
+                'company_id' => $company_id,
+            ];
+            $relations = '';
+            CommonBusiness::judgePower($id, $judgeData, self::$model_name, $company_id, $relations, $notLog);
+            // if($modifAddOprate) self::addOprate($request, $controller, $saveData);
+        }else {// 新加;要加入的特别字段
+            $addNewData = [
+                'company_id' => $company_id,
+            ];
+            $saveData = array_merge($saveData, $addNewData);
+            // 加入操作人员信息
+            // self::addOprate($request, $controller, $saveData);
+        }
+        // 新加或修改
+        // return self::replaceByIdBase($request, $controller, self::$model_name, $saveData, $id, $notLog);
+
+        // 参数
+        $requestData = [
+           // 'id' => $id,
+            'company_id' => $company_id,
+            'staff_id' =>  $controller->user_id,
+            'save_data' => $saveData,
+        ];
+        $url = config('public.apiUrl') . config('apiUrl.apiPath.saveExam');
+        // 生成带参数的测试get请求
+         $requestTesUrl = splicQuestAPI($url , $requestData);
+        $result = HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
+        if($id <= 0){
+            $id = $result['id'] ?? 0;
+        }
+        return $result;
     }
 }

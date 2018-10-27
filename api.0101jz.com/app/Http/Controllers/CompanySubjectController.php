@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Business\CompanyExamStaffBusiness;
 use App\Business\CompanyStaffBusiness;
 use App\Business\CompanySubjectAnswerBusiness;
 use App\Business\CompanySubjectBusiness;
 use App\Models\CompanyDepartment;
+use App\Models\CompanyExam;
+use App\Models\CompanyExamStaff;
 use App\Models\CompanyProblemType;
 use App\Models\CompanySubject;
 use App\Models\CompanySubjectAnswer;
@@ -162,6 +165,7 @@ class CompanySubjectController extends CompController
         if(!$hasTwoArr) $reObject = $reObject[0] ?? [];// 一维数组
         return  okArray($reObject);
     }
+
     /**
      * 通过id获得试题
      *
@@ -217,4 +221,114 @@ class CompanySubjectController extends CompController
         }
         return okArray($requestData);
     }
+
+    /**
+     * 添加/修改考试
+     *
+     * @param int $id
+     * @return Response
+     * @author zouyan(305463219@qq.com)
+     */
+    public function saveExam(Request $request)
+    {
+        $this->InitParams($request);
+        $company_id = $this->company_id;
+        // $exam_id = Common::getInt($request, 'id');
+        $staff_id = Common::getInt($request, 'staff_id');// 操作员工
+        $save_data = Common::get($request, 'save_data');
+        Common::judgeEmptyParams($request, 'save_data', $save_data);
+        // json 转成数组
+        jsonStrToArr($save_data , 1, '参数[save_data]格式有误!');
+        $hasTwoArr = true;// 是否二维数组 true:二维数组，false:一维数组
+        foreach($save_data as $v){
+            if(!is_array($v)){
+                $hasTwoArr = false;
+            }
+            break;
+        }
+        if(!$hasTwoArr) $save_data = [$save_data];
+
+        // 操作人员历史
+        $staffObj = null;
+        $staffHistoryObj = null;
+        CompanyStaffBusiness::getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id );
+        $operate_staff_history_id = $staffHistoryObj->id;
+
+        Common::judgeEmptyParams($request, '员工历史记录ID', $operate_staff_history_id);
+
+        $oprateArr = [
+            'operate_staff_id' => $staff_id,
+            'operate_staff_history_id' => $operate_staff_history_id,
+        ];
+
+        $reObject = [];
+        DB::beginTransaction();
+        try {
+            foreach($save_data as $examInfo){
+                $examId = $examInfo['id'] ?? 0;
+                if(isset($examInfo['id'])) unset($examInfo['id']);
+
+                $staffList = $examInfo['staffList'] ?? [];
+                if(isset($examInfo['staffList'])) unset($examInfo['staffList']);
+
+                $examInfo['company_id'] = $company_id;
+                $exam_num = $examInfo['exam_num'] ?? '';
+                $exam_begin_time  = $examInfo['exam_begin_time'] ?? '';// 开考时间
+                $exam_minute  = $examInfo['exam_minute'] ?? '';// 考试时长分
+                $exam_end_time = date('Y-m-d H:i:s', strtotime($exam_begin_time . ' +' . $exam_minute . ' minute'));
+                $examInfo['exam_end_time'] = $exam_end_time;
+                $examInfo = array_merge($examInfo, $oprateArr);
+
+                $examObj = null;
+                if($examId > 0){
+                    $examObj = CompanyExam::find($examId);
+                    if($company_id != $examObj->company_id) throws('记录[' . $exam_num . ']没有操作权限');
+                    foreach($examInfo as $field => $val){
+                        $examObj->$field = $val;
+                    }
+                }else{
+                    Common::getObjByModelName("CompanyExam", $examObj);
+                    $examObj = Common::create($examObj, $examInfo);
+                    $examId = $examObj->id;
+                }
+
+                if($examId <= 0) throws('记录[' . $exam_num . ']不存在');
+                // $examObj = CompanySubjectBusiness::updateOrCreate($company_id, $examId , $examInfo);
+                $examStaffIds = [];
+                // 处理 员工
+                foreach($staffList as $staffInfo){
+                    $staffInfo = array_merge($staffInfo, $oprateArr);
+                    $staff_id = $staffInfo['staff_id'];
+                    $staffInfo['exam_end_time'] = $exam_end_time;
+                    $staffObj = CompanyExamStaffBusiness::updateOrCreate($company_id, $examId , $staff_id, $staffInfo);
+                    $temId = $staffObj->id;
+                    if($temId <= 0) throws('记录[' . $exam_num . ']员工[' . $staff_id . ']不存在');
+                    array_push($examStaffIds, $temId);
+
+                }
+
+                // 删除多余的答案
+                $answerWhere = [
+                    ['company_id', '=', $company_id],
+                    ['exam_id', '=', $examId],
+                ];
+                if(!empty($examStaffIds)){
+                    CompanyExamStaff::where($answerWhere)->whereNotIn('id', $examStaffIds)->delete();
+                }else{
+                    CompanyExamStaff::where($answerWhere)->delete();
+                }
+                $examObj->save();
+
+            }
+
+        } catch ( \Exception $e) {
+            DB::rollBack();
+            throws('提交失败；信息[' . $e->getMessage() . ']');
+            // throws($e->getMessage());
+        }
+        DB::commit();
+        if(!$hasTwoArr) $reObject = $reObject[0] ?? [];// 一维数组
+        return  okArray($reObject);
+    }
+
 }

@@ -48,6 +48,11 @@ class CompanyExamStaff extends BaseBusiness
             $queryParams = $defaultQueryParams;
         }
         // $params = self::formatListParams($request, $controller, $queryParams);
+        $exam_id = Common::getInt($request, 'exam_id');
+        if($exam_id > 0){
+            array_push($queryParams['where'],['exam_id', $exam_id]);
+        }
+
         $ids = Common::get($request, 'ids');// 多个用逗号分隔,
         if (!empty($ids)) {
             if (strpos($ids, ',') === false) { // 单条

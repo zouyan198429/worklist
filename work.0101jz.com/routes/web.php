@@ -179,6 +179,7 @@ Route::get('manage/staff', 'manage\StaffController@index');//colleague.html 我�
 Route::get('manage/staff/add/{id}', 'manage\StaffController@add');//m_staff_add.html 添加员工
 Route::get('manage/staff/export', 'manage\StaffController@export');//colleague.html 我的同事--导出
 Route::get('manage/staff/import_template', 'manage\StaffController@import_template');//colleague.html 我的同事--导入模版
+Route::get('manage/staff/select', 'manage\StaffController@select');// 同事选择-弹窗
 //工单
 Route::get('manage/work', 'manage\WorkController@index');//m_work_monitor.html 工单管理
 Route::get('manage/work/list', 'manage\WorkController@list');//Repair_list.html 我的工单
@@ -201,6 +202,7 @@ Route::get('manage/paper', 'manage\PaperController@index');//x_testpaper_list.ht
 Route::get('manage/paper/add/{id}', 'manage\PaperController@add');//x_testpaper_add.html 试卷添加
 Route::get('manage/paper/info/{id}', 'manage\PaperController@info');//-详情
 Route::get('manage/paper/export', 'manage\PaperController@export');//--导出
+Route::get('manage/paper/select', 'manage\PaperController@select');// 试卷选择-弹窗
 
 //成线
 Route::get('manage/exam_score', 'manage\ExamScoreController@index');//examin_cj.html 试题管理--成线列表

@@ -336,6 +336,11 @@ class CompanyStaff extends BaseBusiness
         if($department_id > 0){
             array_push($queryParams['where'],['department_id', $department_id]);
         }
+        $group_id = Common::getInt($request, 'group_id');
+        if($group_id > 0){
+            array_push($queryParams['where'],['group_id', $group_id]);
+        }
+
         if(!empty($keyword)){
             array_push($queryParams['where'],['real_name', 'like' , '%' . $keyword . '%']);
         }

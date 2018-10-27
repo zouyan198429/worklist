@@ -47,6 +47,22 @@ class StaffController extends AdminController
     }
 
     /**
+     * 同事选择-弹窗
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function select(Request $request)
+    {
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        // 获得第一级部门分类一维数组[$k=>$v]
+        $reDataArr['department_kv'] = CompanyDepartment::getChildListKeyVal($request, $this, 0, 1 + 0);
+        return view('manage.staff.select', $reDataArr);
+    }
+
+    /**
      * 添加
      *
      * @param Request $request
@@ -89,6 +105,21 @@ class StaffController extends AdminController
     public function ajax_alist(Request $request){
         $this->InitParams($request);
         return  CompanyStaff::getList($request, $this, 2 + 4);
+    }
+
+    /**
+     * ajax获得列表数据
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function ajax_get_ids(Request $request){
+        $this->InitParams($request);
+        $result = CompanyStaff::getList($request, $this, 1 + 0);
+        $data_list = $result['result']['data_list'] ?? [];
+        $ids = implode(',', array_column($data_list, 'id'));
+        return ajaxDataArr(1, $ids, '');
     }
 
     /**

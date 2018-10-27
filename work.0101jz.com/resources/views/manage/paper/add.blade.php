@@ -159,6 +159,4 @@
 
 	</script>
 	<script src="{{ asset('/js/manage/lanmu/paper_edit.js') }}"  type="text/javascript"></script>
-
-
 @endpush

@@ -254,4 +254,70 @@ class CompanyStaffController extends CompController
         CompanyStaffBusiness::getHistoryStaff($staffObj , $staffHistoryObj, $company_id, $staff_id );
         return okArray($staffHistoryObj);
     }
+
+
+    /**
+     * 通过id获得试题
+     *
+     * @param int $id
+     * @return Response
+     * @author zouyan(305463219@qq.com)
+     */
+    public function getStaffByIds(Request $request)
+    {
+        $this->InitParams($request);
+        $company_id = $this->company_id;
+        // $problem_id = Common::getInt($request, 'id');
+        $staff_id = Common::getInt($request, 'staff_id');// 操作员工
+        $ids = Common::get($request, 'ids');
+        Common::judgeEmptyParams($request, 'ids', $ids);
+        $relations = Common::get($request, 'relations');
+        if(!empty($relations))   jsonStrToArr($relations , 1, '参数[relations]格式有误!');// json 转成数组
+
+        // 获得员工信息
+        $staffObj = null;
+        Common::getObjByModelName("CompanyStaff", $staffObj);
+        $queryParams = [
+            'where' => [
+                ['company_id', $company_id],
+                // ['id', '1'],
+                // ['phonto_name', 'like', '%知的标题1%']
+            ],
+            // 'orderBy' => ['id'=>'desc','company_id'=>'asc'],
+        ];
+        if (strpos($ids, ',') === false) { // 单条
+            array_push($queryParams['where'],['id', $ids]);
+        }else{
+            $queryParams['whereIn']['id'] = explode(',',$ids);
+        }
+
+        $relations = ['staffDepartment', 'staffGroup', 'staffPosition'];
+        $requestData = Common::getAllModelDatas($staffObj, $queryParams, $relations)->toArray();
+        // 员工历史
+        foreach($requestData as $k => $v){
+            $staffId = $v['id'] ?? 0;
+            $real_name = $v['real_name'] ?? '';
+            // 类型名称
+            $requestData[$k]['type_name'] = $v['answer_type']['type_name'] ?? '';
+            if(isset($requestData[$k]['answer_type'])) unset($requestData[$k]['answer_type']);
+            // 获得试题历史
+            $temStaffObj = null;
+            $staffHistoryObj = null;
+            CompanyStaffBusiness::getHistoryStaff($temStaffObj,$staffHistoryObj, $company_id, $staffId);
+            $staffHistoryId = $staffHistoryObj->id;
+            if($staffHistoryId <= 0) throws('记录[' . $real_name . ']历史记录不存在');
+            $requestData[$k]['staff_history_id'] = $staffHistoryId;
+            $requestData[$k]['staff_id'] = $staffId;
+            $requestData[$k]['now_staff'] = 0;// 最新的试题 0没有变化 ;1 已经删除  2 员工不同
+
+            // 陪门名称
+            $requestData[$k]['department_name'] = $v['staff_department']['department_name'] ?? '';
+            // 小组名称
+            $requestData[$k]['group_name'] = $v['staff_group']['department_name'] ?? '';
+
+            // 职位
+            $requestData[$k]['position_name'] = $v['staff_position']['position_name'] ?? '';
+        }
+        return okArray($requestData);
+    }
 }

@@ -26,6 +26,21 @@ class PaperController extends AdminController
         return view('manage.paper.index', $reDataArr);
     }
 
+    /**
+     * 试卷选择-弹窗
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function select(Request $request)
+    {
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        $reDataArr['selTypes'] =  CompanyPaper::$order_type_arr;
+        $reDataArr['defaultSelType'] = '';// 列表页默认状态
+        return view('manage.paper.select', $reDataArr);
+    }
 
     /**
      * 添加
