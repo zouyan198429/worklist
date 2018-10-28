@@ -316,9 +316,13 @@ Route::get('m/customer', 'm\CustomerController@index');//customer_all.html 我�
 // Route::get('m/problem/add', 'm\ProblemController@add');//feedback.html 问题反馈-提交问题
 Route::get('m/problem/add/{id}', 'm\ProblemController@add');//feedback.html 问题反馈-提交问题
 
+//在线考试
 Route::get('m/exam', 'm\ExamController@index');//kaoshi.html 在线考试 --考试列表
 Route::get('m/exam_score', 'm\ExamController@score');//kaoshi-cj.html 考试成绩-成绩列表
 Route::get('m/exam_search', 'm\ExamController@search');//kaoshi-cj-view.html  考试成绩-维修业务知识测评--成绩查询
+
+Route::get('m/exam/doing/{id}', 'm\ExamController@doing');//examin_do.html 在线考试
+Route::get('m/exam/win/{id}', 'm\ExamController@win');//examin_over.html 在线考试
 //学习
 Route::get('m/lore', 'm\LoreController@index');//study.html 学习中心--知识列表
 Route::get('m/lore/info/{id}', 'm\LoreController@info');//study_view.html 学习中心-知识详情页

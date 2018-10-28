@@ -28,23 +28,26 @@
             <dt>状态</dt>
             <dd><%=item.status_text%></dd>
         </dl>
-        <dl>
-            <dt>总分</dt>
-            <dd><%=item.total_score%></dd>
-        </dl>
-        <dl>
-            <dt>及格分</dt>
-            <dd><%=item.pass_score%></dd>
-        </dl>
-        <dl>
-            <dt>考试得分</dt>
-            <dd><%=item.pass_text%>(<%=item.exam_results%>分)</dd>
-        </dl>
-        <dl>
-            <dt>答题时间</dt>
-            <dd><%=item.answer_begin_time%>--<%=item.answer_end_time%></dd>
-        </dl>
         <div class="c"></div>
+        <div class="btnbox">
+            <%if( can_modify){%>
+            <button class="exam_time">
+                <i class="fa fa-clock-o fa-fw" aria-hidden="true"></i>
+                距离开考：
+                <span class="_d">00</span>
+                <span class="_h">00</span>
+                <span class="_m">00</span>
+                <span class="_s">00</span>
+                <span class="_ms">00</span>
+            </button>
+            <a href="javascript:void(0);" class="btn exam_doing"  onclick="otheraction.doing(<%=item.id%>)"  >进入</a>
+            <%}%>
+            <%if( false && can_modify){%>
+            2天3小时33分钟
+            <a href="examin_cj.html" class="btn" >查看成绩</a>
+            <%}%>
+
+        </div>
     </li>
     <%}%>
 </script>

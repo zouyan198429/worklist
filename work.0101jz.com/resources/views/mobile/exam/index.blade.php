@@ -55,44 +55,9 @@
 
         var DYNAMIC_LODING_BAIDU_TEMPLATE = "baidu_template_data_loding_li";//加载中百度模板id
         var DYNAMIC_BAIDU_EMPTY_TEMPLATE = "baidu_template_data_empty_li";//没有数据记录百度模板id
+
+        var DOING_EXAM_URL = "{{ url('m/exam/doing/') }}/";// 进入答题
 	</script>
 	<script src="{{asset('js/common/list.js')}}"></script>
-	{{--<script src="{{ asset('js/m/lanmu/exam.js') }}"  type="text/javascript"></script>--}}
-	<!-- 前端模板部分 -->
-	<!-- 列表模板部分 开始  <! -- 模板中可以用HTML注释 -- >  或  <%* 这是模板自带注释格式 *%>-->
-	<script type="text/template"  id="baidu_template_data_list">
-		<%for(var i = 0; i<data_list.length;i++){
-		var item = data_list[i];
-		can_modify = true;
-		%>
-		<li>
-
-			<h3><%=item.exam_num%></h3>
-			<dl>
-				<dt>开考日期</dt>
-				<dd><%=item.exam_begin_time%></dd>
-			</dl>
-			<dl>
-				<dt>考试时长</dt>
-				<dd><%=item.exam_minute%>分钟</dd>
-			</dl>
-			<dl>
-				<dt>考试主题</dt>
-				<dd><%=item.exam_subject%></dd>
-			</dl>
-			<dl>
-				<dt>状态</dt>
-				<dd><%=item.status_text%></dd>
-			</dl>
-			<div class="c"></div>
-			<div class="btnbox">
-				<button >
-					<i class="fa fa-clock-o fa-fw" aria-hidden="true"></i> 距离开考：2天3小时33分钟
-				</button>
-			</div>
-		</li>
-    <%}%>
-</script>
-<!-- 列表模板部分 结束-->
-<!-- 前端模板结束 -->
+	<script src="{{ asset('js/m/lanmu/exam.js') }}"  type="text/javascript"></script>
 @endpush

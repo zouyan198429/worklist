@@ -371,7 +371,9 @@ Route::post('m/notice/ajax_alist', 'm\NoticeController@ajax_alist');//ajax获得
 Route::post('m/lore/ajax_alist', 'm\LoreController@ajax_alist');//ajax获得列表数据
 //考试
 Route::any('m/exam/ajax_alist', 'm\ExamController@ajax_alist');//ajax获得列表数据
-
+Route::any('m/exam/ajax_alist_score', 'm\ExamController@ajax_alist_score');//ajax获得列表数据
+Route::any('m/exam/doing_ajax_save', 'm\ExamController@doing_ajax_save');//ajax-答题
+Route::any('m/exam/ajax_init_exam', 'm\ExamController@ajax_init_exam');//ajax在线考试初始化地址
 // 工单
 Route::post('m/work/ajax_alist', 'm\WorkController@ajax_alist');//ajax获得列表数据
 Route::post('m/work/ajax_del', 'm\WorkController@ajax_del');// 删除
