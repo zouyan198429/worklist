@@ -225,8 +225,9 @@ Route::get('huawu/logout', 'huawu\IndexController@logout');// 注销
    Route::get('huawu/staff', 'huawu\StaffController@index');//colleague.html  我的同事
 //在线考试
 Route::get('huawu/exam', 'huawu\ExamController@index');//examin_list.html 在线考试
-Route::get('huawu/exam/doing', 'huawu\ExamController@doing');//examin_do.html 在线考试
-Route::get('huawu/exam/win', 'huawu\ExamController@win');//examin_over.html 在线考试
+Route::get('huawu/exam/doing/{id}', 'huawu\ExamController@doing');//examin_do.html 在线考试
+Route::get('huawu/exam/win/{id}', 'huawu\ExamController@win');//examin_over.html 在线考试
+
 //反馈
 Route::get('huawu/problem/add', 'huawu\ProblemController@add');//feedback.html 在线反馈
 
@@ -261,9 +262,10 @@ Route::get('weixiu/customer/day_count', 'weixiu\CustomerController@dayCount');//
 //同事
 Route::get('weixiu/staff', 'weixiu\StaffController@index');//colleague.html 我的同事
 //在线考试
-Route::get('weixiu/exam/doing', 'weixiu\ExamController@doing');//examin_do.html 在线考试
 Route::get('weixiu/exam', 'weixiu\ExamController@index');//examin_list.html 在线考试
-Route::get('weixiu/exam/win', 'weixiu\ExamController@win');//examin_over.html 在线考试
+Route::get('weixiu/exam/doing/{id}', 'weixiu\ExamController@doing');//examin_do.html 在线考试
+Route::get('weixiu/exam/win/{id}', 'weixiu\ExamController@win');//examin_over.html 在线考试
+
 //反馈
 #Route::get('weixiu/problem/add', 'weixiu\ProblemController@add');//feedback.html 在线反馈
 Route::get('weixiu/problem/add/{id}', 'weixiu\ProblemController@add');//feedback.html 问题反馈-提交问题

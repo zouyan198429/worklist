@@ -13,11 +13,12 @@ class CompanyExam extends BaseModel
      */
     protected $table = 'company_exam';
 
-    // 状态1待考试2考试中3已考试
+    // 状态1待考试2考试中3已考试4缺考
     protected $status_arr = [
         '1' => '待考试',
         '2' => '考试中',
         '3' => '已考试',
+        '4' => '缺考',
     ];
 
     // 表里没有的字段

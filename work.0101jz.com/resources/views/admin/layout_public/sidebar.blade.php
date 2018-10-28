@@ -28,9 +28,9 @@
             </li>
             <li><div class="link"><i class="fa fa-hourglass-start "></i>在线考试<i class="fa fa-chevron-down"></i></div>
                 <ul class="submenu">
-                    <li><a href="{{ url('admin/exam') }}">考次管理</a></li>
+                    {{--<li><a href="{{ url('admin/exam') }}">考次管理</a></li>--}}
                     <li><a href="{{ url('admin/subject') }}">试题管理</a></li>
-                    <li><a href="{{ url('admin/paper') }}">试卷生成</a></li>
+                    {{--<li><a href="{{ url('admin/paper') }}">试卷生成</a></li>--}}
                     <li><a href="{{ url('admin/subject_type') }}">试题分类</a></li>
                 </ul>
             </li>

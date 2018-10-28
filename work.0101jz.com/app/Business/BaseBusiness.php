@@ -399,4 +399,33 @@ class BaseBusiness
     public static function getHistoryId(Request $request, Controller $controller, $mainObj, $primaryVal, $historyObj, $HistoryTableName, $historySearch, $ignoreFields = [], $companyId = null , $notLog = 0){
         return CommonBusiness::getHistoryIdApi($mainObj, $primaryVal, $historyObj, $HistoryTableName, $historySearch, $ignoreFields, $companyId, $notLog);
     }
-}
+
+    /**
+     * 查找记录,或创建新记录[没有找到] - $searchConditon +  $updateFields 的字段,
+     *
+     * @param obj $mainObj 主表对象
+     * @param array $searchConditon 查询字段[一维数组]
+     * @param array $updateFields 表中还需要保存的记录 [一维数组] -- 新建表时会用
+     * @param int $companyId 企业id
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @return array $mainObj 表对象[一维]
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function updateOrCreate($mainObj, $searchConditon, $updateFields, $companyId = null , $notLog = 0){
+        return CommonBusiness::updateOrCreateApi($mainObj, $searchConditon, $updateFields, $companyId, $notLog);
+    }
+    /**
+     * 根据model的条件获得一条详情记录 - 一维
+     *
+     * @param object $modelObj 当前模型对象
+     * @param int $companyId 企业id
+     * @param string $queryParams 条件数组/json字符
+     * @param string $relations 关系数组/json字符
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function getInfoByQuery($modelName, $companyId = null,$queryParams='' ,$relations = '', $notLog = 0)
+    {
+        return CommonBusiness::getInfoByQuery($modelName, $companyId,$queryParams, $relations, $notLog);
+    }
+ }

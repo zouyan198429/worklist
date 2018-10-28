@@ -187,6 +187,7 @@ Route::any('manage/paper/ajax_save', 'manage\PaperController@ajax_save');// 新�
 Route::any('manage/paper/ajax_get_subject', 'manage\PaperController@ajax_get_subject');//ajax获得试题数据-根据试卷id
 Route::any('manage/paper/ajax_update_subject', 'manage\PaperController@ajax_update_subject');//ajax更新试题数据-根据试卷id
 Route::any('manage/paper/ajax_add_subject', 'manage\PaperController@ajax_add_subject');//ajax增加试题数据-根据试卷id,多个,号分隔
+Route::any('manage/paper/ajax_test', 'manage\PaperController@ajax_test');
 //考次试卷
 Route::any('manage/exam/ajax_alist', 'manage\ExamController@ajax_alist');//ajax获得列表数据
 Route::post('manage/exam/ajax_del', 'manage\ExamController@ajax_del');// 删除
@@ -253,6 +254,11 @@ Route::post('huawu/notice/ajax_alist', 'huawu\NoticeController@ajax_alist');//aj
 //学习
 Route::post('huawu/lore/ajax_alist', 'huawu\LoreController@ajax_alist');//ajax获得列表数据
 
+//考试
+Route::any('huawu/exam/ajax_alist', 'huawu\ExamController@ajax_alist');//ajax获得列表数据
+Route::any('huawu/exam/doing_ajax_save', 'huawu\ExamController@doing_ajax_save');//ajax-答题
+Route::any('huawu/exam/ajax_init_exam', 'huawu\ExamController@ajax_init_exam');//ajax在线考试初始化地址
+
 // 区域
 Route::post('huawu/area/ajax_get_child', 'huawu\AreaController@ajax_get_child');// 获得子类部门数组[kv一维数组]
 
@@ -291,7 +297,10 @@ Route::post('weixiu/department/ajax_get_child', 'weixiu\DepartmentController@aja
 Route::post('weixiu/notice/ajax_alist', 'weixiu\NoticeController@ajax_alist');//ajax获得列表数据
 //学习
 Route::post('weixiu/lore/ajax_alist', 'weixiu\LoreController@ajax_alist');//ajax获得列表数据
-
+//考试
+Route::any('weixiu/exam/ajax_alist', 'weixiu\ExamController@ajax_alist');//ajax获得列表数据
+Route::any('weixiu/exam/doing_ajax_save', 'weixiu\ExamController@doing_ajax_save');//ajax-答题
+Route::any('weixiu/exam/ajax_init_exam', 'weixiu\ExamController@ajax_init_exam');//ajax在线考试初始化地址
 //客户
     // piwik.com
 Route::post('weixiu/customer/ajax_alist', 'weixiu\CustomerController@ajax_alist');//ajax获得列表数据
@@ -360,6 +369,8 @@ Route::post('m/work_type/ajax_get_child', 'm\WorkTypeController@ajax_get_child')
 Route::post('m/notice/ajax_alist', 'm\NoticeController@ajax_alist');//ajax获得列表数据
 //学习
 Route::post('m/lore/ajax_alist', 'm\LoreController@ajax_alist');//ajax获得列表数据
+//考试
+Route::any('m/exam/ajax_alist', 'm\ExamController@ajax_alist');//ajax获得列表数据
 
 // 工单
 Route::post('m/work/ajax_alist', 'm\WorkController@ajax_alist');//ajax获得列表数据

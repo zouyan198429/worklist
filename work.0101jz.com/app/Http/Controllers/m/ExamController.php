@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\m;
 
+use App\Business\CompanyExamStaff;
 use App\Http\Controllers\WorksController;
 use Illuminate\Http\Request;
 
@@ -50,4 +51,15 @@ class ExamController extends WorksController
         return view('mobile.exam.search', $reDataArr);
     }
 
+    /**
+     * ajax获得客户列表数据
+     *
+     * @param Request $request
+     * @return mixed
+     * @author liuxin
+     */
+    public function ajax_alist(Request $request){
+        $this->InitParams($request);
+        return  CompanyExamStaff::getList($request, $this, 2 + 4, [], ['staffExam']);
+    }
 }

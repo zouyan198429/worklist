@@ -36,11 +36,15 @@ class CompanyPaper extends BaseBusiness
      * @param int $oprateBit 操作类型位 1:获得所有的; 2 分页获取[同时有1和2，2优先]；4 返回分页html翻页代码
      * @param string $queryParams 条件数组/json字符
      * @param mixed $relations 关系
+     * @param array $extParams 其它扩展参数，
+     *    $extParams = [
+     *        'useQueryParams' => '是否用来拼接查询条件，true:用[默认];false：不用'
+     *   ];
      * @param int $notLog 是否需要登陆 0需要1不需要
      * @return  array 列表数据
      * @author zouyan(305463219@qq.com)
      */
-    public static function getList(Request $request, Controller $controller, $oprateBit = 2 + 4, $queryParams = [], $relations = '', $notLog = 0){
+    public static function getList(Request $request, Controller $controller, $oprateBit = 2 + 4, $queryParams = [], $relations = '', $extParams = [], $notLog = 0){
         $company_id = $controller->company_id;
 
         // 获得数据
@@ -60,27 +64,32 @@ class CompanyPaper extends BaseBusiness
         if(empty($queryParams)){
             $queryParams = $defaultQueryParams;
         }
-        // $params = self::formatListParams($request, $controller, $queryParams);
-        $subject_order_type = Common::get($request, 'subject_order_type');
-        if(is_numeric($subject_order_type) && $subject_order_type >= 0){
-            array_push($queryParams['where'],['subject_order_type', $subject_order_type]);
-        }
+        $isExport = 0;
 
-        $paper_name = Common::get($request, 'paper_name');
-        if(!empty($paper_name)){
-            array_push($queryParams['where'],['paper_name', 'like' , '%' . $paper_name . '%']);
-        }
-
-        $ids = Common::get($request, 'ids');// 多个用逗号分隔,
-        if (!empty($ids)) {
-            if (strpos($ids, ',') === false) { // 单条
-                array_push($queryParams['where'],['id', $ids]);
-            }else{
-                $queryParams['whereIn']['id'] = explode(',',$ids);
+        $useSearchParams = $extParams['useQueryParams'] ?? true;// 是否用来拼接查询条件，true:用[默认];false：不用
+        if($useSearchParams) {
+            // $params = self::formatListParams($request, $controller, $queryParams);
+            $subject_order_type = Common::get($request, 'subject_order_type');
+            if (is_numeric($subject_order_type) && $subject_order_type >= 0) {
+                array_push($queryParams['where'], ['subject_order_type', $subject_order_type]);
             }
+
+            $paper_name = Common::get($request, 'paper_name');
+            if (!empty($paper_name)) {
+                array_push($queryParams['where'], ['paper_name', 'like', '%' . $paper_name . '%']);
+            }
+
+            $ids = Common::get($request, 'ids');// 多个用逗号分隔,
+            if (!empty($ids)) {
+                if (strpos($ids, ',') === false) { // 单条
+                    array_push($queryParams['where'], ['id', $ids]);
+                } else {
+                    $queryParams['whereIn']['id'] = explode(',', $ids);
+                }
+            }
+            $isExport = Common::getInt($request, 'is_export'); // 是否导出 0非导出 ；1导出数据
+            if ($isExport == 1) $oprateBit = 1;
         }
-        $isExport = Common::getInt($request, 'is_export'); // 是否导出 0非导出 ；1导出数据
-        if($isExport == 1) $oprateBit = 1;
         // $relations = ['CompanyInfo'];// 关系
         // $relations = '';//['CompanyInfo'];// 关系
         $result = self::getBaseListData($request, $controller, self::$model_name, $queryParams,$relations , $oprateBit, $notLog);
@@ -222,7 +231,7 @@ class CompanyPaper extends BaseBusiness
         if(empty($queryParams)){
             $queryParams = $defaultQueryParams;
         }
-        $result = self::getList($request, $controller, 1 + 0, $queryParams, $relations, $notLog);
+        $result = self::getList($request, $controller, 1 + 0, $queryParams, $relations, [], $notLog);
         // 格式化数据
         $data_list = $result['result']['data_list'] ?? [];
         if($nearType == 1) $data_list = array_reverse($data_list); // 相反;
@@ -313,6 +322,30 @@ class CompanyPaper extends BaseBusiness
     }
 
     /**
+     * [开始答题用]根据id获得单条数据的试题信息 试卷使用[考试]--试卷历史
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param int $id id 试卷历史表id
+     * @param int $format 是否按分类格式化试题 1不格式化 2 格式化
+     * @param mixed $relations 关系
+     * @return  array 单条数据 - -维数组
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function getExamSubject(Request $request, Controller $controller, $id = '', $format = 1, $relations = ''){
+        $subjectInfo = self::getSubjectData($request, $controller, 1, $id, $relations);
+        if($format == 2){// 2 格式化
+            $subject_list = $subjectInfo['subject_list'] ?? [];
+            $formatSubjectList = [];
+            foreach($subject_list as $v){
+                $formatSubjectList['subject_type_' . $v['subject_type']][] = $v;
+            }
+            $subjectInfo['subject_list'] = $formatSubjectList;
+        }
+        return $subjectInfo;
+    }
+
+    /**
      * 根据id获得单条数据的试题信息
      *
      * @param Request $request 请求信息
@@ -368,7 +401,7 @@ class CompanyPaper extends BaseBusiness
                 // 'count'=>'0'
             ];
             $temRelations = ['answerType'];
-            $resultList = CompanySubjectHistory::getList($request, $controller, 1 + 0, $queryParams, $temRelations);
+            $resultList = CompanySubjectHistory::getList($request, $controller, 1 + 0, $queryParams, $temRelations, ['useQueryParams' => false],0);
             $subjectHistorys = $resultList['result']['data_list'] ?? [];
             $answerHistoryIdsStr = [];
             foreach($subjectHistorys as $k => $v){
@@ -400,7 +433,7 @@ class CompanyPaper extends BaseBusiness
                 ];
                 $temAnswerHistoryRelations = '';
                 // if(($operate_no & 2) == 2 ) $temAnswerHistoryRelations = ['historyAnswer', 'answerSubject'];
-                $resultList = CompanySubjectAnswerHistory::getList($request, $controller, 1 + 0, $queryParams, $temAnswerHistoryRelations);
+                $resultList = CompanySubjectAnswerHistory::getList($request, $controller, 1 + 0, $queryParams, $temAnswerHistoryRelations, ['useQueryParams' => false]);
                 $answerHistorys = $resultList['result']['data_list'] ?? [];
                 foreach($answerHistorys as $answer_k => $answer_v){
                     $formatAnswerHistorys[$answer_v['id']] = $answer_v;
@@ -468,7 +501,7 @@ class CompanyPaper extends BaseBusiness
                 // 'count'=>'0'
             ];
             $temRelations = ['subjectAnswer'];
-            $resultList = CompanySubject::getList($request, $controller, 1 + 0, $queryParams, $temRelations);
+            $resultList = CompanySubject::getList($request, $controller, 1 + 0, $queryParams, $temRelations, ['useQueryParams' => false]);
             $subject = $resultList['result']['data_list'] ?? [];
             $formatSubject = [];// 格式化试题
             foreach($subject as $v){

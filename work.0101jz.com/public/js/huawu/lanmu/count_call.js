@@ -71,8 +71,12 @@ function ajax_call_count(staff_id, operate_staff_id){
     // 验证通过
     SUBMIT_FORM = false;//标记为已经提交过
     var data = $("#search_frm").serialize();
-    data['staff_id'] = staff_id;
-    data['operate_staff_id'] = operate_staff_id;
+    // data['staff_id'] = staff_id;
+    // data['operate_staff_id'] = operate_staff_id;
+    if(data != '') data += '&' ;
+    data += 'staff_id=' + staff_id ;
+    if(data != '') data += '&' ;
+    data += 'operate_staff_id=' + operate_staff_id ;
     console.log(WORK_COUNT_URL);
     console.log(data);
     var layer_count_index = layer.load();

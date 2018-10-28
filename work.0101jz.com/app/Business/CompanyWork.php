@@ -208,11 +208,15 @@ class CompanyWork extends BaseBusiness
      * @param int $oprateBit 操作类型位 1:获得所有的; 2 分页获取[同时有1和2，2优先]；4 返回分页html翻页代码
      * @param string $queryParams 条件数组/json字符
      * @param mixed $relations 关系
+     * @param array $extParams 其它扩展参数，
+     *    $extParams = [
+     *        'useQueryParams' => '是否用来拼接查询条件，true:用[默认];false：不用'
+     *   ];
      * @param int $notLog 是否需要登陆 0需要1不需要
      * @return  array 列表数据
      * @author zouyan(305463219@qq.com)
      */
-    public static function getList(Request $request, Controller $controller, $oprateBit = 2 + 4, $queryParams = [], $relations = '', $notLog = 0){
+    public static function getList(Request $request, Controller $controller, $oprateBit = 2 + 4, $queryParams = [], $relations = '', $extParams = [], $notLog = 0){
         $company_id = $controller->company_id;
 
         // 获得数据
@@ -232,57 +236,62 @@ class CompanyWork extends BaseBusiness
          if(empty($queryParams)){
             $queryParams = $defaultQueryParams;
          }
-        // $params = self::formatListParams($request, $controller, $queryParams);
-        $status = Common::get($request, 'status');
-        $field = Common::get($request, 'field');
-        $keyWord = Common::get($request, 'keyWord');
+        $isExport = 0;
         $model_name = self::$model_name;
-        if(in_array($status,["-8", "-4", "0", "1", "2", "4"])){
-            $model_name = self::$model_doing_name;
-            if(in_array($status,["-8", "-4"])){
-                $queryParams['orderBy'] = ['expiry_time'=>'desc','id'=>'desc'];
-            }
-        }
-        if(!empty($status)){
-            if($status == "-8"){ // 重点关注
-                $queryParams['whereIn']['status'] = [0,1,2];
-                array_push($queryParams['where'],['is_focus', 1]);
-            }elseif($status == "-4"){ // 过期未处理
-                $queryParams['whereIn']['status'] = [0,1,2];
-                array_push($queryParams['where'],['is_overdue', 1]);
-            }else{
-                array_push($queryParams['where'],['status', $status]);
-            }
-        }
 
-        if(!empty($field) && !empty($keyWord)){
-            array_push($queryParams['where'],[$field, 'like' , '%' . $keyWord . '%']);
-        }
-
-        $begin_date = Common::get($request, 'begin_date');// 开始日期
-        $end_date = Common::get($request, 'end_date');// 结束日期
-        $today_date = date("Y-m-d");
-        // 判断开始结束日期[ 可为空,有值的话-；4 开始日期 不能大于 >  当前日；32 结束日期 不能大于 >  当前日;256 开始日期 不能大于 >  结束日期]
-        Tool::judgeBeginEndDate($begin_date, $end_date, 4 + 32 + 256);
-        if(!empty($begin_date)) {
-            $begin_date = judge_date($begin_date, 'Y-m-d H:i:s');
-            array_push($queryParams['where'],['created_at', '>=' , $begin_date]);
-        }
-        if(!empty($end_date)) {
-            $end_date = judge_date(day_format_time(2, $end_date, 0), 'Y-m-d H:i:s');
-            array_push($queryParams['where'],['created_at', '<' , $end_date]);
-        }
-
-        $ids = Common::get($request, 'ids');// 多个用逗号分隔,
-        if (!empty($ids)) {
-            if (strpos($ids, ',') === false) { // 单条
-                array_push($queryParams['where'],['id', $ids]);
-            }else{
-                $queryParams['whereIn']['id'] = explode(',',$ids);
+        $useSearchParams = $extParams['useQueryParams'] ?? true;// 是否用来拼接查询条件，true:用[默认];false：不用
+        if($useSearchParams) {
+            // $params = self::formatListParams($request, $controller, $queryParams);
+            $status = Common::get($request, 'status');
+            $field = Common::get($request, 'field');
+            $keyWord = Common::get($request, 'keyWord');
+            if (in_array($status, ["-8", "-4", "0", "1", "2", "4"])) {
+                $model_name = self::$model_doing_name;
+                if (in_array($status, ["-8", "-4"])) {
+                    $queryParams['orderBy'] = ['expiry_time' => 'desc', 'id' => 'desc'];
+                }
             }
+            if (!empty($status)) {
+                if ($status == "-8") { // 重点关注
+                    $queryParams['whereIn']['status'] = [0, 1, 2];
+                    array_push($queryParams['where'], ['is_focus', 1]);
+                } elseif ($status == "-4") { // 过期未处理
+                    $queryParams['whereIn']['status'] = [0, 1, 2];
+                    array_push($queryParams['where'], ['is_overdue', 1]);
+                } else {
+                    array_push($queryParams['where'], ['status', $status]);
+                }
+            }
+
+            if (!empty($field) && !empty($keyWord)) {
+                array_push($queryParams['where'], [$field, 'like', '%' . $keyWord . '%']);
+            }
+
+            $begin_date = Common::get($request, 'begin_date');// 开始日期
+            $end_date = Common::get($request, 'end_date');// 结束日期
+            $today_date = date("Y-m-d");
+            // 判断开始结束日期[ 可为空,有值的话-；4 开始日期 不能大于 >  当前日；32 结束日期 不能大于 >  当前日;256 开始日期 不能大于 >  结束日期]
+            Tool::judgeBeginEndDate($begin_date, $end_date, 4 + 32 + 256);
+            if (!empty($begin_date)) {
+                $begin_date = judge_date($begin_date, 'Y-m-d H:i:s');
+                array_push($queryParams['where'], ['created_at', '>=', $begin_date]);
+            }
+            if (!empty($end_date)) {
+                $end_date = judge_date(day_format_time(2, $end_date, 0), 'Y-m-d H:i:s');
+                array_push($queryParams['where'], ['created_at', '<', $end_date]);
+            }
+
+            $ids = Common::get($request, 'ids');// 多个用逗号分隔,
+            if (!empty($ids)) {
+                if (strpos($ids, ',') === false) { // 单条
+                    array_push($queryParams['where'], ['id', $ids]);
+                } else {
+                    $queryParams['whereIn']['id'] = explode(',', $ids);
+                }
+            }
+            $isExport = Common::getInt($request, 'is_export'); // 是否导出 0非导出 ；1导出数据
+            if ($isExport == 1) $oprateBit = 1;
         }
-        $isExport = Common::getInt($request, 'is_export'); // 是否导出 0非导出 ；1导出数据
-        if($isExport == 1) $oprateBit = 1;
         // $relations = ['CompanyInfo'];// 关系
         $relations = ['workHistoryStaffCreate', 'workHistoryStaffSend','workCustomer'];//['CompanyInfo'];// 关系
         $result = self::getBaseListData($request, $controller, $model_name, $queryParams,$relations , $oprateBit, $notLog);
@@ -424,7 +433,7 @@ class CompanyWork extends BaseBusiness
         if(empty($queryParams)){
             $queryParams = $defaultQueryParams;
         }
-        $result = self::getList($request, $controller, 1 + 0, $queryParams, $relations, $notLog);
+        $result = self::getList($request, $controller, 1 + 0, $queryParams, $relations, [], $notLog);
         // 格式化数据
         $data_list = $result['result']['data_list'] ?? [];
         if($nearType == 1) $data_list = array_reverse($data_list); // 相反;

@@ -120,6 +120,18 @@ class PaperController extends AdminController
         $subjectInfo['subject_list'] = $formatSubjectList;
         return ajaxDataArr(1, $subjectInfo, '');
     }
+    /**
+     * ajax获得试题数据-根据试卷id
+     *
+     * @param Request $request
+     * @return mixed
+     * @author liuxin
+     */
+//    public function ajax_test(Request $request){
+//        $this->InitParams($request);
+//        $subjectInfo = CompanyPaper::getExamSubject($request, $this, 2, 2);
+//        return ajaxDataArr(1, $subjectInfo, '');
+//    }
 
     /**
      * ajax更新试题数据-根据试卷id

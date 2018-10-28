@@ -67,7 +67,7 @@
                     <li><a href="{{ url('manage/subject') }}"><i class="fa fa-circle-o"></i> 试题管理</a></li>
                     <li><a href="{{ url('manage/paper') }}"><i class="fa fa-circle-o"></i> 试卷生成</a></li>
                     <li><a href="{{ url('manage/exam') }}"><i class="fa fa-circle-o"></i> 考试管理</a></li>
-                    <li><a href="x_achievement.html"><i class="fa fa-circle-o"></i> 成绩查看</a></li>
+                    {{--<li><a href="x_achievement.html"><i class="fa fa-circle-o"></i> 成绩查看</a></li>--}}
                 </ul>
             </li>
             <li class="treeview">

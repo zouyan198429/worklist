@@ -24,11 +24,15 @@ class CompanyWorkRepairCount extends BaseBusiness
      * @param string $queryParams 条件数组/json字符
      * @param string $queryParams 条件数组/json字符
      * @param mixed $relations 关系
+     * @param array $extParams 其它扩展参数，
+     *    $extParams = [
+     *        'useQueryParams' => '是否用来拼接查询条件，true:用[默认];false：不用'
+     *   ];
      * @param int $notLog 是否需要登陆 0需要1不需要
      * @return  array 列表数据
      * @author zouyan(305463219@qq.com)
      */
-    public static function getList(Request $request, Controller $controller, $oprateBit = 2 + 4, $queryParams = [], $relations = '', $notLog = 0){
+    public static function getList(Request $request, Controller $controller, $oprateBit = 2 + 4, $queryParams = [], $relations = '', $extParams = [], $notLog = 0){
         $company_id = $controller->company_id;
 
         // 获得数据
@@ -48,17 +52,22 @@ class CompanyWorkRepairCount extends BaseBusiness
         if(empty($queryParams)){
             $queryParams = $defaultQueryParams;
         }
-        // $params = self::formatListParams($request, $controller, $queryParams);
-        $ids = Common::get($request, 'ids');// 多个用逗号分隔,
-        if (!empty($ids)) {
-            if (strpos($ids, ',') === false) { // 单条
-                array_push($queryParams['where'],['id', $ids]);
-            }else{
-                $queryParams['whereIn']['id'] = explode(',',$ids);
+        $isExport = 0;
+
+        $useSearchParams = $extParams['useQueryParams'] ?? true;// 是否用来拼接查询条件，true:用[默认];false：不用
+        if($useSearchParams) {
+            // $params = self::formatListParams($request, $controller, $queryParams);
+            $ids = Common::get($request, 'ids');// 多个用逗号分隔,
+            if (!empty($ids)) {
+                if (strpos($ids, ',') === false) { // 单条
+                    array_push($queryParams['where'], ['id', $ids]);
+                } else {
+                    $queryParams['whereIn']['id'] = explode(',', $ids);
+                }
             }
+            $isExport = Common::getInt($request, 'is_export'); // 是否导出 0非导出 ；1导出数据
+            if ($isExport == 1) $oprateBit = 1;
         }
-        $isExport = Common::getInt($request, 'is_export'); // 是否导出 0非导出 ；1导出数据
-        if($isExport == 1) $oprateBit = 1;
         // $relations = ['CompanyInfo'];// 关系
         // $relations = '';//['CompanyInfo'];// 关系
         $result = self::getBaseListData($request, $controller, self::$model_name, $queryParams,$relations , $oprateBit, $notLog);
@@ -167,7 +176,7 @@ class CompanyWorkRepairCount extends BaseBusiness
         if(empty($queryParams)){
             $queryParams = $defaultQueryParams;
         }
-        $result = self::getList($request, $controller, 1 + 0, $queryParams, $relations, $notLog);
+        $result = self::getList($request, $controller, 1 + 0, $queryParams, $relations, [], $notLog);
         // 格式化数据
         $data_list = $result['result']['data_list'] ?? [];
         if($nearType == 1) $data_list = array_reverse($data_list); // 相反;
