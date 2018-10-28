@@ -326,8 +326,8 @@ class CompanyExamStaff extends BaseBusiness
         //  16 开始日期 不能小于 <  当前日 128 结束日期 不能小于 <  当前日 256 开始日期 不能大于 >  结束日期
         $now_time = date('Y-m-d H:i:s');
         // Tool::judgeBeginEndDate($exam_begin_time, $exam_end_time, 1 + 2 + 16 + 128 + 256, 1, $now_time, '时间');
-//        if(strtotime($exam_begin_time) > strtotime($now_time)) throws('还没有到考试时间!');
-//        if(strtotime($exam_end_time) < strtotime($now_time)) throws('考试已过期!');
+        if(strtotime($exam_begin_time) > strtotime($now_time)) throws('还没有到考试时间!');
+        if(strtotime($exam_end_time) < strtotime($now_time)) throws('考试已过期!');
 
         // 三、比对是否已经答完题
         $status = $infoDatas['status'] ?? '';
