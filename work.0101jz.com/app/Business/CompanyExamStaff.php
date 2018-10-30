@@ -90,6 +90,7 @@ class CompanyExamStaff extends BaseBusiness
         $result = self::getBaseListData($request, $controller, self::$model_name, $queryParams,$relations , $oprateBit, $notLog);
 
         // 格式化数据
+        $exportName = "";
         $data_list = $result['data_list'] ?? [];
         foreach($data_list as $k => $v){
             $data_list[$k]['exam_num'] = $v['staff_exam']['exam_num'] ?? '';
@@ -98,6 +99,30 @@ class CompanyExamStaff extends BaseBusiness
             $data_list[$k]['total_score'] = $v['staff_exam']['total_score'] ?? '';
             $data_list[$k]['pass_score'] = $v['staff_exam']['pass_score'] ?? '';
 
+            $historyVersion = $v['exam_staff_history']['version_num'] ?? '';
+            $version = $v['exam_staffs']['version_num'] ?? '';
+            $now_staff = 0;
+            if($version === ''){
+                $now_staff = 1;
+            }elseif($historyVersion != $version){
+                $now_staff = 2;
+            }
+            $data_list[$k]['now_staff'] = $now_staff;// 最新的试题 0没有变化 ;1 已经删除  2 员工不同
+            $data_list[$k]['work_num'] = $v['exam_staff_history']['work_num'] ?? '';
+            $data_list[$k]['real_name'] = $v['exam_staff_history']['real_name'] ?? '';
+            $data_list[$k]['sex_text'] = $v['exam_staff_history']['sex_text'] ?? '';
+            $data_list[$k]['mobile'] = $v['exam_staff_history']['mobile'] ?? '';
+
+            $data_list[$k]['exam_num'] = $v['staff_exam']['exam_num'] ?? '';
+            $data_list[$k]['exam_subject'] = $v['staff_exam']['exam_subject'] ?? '';
+            $exportName = $v['staff_exam']['exam_num'] ?? '';
+
+            // 答题时间
+            $answer_begin_time = $v['answer_begin_time'] ?? '';
+            $answer_end_time = $v['answer_end_time'] ?? '';
+            $answer_minute = '';
+            if(!empty($answer_end_time) && !empty($answer_begin_time)) $answer_minute = ceil((strtotime($answer_end_time) - strtotime($answer_begin_time)) / 60 );
+            $data_list[$k]['answer_minute'] = $answer_minute;
 //            // 公司名称
 //            $data_list[$k]['company_name'] = $v['company_info']['company_name'] ?? '';
 //            if(isset($data_list[$k]['company_info'])) unset($data_list[$k]['company_info']);
@@ -105,8 +130,10 @@ class CompanyExamStaff extends BaseBusiness
         $result['data_list'] = $data_list;
         // 导出功能
         if($isExport == 1){
-//            $headArr = ['work_num'=>'工号', 'department_name'=>'部门'];
-//            ImportExport::export('','excel文件名称',$data_list,1, $headArr, 0, ['sheet_title' => 'sheet名称']);
+            $headArr = ['work_num'=>'工号', 'department_name'=>'部门', 'group_name'=>'班组', 'real_name'=>'姓名'
+                , 'sex_text'=>'性别', 'position_name'=>'职务', 'mobile'=>'手机', 'answer_begin_time'=>'答题开始时间'
+                , 'answer_end_time'=>'答题结束时间', 'answer_minute'=>'答题用时(分)', 'pass_text'=>'是否及格', 'exam_results'=>'分数'];
+            ImportExport::export('',$exportName . '考试成绩',$data_list,1, $headArr, 0, ['sheet_title' => $exportName . '考试成绩']);
             die;
         }
         // 非导出功能

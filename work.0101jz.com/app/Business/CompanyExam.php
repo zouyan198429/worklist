@@ -280,6 +280,8 @@ class CompanyExam extends BaseBusiness
         ];
         CommonBusiness::judgePowerByObj($resultDatas, $judgeData );
         $resultDatas['paper_name'] = $resultDatas['exam_paper_history']['paper_name'] ?? '';
+        $resultDatas['total_score'] = $resultDatas['exam_paper_history']['total_score'] ?? '';
+        $resultDatas['subject_amount'] = $resultDatas['exam_paper_history']['subject_amount'] ?? '';
         $now_paper = 0;// 最新的试题 0没有变化 ;1 已经删除  2 试卷不同
         if(isset($resultDatas['exam_paper_history']) && isset($resultDatas['exam_paper'])){
             $history_version_num = $resultDatas['exam_paper_history']['version_num'] ?? '';

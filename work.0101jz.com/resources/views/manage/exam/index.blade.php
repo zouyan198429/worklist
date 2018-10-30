@@ -108,7 +108,7 @@
         var AJAX_URL = "{{ url('api/manage/exam/ajax_alist') }}";//ajax请求的url
         var ADD_URL = "{{ url('manage/exam/add/0') }}"; //添加url
         var SHOW_URL = "{{url('manage/exam/info/')}}/"; //显示页面地址前缀 + id
-        var SHOW_URL_TITLE = "" ;// 详情弹窗显示提示
+        var SHOW_URL_TITLE = "查看考试成绩" ;// 详情弹窗显示提示
         var SHOW_CLOSE_OPERATE = 0 ;// 详情弹窗operate_num关闭时的操作0不做任何操作1刷新当前页面2刷新当前列表页面
         var EDIT_URL = "{{url('manage/exam/add/')}}/"; //修改页面地址前缀 + id
         var DEL_URL = "{{ url('api/manage/exam/ajax_del') }}"; //删除页面地址

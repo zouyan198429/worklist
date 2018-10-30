@@ -30,9 +30,9 @@
     document.write("        <td><%=item.created_at%><\/td>");
     document.write("        <td><%=item.real_name%><\/td>");
     document.write("        <td>");
-    document.write("            <%if( false){%>");
+    document.write("            <%if( item.status >= 3){%>");
     document.write("            <a href=\"javascript:void(0);\" class=\"btn btn-mini btn-success\"  onclick=\"action.show(<%=item.id%>)\">");
-    document.write("                <i class=\"ace-icon fa fa-check bigger-60\"> 查看<\/i>");
+    document.write("                <i class=\"ace-icon fa fa-check bigger-60\"> 查看成绩<\/i>");
     document.write("            <\/a>");
     document.write("            <%}%>");
     document.write("            <%if( can_modify){%>");

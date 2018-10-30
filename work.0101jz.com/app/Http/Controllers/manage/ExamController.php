@@ -58,6 +58,36 @@ class ExamController extends AdminController
     }
 
     /**
+     * 显示
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function info(Request $request, $id = 0)
+    {
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        // 获得详情信息
+        $resultDatas = [
+            'id'=>$id,
+            'now_paper' => 0,
+        ];
+        $operate = "添加";
+
+        if ($id > 0) { // 获得详情数据
+            $operate = "修改";
+            $relations = ['examPaperHistory', 'examPaper'];
+            $resultDatas = CompanyExam::getInfoData($request, $this, $id, $relations);
+        }
+        $reDataArr = array_merge($reDataArr, $resultDatas);
+
+        $reDataArr['operate'] = $operate;
+        return view('manage.exam.info',$reDataArr);
+    }
+
+
+    /**
      * ajax获得客户列表数据
      *
      * @param Request $request
@@ -79,6 +109,18 @@ class ExamController extends AdminController
     public function export(Request $request){
         $this->InitParams($request);
         CompanyExam::getList($request, $this, 1 + 0, [], [ 'oprateStaffHistory', 'examPaperHistory']);
+    }
+
+    /**
+     * 导出-考试结果
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function exportStaff(Request $request){
+        $this->InitParams($request);
+        CompanyExamStaff::getList($request, $this, 1 + 0, [], ['examStaffHistory', 'staffExam']);
     }
 
     /**
@@ -219,6 +261,7 @@ class ExamController extends AdminController
         }
         return ajaxDataArr(1, ['data_list' => $data_list], '');
     }
+
     /**
      * ajax增加员工数据-根据试卷id,多个,号分隔
      *

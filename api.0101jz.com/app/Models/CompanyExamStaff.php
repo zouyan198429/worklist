@@ -83,4 +83,5 @@ class CompanyExamStaff extends BaseModel
     {
         return $this->belongsTo('App\Models\CompanyExam', 'exam_id', 'id');
     }
+
 }

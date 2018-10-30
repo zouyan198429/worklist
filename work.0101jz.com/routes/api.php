@@ -195,6 +195,7 @@ Route::any('manage/exam/ajax_save', 'manage\ExamController@ajax_save');// 新加
 Route::any('manage/exam/ajax_get_staff', 'manage\ExamController@ajax_get_staff');//ajax初始化参考人员地址-根据考试id
 Route::any('manage/exam/ajax_add_staff', 'manage\ExamController@ajax_add_staff');//ajax添加员工地址-根据试卷id,多个,号分隔
 Route::any('manage/exam/ajax_add_paper', 'manage\ExamController@ajax_add_paper');//ajax添加/修改试卷地址
+// Route::any('manage/exam/ajax_get_staff_history', 'manage\ExamController@ajax_get_staff_history');// 查看考试结果[人员分数]
 
 // 部门
 Route::post('manage/department/ajax_get_child', 'manage\DepartmentController@ajax_get_child');// 获得子类部门数组[kv一维数组]

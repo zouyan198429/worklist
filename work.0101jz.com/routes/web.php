@@ -190,6 +190,8 @@ Route::get('manage/exam/add/{id}', 'manage\ExamController@add');//x_examination_
 Route::get('manage/exam', 'manage\ExamController@index');//x_examination_list.html 试题管理
 Route::get('manage/exam/info/{id}', 'manage\ExamController@info');//-详情
 Route::get('manage/exam/export', 'manage\ExamController@export');//--导出
+Route::get('manage/exam/info/{id}', 'manage\ExamController@info');//
+Route::get('manage/exam/exportStaff', 'manage\ExamController@exportStaff');//--导出考试结果
 //试题
 Route::get('manage/subject', 'manage\SubjectController@index');//x_questions.html 试题管理-导入
 Route::get('manage/subject/add/{id}', 'manage\SubjectController@add');//x_questions_add.html 试题添加

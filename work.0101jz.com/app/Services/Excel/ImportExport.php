@@ -245,7 +245,6 @@ class ImportExport
             $bigDataArr = $dataArr;
         }
         $sheetCount = count($bigDataArr);
-
         $num = 1;
         foreach($bigDataArr as $bigKey => $temDataArr){
             if($num == 1){// 第一次，使用默认创建的表格
@@ -307,7 +306,7 @@ class ImportExport
                     if(!empty($temHeadKeys)){// 有指定列
                         $tem_row_v = [];
                         foreach($temHeadKeys as $temKey){
-                            $tem_row_v[$temKey] = $row_v[$temKey] ?? [];
+                            $tem_row_v[$temKey] = $row_v[$temKey] ?? '';
                         }
                         $row_v = $tem_row_v;
                     }
