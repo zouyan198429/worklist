@@ -6,6 +6,7 @@ use App\Services\Common;
 use App\Services\CommonBusiness;
 use App\Services\Excel\ImportExport;
 use App\Services\HttpRequest;
+use App\Services\Tool;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as Controller;
 
@@ -244,6 +245,16 @@ class CompanyExam extends BaseBusiness
      */
     public static function delAjax(Request $request, Controller $controller)
     {
+        $id = Common::get($request, 'id');
+        Tool::dataValid([["input"=>$id,"require"=>"true","validator"=>"","message"=>'参数id值不能为空']]);
+        $company_id = $controller->company_id;
+
+        $examInfo = self::getInfoData($request, $controller, $id, '');
+        if(empty($examInfo)) throws('场次记录不存在!');
+
+        $tem_exam_begin_time = $examInfo['exam_begin_time'];
+        $now_time = date('Y-m-d H:i:s');
+        if(strtotime($tem_exam_begin_time) <= strtotime($now_time)) throws('已过考试开始时间的场次不能删除!');
         return self::delAjaxBase($request, $controller, self::$model_name);
 
     }

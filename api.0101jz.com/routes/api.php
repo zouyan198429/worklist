@@ -63,6 +63,7 @@ Route::post('work/workCount', 'CompanyWorkController@workCount');//工单统计
 Route::post('work/statusCount', 'CompanyWorkController@statusCount');//工单状态统计
 
 // 试题
+Route::any('subject/test', 'CompanySubjectController@test');//测试
 Route::any('subject/add_save', 'CompanySubjectController@add_save');//试题添加/修改
 Route::any('subject/getSubjectByIds', 'CompanySubjectController@getSubjectByIds');//通过id获得试题
 Route::any('subject/saveExam', 'CompanySubjectController@saveExam');//保存考试

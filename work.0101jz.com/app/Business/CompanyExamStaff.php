@@ -327,7 +327,7 @@ class CompanyExamStaff extends BaseBusiness
         $now_time = date('Y-m-d H:i:s');
         // Tool::judgeBeginEndDate($exam_begin_time, $exam_end_time, 1 + 2 + 16 + 128 + 256, 1, $now_time, '时间');
         if(strtotime($exam_begin_time) > strtotime($now_time)) throws('还没有到考试时间!');
-        if(strtotime($exam_end_time) < strtotime($now_time)) throws('考试已过期!');
+        if(strtotime($exam_end_time) < strtotime($now_time)) throws('考试已过期,如果您未交卷，系统已自动为您交卷!');
 
         // 三、比对是否已经答完题
         $status = $infoDatas['status'] ?? '';

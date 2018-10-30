@@ -104,6 +104,7 @@ class ExamController extends AdminController
     public function ajax_del(Request $request)
     {
         $this->InitParams($request);
+
         return CompanyExam::delAjax($request, $this);
     }
 

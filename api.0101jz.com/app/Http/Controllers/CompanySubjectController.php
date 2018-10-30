@@ -9,6 +9,7 @@ use App\Business\CompanySubjectBusiness;
 use App\Models\CompanyDepartment;
 use App\Models\CompanyExam;
 use App\Models\CompanyExamStaff;
+use App\Models\CompanyPaperHistory;
 use App\Models\CompanyProblemType;
 use App\Models\CompanySubject;
 use App\Models\CompanySubjectAnswer;
@@ -18,6 +19,18 @@ use Illuminate\Support\Facades\DB;
 
 class CompanySubjectController extends CompController
 {
+
+    /**
+     * 测试
+     *
+     * @param int $id
+     * @return Response
+     * @author zouyan(305463219@qq.com)
+     */
+    public function test(Request $request)
+    {
+        CompanyExamStaffBusiness::autoExamStaff();
+    }
     /**
      * 添加/修改
      *
@@ -270,6 +283,13 @@ class CompanySubjectController extends CompController
 
                 $staffList = $examInfo['staffList'] ?? [];
                 if(isset($examInfo['staffList'])) unset($examInfo['staffList']);
+                $paper_history_id = $examInfo['paper_history_id'] ?? 0;
+                if(empty($paper_history_id)) throws('没有试卷信息');
+
+                $paperInfo = CompanyPaperHistory::find($paper_history_id);
+                if(empty($paperInfo)) throws('没有试卷信息!');
+                $examInfo['subject_amount'] = $paperInfo['subject_amount'];
+                $examInfo['total_score'] = $paperInfo['total_score'];
 
                 $examInfo['company_id'] = $company_id;
                 $exam_num = $examInfo['exam_num'] ?? '';
@@ -283,6 +303,10 @@ class CompanySubjectController extends CompController
                 if($examId > 0){
                     $examObj = CompanyExam::find($examId);
                     if($company_id != $examObj->company_id) throws('记录[' . $exam_num . ']没有操作权限');
+                    $tem_exam_begin_time = $examObj->exam_begin_time;
+                    $now_time = date('Y-m-d H:i:s');
+                    if(strtotime($tem_exam_begin_time) <= strtotime($now_time)) throws('已过考试开始时间的场次不能修改!');
+
                     foreach($examInfo as $field => $val){
                         $examObj->$field = $val;
                     }
