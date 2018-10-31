@@ -58,7 +58,7 @@
                 </form>
 			</div>
 
-			<div class="bd"   id="data_list">
+			<div class="bd  baguetteBoxOne gallery"   id="data_list">
 
 
 			</div>
@@ -83,7 +83,7 @@
     <script type="text/javascript">
         var OPERATE_TYPE = <?php echo isset($operate_type)?$operate_type:0; ?>;
         var AUTO_READ_FIRST = false;//自动读取第一页 true:自动读取 false:指定地方读取
-        var LIST_FUNCTION_NAME = "reset_list";// 列表刷新函数名称, 需要列表刷新同步时，使用自定义方法reset_list_self；异步时没有必要自定义
+        var LIST_FUNCTION_NAME = "reset_list_self";// 列表刷新函数名称, 需要列表刷新同步时，使用自定义方法reset_list_self；异步时没有必要自定义
         var AJAX_URL = "{{ url('api/m/work/ajax_doing_list') }}";//ajax请求的url
         {{--var ADD_URL = "{{ url('m/work/add/0') }}"; //添加url--}}
         {{--var SHOW_URL = "{{url('m/work/info/')}}/";//显示页面地址前缀 + id--}}
@@ -113,6 +113,10 @@
         var DYNAMIC_LODING_BAIDU_TEMPLATE = "baidu_template_data_loding_div";//加载中百度模板id
         var DYNAMIC_BAIDU_EMPTY_TEMPLATE = "baidu_template_data_empty_div";//没有数据记录百度模板id
 </script>
- <script src="{{asset('js/common/list.js')}}"></script>
+	<link rel="stylesheet" href="{{asset('js/baguetteBox.js/baguetteBox.min.css')}}">
+	<script src="{{asset('js/baguetteBox.js/baguetteBox.min.js')}}" async></script>
+	{{--<script src="{{asset('js/baguetteBox.js/highlight.min.js')}}" async></script>--}}
+
+	<script src="{{asset('js/common/list.js')}}"></script>
  <script src="{{asset('js/m/lanmu/index.js')}}"></script>
 @endpush

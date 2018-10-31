@@ -568,7 +568,15 @@ class CompanyWork extends BaseBusiness
 
         // 格式化数据
         $data_list = $result['data_list'] ?? [];
+        $resource_ids = '';
         foreach($data_list as $k => $v){
+            $data_list[$k]['resource_list'] = [];
+            // 图片资源信息
+            $tem_resource_id = $v['resource_id'] ?? '';
+            if(!empty($tem_resource_id)){
+                if(!empty($resource_ids)) $resource_ids .= ',';
+                $resource_ids .= $tem_resource_id;
+            }
             // 加上 work_id字段
             if(! isset($data_list[$k]['work_id'])) $data_list[$k]['work_id'] = $v['id'];
 //            // 公司名称
@@ -576,6 +584,31 @@ class CompanyWork extends BaseBusiness
 //            if(isset($data_list[$k]['company_info'])) unset($data_list[$k]['company_info']);
         }
         // Tool::formatTwoArrKeys($data_list,Tool::arrEqualKeyVal(['id', 'work_num', 'caller_type_name', 'customer_id', 'customer_name']), false);
+
+        // 如果有图片，处理图片信息
+        if(!empty($resource_ids)){
+            $resourcePic = Resource::getResourceByIds($request, $controller, $company_id, $resource_ids);
+            // if(!empty($resourcePic)){
+            $formatPics = [];
+            foreach($resourcePic as $v){
+                $formatPics[$v['id']] = $v;
+            }
+            foreach($data_list as $k => $v){
+                $data_list[$k]['resource_list'] = [];
+                // 图片资源信息
+                $tem_resource_id = $v['resource_id'] ?? '';
+                if(empty($tem_resource_id)) continue;
+                $temResourceIds = explode(',', $tem_resource_id);
+                $temArr = [];
+                foreach($temResourceIds as $temId){
+                    if(isset($formatPics[$temId])) array_push($temArr, $formatPics[$temId]);
+                }
+                $data_list[$k]['resource_list'] = $temArr;
+
+            }
+            // }
+
+        }
         $result['data_list'] = $data_list;
         // return ajaxDataArr(1, $result, '');
         // 格式化数据

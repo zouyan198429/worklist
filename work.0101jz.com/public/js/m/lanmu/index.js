@@ -1,10 +1,12 @@
 
 var SUBMIT_FORM = true;//防止多次点击提交
-$(function(){
+// $(function(){
+window.onload = function() {
     $('.search_frm').trigger("click");// 触发搜索事件
     ajax_status_count(0, 0, 0);//ajax工单状态统计
     ajax_msg_list(0 ,0, 0);// ajax 消息列表
     // reset_list(false, true);
+    // reset_list_self(false,false);
     // 自动更新数据
     var autoObj = new Object();
     autoObj.orderProcessList = function(){
@@ -15,8 +17,29 @@ $(function(){
     };
     setInterval(autoObj.orderProcessList,60000);// 工单状态统计
     setInterval(autoObj.msgProcessList,60000);// 消息列表
-});
+};
+// });
 
+$(function(){
+    //$('.search_frm').trigger("click");// 触发搜索事件
+    // reset_list_self(false, false);
+});
+//重载列表
+//is_read_page 是否读取当前页,否则为第一页 true:读取,false默认第一页
+// ajax_async ajax 同步/导步执行 //false:同步;true:异步  需要列表刷新同步时，使用自定义方法reset_list_self；异步时没有必要自定义
+function reset_list_self(is_read_page, ajax_async){
+    console.log('is_read_page', typeof(is_read_page));
+    console.log('ajax_async', typeof(ajax_async));
+    reset_list(is_read_page, false);
+    initPic();
+}
+// window.onload = function() {
+//     initPic();
+// };
+function initPic(){
+    baguetteBox.run('.baguetteBoxOne');
+    // baguetteBox.run('.baguetteBoxTwo');
+}
 //ajax工单状态统计
 // from_id 来源 0 页面第一次加载,不播放音乐 1 每分钟获得数量，有变化，播放音乐
 
@@ -70,7 +93,8 @@ function ajax_status_count(from_id ,staff_id, operate_staff_id){
                         // 刷新列表-当前页
                         if( from_id == 1 && selected_status == temStatus){
                             console.log('刷新列表-当前页');
-                            reset_list(true, true);
+                            // reset_list(true, true);
+                            reset_list_self(true,false);
                         }
                     }
                 }
@@ -288,6 +312,7 @@ function work_operate_ajax(operate_type,id){
                 // countdown_alert(msg,1,5);
                 //layer_alert(msg,1,0);
                 //reset_list(true, true);
+                // reset_list_self(true,false);
             }
             layer.close(layer_index)//手动关闭
         }
@@ -302,6 +327,7 @@ function work_operate_ajax(operate_type,id){
     document.write("<script type=\"text\/template\"  id=\"baidu_template_data_list\">");
     document.write("    <%for(var i = 0; i<data_list.length;i++){");
     document.write("    var item = data_list[i];");
+    document.write("    var resource_list = item.resource_list;");
     document.write("    var status = item.status;");
     document.write("    %>");
     document.write("");
@@ -318,6 +344,16 @@ function work_operate_ajax(operate_type,id){
     document.write("        <\/div>");
     document.write("        <div class=\"gd-bd\">");
     document.write("            <p><i class=\"fa fa-flag fa-fw\" aria-hidden=\"true\"><\/i>  工单类型：<%=item.type_name%>--<%=item.business_name%><\/p>");
+    document.write("            <p >");
+    document.write("    <%for(var j = 0; j<resource_list.length;j++){");
+    document.write("    var jitem = resource_list[j];");
+    document.write("    %>");
+    document.write("       <a href=\"<%=jitem.resource_url%>\">");
+    document.write("       <img  src=\"<%=jitem.resource_url%>\"  style=\"width:100px;\">");
+    document.write("       </a>");
+    document.write("    <%}%>");
+    document.write("            <\/p>");
+    document.write("            <p>");
     document.write("            <p class=\"khtip\"><%=item.content%>");
     document.write("            <\/p>");
     document.write("            <p>");
