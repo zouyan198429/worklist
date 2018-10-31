@@ -196,7 +196,7 @@
     <!-- zui js -->
     <script src="{{asset('dist/js/zui.min.js') }}"></script>
     <script >
-        const PIC_DEL_URL = '{{ url('api/upload/ajax_del') }}';
+        var PIC_DEL_URL = '{{ url('api/upload/ajax_del') }}';
     </script>
     @include('component.upfileincludejs')
 @endpush

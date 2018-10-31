@@ -260,6 +260,9 @@ class CompanyWork extends BaseBusiness
                     array_push($queryParams['where'], ['is_overdue', 1]);
                 } else {
                     array_push($queryParams['where'], ['status', $status]);
+                    if(in_array($status, [0, 1, 2])) {
+                        array_push($queryParams['where'], ['is_overdue', 0]);
+                    }
                 }
             }
 
@@ -298,7 +301,15 @@ class CompanyWork extends BaseBusiness
 
         // 格式化数据
         $data_list = $result['data_list'] ?? [];
+        $resource_ids = '';
         foreach($data_list as $k => $v){
+            $data_list[$k]['resource_list'] = [];
+            // 图片资源信息
+            $tem_resource_id = $v['resource_id'] ?? '';
+            if(!empty($tem_resource_id)){
+                if(!empty($resource_ids)) $resource_ids .= ',';
+                $resource_ids .= $tem_resource_id;
+            }
             // 加上 work_id字段
             if(! isset($data_list[$k]['work_id'])) $data_list[$k]['work_id'] = $v['id'];
 
@@ -332,6 +343,32 @@ class CompanyWork extends BaseBusiness
             if(isset($data_list[$k]['work_customer'])) unset($data_list[$k]['work_customer']);
 
         }
+
+        // 如果有图片，处理图片信息
+        if($isExport != 1 && !empty($resource_ids)){
+            $resourcePic = Resource::getResourceByIds($request, $controller, $company_id, $resource_ids);
+            // if(!empty($resourcePic)){
+                $formatPics = [];
+                foreach($resourcePic as $v){
+                    $formatPics[$v['id']] = $v;
+                }
+                foreach($data_list as $k => $v){
+                    $data_list[$k]['resource_list'] = [];
+                    // 图片资源信息
+                    $tem_resource_id = $v['resource_id'] ?? '';
+                    if(empty($tem_resource_id)) continue;
+                    $temResourceIds = explode(',', $tem_resource_id);
+                    $temArr = [];
+                    foreach($temResourceIds as $temId){
+                        if(isset($formatPics[$temId])) array_push($temArr, $formatPics[$temId]);
+                    }
+                    $data_list[$k]['resource_list'] = $temArr;
+
+                }
+            // }
+
+        }
+
         $result['data_list'] = $data_list;
         // 导出功能
         if($isExport == 1){
@@ -583,6 +620,10 @@ class CompanyWork extends BaseBusiness
         // 加上 work_id字段
         if(! isset($resultDatas['work_id'])) $resultDatas['work_id'] = $resultDatas['id'];
         CommonBusiness::judgePowerByObj($resultDatas, $judgeData );
+        // 如果有图片，处理图片信息
+        $resource_id = $resultDatas['resource_id'] ?? '';
+        $resourceList = Resource::getResourceByIds($request, $controller, $company_id, $resource_id);
+        $resultDatas['resource_list'] = $resourceList;
         return $resultDatas;
     }
 

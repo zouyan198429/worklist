@@ -1,17 +1,40 @@
 
 var SUBMIT_FORM = true;//防止多次点击提交
-$(function(){
+//$(function(){
+window.onload = function() {
     $('.search_frm').trigger("click");// 触发搜索事件
     ajax_status_count(0, 0, 0);//ajax工单状态统计
     // reset_list(false, true);
+    // reset_list_self(false,false);
     // 自动更新数据
     var autoObj = new Object();
     autoObj.orderProcessList = function(){
         ajax_status_count(1, 0, 0);//ajax工单状态统计
     };
     setInterval(autoObj.orderProcessList,60000);
-});
+};
+// });
 
+$(function(){
+    //$('.search_frm').trigger("click");// 触发搜索事件
+    // reset_list_self(false, false);
+});
+//重载列表
+//is_read_page 是否读取当前页,否则为第一页 true:读取,false默认第一页
+// ajax_async ajax 同步/导步执行 //false:同步;true:异步  需要列表刷新同步时，使用自定义方法reset_list_self；异步时没有必要自定义
+function reset_list_self(is_read_page, ajax_async){
+    console.log('is_read_page', typeof(is_read_page));
+    console.log('ajax_async', typeof(ajax_async));
+    reset_list(is_read_page, false);
+    initPic();
+}
+// window.onload = function() {
+//     initPic();
+// };
+function initPic(){
+    baguetteBox.run('.baguetteBoxOne');
+    // baguetteBox.run('.baguetteBoxTwo');
+}
 //ajax工单状态统计
 // from_id 来源 0 页面第一次加载,不播放音乐 1 每分钟获得数量，有变化，播放音乐
 
@@ -65,7 +88,8 @@ function ajax_status_count(from_id ,staff_id, operate_staff_id){
                         // 刷新列表-当前页
                         if( from_id == 1 && selected_status == temStatus){
                             console.log('刷新列表-当前页');
-                            reset_list(true, true);
+                            //reset_list(true, true);
+                            reset_list_self(true,false);
                         }
                     }
                 }
@@ -120,7 +144,11 @@ $(function(){
     document.write("    <%for(var i = 0; i<data_list.length;i++){");
     document.write("    var item = data_list[i];");
     document.write("    var status = item.status;");
+    document.write("    var resource_list = item.resource_list;");
     document.write("    can_modify = false;");
+    document.write("    if( item.is_overdue > 0 ){");
+    document.write("      can_modify = true;");
+    document.write("    }");
     document.write("    %>");
     document.write("");
     document.write("    <tr>");
@@ -132,6 +160,15 @@ $(function(){
     document.write("        <\/td>");
     document.write("        <td><%=item.caller_type_name%><\/td>");
     document.write("        <td><%=item.type_name%>\/<%=item.business_name%><\/td>");
+    document.write("        <td>");
+    document.write("    <%for(var j = 0; j<resource_list.length;j++){");
+    document.write("    var jitem = resource_list[j];");
+    document.write("    %>");
+    document.write("       <a href=\"<%=jitem.resource_url%>\">");
+    document.write("       <img  src=\"<%=jitem.resource_url%>\"  style=\"width:100px;\">");
+    document.write("       </a>");
+    document.write("    <%}%>");
+    document.write("        <\/td>");
     document.write("        <td><%=item.content%><\/td>");
     document.write("        <td><%=item.city_name%><%=item.area_name%><%=item.address%><\/td>");
     document.write("        <td><%=item.created_at%><\/td>");

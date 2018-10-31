@@ -2,6 +2,33 @@
 <table class="table1">
 
     <tr>
+        <th>图片</th>
+        <td>
+            <div class="row  baguetteBoxOne gallery ">
+                <div class="col-xs-6">
+                    <div class="resourceBlock">
+                        <div class="cards upload_img">
+                            @foreach ($resource_list as $pic)
+                                <div class="col-md-4 col-sm-6 col-lg-3 resource">
+                                    <div class="card ">
+                                        <a href="{{ $pic['resource_url'] or '' }}">
+                                            <img data-toggle="lightbox" src="{{ $pic['resource_url'] or '' }}" alt="" style="width:150px;">
+                                        </a>
+                                        <div class="pre with-padding clearfix">
+                                            <h4 class="text-ellipsis">{{ $pic['resource_name'] or '' }}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
         <th>工单号</th>
         <td>
             {{ $work_num or '' }}
@@ -134,3 +161,12 @@
     </tr>
 
 </table>
+<link rel="stylesheet" href="{{asset('js/baguetteBox.js/baguetteBox.min.css')}}">
+<script src="{{asset('js/baguetteBox.js/baguetteBox.min.js')}}" async></script>
+{{--<script src="{{asset('js/baguetteBox.js/highlight.min.js')}}" async></script>--}}
+<script type="text/javascript">
+    window.onload = function() {
+        baguetteBox.run('.baguetteBoxOne');
+        // baguetteBox.run('.baguetteBoxTwo');
+    };
+</script>

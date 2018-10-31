@@ -149,7 +149,7 @@ class CompanyWorkBusiness extends BaseBusiness
     }
 
     /**
-     * 按状态分组统计工单数量
+     * 按状态分组统计工单数量 -- 只处理状态 0,1,2
      *
      * @param int $company_id 公司id
      * @param array $status 状态  一维数组
@@ -196,6 +196,7 @@ class CompanyWorkBusiness extends BaseBusiness
         if($operate_staff_id > 0){
             array_push($where,['operate_staff_id', '=', $operate_staff_id]);
         }
+        array_push($where,['is_overdue', '=', 0]);
 
         if(empty($status) || in_array(8, $status)){
             $dataList = CompanyWork::whereIn('status',$status)->where($where)

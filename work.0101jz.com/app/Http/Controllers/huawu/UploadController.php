@@ -5,12 +5,13 @@ namespace App\Http\Controllers\huawu;
 use App\Business\Resource;
 use App\Services\Common;
 use App\Services\CommonBusiness;
+use App\Http\Controllers\WorksController;
 use App\Services\Tool;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\AdminController;
 
-class UploadController extends AdminController
+class UploadController extends WorksController
 {
     public $model_name = 'Resource';
     // 大后台 admin/年/月/日/文件
@@ -41,6 +42,19 @@ class UploadController extends AdminController
     {
         $this->InitParams($request);
         return Resource::delAjax($request, $this);
+    }
+
+    /**
+     * 单文件上传
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function uploadSingle(Request $request)
+    {
+        $this->InitParams($request);
+        return Resource::fileSingleUpload($request, $this, 0);
     }
 
     /**

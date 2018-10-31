@@ -62,6 +62,7 @@
 				<th width="155px">工单号<br/>来电号码<br/>联系电话</th>
 				<th>工单来源</th>
 				<th>工单类型</th>
+				<th>图片</th>
 				<th width="350px">工单内容</th>
 				<th>客户位置</th>
 				<th>下单时间</th>
@@ -75,7 +76,7 @@
 				<th width="80px">操作</th>
 			</tr>
 			</thead>
-			<tbody  id="data_list">
+			<tbody  id="data_list"  class=" baguetteBoxOne gallery">
 			{{--
 			<tr>
 				<td>345236864</td>
@@ -123,7 +124,7 @@
 	<script type="text/javascript">
         var OPERATE_TYPE = <?php echo isset($operate_type)?$operate_type:0; ?>;
         var AUTO_READ_FIRST = false;//自动读取第一页 true:自动读取 false:指定地方读取
-        var LIST_FUNCTION_NAME = "reset_list";// 列表刷新函数名称, 需要列表刷新同步时，使用自定义方法reset_list_self；异步时没有必要自定义
+        var LIST_FUNCTION_NAME = "reset_list_self";// 列表刷新函数名称, 需要列表刷新同步时，使用自定义方法reset_list_self；异步时没有必要自定义
         var AJAX_URL = "{{ url('api/admin/work/ajax_alist') }}";//ajax请求的url
         var ADD_URL = "{{ url('admin/work/add/0') }}"; //添加url
         var SHOW_URL = "{{url('admin/work/info/')}}/";//显示页面地址前缀 + id
@@ -145,6 +146,10 @@
         var BEGIN_DATE = "{{ $begin_date or '' }}" ;//开始日期
         var END_DATE = "{{ $end_date or '' }}" ;//结束日期
 	</script>
+	<link rel="stylesheet" href="{{asset('js/baguetteBox.js/baguetteBox.min.css')}}">
+	<script src="{{asset('js/baguetteBox.js/baguetteBox.min.js')}}" async></script>
+	{{--<script src="{{asset('js/baguetteBox.js/highlight.min.js')}}" async></script>--}}
+
 	<script src="{{asset('js/common/list.js')}}"></script>
 	<script src="{{ asset('js/admin/lanmu/work.js') }}"  type="text/javascript"></script>
 @endpush

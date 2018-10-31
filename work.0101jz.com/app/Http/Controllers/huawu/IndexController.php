@@ -18,6 +18,19 @@ class IndexController extends WorksController
         phpinfo();
     }
 
+    /**
+     * 测试图片上传
+     *
+     * @param int $id
+     * @return Response
+     * @author zouyan(305463219@qq.com)
+     */
+    public function testUpfile(Request $request)
+    {
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        return view('huawu.testUpfile',$reDataArr);
+    }
 
     /**
      * 首页

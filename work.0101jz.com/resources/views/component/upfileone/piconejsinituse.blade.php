@@ -1,5 +1,6 @@
 {{--
 upload_id 上传对象的 id
+submit_url 上传请求地址
 multipart_params 附加参数	函数或对象，默认 {}
 limitFilesCount  限制文件上传数目	false（默认）或数字
 multi_selection  是否可用一次选取多个文件	默认 true false
@@ -16,7 +17,7 @@ uploadComplete // 所有上传成功后执行方法 格式 aaa();  或  空白-�
 false
 @endslot
 @slot('submit_url')
-{{ url('api/upload') }}
+{{ $submit_url or url('api/upload') }}
 @endslot
 @slot('file_data_name')
 photo

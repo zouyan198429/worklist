@@ -221,7 +221,11 @@ class CompanyWorkController extends CompController
         $sendLogs = ["派发工单"];//指派日志
 
         // 工单号
+        $operate_txt = "修改";
+        $is_add_new = false;// 是否新加 true:新加 ; false：修改
         if($work_id <= 0){
+            $operate_txt = "创建";
+            $is_add_new = true;
             $save_data['work_num'] = Tool::order_sn($staff_id);
            // $save_data['work_num'] = Tool::createUniqueNumber(16);
         }
@@ -333,7 +337,14 @@ class CompanyWorkController extends CompController
         try {
             // 获得员工历史记录id-- 工单接收员工
             $send_staff_id = $save_data['send_staff_id'] ?? 0;
-            $save_data['status'] = 0; // 默认状态
+            if($work_id <= 0) {
+                $save_data['status'] = 0; // 默认状态
+
+            }else{
+                $save_data['status'] = 0; // 默认状态
+                $save_data['is_focus'] = 0;//是否重点关注
+                $save_data['is_overdue'] = 0;//是否逾期
+            }
             if($send_staff_id > 0){ // 指定了员工
                 $sendStaffObj = null;
     //            Common::getObjByModelName("CompanyStaff", $sendStaffObj);
@@ -435,10 +446,10 @@ class CompanyWorkController extends CompController
             $save_data['customer_id'] = $customer_id;
 
              // 来电次数加1;;修改也算
-            //if($work_id <=0 ){
+            if($work_id <=0 ){
                 $customerObj->call_num++;
                 $customerObj->save();
-            //}
+            }
 
             // 判断版本号是否要+1
 
@@ -584,7 +595,8 @@ class CompanyWorkController extends CompController
 
             // 工单操作日志
             // $this->saveWorkLog($workObj , $workObj->operate_staff_id , $workObj->operate_staff_history_id, "创建工单");
-            CompanyWorkLogBusiness::saveWorkLog($workObj , $workObj->operate_staff_id , $workObj->operate_staff_history_id,  "创建工单");
+
+            CompanyWorkLogBusiness::saveWorkLog($workObj , $workObj->operate_staff_id , $workObj->operate_staff_history_id,  $operate_txt . "工单");
             if($send_staff_id > 0) { // 指定了员工
                 //$this->saveWorkLog($workObj , $workObj->operate_staff_id , $workObj->operate_staff_history_id, implode(",", $sendLogs));
                 CompanyWorkLogBusiness::saveWorkLog($workObj , $workObj->operate_staff_id , $workObj->operate_staff_history_id,  implode(",", $sendLogs));
@@ -603,9 +615,10 @@ class CompanyWorkController extends CompController
     //        Common::create($workLogObj, $workLog);
 
             // 工单来电统计
-            // $this->workCallCount($workObj, $workObj->operate_staff_id , $workObj->operate_staff_history_id);
-            CompanyWorkCallCountBusiness::workCallCount($workObj, $operate_department_id , $operate_group_id, $workObj->operate_staff_id , $workObj->operate_staff_history_id);
-
+            if($is_add_new) {
+                // $this->workCallCount($workObj, $workObj->operate_staff_id , $workObj->operate_staff_history_id);
+                CompanyWorkCallCountBusiness::workCallCount($workObj, $operate_department_id , $operate_group_id, $workObj->operate_staff_id , $workObj->operate_staff_history_id);
+            }
     //        $workCallCountObj = null;
     //        Common::getObjByModelName("CompanyWorkCallCount", $workCallCountObj);
     //
@@ -1101,8 +1114,11 @@ class CompanyWorkController extends CompController
         $group_id = Common::getInt($request, 'group_id');// 小组id
 
         // 统计工单状态
-        $status = [0,1,2,4];
+        $status = [0,1,2];
         $result = CompanyWorkBusiness::getGroupCount($company_id, $status, $send_department_id, $send_group_id, $department_id, $group_id, $staff_id, $operate_staff_id);
+        // 统计  4待回访工单
+        $otherWhere = [];
+        $result[4] = CompanyWorkBusiness::getCount($company_id, $send_department_id, $send_group_id, $department_id, $group_id, $staff_id, 4, $operate_staff_id, $otherWhere);
         // -8重点关注
         $otherWhere = [['is_focus', '=', 1]];
         $result[-8] = CompanyWorkBusiness::getCount($company_id, $send_department_id, $send_group_id, $department_id, $group_id, $staff_id, [0,1,2], $operate_staff_id, $otherWhere);
@@ -1178,8 +1194,11 @@ class CompanyWorkController extends CompController
         //处理状态中的状态统计
         if(($operate_no & 1) == 1 ) {
             // 统计工单状态
-            $status = [0, 1, 2, 4];
+            $status = [0, 1, 2];
             $result = CompanyWorkBusiness::getGroupCount($company_id, $status, $send_department_id, $send_group_id, $department_id, $group_id, $staff_id, $operate_staff_id);
+            // 4 待回访工单
+            $otherWhere = [];
+            $result[4] = CompanyWorkBusiness::getCount($company_id, $send_department_id, $send_group_id, $department_id, $group_id, $staff_id, 4, $operate_staff_id, $otherWhere);
             // -8重点关注   ]
             $otherWhere = [['is_focus', '=', 1]];
             $result[-8] = CompanyWorkBusiness::getCount($company_id, $send_department_id, $send_group_id, $department_id, $group_id, $staff_id, [0, 1, 2], $operate_staff_id, $otherWhere);

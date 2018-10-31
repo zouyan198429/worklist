@@ -118,6 +118,7 @@ class WorkController extends WorksController
             'id'=>$id,
             'department_id' => 0,
             'book_time' => Carbon::now()->toDateTimeString(),
+            'resource_list'=> [],
         ];
 
         if ($id > 0) { // 获得详情数据
@@ -196,6 +197,12 @@ class WorkController extends WorksController
         $send_group_id = Common::getInt($request, 'send_group_id');
         $send_staff_id = Common::getInt($request, 'send_staff_id');
 
+        $resource_id = Common::get($request, 'resource_id');
+        if(empty($resource_id))  $resource_id = [];
+        if(is_string($resource_id) || is_numeric($resource_id)){
+            $resource_id = explode(',' ,$resource_id);
+        }
+
         $saveData = [
             'caller_type_id' => $caller_type_id, // 来电类型
             'call_number' => $call_number,// 来电号码
@@ -215,6 +222,7 @@ class WorkController extends WorksController
             'send_department_id' => $send_department_id,
             'send_group_id' => $send_group_id,
             'send_staff_id' => $send_staff_id,
+            'resource_id' => implode(',', $resource_id),
         ];
 //        if($id <= 0) {// 新加;要加入的特别字段
 //            $addNewData = [

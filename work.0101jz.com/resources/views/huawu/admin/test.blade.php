@@ -54,7 +54,7 @@
                 ,calendar: true//是否显示公历节日
             });
             // 九张图片上传
-			@include('component.upfileone.piconejsinitincludenine')
+			@include('component.upfileone.piconejsinitincludenine', ['submit_url' => "{{ url('api/admin/upload') }}"])
             //提交
             $(document).on("click","#submitBtn",function(){
                 //var index_query = layer.confirm('您确定提交保存吗？', {

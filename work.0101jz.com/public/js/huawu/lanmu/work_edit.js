@@ -29,6 +29,14 @@ const REL_CHANGE = {
         'other_params':{},//其它参数 {'aaa':123,'ccd':'dfasfs'}
     }
 };
+
+window.onload = function() {
+    initPic();
+};
+function initPic(){
+    baguetteBox.run('.baguetteBoxOne');
+    // baguetteBox.run('.baguetteBoxTwo');
+}
 $(function(){
     //执行一个laydate实例
     laydate.render({
@@ -93,6 +101,18 @@ function ajax_form(){
     if(!judge_validate(4,'记录id',id,true,'digit','','')){
         return false;
     }
+
+    // 判断是否上传图片
+    var uploader = $('#myUploader').data('zui.uploader');
+    var files = uploader.getFiles();
+    var filesCount = files.length;
+
+    var imgObj = $('#myUploader').closest('.resourceBlock').find(".upload_img");
+
+    // if( (!judge_list_checked(imgObj,3)) && filesCount <=0 ) {//没有选中的
+    //     layer_alert('请选择要上传的图片！',3,0);
+    //     return false;
+    // }
 
     var caller_type_id = $('select[name=caller_type_id]').val();
     var judge_seled = judge_validate(1,'来电类型',caller_type_id,true,'digit','','');
@@ -221,7 +241,28 @@ function ajax_form(){
         //err_alert('<font color="#000000">' + judge_seled + '</font>');
         return false;
     }
+    // 验证通过
+    // 上传图片
+    if(filesCount > 0){
+        var layer_index = layer.load();
+        uploader.start();
+        var intervalId = setInterval(function(){
+            var status = uploader.getState();
+            console.log('获取上传队列状态代码',uploader.getState());
+            if(status == 1){
+                layer.close(layer_index)//手动关闭
+                clearInterval(intervalId);
+                ajax_save();
+            }
+        },1000);
+    }else{
+        ajax_save();
+    }
+}
 
+
+// 验证通过后，ajax保存
+function ajax_save(){
     // 验证通过
     SUBMIT_FORM = false;//标记为已经提交过
     var data = $("#addForm").serialize();

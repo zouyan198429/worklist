@@ -230,7 +230,8 @@ Route::post('manage/system_module/ajax_get_child', 'manage\SystemModuleControlle
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // 上传图片
-Route::post('huawu/upload', 'huawu\UploadController@index');
+Route::any('huawu/upload', 'huawu\UploadController@index');
+Route::post('huawu/uploadSingle', 'huawu\UploadController@uploadSingle');// 单文件上传
 Route::post('huawu/upload/ajax_del', 'huawu\UploadController@ajax_del');// 根据id删除文件
 
 //web-huawu 客服
@@ -273,7 +274,7 @@ Route::post('huawu/work_type/ajax_get_child', 'huawu\WorkTypeController@ajax_get
 Route::post('huawu/system_module/ajax_get_child', 'huawu\SystemModuleController@ajax_get_child');// 获得子类部门数组[kv一维数组]
 //工单
 Route::post('huawu/work/ajax_save', 'huawu\WorkController@ajax_save');// 新加/修改
-Route::post('huawu/work/ajax_alist', 'huawu\WorkController@ajax_alist');//ajax获得列表数据
+Route::any('huawu/work/ajax_alist', 'huawu\WorkController@ajax_alist');//ajax获得列表数据
 Route::post('huawu/work/ajax_del', 'huawu\WorkController@ajax_del');// 删除
 Route::post('huawu/work/reply_ajax_save', 'huawu\WorkController@reply_ajax_save');// 回访新加/修改
 Route::post('huawu/work/ajax_status_count', 'huawu\WorkController@ajax_status_count');// 工单状态统计

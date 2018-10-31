@@ -35,6 +35,57 @@ class Resource extends BaseBusiness
                 'other' => [],// 其它各自类型需要判断的指标
             ]
     ];
+
+    /**
+     * 获得列表数据--根据图片ids
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param int $company_id 企业id
+     * @param string $ids  查询的id ,多个用逗号分隔,
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @return  array 列表数据
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function getResourceByIds(Request $request, Controller $controller, $company_id = 0, $ids = '', $notLog = 0){
+        if(empty($ids)) return [];
+        $queryParams = [
+            'where' => [
+            //    ['company_id', $company_id],
+                // ['operate_staff_id', $user_id],
+            ],
+//            'select' => [
+//                'id','company_id','type_name','sort_num'
+//                //,'operate_staff_id','operate_staff_history_id'
+//                ,'created_at'
+//            ],
+//            'orderBy' => ['sort_num'=>'desc','id'=>'desc'],
+             'orderBy' => ['id'=>'desc'],
+        ];// 查询条件参数
+        if(is_numeric($company_id) && $company_id > 0) array_push($queryParams['where'],['company_id', $company_id]);
+
+        if (!empty($ids)) {
+            if (strpos($ids, ',') === false) { // 单条
+                array_push($queryParams['where'], ['id', $ids]);
+            } else {
+                $queryParams['whereIn']['id'] = explode(',', $ids);
+            }
+        }
+        $result = self::getList($request, $controller, 1 + 0, $queryParams, [], ['useQueryParams' => false], $notLog);
+        $data_list = $result['result']['data_list'] ?? [];
+        $reList = [];
+        foreach($data_list as $k => $v){
+            $temArr = [
+                'id' => $v['id'],
+                'resource_name' => $v['resource_name'],
+                'resource_url' => url($v['resource_url']),
+                'created_at' => $v['created_at'],
+            ];
+            array_push($reList, $temArr);
+        }
+        return $reList;
+    }
+
     /**
      * 获得列表数据--所有数据
      *

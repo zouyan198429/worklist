@@ -5,6 +5,7 @@ fileList 文件列表容器元素
          "grid" 使用网格文件列表
 
 upload_id 上传对象的 id
+upload_url 上传处理地址
 --}}
 @component('component.upfilehtml')
 {{--fileList	文件列表容器元素--}}
@@ -15,6 +16,6 @@ upload_id 上传对象的 id
 {{ $upload_id or 'myUploader' }}
 @endslot
 @slot('upload_url')
-{{ url('api/upload') }}
+{{ $upload_url or url('api/upload') }}
 @endslot
 @endcomponent
