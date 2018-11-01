@@ -28,6 +28,21 @@ class StaffController extends AdminController
         return view('admin.staff.index', $reDataArr);
     }
 
+    /**
+     * 同事选择-弹窗
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function select(Request $request)
+    {
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        // 获得第一级部门分类一维数组[$k=>$v]
+        $reDataArr['department_kv'] = CompanyDepartment::getChildListKeyVal($request, $this, 0, 1 + 0);
+        return view('manage.staff.select', $reDataArr);
+    }
 
     /**
      * 添加

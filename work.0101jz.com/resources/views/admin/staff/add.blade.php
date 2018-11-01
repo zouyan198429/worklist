@@ -1,4 +1,4 @@
-@extends('layouts.manage')
+@extends('layouts.admin')
 
 @push('headscripts')
 {{--  本页单独使用 --}}

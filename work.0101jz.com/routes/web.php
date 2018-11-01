@@ -80,6 +80,7 @@ Route::get('admin/position/add/{id}', 'admin\PositionController@add');// 职位�
 // 员工
 Route::get('admin/staff', 'admin\StaffController@index');//Colleague.html 我的同事
 Route::get('admin/staff/add/{id}', 'admin\StaffController@add');//m_staff_add.html 添加员工
+Route::get('admin/staff/select', 'admin\StaffController@select');// 同事选择-弹窗
 
 //客户
 Route::get('admin/customer', 'admin\CustomerController@index');//customer_all.html 客户管理
@@ -124,8 +125,12 @@ Route::get('admin/problem', 'admin\ProblemController@index');//problem.html 反�
 Route::get('admin/problem/reply/{id}', 'admin\ProblemController@reply');//m_problem.html 反馈问题 - 回复
 
 //考次试卷
-Route::get('admin/exam', 'admin\ExamController@index');//x_examination_list.html 试次管理
-Route::get('admin/exam/add', 'admin\ExamController@add');//x_examination_add.html  试次添加
+Route::get('admin/exam/add/{id}', 'admin\ExamController@add');//x_examination_add.html 试题添加
+Route::get('admin/exam', 'admin\ExamController@index');//x_examination_list.html 试题管理
+Route::get('admin/exam/info/{id}', 'admin\ExamController@info');//-详情
+Route::get('admin/exam/export', 'admin\ExamController@export');//--导出
+Route::get('admin/exam/info/{id}', 'admin\ExamController@info');//
+Route::get('admin/exam/exportStaff', 'admin\ExamController@exportStaff');//--导出考试结果
 
 //试题
 Route::get('admin/subject', 'admin\SubjectController@index');//x_questions.html 试题管理
@@ -140,8 +145,11 @@ Route::get('admin/subject_type', 'admin\SubjectTypeController@index');//x_questi
 Route::get('admin/subject_type/add/{id}', 'admin\SubjectTypeController@add');// 试题分类--添加
 
 // 试卷
-Route::get('admin/paper/add', 'admin\PaperController@add');//x_testpaper_add.html 试题添加
 Route::get('admin/paper', 'admin\PaperController@index');//x_testpaper_list.html 试卷列表
+Route::get('admin/paper/add/{id}', 'admin\PaperController@add');//x_testpaper_add.html 试卷添加
+Route::get('admin/paper/info/{id}', 'admin\PaperController@info');//-详情
+Route::get('admin/paper/export', 'admin\PaperController@export');//--导出
+Route::get('admin/paper/select', 'admin\PaperController@select');// 试卷选择-弹窗
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //web-manage

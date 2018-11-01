@@ -126,6 +126,24 @@ Route::any('admin/subject/ajax_alist', 'admin\SubjectController@ajax_alist');//a
 Route::post('admin/subject/ajax_del', 'admin\SubjectController@ajax_del');// 删除
 Route::any('admin/subject/ajax_save', 'admin\SubjectController@ajax_save');// 新加/修改
 
+//试卷
+Route::any('admin/paper/ajax_alist', 'admin\PaperController@ajax_alist');//ajax获得列表数据
+Route::post('admin/paper/ajax_del', 'admin\PaperController@ajax_del');// 删除
+Route::any('admin/paper/ajax_save', 'admin\PaperController@ajax_save');// 新加/修改
+Route::any('admin/paper/ajax_get_subject', 'admin\PaperController@ajax_get_subject');//ajax获得试题数据-根据试卷id
+Route::any('admin/paper/ajax_update_subject', 'admin\PaperController@ajax_update_subject');//ajax更新试题数据-根据试卷id
+Route::any('admin/paper/ajax_add_subject', 'admin\PaperController@ajax_add_subject');//ajax增加试题数据-根据试卷id,多个,号分隔
+Route::any('admin/paper/ajax_test', 'admin\PaperController@ajax_test');
+
+//考次试卷
+Route::any('admin/exam/ajax_alist', 'admin\ExamController@ajax_alist');//ajax获得列表数据
+Route::post('admin/exam/ajax_del', 'admin\ExamController@ajax_del');// 删除
+Route::any('admin/exam/ajax_save', 'admin\ExamController@ajax_save');// 新加/修改
+Route::any('admin/exam/ajax_get_staff', 'admin\ExamController@ajax_get_staff');//ajax初始化参考人员地址-根据考试id
+Route::any('admin/exam/ajax_add_staff', 'admin\ExamController@ajax_add_staff');//ajax添加员工地址-根据试卷id,多个,号分隔
+Route::any('admin/exam/ajax_add_paper', 'admin\ExamController@ajax_add_paper');//ajax添加/修改试卷地址
+// Route::any('admin/exam/ajax_get_staff_history', 'admin\ExamController@ajax_get_staff_history');// 查看考试结果[人员分数]
+
 //同事
 Route::post('admin/staff/ajax_alist', 'admin\StaffController@ajax_alist');//ajax获得列表数据
 Route::post('admin/staff/ajax_del', 'admin\StaffController@ajax_del');// 删除
