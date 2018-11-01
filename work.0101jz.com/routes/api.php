@@ -20,6 +20,7 @@ Route::post('upload', 'UploadController@index');
 Route::get('excel/test','ExcelController@test');
 Route::get('excel/export','ExcelController@export'); // 导出
 Route::get('excel/import','ExcelController@import'); // 导入
+Route::get('excel/import_test','ExcelController@import_test'); // 导入 - 测试
 
 //
 // admin
@@ -125,6 +126,7 @@ Route::post('admin/subject_type/ajax_save', 'admin\SubjectTypeController@ajax_sa
 Route::any('admin/subject/ajax_alist', 'admin\SubjectController@ajax_alist');//ajax获得列表数据
 Route::post('admin/subject/ajax_del', 'admin\SubjectController@ajax_del');// 删除
 Route::any('admin/subject/ajax_save', 'admin\SubjectController@ajax_save');// 新加/修改
+Route::any('admin/subject/import', 'admin\SubjectController@import');// 导入excel
 
 //试卷
 Route::any('admin/paper/ajax_alist', 'admin\PaperController@ajax_alist');//ajax获得列表数据
@@ -198,6 +200,7 @@ Route::post('manage/lore/ajax_save', 'manage\LoreController@ajax_save');// 新�
 Route::any('manage/subject/ajax_alist', 'manage\SubjectController@ajax_alist');//ajax获得列表数据
 Route::post('manage/subject/ajax_del', 'manage\SubjectController@ajax_del');// 删除
 Route::any('manage/subject/ajax_save', 'manage\SubjectController@ajax_save');// 新加/修改
+Route::any('manage/subject/import', 'manage\SubjectController@import');// 导入excel
 //试卷
 Route::any('manage/paper/ajax_alist', 'manage\PaperController@ajax_alist');//ajax获得列表数据
 Route::post('manage/paper/ajax_del', 'manage\PaperController@ajax_del');// 删除

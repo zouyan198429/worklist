@@ -124,7 +124,7 @@ class CompanySubject extends BaseBusiness
         $result['data_list'] = $data_list;
         // 导出功能
         if($isExport == 1){
-            $headArr = ['type_text'=>'类型', 'type_name'=>'分类', 'title'=>'题目', 'answer_txt'=>'答案'];
+            $headArr = ['id'=>'记录id', 'type_text'=>'类型', 'type_name'=>'分类', 'title'=>'题目', 'answer_txt'=>'答案'];
             ImportExport::export('','题目',$data_list,1, $headArr, 0, ['sheet_title' => '题目']);
             die;
         }
@@ -297,7 +297,7 @@ class CompanySubject extends BaseBusiness
      */
     public static function importTemplate(Request $request, Controller $controller)
     {
-        $headArr = ['type_text'=>'类型', 'type_name'=>'分类', 'title'=>'题目', 'answer_txt'=>'答案'];
+        $headArr = ['id'=>'记录id', 'type_text'=>'类型', 'type_name'=>'分类', 'title'=>'题目', 'answer_txt'=>'答案'];
         $data_list = [];
         ImportExport::export('','试题导入模版',$data_list,1, $headArr, 0, ['sheet_title' => '试题导入模版']);
         die;
@@ -452,4 +452,125 @@ class CompanySubject extends BaseBusiness
         }
         return $result;
     }
+
+    /**
+     * 批量导入员工
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param array $saveData 要保存或修改的数组
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function import(Request $request, Controller $controller, $saveData , $notLog = 0)
+    {
+        $company_id = $controller->company_id;
+        // 参数
+        $requestData = [
+            'company_id' => $company_id,
+            'staff_id' =>  $controller->user_id,
+            'save_data' => $saveData,
+        ];
+        $url = config('public.apiUrl') . config('apiUrl.apiPath.saveSubject');
+        // 生成带参数的测试get请求
+        // $requestTesUrl = splicQuestAPI($url , $requestData);
+        return HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
+    }
+
+
+    /**
+     * 批量导入员工--通过文件路径
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param string $fileName 文件全路径
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function staffImportByFile(Request $request, Controller $controller, $fileName = '', $notLog = 0){
+        $company_id = $controller->company_id;
+        // $fileName = 'staffs.xlsx';
+        $dataStartRow = 1;// 数据开始的行号[有抬头列，从抬头列开始],从1开始
+        // 需要的列的值的下标关系：一、通过列序号[1开始]指定；二、通过专门的列名指定;三、所有列都返回[文件中的行列形式],$headRowNum=0 $headArr=[]
+        $headRowNum = 1;//0:代表第一种方式，其它数字：第二种方式; 1开始 -必须要设置此值，$headArr 参数才起作用
+        // 下标对应关系,如果设置了，则只获取设置的列的值
+        // 方式一格式：['1' => 'name'，'2' => 'chinese',]
+        // 方式二格式: ['姓名' => 'name'，'语文' => 'chinese',]
+        $headArr = [
+            '记录id'          =>'id',
+            '类型'        => 'type_text',
+            '分类'        => 'type_name',
+            '题目'        => 'title',
+            '答案'        => 'answer_txt',
+        ];
+//        $headArr = [
+//            '1' => 'name',
+//            '2' => 'chinese',
+//            '3' => 'maths',
+//            '4' => 'english',
+//        ];
+        try{
+            $dataArr = ImportExport::import($fileName, $dataStartRow, $headRowNum, $headArr);
+
+            if(empty($dataArr)) throws('文件没有内容');
+            $selTypes = self::$selTypes;
+            foreach($dataArr as $k => $v){
+                $dataArr[$k]['id'] = $v['id'] ?? '';
+                $dataArr[$k]['company_id'] = $company_id;
+                $title =  $v['title'] ?? '';
+                $type_name = $v['type_name'] ?? '';
+                if(empty($type_name)) throws('[' .$title . ']分类不能为空');
+                $dataArr[$k]['type_id'] = $type_name;
+                $type_text = $v['type_text'] ?? '';
+                if(! in_array($type_text, $selTypes)) throws('[' . $title . ']类型不正确');
+                $subject_type = array_search($type_text,$selTypes);
+                if(!is_numeric($subject_type))  throws('[' .$title . ']类型不正确!');
+                $dataArr[$k]['subject_type'] = $subject_type;
+                $answer_txt = $v['answer_txt'] ?? '';
+                $answer_list = [];
+                $answer = 0;
+                if($subject_type == 4){// 判断
+                    if(trim($answer_txt) == '对' || trim($answer_txt) == '正确' || trim($answer_txt) == '√') $answer = 1;
+                    $dataArr[$k]['answer_list'] = $answer_list;
+                    $dataArr[$k]['answer'] = $answer;
+                    continue;
+                }
+                $bigArr = explode(PHP_EOL , $answer_txt);
+                $sort_num = count($bigArr);
+                $answer_val = 1;
+
+                foreach($bigArr as $b_k => $b_v){
+                    if(empty($b_v)) continue;
+                    $smallArr = explode(self::$answerSplit , $b_v);
+                    $answer_content = $smallArr[0] ?? '';
+                    $answer_result = $smallArr[1] ?? '';
+                    if(empty($answer_content)) throws('[' .$title . ']答案不能为空');// 答案不能为空
+                    $is_right = 1;
+                    if(trim($answer_result) == '错' || trim($answer_result) == '错误' || trim($answer_result) == '×') $is_right = 0;
+                    $temArr = [
+                        'company_id' => $company_id,
+                        'answer_content' => $answer_content,
+                        'is_right' => $is_right,
+                        'answer_val' => $answer_val,
+                        'sort_num' => $sort_num--,
+                    ];
+                    if($is_right == 1) $answer = $answer | $answer_val;
+                    array_push($answer_list, $temArr);
+                    $answer_val *= 2;
+                }
+                if(empty($answer_list)) throws('[' .$title . ']不能没有正确答案');
+                $dataArr[$k]['answer_list'] = $answer_list;
+                $dataArr[$k]['answer'] = $answer;
+
+            }
+            if(empty($dataArr)) throws('文件没有正确格式内容');
+            $saveData = Tool::formatTwoArrKeys($dataArr, Tool::arrEqualKeyVal(['id', 'company_id', 'type_id', 'subject_type', 'title', 'answer', 'answer_list']), false);
+
+        } catch ( \Exception $e) {
+            throws($e->getMessage());
+        }
+        return self::import($request, $controller, $saveData, $notLog);
+    }
+
+
 }

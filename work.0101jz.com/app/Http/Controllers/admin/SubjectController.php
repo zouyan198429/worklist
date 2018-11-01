@@ -4,8 +4,10 @@ namespace App\Http\Controllers\admin;
 
 use App\Business\CompanySubject;
 use App\Business\CompanySubjectType;
+use App\Business\Resource;
 use App\Http\Controllers\AdminController;
 use App\Services\Common;
+use App\Services\Tool;
 use Illuminate\Http\Request;
 
 class SubjectController extends AdminController
@@ -122,6 +124,25 @@ class SubjectController extends AdminController
         CompanySubject::importTemplate($request, $this);
     }
 
+
+    /**
+     * 单文件上传-导入excel
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function import(Request $request)
+    {
+        $this->InitParams($request);
+        // 上传并保存文件
+        $result = Resource::fileSingleUpload($request, $this, 1);
+        if($result['apistatus'] == 0) return $result;
+        // 文件上传成功
+        $fileName = Tool::getPath('public') . '/' . $result['result']['filePath'];
+        $resultDatas = CompanySubject::staffImportByFile($request, $this, $fileName);
+        return ajaxDataArr(1, $resultDatas, '');
+    }
 
     /**
      * 子帐号管理-删除

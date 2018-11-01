@@ -6,6 +6,7 @@ use App\Business\CompanyExamStaffBusiness;
 use App\Business\CompanyStaffBusiness;
 use App\Business\CompanySubjectAnswerBusiness;
 use App\Business\CompanySubjectBusiness;
+use App\Business\CompanySubjectTypeBusiness;
 use App\Models\CompanyDepartment;
 use App\Models\CompanyExam;
 use App\Models\CompanyExamStaff;
@@ -86,6 +87,16 @@ class CompanySubjectController extends CompController
                 $subjectInfo = array_merge($subjectInfo, $oprateArr);
 
                 if(empty($answer_list) && in_array($subject_type, [1,2])) throws('记录[' . $title . ']不能没有答案');
+
+                $type_id = $subjectInfo['type_id'] ?? '';
+                if(empty($type_id)) throws('记录[' . $title . ']分类不能为空');
+                if(is_string($type_id)){
+                    $updateFields = $oprateArr;
+                    $subjectTypeObj = CompanySubjectTypeBusiness::firstOrCreate($company_id, $type_id, $updateFields);
+                    $type_id = $subjectTypeObj->id;
+                    if(!is_numeric($type_id)) throws('记录[' . $title . ']分类有误');
+                    $subjectInfo['type_id'] = $type_id;
+                }
 
                 // $answer_ids = [];// 试题答案id,多个逗号,分隔
                 $answer_history_ids = [];// 试题答案历史id,多个逗号,分隔
