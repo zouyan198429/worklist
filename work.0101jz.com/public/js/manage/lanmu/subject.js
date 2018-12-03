@@ -15,6 +15,7 @@
     document.write("                <span class=\"lbl\"><\/span>");
     document.write("            <\/label>");
     document.write("        <\/td>");
+    document.write("        <td><%=item.id%><\/td>");
     document.write("        <td><%=item.title%><\/td>");
     document.write("        <td><%=item.answer_txt%><\/td>");
     document.write("        <td><%=item.answer_right%><\/td>");

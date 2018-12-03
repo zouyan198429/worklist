@@ -57,6 +57,7 @@
 						<span class="lbl">全选</span>
 					</label>
 				</th>
+				<th>记录id</th>
 				<th>题目</th>
 				<th>答案</th>
 				<th style="width:90px;">正确答案</th>

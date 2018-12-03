@@ -42,6 +42,7 @@ var IMPORT_EXCEL_CLASS = IMPORT_EXCEL_CLASS || "import_file";// 导入EXCEL的fi
              upLoadFileSingle(fileObj, IMPORT_EXCEL_URL, 4, {});
              layer.close(index_query);
          }, function(){
+             fileObj.value = ''; //虽然file的value不能设为有字符的值，但是可以设置为空值
          });
      });
 });

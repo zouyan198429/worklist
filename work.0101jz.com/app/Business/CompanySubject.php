@@ -124,7 +124,13 @@ class CompanySubject extends BaseBusiness
         $result['data_list'] = $data_list;
         // 导出功能
         if($isExport == 1){
-            $headArr = ['id'=>'记录id', 'type_text'=>'类型', 'type_name'=>'分类', 'title'=>'题目', 'answer_txt'=>'答案'];
+            $headArr = ['id'=>'记录id', 'type_text'=>'类型', 'type_name'=>'分类', 'title'=>'题目', 'answer_right'=>'答案'];// 'answer_txt'=>'答案'
+            $key = ord("A");
+            for($i = 1;$i <= 6 ; $i++){
+                $colum = chr($key);
+                $headArr[$colum] = '答案' . $colum . '内容';
+                $key += 1;
+            }
             ImportExport::export('','题目',$data_list,1, $headArr, 0, ['sheet_title' => '题目']);
             die;
         }
@@ -163,8 +169,14 @@ class CompanySubject extends BaseBusiness
                 }
                 if($answer['is_right'] == 1) array_push($rightAnswers, $colum);
                 $subjectInfo['subject_answer'][$an_k]['colum'] = $colum;
+                $subjectInfo[$colum] = $answer['answer_content'];
                 $key += 1;
             }
+            for($i = $key; $i <= ord("F"); $i++){
+                $colum = chr($i);
+                $subjectInfo[$colum] = '';
+            }
+
             $subjectInfo['answer_right'] = implode('、', $rightAnswers);
 
             if($isExport == 1) {// 导出
@@ -173,6 +185,12 @@ class CompanySubject extends BaseBusiness
                 $subjectInfo['answer_txt'] = implode('<br/>', $answers);
             }
             // unset($subjectInfo['subject_answer']);
+        } else {
+            $key = ord("A");
+            for($i = $key; $i <= ord("F"); $i++){
+                $colum = chr($i);
+                $subjectInfo[$colum] = '';
+            }
         }
         $subject_type = $subjectInfo['subject_type'] ?? '';
         $answer = $subjectInfo['answer'] ?? '';
@@ -297,8 +315,24 @@ class CompanySubject extends BaseBusiness
      */
     public static function importTemplate(Request $request, Controller $controller)
     {
-        $headArr = ['id'=>'记录id', 'type_text'=>'类型', 'type_name'=>'分类', 'title'=>'题目', 'answer_txt'=>'答案'];
+        $headArr = ['id'=>'记录id', 'type_text'=>'类型', 'type_name'=>'分类', 'title'=>'题目', 'answer_right'=>'答案'];// , 'answer_txt'=>'答案'
         $data_list = [];
+        $itemData = [
+            'id'=>'0或空:新加;' . PHP_EOL . '数字：更新指定记录试题,如果不存在，则不能导入，此时应该用新加(0值)',
+            'type_text'=>'填：单选、多选、判断',
+            'type_name'=>'如系统没有，则会自动新加',
+            'title'=>'题目',
+            'answer_right'=>'格式：' . PHP_EOL . '单选:A;' . PHP_EOL . '多选：A、C；' . PHP_EOL . '判断：√或×；'
+        ];
+        $key = ord("A");
+        for($i = 1;$i <= 6 ; $i++){
+            $colum = chr($key);
+            $headArr[$colum] = '答案' . $colum . '内容';
+            $itemData[$colum] = '';
+            $key += 1;
+        }
+        $itemData['A'] = '具体答案(可为空，从A-F，遇到第一个空，后面的自动忽略)';
+        array_push($data_list, $itemData);
         ImportExport::export('','试题导入模版',$data_list,1, $headArr, 0, ['sheet_title' => '试题导入模版']);
         die;
     }
@@ -501,8 +535,16 @@ class CompanySubject extends BaseBusiness
             '类型'        => 'type_text',
             '分类'        => 'type_name',
             '题目'        => 'title',
-            '答案'        => 'answer_txt',
+            //'答案'        => 'answer_txt',
+            '答案'        => 'answer_right',
         ];
+
+        $key = ord("A");
+        for($i = 1;$i <= 6 ; $i++){
+            $colum = chr($key);
+            $headArr['答案' . $colum . '内容'] = $colum;
+            $key += 1;
+        }
 //        $headArr = [
 //            '1' => 'name',
 //            '2' => 'chinese',
@@ -511,7 +553,6 @@ class CompanySubject extends BaseBusiness
 //        ];
         try{
             $dataArr = ImportExport::import($fileName, $dataStartRow, $headRowNum, $headArr);
-
             if(empty($dataArr)) throws('文件没有内容');
             $selTypes = self::$selTypes;
             foreach($dataArr as $k => $v){
@@ -519,14 +560,48 @@ class CompanySubject extends BaseBusiness
                 $dataArr[$k]['company_id'] = $company_id;
                 $title =  $v['title'] ?? '';
                 $type_name = $v['type_name'] ?? '';
-                if(empty($type_name)) throws('[' .$title . ']分类不能为空');
+                if(empty($type_name)) throws('[' .$title . ']分类不能为空!!');
                 $dataArr[$k]['type_id'] = $type_name;
                 $type_text = $v['type_text'] ?? '';
                 if(! in_array($type_text, $selTypes)) throws('[' . $title . ']类型不正确');
                 $subject_type = array_search($type_text,$selTypes);
                 if(!is_numeric($subject_type))  throws('[' .$title . ']类型不正确!');
                 $dataArr[$k]['subject_type'] = $subject_type;
-                $answer_txt = $v['answer_txt'] ?? '';
+                $answer_txt = '';
+                // $answer_txt = $v['answer_txt'] ?? ''; // 以前的
+//                1+1=2||->√
+//                2+2=4||->√
+//                6+6=10||->×
+//                50+6=56||->√
+//
+//                ×
+
+                $answer_right = $v['answer_right'] ?? ''; // 正确答案
+                $answer_right = strtoupper($answer_right);
+                $answer_right_arr = explode('、',$answer_right);
+
+                if($subject_type == 4) {// 判断
+                    if(trim($answer_right) == '对' || trim($answer_right) == '正确' || trim($answer_right) == '√') {
+                        $answer_txt = '√';
+                    }else{
+                        $answer_txt = '×';
+                    }
+                }else{// 单选多选
+                    $temAnswerArr = [];
+                    $key = ord("A");
+                    for($j = 1;$j <= 6 ; $j++){
+                        $colum = chr($key);
+                        $temAnswerVal = $v[$colum];
+                        if($temAnswerVal == '' || is_null($temAnswerVal)) break;// 遇到第一个空值，则跳出
+                        $answerTag = '×';
+                        if(in_array($colum, $answer_right_arr))  $answerTag = '√';
+                        array_push($temAnswerArr,$temAnswerVal . self::$answerSplit . $answerTag);
+                        $key += 1;
+                    }
+                    $answer_txt = implode(PHP_EOL ,$temAnswerArr);
+                }
+                // $dataArr[$k]['answer_txt'] = $answer_txt;
+
                 $answer_list = [];
                 $answer = 0;
                 if($subject_type == 4){// 判断

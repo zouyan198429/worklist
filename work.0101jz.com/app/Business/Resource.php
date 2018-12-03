@@ -309,7 +309,8 @@ class Resource extends BaseBusiness
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
             $photo = $request->file('photo');
             Log::info('上传文件日志-文件信息',[$photo]);
-            $extension = strtolower($photo->extension());// 扩展名
+            // $extension = strtolower($photo->extension());// 扩展名  该扩展名可能会和客户端提供的扩展名不一致
+            $extension = $photo->getClientOriginalExtension(); //上传文件的后缀.
             $hashname = $photo->hashName();
             //获取上传文件的大小
             $size = $photo->getSize();
@@ -334,8 +335,7 @@ class Resource extends BaseBusiness
             $typeMaxSize = $resourceTypeArr['maxSize'] ?? '0.5';// 文件最大值 单位 M
             if(!is_numeric($typeMaxSize)) $typeMaxSize = 0.5;// 0.5M
             $typeOther = $resourceTypeArr['other'] ?? [];// 其它各自类型需要判断的指标
-
-            if(!in_array($extension , $typeExt)) throws($typeName . '扩展名必须为[' . implode('', $typeExt) . ']');
+            if(!in_array($extension , $typeExt)) throws($typeName . '扩展名必须为[' . implode('、', $typeExt) . ']');
 
             //这里可根据配置文件的设置，做得更灵活一点
             if($size > $typeMaxSize * 1024 * 1024){

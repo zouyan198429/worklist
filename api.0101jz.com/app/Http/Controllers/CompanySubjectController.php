@@ -76,6 +76,8 @@ class CompanySubjectController extends CompController
         try {
             foreach($save_data as $subjectInfo){
                 $subjectId = $subjectInfo['id'] ?? 0;
+                if($subjectId == '')  $subjectId = 0;
+                if(!is_numeric($subjectId))  throws('记录[' . $subjectId . ']格式不正确');
                 if(isset($subjectInfo['id'])) unset($subjectInfo['id']);
                 $subject_type = $subjectInfo['subject_type'] ?? '';
 
@@ -104,6 +106,7 @@ class CompanySubjectController extends CompController
                 $subjectObj = null;
                 if($subjectId > 0){
                     $subjectObj = CompanySubject::find($subjectId);
+                    if(empty($subjectObj)) throws('记录[' . $subjectId . ']不存在!');
                     if($company_id != $subjectObj->company_id) throws('记录[' . $title . ']没有操作权限');
                     foreach($subjectInfo as $field => $val){
                         $subjectObj->$field = $val;

@@ -1858,10 +1858,11 @@ function upLoadFileSingle(fileObj, ajaxUrl, operate_num, otherParams) {
                             break;
                         default:
                     }
-                    fileObj.value = ''; //虽然file的value不能设为有字符的值，但是可以设置为空值
+                    // fileObj.value = ''; //虽然file的value不能设为有字符的值，但是可以设置为空值
                 });
             }
             layer.close(layer_index)//手动关闭
+            fileObj.value = ''; //虽然file的value不能设为有字符的值，但是可以设置为空值
         }
     });
 }
