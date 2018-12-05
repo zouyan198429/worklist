@@ -12,7 +12,7 @@
 	<div class="page">
 
 		<div class="logo">
-			<img src="http://ofn8u9rp0.bkt.clouddn.com/logo-ydapp3.png" alt="移动工单管理系统">
+			<img src="http://pic.0101jz.com/logo-ydapp3.png" alt="移动工单管理系统">
 		</div>
 		@if(isset($noticeList) && count($noticeList) > 0)
 		<div class="box" id="indmess" style="margin-bottom: 22px;">

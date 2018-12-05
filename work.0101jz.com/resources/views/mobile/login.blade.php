@@ -12,7 +12,7 @@
 <body>
 <div class="page" id="login">
 	<div id="loginheader">
-		<img src="http://ofn8u9rp0.bkt.clouddn.com/logo-ydapp3.png" alt="移动工单管理系统">
+		<img src="http://pic.0101jz.com/logo-ydapp3.png" alt="移动工单管理系统">
  	</div>
 
 	<form action="#"  method="post"  id="addForm" >
