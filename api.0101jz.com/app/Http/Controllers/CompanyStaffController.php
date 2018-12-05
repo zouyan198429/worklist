@@ -22,6 +22,72 @@ class CompanyStaffController extends CompController
     ];
 
     /**
+     * 测试
+     *
+     * @param int $id
+     * @return Response
+     * @author zouyan(305463219@qq.com)
+     */
+    public function test(Request $request)
+    {
+        /* 查
+        // $queryParams = [];
+        $queryParams = [
+            'where' => [
+                // ['id', '&' , '4=4'],
+                ['id', '=' , '4'],
+                // ['company_id', $company_id],
+                //['mobile', $keyword],
+                //['admin_type',self::$admin_type],
+            ],
+//            'select' => [
+//                'id','company_id','type_name','sort_num'
+//                //,'operate_staff_id','operate_staff_history_id'
+//                ,'created_at'
+//            ],
+            // 'orderBy' => ['id'=>'desc'],
+        ];
+        $relations = [];
+        $requestData = CompanyStaffBusiness::getDataLimit(1, 2, 1, $queryParams , $relations);
+        $total = $requestData['total'] ?? 0;
+        $dataList = $requestData['dataList'] ?? [];
+        $datInfo = $dataList[0] ?? [];// 具体数据对象
+        if(!empty($datInfo)) {// 有记录，则修改数据
+            $datInfo->real_name = $datInfo->real_name . 'aaaa';
+            $datInfo->save();
+            pr($datInfo->real_name);
+        }else{
+            pr('没有记录');
+        }
+        */
+
+        // 增
+        $dataParams = [
+            'company_id' => 1,
+            'admin_type' => 0,
+            'admin_username' => '123456789',
+            'admin_password' => 'abc123456',
+            'work_num' => '011112',
+            'department_id' => 1,
+            'group_id' => 1,
+            'channel_id' => 1,
+            'position_id' => 1,
+            'real_name' => '测试',
+            'sex' => 1,
+            'mobile' => '123456780',
+        ];
+        $obj = CompanyStaffBusiness::create($dataParams);
+        if(!empty($obj)) {// 有记录，则修改数据
+            $obj->real_name = $obj->real_name . 'aaaa';
+            $obj->save();
+            pr($obj->real_name);
+        }else{
+            pr('没有记录');
+        }
+
+    }
+
+    /**
      * 批量导入
      *
      * @param int $id
@@ -173,7 +239,39 @@ class CompanyStaffController extends CompController
                 'sex' => $sex_id,
                 'mobile' => $mobile,
             ];
-            $staffObj = CompanyStaffBusiness::firstOrCreate($company_id, $temStaff);
+            // $staffObj = CompanyStaffBusiness::firstOrCreate($company_id, $temStaff);
+            // $staff_id = $staffObj->id;
+           // 查
+            $queryParams = [
+                'where' => [
+                    // ['id', '&' , '4=4'],
+                    ['company_id', $company_id],
+                    ['mobile', '=' ,$mobile],
+                    ['work_num', '=' ,$work_num],
+                    //['mobile', $keyword],
+                    //['admin_type',self::$admin_type],
+                ],
+    //            'select' => [
+    //                'id','company_id','type_name','sort_num'
+    //                //,'operate_staff_id','operate_staff_history_id'
+    //                ,'created_at'
+    //            ],
+                // 'orderBy' => ['id'=>'desc'],
+            ];
+            $relations = [];
+            $requestData = CompanyStaffBusiness::getDataLimit(1, 1, 1, $queryParams , $relations);
+            // $total = $requestData['total'] ?? 0;
+            $dataList = $requestData['dataList'] ?? [];
+            $staffObj = $dataList[0] ?? [];// 具体数据对象
+            if(!empty($staffObj)) {// 有记录，则修改数据
+                foreach($temStaff as $t_k => $t_v){
+                    if(in_array($t_k, ['admin_username', 'admin_password'])) continue; //不修改用户名和密码
+                    $staffObj->{$t_k} = $t_v;
+                }
+                $staffObj->save();
+            }else{// 没有记录,则新加
+                $staffObj = CompanyStaffBusiness::create($temStaff);
+            }
             $staff_id = $staffObj->id;
 
             // 判断版本号是否要+1

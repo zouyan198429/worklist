@@ -146,7 +146,7 @@ $(function(){
     document.write("    var status = item.status;");
     document.write("    var resource_list = item.resource_list;");
     document.write("    can_modify = false;");
-    document.write("    if( item.is_overdue > 0 && status < 4 ){");
+    document.write("    if( (item.is_overdue > 0 && status < 4 ) || status == 4){");
     document.write("      can_modify = true;");
     document.write("    }");
     document.write("    %>");

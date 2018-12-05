@@ -82,6 +82,8 @@ Route::get('admin/staff', 'admin\StaffController@index');//Colleague.html 我的
 Route::get('admin/staff/add/{id}', 'admin\StaffController@add');//m_staff_add.html 添加员工
 Route::get('admin/staff/select', 'admin\StaffController@select');// 同事选择-弹窗
 
+Route::get('admin/staff/export', 'admin\StaffController@export');//colleague.html 我的同事--导出
+Route::get('admin/staff/import_template', 'admin\StaffController@import_template');//colleague.html 我的同事--导入模版
 //客户
 Route::get('admin/customer', 'admin\CustomerController@index');//customer_all.html 客户管理
 Route::get('admin/customer/day_count', 'admin\CustomerController@dayCount');//achievement.html  我的客户-按日统计--*

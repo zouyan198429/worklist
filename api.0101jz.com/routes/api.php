@@ -69,6 +69,7 @@ Route::any('subject/getSubjectByIds', 'CompanySubjectController@getSubjectByIds'
 Route::any('subject/saveExam', 'CompanySubjectController@saveExam');//保存考试
 
 // 员工
+Route::any('staff/test', 'CompanyStaffController@test');//测试
 Route::post('staff/bathImport', 'CompanyStaffController@bathImport');//批量导入
 Route::any('staff/adminStaff', 'CompanyStaffController@adminStaff');//管理员转为员工
 Route::post('staff/getHistoryStaff', 'CompanyStaffController@getHistoryStaff');//获得操作员工历史

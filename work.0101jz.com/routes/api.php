@@ -154,6 +154,8 @@ Route::post('admin/staff/ajax_get_child', 'admin\StaffController@ajax_get_child'
 Route::post('admin/staff/ajax_get_areachild', 'admin\StaffController@ajax_get_areachild');// 根据区县id,街道id获得子类员工数组[kv一维数组]
 Route::post('admin/staff/ajax_import_staff','admin\StaffController@ajax_import_staff'); // 导入员工
 
+Route::post('admin/staff/import', 'admin\StaffController@import');// 导入excel
+Route::any('admin/staff/ajax_get_ids', 'admin\StaffController@ajax_get_ids');// 获得查询所有记录的id字符串，多个逗号分隔
 // 反馈分类
 Route::post('admin/problem_type/ajax_alist', 'admin\ProblemTypeController@ajax_alist');//ajax获得列表数据
 Route::post('admin/problem_type/ajax_get_child', 'admin\ProblemTypeController@ajax_get_child');// 获得子类部门数组[kv一维数组]

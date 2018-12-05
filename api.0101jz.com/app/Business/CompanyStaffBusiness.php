@@ -186,5 +186,37 @@ class CompanyStaffBusiness extends BaseBusiness
         return $staffObj;
     }
 
+    /**
+     * 获得指定条件的多条数据
+     *
+     * @param int 选填 $page 当前页page [默认1]
+     * @param int 选填 $pagesize 每页显示的数量 [默认10]
+     * @param int 选填 $total 总记录数,优化方案：传<=0传重新获取总数[默认0];=-5:只统计条件记录数量，不返回数据
+     * @param string 选填 $queryParams 条件数组/json字符
+     * @param string 选填 $relations 关系数组/json字符
+     * @return array 数据
+        $listData = [
+            'pageSize' => $pagesize,
+            'page' => $page,
+            'total' => $total,
+            'totalPage' => ceil($total/$pagesize),
+            'dataList' => $requestData,
+        ];
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function getDataLimit($page = 1, $pagesize = 10, $total = 0, $queryParams = [], $relations = []){
+        return self::__getDataLimit(self::$model_name,$page, $pagesize, $total, $queryParams, $relations);
+    }
 
+    /**
+     * 新加
+     *
+     * @param array  $dataParams 新加的数据
+     * @return object 对象
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function create($dataParams = [])
+    {
+        return self::__create(self::$model_name, $dataParams);
+    }
 }

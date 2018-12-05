@@ -29,14 +29,14 @@
 			</div>
 			</form>
 		</div>
-		{{--
 		<div class="table-header">
-			<button class="btn btn-danger  btn-xs batch_del"  onclick="action.batchDel(this)">批量删除</button>
-			<button class="btn btn-success  btn-xs export_excel"  onclick="action.exportExcel(this)" >导出EXCEL</button>
-			<button class="btn btn-success  btn-xs import_excel"  onclick="action.importExcel(this)">导入EXCEL</button>
-			<div style="display:none;" ><input type="file" class="import_file img_input"></div>{ {--导入file对象--} }
+			{{--<button class="btn btn-danger  btn-xs batch_del"  onclick="action.batchDel(this)">批量删除</button>--}}
+			<button class="btn btn-success  btn-xs export_excel"  onclick="action.batchExportExcel(this)" >导出[按条件]</button>
+			<button class="btn btn-success  btn-xs export_excel"  onclick="action.exportExcel(this)" >导出[勾选]</button>
+			<button class="btn btn-success  btn-xs import_excel"  onclick="action.importExcelTemplate(this)">导入模版[EXCEL]</button>
+			<button class="btn btn-success  btn-xs import_excel"  onclick="action.importExcel(this)">导入员工</button>
+			<div style="display:none;" ><input type="file" class="import_file img_input"></div>{{--导入file对象--}}
 		</div>
-		--}}
 		<table id="dynamic-table"  class="table2">
 			<thead>
 			<tr>
@@ -90,7 +90,6 @@
         var IMPORT_EXCEL_TEMPLATE_URL = "{{ url('admin/staff/import_template') }}";//导入EXCEL模版地址
         var IMPORT_EXCEL_URL = "{{ url('api/admin/staff/import') }}";//导入EXCEL地址
         var IMPORT_EXCEL_CLASS = "import_file";// 导入EXCEL的file的class
-
 	</script>
 	<script src="{{asset('js/common/list.js')}}"></script>
 	<script src="{{ asset('js/admin/lanmu/staff.js') }}"  type="text/javascript"></script>

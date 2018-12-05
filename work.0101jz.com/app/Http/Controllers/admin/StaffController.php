@@ -5,9 +5,11 @@ namespace App\Http\Controllers\admin;
 use App\Business\CompanyDepartment;
 use App\Business\CompanyPosition;
 use App\Business\CompanyStaff;
+use App\Business\Resource;
 use App\Http\Controllers\AdminController;
 use App\Services\Common;
 use App\Services\Excel\ImportExport;
+use App\Services\Tool;
 use Illuminate\Http\Request;
 
 class StaffController extends AdminController
@@ -144,6 +146,21 @@ class StaffController extends AdminController
     }
 
     /**
+     * ajax获得列表数据
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function ajax_get_ids(Request $request){
+        $this->InitParams($request);
+        $result = CompanyStaff::getList($request, $this, 1 + 0);
+        $data_list = $result['result']['data_list'] ?? [];
+        $ids = implode(',', array_column($data_list, 'id'));
+        return ajaxDataArr(1, $ids, '');
+    }
+
+    /**
      * 导出
      *
      * @param Request $request
@@ -217,6 +234,25 @@ class StaffController extends AdminController
     public function ajax_import_staff(Request $request){
         $this->InitParams($request);
         $fileName = 'staffs.xlsx';
+        $resultDatas = CompanyStaff::staffImportByFile($request, $this, $fileName);
+        return ajaxDataArr(1, $resultDatas, '');
+    }
+
+    /**
+     * 单文件上传-导入excel
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function import(Request $request)
+    {
+        $this->InitParams($request);
+        // 上传并保存文件
+        $result = Resource::fileSingleUpload($request, $this, 1);
+        if($result['apistatus'] == 0) return $result;
+        // 文件上传成功
+        $fileName = Tool::getPath('public') . '/' . $result['result']['filePath'];
         $resultDatas = CompanyStaff::staffImportByFile($request, $this, $fileName);
         return ajaxDataArr(1, $resultDatas, '');
     }

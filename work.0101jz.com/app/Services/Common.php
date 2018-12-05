@@ -401,6 +401,24 @@ class Common
         return $requestData;
     }
 
+    /**
+     * 获得指定条件的多条数据
+     *
+     * @param int 选填 $page 当前页page [默认1]
+     * @param int 选填 $pagesize 每页显示的数量 [默认10]
+     * @param int 选填 $total 总记录数,优化方案：传<=0传重新获取总数[默认0];=-5:只统计条件记录数量，不返回数据
+     * @param string 选填 $queryParams 条件数组/json字符
+     * @param string 选填 $relations 关系数组/json字符
+     * @return array 数据
+        $listData = [
+            'pageSize' => $pagesize,
+            'page' => $page,
+            'total' => $total,
+            'totalPage' => ceil($total/$pagesize),
+            'dataList' => $requestData,
+        ];
+     * @author zouyan(305463219@qq.com)
+     */
     public static function getModelListDatas(&$modelObj,  $page = 1, $pagesize = 10, $total = 0, $queryParams = [], $relations = [] ){
 
         // 偏移量
@@ -426,7 +444,11 @@ class Common
         ];
         $relations = ['siteResources','CompanyInfo.proUnits.proRecords','CompanyInfo.companyType'];
         */
+        $needDataList = true;
         if ($total <= 0){ // 需要获得总页数
+            if($total == -5){
+                $needDataList = false;
+            }
             unset($queryParams['limit']);
             unset($queryParams['offset']);
             unset($queryParams['take']);
@@ -442,13 +464,15 @@ class Common
         } else {
             $limitParams = array_merge($queryParams,$limitParams);
         }
+        $requestData = [];
+        if($needDataList) {
+            // 获得数据
+            self::resolveSqlParams($modelObj, $limitParams);
+            $requestData = $modelObj->get();
 
-        // 获得数据
-        self::resolveSqlParams($modelObj, $limitParams);
-        $requestData = $modelObj->get();
-
-        // 获得关联系关系
-        self::resolveRelations($requestData, $relations);
+            // 获得关联系关系
+            self::resolveRelations($requestData, $relations);
+        }
 
         $listData = [
             'pageSize' => $pagesize,
