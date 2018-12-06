@@ -119,8 +119,18 @@ class CompanyStaffController extends CompController
             $position = $info['position'] ?? '';// 职位
             $mobile = $info['mobile'] ?? '';// 手机号
             $sex = $info['sex'] ?? '';// 性别
+            if(empty($mobile) && empty($work_num) && empty($department) && empty($group)){
+                unset($save_data[$k]);
+                continue;
+            }
             if (empty($mobile) || empty($work_num)) {
                 throws('手机号或工号不能为空');
+            }
+            if(empty($department) ){
+                throws('县区不能为空!');
+            }
+            if(empty($group) ){
+                throws('归属营业厅或片区不能为空!');
             }
 //            // 判断工号是否已经存在
 //            if(CompanyStaffBusiness::judgeExistWorkNum($company_id, $work_num)){
@@ -156,6 +166,13 @@ class CompanyStaffController extends CompController
             if(empty($mobile) || empty($work_num)){
                 throws('手机号或工号不能为空');
             }
+            if(empty($department) ){
+                throws('县区不能为空!');
+            }
+            if(empty($group) ){
+                throws('归属营业厅或片区不能为空!');
+            }
+
             if(empty($real_name)){
                 $real_name = $channel;
                 if(empty($real_name)){
