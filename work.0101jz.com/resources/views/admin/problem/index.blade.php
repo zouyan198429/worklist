@@ -30,13 +30,13 @@
 			<thead>
 			<tr>
 				{{--<th></th>--}}
-				<th>类型</th>
+				<th style="min-width: 180px;">类型</th>
 				<th>内容</th>
 				{{--<th>回复</th>--}}
 				{{--<th>客户电话</th>--}}
-				<th>发送部门</th>
-				<th>发送人</th>
-				<th>时间</th>
+				<th style="min-width: 180px;">发送部门</th>
+				<th style="min-width: 80px;">发送人</th>
+				<th style="min-width: 100px;">时间</th>
 				{{--<th>操作</th>--}}
 			</tr>
 			</thead>
