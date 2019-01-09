@@ -11,6 +11,17 @@ $(function(){
         //,max: get_now_format()//'2017-12-31'
         ,calendar: true//是否显示公历节日
     });
+
+    // 最晚开始日期
+    laydate.render({
+        elem: '.exam_begin_time_last' //指定元素
+        ,type: 'datetime'
+        ,value: BEGIN_TIME_LAST// '2018-08-18' //必须遵循format参数设定的格式
+        ,min: get_now_format()//'2017-1-1'
+        //,max: get_now_format()//'2017-12-31'
+        ,calendar: true//是否显示公历节日
+    });
+
     //提交
     $(document).on("click","#submitBtn",function(){
         //var index_query = layer.confirm('您确定提交保存吗？', {
@@ -50,6 +61,22 @@ function ajax_form(){
     var begin_date = $('input[name=exam_begin_time]').val();
     if(!judge_validate(4,'开考时间',begin_date,true,'date','','')){
         return false;
+    }
+
+    // 最晚开考时间
+    var end_date = $('input[name=exam_begin_time_last]').val();
+    if(!judge_validate(4,'最晚开考时间',end_date,true,'date','','')){
+        return false;
+    }
+
+    if( end_date !== ''){
+        if(begin_date == ''){
+            layer_alert("请选择开考时间",3,0);
+            return false;
+        }
+        if( !judge_validate(4,'最晚开考时间必须',end_date,true,'data_size',begin_date,5)){
+            return false;
+        }
     }
 
     var now_time = get_now_format();

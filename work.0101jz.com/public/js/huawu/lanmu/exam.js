@@ -110,7 +110,7 @@ countTime();
     document.write("        <td><%=item.exam_subject%><\/td>");
     document.write("        <td><%=item.exam_begin_time%><\/td>");
     document.write("        <td><%=item.exam_minute%>分钟<\/td>");
-    document.write("        <td><%=item.exam_end_time%><\/td>");
+    document.write("        <td><%=item.exam_begin_time_last%><\/td>");
     document.write("        <td><%=item.subject_amount%>题<\/td>");
     document.write("        <td><%=item.total_score%>分<br\/><%=item.pass_score%>分<\/td>");
     document.write("        <td>");

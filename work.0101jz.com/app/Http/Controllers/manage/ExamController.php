@@ -167,9 +167,16 @@ class ExamController extends AdminController
         $exam_subject = Common::get($request, 'exam_subject');
 
         $exam_begin_time = Common::get($request, 'exam_begin_time');// 开考时间
+
+        $exam_begin_time_last = Common::get($request, 'exam_begin_time_last');// 最晚开考时间
+
         $nowTime = time();
         // 判断开始结束日期[ 可为空,有值的话-；4 开始日期 不能大于 >  当前日；32 结束日期 不能大于 >  当前日;256 开始日期 不能大于 >  结束日期]
-        Tool::judgeBeginEndDate($exam_begin_time, '', 1 + 8 + 16);
+        // Tool::judgeBeginEndDate($exam_begin_time, '', 1 + 8 + 16);
+
+        // 判断开始结束日期[可为空,有值的话-；
+        Tool::judgeBeginEndDate($exam_begin_time, $exam_begin_time_last, 1 + 2 + 16 + 128 + 256, 1 , date('Y-m-d H:i:s'));
+        // ajaxDataArr(0, null, '结束日期不能小于开始日期！');
 
         $exam_minute = Common::getInt($request, 'exam_minute');
 
@@ -197,6 +204,7 @@ class ExamController extends AdminController
                 'staff_id' => $staff_id,
                 'staff_history_id' => $staff_history_ids[$k] ?? 0,
                 'exam_begin_time' => $exam_begin_time,
+                'exam_begin_time_last' => $exam_begin_time_last,
                // 'exam_end_time' => $exam_end_time,
                 'exam_minute' => $exam_minute,
                 'paper_history_id' => $paper_history_id,
@@ -221,6 +229,7 @@ class ExamController extends AdminController
             // 'subject_amount' => 0,
             // 'total_score' => 0,
             'exam_begin_time' => $exam_begin_time,
+            'exam_begin_time_last' => $exam_begin_time_last,
             'exam_minute' => $exam_minute,
             // 'exam_end_time' => $exam_end_time,
             'pass_score' => $pass_score,

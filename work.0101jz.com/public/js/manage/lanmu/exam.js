@@ -22,7 +22,7 @@
     document.write("        <td><%=item.exam_subject%><\/td>");
     document.write("        <td><%=item.exam_begin_time%><\/td>");
     document.write("        <td><%=item.exam_minute%><\/td>");
-    document.write("        <td><%=item.exam_end_time%><\/td>");
+    document.write("        <td><%=item.exam_begin_time_last%><\/td>");
     document.write("        <td><%=item.history_paper_name%><\/td>");
     document.write("        <td><%=item.pass_score%><\/td>");
     document.write("        <td><%=item.subject_num%><\/td>");

@@ -308,8 +308,10 @@ class CompanySubjectController extends CompController
                 $examInfo['company_id'] = $company_id;
                 $exam_num = $examInfo['exam_num'] ?? '';
                 $exam_begin_time  = $examInfo['exam_begin_time'] ?? '';// 开考时间
+                $exam_begin_time_last  = $examInfo['exam_begin_time_last'] ?? '';// 最晚开考时间
                 $exam_minute  = $examInfo['exam_minute'] ?? '';// 考试时长分
-                $exam_end_time = date('Y-m-d H:i:s', strtotime($exam_begin_time . ' +' . $exam_minute . ' minute'));
+                // $exam_end_time = date('Y-m-d H:i:s', strtotime($exam_begin_time . ' +' . $exam_minute . ' minute'));
+                $exam_end_time = date('Y-m-d H:i:s', strtotime($exam_begin_time_last . ' +' . $exam_minute . ' minute'));
                 $examInfo['exam_end_time'] = $exam_end_time;
                 $examInfo = array_merge($examInfo, $oprateArr);
 
@@ -334,10 +336,16 @@ class CompanySubjectController extends CompController
                 // $examObj = CompanySubjectBusiness::updateOrCreate($company_id, $examId , $examInfo);
                 $examStaffIds = [];
                 // 处理 员工
+                // 答题人的最晚开考时间
+                $staff_end_time = $exam_begin_time_last;
+                if( strtotime($exam_begin_time) == strtotime($exam_begin_time_last)  ){// 准时开考，则可延时1分钟进入考试
+                    $staff_end_time = date('Y-m-d H:i:s', strtotime($exam_begin_time_last . ' +' . 1 . ' minute'));
+                }
+
                 foreach($staffList as $staffInfo){
                     $staffInfo = array_merge($staffInfo, $oprateArr);
                     $staff_id = $staffInfo['staff_id'];
-                    $staffInfo['exam_end_time'] = $exam_end_time;
+                    $staffInfo['exam_end_time'] = $staff_end_time;// $exam_end_time; 答题人的最晚开考时间
                     $staffObj = CompanyExamStaffBusiness::updateOrCreate($company_id, $examId , $staff_id, $staffInfo);
                     $temId = $staffObj->id;
                     if($temId <= 0) throws('记录[' . $exam_num . ']员工[' . $staff_id . ']不存在');

@@ -30,6 +30,12 @@
 					</td>
 				</tr>
 				<tr>
+					<th>最晚开考时间</th>
+					<td>
+						<input type="text" class="inp wlong exam_begin_time_last" name="exam_begin_time_last" value="{{ $exam_begin_time_last or '' }}" placeholder="请选择最晚开考时间"/>
+					</td>
+				</tr>
+				<tr>
 					<th>考试时长(分)</th>
 					<td>
 						<input type="text" class="inp wlong" name="exam_minute" value="{{ $exam_minute or '' }}" placeholder="请输入考试时长" autofocus  required  onkeyup="isnum(this) " onafterpaste="isnum(this)" />
@@ -125,6 +131,7 @@
 
 
         var BEGIN_TIME = "{{ $exam_begin_time or '' }}" ;//开考时间
+        var BEGIN_TIME_LAST = "{{ $exam_begin_time_last or '' }}" ;//最晚开考时间
 	</script>
 	<script src="{{ asset('/js/admin/lanmu/exam_edit.js') }}"  type="text/javascript"></script>
 @endpush

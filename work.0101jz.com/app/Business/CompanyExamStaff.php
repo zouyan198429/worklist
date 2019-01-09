@@ -123,6 +123,15 @@ class CompanyExamStaff extends BaseBusiness
             $answer_minute = '';
             if(!empty($answer_end_time) && !empty($answer_begin_time)) $answer_minute = ceil((strtotime($answer_end_time) - strtotime($answer_begin_time)) / 60 );
             $data_list[$k]['answer_minute'] = $answer_minute;
+            // 最后开考时间
+//            $now_time = date('Y-m-d H:i:s');
+//            $exam_begin_time_last = $v['exam_begin_time_last'] ?? $now_time;
+//            $tem_status = $v['status'] ?? 0;
+//            //$hasDoing = 1;// 是否可以进入考试 0 不可以，1 可以
+//            if(strtotime($exam_begin_time_last) < strtotime($now_time) && $tem_status == 1){// 已过最后开考时间，还没有考试的。
+//
+//            }
+
 //            // 公司名称
 //            $data_list[$k]['company_name'] = $v['company_info']['company_name'] ?? '';
 //            if(isset($data_list[$k]['company_info'])) unset($data_list[$k]['company_info']);
@@ -412,10 +421,19 @@ class CompanyExamStaff extends BaseBusiness
             if(empty($subject_history_ids))  throws('没有试题信息!');
             // 保存试题历史id信息
             $subject_history_ids = implode(',', $subject_history_ids);
+            // 答题时间
+            $answer_begin_time = date('Y-m-d H:i:s');
+            // 根据答题时间，修改最终交卷时间
+            $exam_minute = $infoDatas['exam_minute'] ?? 0;// 考试时长(分钟)
+            $exam_end_time = date('Y-m-d H:i:s', strtotime($answer_begin_time . ' +' . $exam_minute . ' minute'));
             $saveData = [
                 'subject_history_ids' => $subject_history_ids,
-                'answer_begin_time' => date('Y-m-d H:i:s'),
+                'answer_begin_time' => $answer_begin_time,// date('Y-m-d H:i:s'),
+                'exam_end_time' => $exam_end_time, // 根据答题时间，修改最终交卷时间
             ];
+            // 考试状态
+            $status = $infoDatas['status'] ?? 0;// status' => 3,// 状态1等考试2考试中3已考试4缺考;
+            if($status == 1) $saveData['status'] = 2;
             self::replaceById($request, $controller, $saveData, $id);
         }
         return $subject_history_ids;

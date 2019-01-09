@@ -42,6 +42,19 @@ class ExamController extends WorksController
 
         if ($id > 0) { // 获得详情数据
             $resultDatas = CompanyExamStaff::getInfoData($request, $this, $id, ['staffExam']);
+            // 时间处理
+            $exam_begin_time = $resultDatas['answer_begin_time'] ?? '';
+            $exam_end_time = $resultDatas['exam_end_time'] ?? '';
+            $exam_minute = $resultDatas['exam_minute'] ?? 0;// 考试时长
+            if(empty($exam_begin_time) || is_null($exam_begin_time)) {
+                $exam_begin_time = date('Y-m-d H:i:s');
+                $exam_end_time =  date('Y-m-d H:i:s', strtotime($exam_begin_time . ' +' . $exam_minute . ' minute'));
+            }
+            // $resultDatas['exam_begin_time'] = $exam_begin_time;
+            $resultDatas['answer_begin_time'] = $exam_begin_time;
+            $resultDatas['exam_end_time'] = $exam_end_time;
+            // $resultDatas['staff_exam']['exam_begin_time'] = $exam_begin_time;
+            // $resultDatas['staff_exam']['exam_end_time'] = $exam_end_time;
 //            $staff_id = $resultDatas['staff_id'] ?? '';// 考试所属人
 //
 //            // 开始时间
