@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+
 use App\Business\CompanyChannelBusiness;
 use App\Business\CompanyDepartmentBusiness;
 use App\Business\CompanyPositionBusiness;
@@ -60,7 +61,7 @@ class CompanyStaffController extends CompController
             pr('没有记录');
         }
         */
-
+        /*
         // 增
         $dataParams = [
             'company_id' => 1,
@@ -84,6 +85,7 @@ class CompanyStaffController extends CompController
         }else{
             pr('没有记录');
         }
+        */
 
     }
 

@@ -1,7 +1,7 @@
 
 $(function(){
     $('.search_frm').trigger("click");// 触发搜索事件
-    reset_list_self(false, false);
+    // reset_list_self(false, false);
 });
 //重载列表
 //is_read_page 是否读取当前页,否则为第一页 true:读取,false默认第一页

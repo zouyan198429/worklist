@@ -70,7 +70,6 @@ $(function(){
         var send_department_id = $('select[name=send_department_id]').val();
         var tem_config = REL_CHANGE.staff_department;
         tem_config.other_params = {'department_id':send_department_id};
-        // changeFirstSel(REL_CHANGE.staff_department, $(this).val(), 0, true);
         changeFirstSel(tem_config, $(this).val(), 0, true);
         return false;
     });

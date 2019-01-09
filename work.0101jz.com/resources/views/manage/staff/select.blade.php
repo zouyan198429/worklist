@@ -13,16 +13,22 @@
 
 	<div id="crumb"><i class="fa fa-reorder fa-fw" aria-hidden="true"></i> 选择员工</div>
 	<div class="mm">
+		<form onsubmit="return false;" class="form-horizontal" role="form" method="post" id="search_frm" action="#">
 		<div class="mmhead" id="mywork">
 
 			@include('common.pageParams')
 
-			{{--<div class="tabbox" >--}}
+			<div class="tabbox"  style="width:880px;">
 				{{--<a href="javascript:void(0);" class="on " onclick="action.add()">添加员工</a>--}}
-			{{--</div>--}}
-			<form onsubmit="return false;" class="form-horizontal" role="form" method="post" id="search_frm" action="#">
-			<div class="msearch fr">
+				职位：
+				@foreach ($position_kv as $k=>$txt)
+					<label>
+						<input type="checkbox" name="position_ids" value="{{ $k }}"  @if( isset($positionIds) && in_array($k, $positionIds)) checked="checked"  @endif/>{{ $txt }}
+					</label>
+				@endforeach
+			</div>
 
+			<div class="msearch fr" >
 				<select class="wmini" name="department_id">
 					<option value="">全部</option>
 					@foreach ($department_kv as $k=>$txt)
@@ -35,9 +41,9 @@
 				<input type="text" value=""  style="width: 100px;" name="keyword"  placeholder="请输入姓名"/>
 				<button class="btn btn-normal search_frm " >搜索</button>
 			</div>
-			</form>
 		</div>
-
+		</form>
+		<div style="clear:both;"></div>
 		<div class="table-header">
 			{{--<button class="btn btn-danger  btn-xs batch_del"  onclick="action.batchDel(this)">批量删除</button>--}}
 			{{--<button class="btn btn-success  btn-xs export_excel"  onclick="action.batchExportExcel(this)" >导出[按条件]</button>--}}

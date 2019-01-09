@@ -341,6 +341,12 @@ class CompanyStaff extends BaseBusiness
             $department_id = Common::getInt($request, 'department_id');
             $keyword = Common::get($request, 'keyword');
 
+            $position_ids = Common::get($request, 'position_ids');// 职位数组
+            if(!empty($position_ids)){
+                if(!is_array($position_ids)) $position_ids = explode(',', $position_ids);
+                $queryParams['whereIn']['position_id'] = $position_ids;
+            }
+
             if ($department_id > 0) {
                 array_push($queryParams['where'], ['department_id', $department_id]);
             }

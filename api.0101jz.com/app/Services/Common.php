@@ -963,18 +963,18 @@ class Common
     }
 
     //自增自减-data操作的行数
-    public static function requestSaveDecIncqqqqq(Request $request, &$modelObj = null)
-    {
-        // 获得对象
-        self:: requestGetObj($request,$modelObj);
-        // 字段数组
-        $dataParams = self::get($request, 'dataParams');
-
-        // json 转成数组
-        jsonStrToArr($dataParams , 1, '参数[dataParams]格式有误!');
-        $requestData =$modelObj->find(7)->increment('validate_num', 5);
-        return okArray($requestData);
-    }
+//    public static function requestSaveDecIncqqqqq(Request $request, &$modelObj = null)
+//    {
+//        // 获得对象
+//        self:: requestGetObj($request,$modelObj);
+//        // 字段数组
+//        $dataParams = self::get($request, 'dataParams');
+//
+//        // json 转成数组
+//        jsonStrToArr($dataParams , 1, '参数[dataParams]格式有误!');
+//        $requestData =$modelObj->find(7)->increment('validate_num', 5);
+//        return okArray($requestData);
+//    }
 
     public static function requestGetObj(Request $request,&$modelObj = null){
         if (! is_object($modelObj)) {

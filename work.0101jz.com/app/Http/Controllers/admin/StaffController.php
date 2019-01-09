@@ -43,6 +43,8 @@ class StaffController extends AdminController
         $reDataArr = $this->reDataArr;
         // 获得第一级部门分类一维数组[$k=>$v]
         $reDataArr['department_kv'] = CompanyDepartment::getChildListKeyVal($request, $this, 0, 1 + 0);
+        // 获得第一级职位分类一维数组[$k=>$v]
+        $reDataArr['position_kv'] = CompanyPosition::getListKeyVal($request, $this, 1 + 0);
         return view('manage.staff.select', $reDataArr);
     }
 
