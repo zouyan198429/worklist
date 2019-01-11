@@ -1,4 +1,4 @@
-body { 	font: 16px/1.5 "microsoft yahei", Helvetica, Tahoma, Arial, "Microsoft jhengHei", sans-serif;	color:#404040; background-color:#fff;}
+body { 	font: 14px/1.5 "microsoft yahei", Helvetica, Tahoma, Arial, "Microsoft jhengHei", sans-serif;	color:#404040; background-color:#fff;}
 body,p,pre,blockquote,
 h1,h2,h3,h4,h5,h6,			
 dl,dt,dd,ul,ol,li,			
@@ -50,7 +50,7 @@ select { height:24px; line-height:24px; }
     margin: 0 0 5px;
     padding: 6px 16px;
     line-height: 22px;
-    font-size: 16px;
+    font-size: 14px;
     color: #FFFFFF;
     cursor: pointer;
     text-align: center;
@@ -136,9 +136,6 @@ body { background: #f2f2f2;}
 .table2 { width: 100%; border-collapse: collapse; }
 .table2 th { background: #f2f2f2; padding: 5px; text-align: center; border:1px solid #ddd;}
 .table2 td { background: #f8f8f8; padding: 5px; text-align: center; border:1px solid #ddd;}
-.table2 tr:hover {background-color: #dafdf3;}
-.table2 tr:hover td{background:none;}
-
 .mmfoot  { min-height: 50px;margin-top: 10px; }
 .mmfleft { float: left; }
 .mmfright { float: right; width: auto; padding: 10px 0;  text-align: right;  }
@@ -159,8 +156,8 @@ p.tip { font-size: 12px;  line-height: 1.5em; color: #aaa; margin-top: 0.5em;}
 
 /*  mmhead  */
 .mmhead { margin-bottom: 10px; min-height: 20px; padding-bottom: 15px;}
-.tabbox { float: left; width: 750px; text-align: left;  }
-.msearch { width: 500px; text-align: right;  }
+.tabbox { float: left; width: auto; text-align: left;  }
+.msearch { width: auto; text-align: right;  }
 
 .line {  border-bottom:1px solid #eee; }
 .tags { border:1px solid #ddd;  margin-right: 5px; padding: 3px 8px; cursor: pointer; text-decoration: none; }
@@ -242,7 +239,8 @@ p.tip { font-size: 12px;  line-height: 1.5em; color: #aaa; margin-top: 0.5em;}
     font-size:14px;
     line-height:38px;
     padding-left:12px;
-    margin-bottom:1px
+    margin-bottom:1px;
+    padding-top:4px;
 }
 .table-header .close {
     margin-right:8px;
@@ -263,3 +261,22 @@ p.tip { font-size: 12px;  line-height: 1.5em; color: #aaa; margin-top: 0.5em;}
 #examinbox .content {}
 #examinbox .content h1 { padding: 20px;}
 #examinbox .content li { padding: 20px; font-size: 22px; }
+
+.begin_date { text-indent: 0.25em; }
+.end_date {
+    text-indent: 0.25em;
+}
+@media screen and (max-width: 1280px){
+/* CSS 代码 */
+
+.mmhead {
+    height: 60px;
+}
+
+.msearch {
+  width: 100%;
+  text-align: left;
+  margin-top:6px;
+}
+
+}

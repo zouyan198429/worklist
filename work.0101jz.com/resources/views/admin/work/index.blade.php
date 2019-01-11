@@ -12,7 +12,7 @@
 		<form onsubmit="return false;" class="form-horizontal" role="form" method="post" id="search_frm_self" action="#">
 		<div class="mmhead" id="mywork">
 			<div class="tabbox" >
-				<a href="javascript:void(0);"  data-status="" class="status_click">全部工单</a>
+				<a href="javascript:void(0);"  data-status="" class="status_click">全部</a>
 				@foreach ($status as $k=>$txt)
 					<a href="javascript:void(0)" data-status="{{ $k }}" class="status_click @if ($k == $defaultStatus) on @endif ">
 						{{ $txt }}
@@ -23,16 +23,16 @@
 				@endforeach
 			</div>
 			<div class="msearch fr">
-				<input type="text"  name="begin_date" class="begin_date" value="{{ $begin_date or '' }}"  placeholder="开始日期" style="width:100px;" />
+				<input type="text"  name="begin_date" class="begin_date" value="{{ $begin_date or '' }}"  placeholder="开始日期" style="width:70px;" />
 				--
-				<input type="text"  name="end_date" class="end_date" value="{{ $end_date or '' }}"  placeholder="结束日期" style="width:100px;" />
-				<select style="width:80px; height:28px; display: none;" name="status" >
+				<input type="text"  name="end_date" class="end_date" value="{{ $end_date or '' }}"  placeholder="结束日期" style="width:70px;" />
+				<select style="width:60px; height:28px; display: none;" name="status" >
 					<option value="">全部</option>
 					@foreach ($status as $k=>$txt)
 						<option value="{{ $k }}"   @if ($k == $defaultStatus) selected @endif >{{ $txt }}</option>
 					@endforeach
 				</select>
-				<select style="width:80px; height:28px;" name="field">
+				<select style="width:60px; height:28px;" name="field">
 					<option value="call_number">手机号</option>
 					<option value="customer_name">姓名</option>
 					<option value="work_num">工单号</option>

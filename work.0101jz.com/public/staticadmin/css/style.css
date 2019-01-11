@@ -42,7 +42,12 @@ input[type='submit'] { color:#fff; background:#018CDA; border:0; height:26px; pa
 input[type='file'] { border:0; padding:5px 5px 5px 0; }
 select { height:24px; line-height:24px; }
 
-.btn{background:#d9d9d9;border-width:1px;vertical-align:middle;height:21px;padding-left:0.15em;padding-right:0.15em;border: 1px solid; border-color: #c0c0c0 #555 #555 #c0c0c0;}
+.btn{background:#d9d9d9;
+    border-width:1px;
+    vertical-align:middle;
+    min-height:21px;
+
+    padding-left:0.15em;padding-right:0.15em;border: 1px solid; border-color: #c0c0c0 #555 #555 #c0c0c0;}
 
 /* 按钮 */
 .btn {
@@ -161,9 +166,9 @@ button.btn-l { height:50px; line-height: 20px; padding:15px 0; color: #fff; font
 p.tip { font-size: 12px;  line-height: 1.5em; color: #aaa; margin-top: 0.5em;}
 
 /*  mmhead  */
-.mmhead { margin-bottom: 10px; min-height: 20px; padding-bottom: 15px;}
+.mmhead { margin-bottom: 10px; min-height: 20px; height: auto; padding-bottom: 15px;}
 .tabbox { float: left; width: auto; text-align: left;  }
-.msearch { width: 500px; text-align: right;  }
+.msearch { width: auto; text-align: right;  }
 
 .line {  border-bottom:1px solid #eee; }
 .tags { border:1px solid #ddd;  margin-right: 5px; padding: 3px 8px; cursor: pointer; text-decoration: none; }
@@ -268,4 +273,19 @@ p.tip { font-size: 12px;  line-height: 1.5em; color: #aaa; margin-top: 0.5em;}
 }
 .table-header button{
     height: auto;
+}
+
+@media screen and (max-width: 1280px){
+/* CSS 代码 */
+
+.mmhead {
+    height: 60px;
+}
+
+.msearch {
+  width: 100%;
+  text-align: left;
+  margin-top:6px;
+}
+
 }

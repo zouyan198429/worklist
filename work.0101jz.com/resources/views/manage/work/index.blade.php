@@ -12,7 +12,7 @@
 		<form onsubmit="return false;" class="form-horizontal" role="form" method="post" id="search_frm_self" action="#">
 		<div class="mmhead" id="mywork">
 			<div class="tabbox" >
-				<a href="javascript:void(0);" data-status="" class="status_click">全部工单</a>
+				<a href="javascript:void(0);" data-status="" class="status_click">全部</a>
                 @foreach ($status as $k=>$txt)
                     <a href="javascript:void(0);" data-status="{{ $k }}" class="status_click @if ($k == $defaultStatus) on @endif">
                         {{ $txt }}

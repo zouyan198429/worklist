@@ -99,3 +99,25 @@ h1 a {
  	background: #fff;
  	color: #4b4a5e;
  }
+
+
+@media screen and (max-width: 1280px){
+/* CSS 代码 */
+.accordion li i {
+	position: absolute;
+	top: 12px;
+	left: 12px;
+	font-size: 15px;
+	color: #fff;
+	-webkit-transition: all 0.4s ease;
+	-o-transition: all 0.4s ease;
+	transition: all 0.4s ease;
+}
+.accordion .link {
+	padding: 10px 15px 10px 42px;
+}
+.submenu a {
+    padding: 6px 12px;
+    padding-left: 42px;
+}
+}
