@@ -1,4 +1,29 @@
 
+//获取当前窗口索引
+var PARENT_LAYER_INDEX = parent.layer.getFrameIndex(window.name);
+//让层自适应iframe
+////parent.layer.iframeAuto(PARENT_LAYER_INDEX);
+// parent.layer.full(PARENT_LAYER_INDEX);// 用这个
+//关闭iframe
+$(document).on("click",".closeIframe",function(){
+    iframeclose(PARENT_LAYER_INDEX);
+});
+//刷新父窗口列表
+// reset_total 是否重新从数据库获取总页数 true:重新获取,false不重新获取
+function parent_only_reset_list(reset_total){
+    window.parent.reset_list(true, true, reset_total);//刷新父窗口列表
+}
+//关闭弹窗,并刷新父窗口列表
+// reset_total 是否重新从数据库获取总页数 true:重新获取,false不重新获取
+function parent_reset_list_iframe_close(reset_total){
+    window.parent.reset_list(true, true, reset_total);//刷新父窗口列表
+    parent.layer.close(PARENT_LAYER_INDEX);
+}
+//关闭弹窗
+function parent_reset_list(){
+    parent.layer.close(PARENT_LAYER_INDEX);
+}
+
 $(function(){
     $('.search_frm').trigger("click");// 触发搜索事件
     // reset_list_self(false, false);
@@ -56,47 +81,48 @@ var otheraction = {
     },
     addBatchSearch : function(obj){// 批量增加员工- 查询条件
         // var checkAllObj =  $(obj);
-        var index_query = layer.confirm('确定增加选中记录？', {
+        var index_query = layer.confirm('确定添加当前查询条件所有记录？', {
             btn: ['确定','取消'] //按钮
         }, function(){
-            if(!$('#dynamic-table').find('.check_all').is(':checked')) {
-                $('#dynamic-table').find('.check_all').trigger("click");
-            }// 触发搜索事件
-            var ids = get_list_checked(DYNAMIC_TABLE_BODY,1,1);
-            if(ids == '') err_alert('请选择需要操作的记录');
-            parent.addStaff(ids);
-            initList();
-            layer.close(index_query);
-            //获得搜索表单的值
-            // append_sure_form(SURE_FRM_IDS,FRM_IDS);//把搜索表单值转换到可以查询用的表单中
-            // $('.search_frm').trigger("click");// 触发搜索事件
-            // //获得表单各name的值
-            // var data = get_frm_values(SURE_FRM_IDS);// {}
-            // console.log(data);
-            // var layer_index = layer.load();
-            // $.ajax({
-            //     'async': false,// true,//false:同步;true:异步
-            //     'type' : 'POST',
-            //     'url' : AJAX_SEARCH_IDS_URL,
-            //     'data' : data,
-            //     'dataType' : 'json',
-            //     'success' : function(ret){
-            //         console.log('ret',ret);
-            //         if(!ret.apistatus){//失败
-            //             //alert('失败');
-            //             err_alert(ret.errorMsg);
-            //         }else{//成功
-            //             var ids = ret.result;
-            //             console.log('ids', ids);
-            //             //var ids = get_list_checked(DYNAMIC_TABLE_BODY,1,1);
-            //             if(ids == '') err_alert('请选择需要操作的记录');
-            //             parent.addStaff(ids);
-            //             initList();
-            //         }
-            //         layer.close(layer_index)//手动关闭
-            //     }
-            // });
+            // if(!$('#dynamic-table').find('.check_all').is(':checked')) {
+            //     $('#dynamic-table').find('.check_all').trigger("click");
+            // }// 触发搜索事件
+            // var ids = get_list_checked(DYNAMIC_TABLE_BODY,1,1);
+            // if(ids == '') err_alert('请选择需要操作的记录');
+            // parent.addStaff(ids);
+            // initList();
             // layer.close(index_query);
+            //获得搜索表单的值
+            append_sure_form(SURE_FRM_IDS,FRM_IDS);//把搜索表单值转换到可以查询用的表单中
+            $('.search_frm').trigger("click");// 触发搜索事件
+            //获得表单各name的值
+            var data = get_frm_values(SURE_FRM_IDS);// {}
+            console.log(data);
+            var layer_index = layer.load();
+            $.ajax({
+                'async': false,// true,//false:同步;true:异步
+                'type' : 'POST',
+                'url' : AJAX_SEARCH_IDS_URL,
+                'data' : data,
+                'dataType' : 'json',
+                'success' : function(ret){
+                    console.log('ret',ret);
+                    if(!ret.apistatus){//失败
+                        //alert('失败');
+                        err_alert(ret.errorMsg);
+                    }else{//成功
+                        var ids = ret.result;
+                        console.log('ids', ids);
+                        //var ids = get_list_checked(DYNAMIC_TABLE_BODY,1,1);
+                        if(ids == '') err_alert('请选择需要操作的记录');
+                        parent.addStaff(ids);
+                        // initList();
+                        parent_reset_list();// 关闭弹窗
+                    }
+                    layer.close(layer_index)//手动关闭
+                }
+            });
+            layer.close(index_query);
         }, function(){
         });
         return false;
