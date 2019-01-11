@@ -39,7 +39,7 @@
 			<table  id="dynamic-table" class="table2">
 				<thead>
 				<tr>
-					<th>场次</th>
+					{{--<th>场次</th>--}}
 					<th>考试主题</th>
 					<th>开考时间</th>
 					<th>考试时长</th>

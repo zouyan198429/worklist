@@ -11,22 +11,22 @@
 		<form class="am-form am-form-horizontal" method="post"  id="addForm" onsubmit="return false;">
 			<input type="hidden" name="id" value="{{ $id or 0 }}"/>
 			<table class="table1">
-				<tr>
-					<th>场次</th>
-					<td>
-						<input type="text" class="inp wlong" name="exam_num" value="{{ $exam_num or '' }}" placeholder="请输入场次" autofocus  required />
-					</td>
-				</tr>
+				{{--<tr style="display:none;">--}}
+					{{--<th>场次</th>--}}
+					{{--<td>--}}
+						{{--<input type="text" class="inp wlong" name="exam_num" value="{{ $exam_num or '0001' }}" placeholder="请输入场次" />--}}
+					{{--</td>--}}
+				{{--</tr>--}}
 				<tr>
 					<th>考试主题</th>
 					<td>
-						<input type="text" class="inp wlong" name="exam_subject" value="{{ $exam_subject or '' }}" placeholder="请输入考试主题" autofocus  required />
+						<input type="text" class="inp wlong" name="exam_subject" value="{{ $exam_subject or '' }}" placeholder="请输入考试主题"  />
 					</td>
 				</tr>
 				<tr>
 					<th>开考时间</th>
 					<td>
-						<input type="text" class="inp wlong exam_begin_time" name="exam_begin_time" value="{{ $exam_begin_time or '' }}" placeholder="请选择开考时间" autofocus  required />
+						<input type="text" class="inp wlong exam_begin_time" name="exam_begin_time" value="{{ $exam_begin_time or '' }}" placeholder="请选择开考时间"  />
 					</td>
 				</tr>
 				<tr>
@@ -38,7 +38,7 @@
 				<tr>
 					<th>考试时长(分)</th>
 					<td>
-						<input type="text" class="inp wlong" name="exam_minute" value="{{ $exam_minute or '' }}" placeholder="请输入考试时长" autofocus  required  onkeyup="isnum(this) " onafterpaste="isnum(this)" />
+						<input type="text" class="inp wlong" name="exam_minute" value="{{ $exam_minute or '' }}" placeholder="请输入考试时长"  onkeyup="isnum(this) " onafterpaste="isnum(this)" />
 					</td>
 				</tr>
 				<tr>
@@ -56,7 +56,7 @@
 				<tr>
 					<th>及格分数</th>
 					<td>
-						<input type="text" class="inp wlong" name="pass_score" value="{{ $pass_score or '' }}" placeholder="请输入及格分数" autofocus  required  onkeyup="numxs(this) " onafterpaste="numxs(this)"/>
+						<input type="text" class="inp wlong" name="pass_score" value="{{ $pass_score or '' }}" placeholder="请输入及格分数"  onkeyup="numxs(this) " onafterpaste="numxs(this)"/>
 
 					</td>
 				</tr>

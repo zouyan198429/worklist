@@ -56,7 +56,7 @@
 						<span class="lbl">全选</span>
 					</label>
 				</th>
-				<th>场次</th>
+				{{--<th>场次</th>--}}
 				<th>考试主题</th>
 				<th>开考时间</th>
 				<th>考试时长</th>

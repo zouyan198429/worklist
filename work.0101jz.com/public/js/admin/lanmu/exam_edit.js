@@ -46,10 +46,10 @@ function ajax_form(){
     }
 
     // 场次
-    var exam_num = $('input[name=exam_num]').val();
-    if(!judge_validate(4,'场次',exam_num,true,'length',2,50)){
-        return false;
-    }
+    // var exam_num = $('input[name=exam_num]').val();
+    // if(!judge_validate(4,'场次',exam_num,true,'length',2,50)){
+    //     return false;
+    // }
 
     // 考试主题
     var exam_subject = $('input[name=exam_subject]').val();

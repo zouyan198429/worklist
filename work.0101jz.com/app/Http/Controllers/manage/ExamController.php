@@ -163,7 +163,7 @@ class ExamController extends AdminController
         $company_id = $this->company_id;
         $id = Common::getInt($request, 'id');
         // Common::judgeEmptyParams($request, 'id', $id);
-        $exam_num = Common::get($request, 'exam_num');
+//        $exam_num = Common::get($request, 'exam_num');
         $exam_subject = Common::get($request, 'exam_subject');
 
         $exam_begin_time = Common::get($request, 'exam_begin_time');// 开考时间
@@ -222,7 +222,7 @@ class ExamController extends AdminController
         $saveData = [
             'id' => $id,
             'company_id' => $company_id,
-            'exam_num' => $exam_num,
+//            'exam_num' => $exam_num,
             'exam_subject' => $exam_subject,
             'paper_history_id' => $paper_history_id,
             'paper_id' => $paper_id,

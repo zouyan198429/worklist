@@ -111,9 +111,9 @@ class CompanyExam extends BaseBusiness
         $result['data_list'] = $data_list;
         // 导出功能
         if($isExport == 1){
-            $headArr = ['exam_num'=>'场次', 'exam_subject'=>'考试主题', 'exam_begin_time'=>'开考时间', 'exam_minute'=>'考试时长'
+            $headArr = [ 'exam_subject'=>'考试主题', 'exam_begin_time'=>'开考时间', 'exam_minute'=>'考试时长'
                 , 'exam_end_time'=>'结束时间', 'history_paper_name'=>'试卷', 'pass_score'=>'及格分数', 'subject_num'=>'参与人数'
-                , 'status_text'=>'状态', 'created_at'=>'添加时间', 'real_name'=>'添加人'];
+                , 'status_text'=>'状态', 'created_at'=>'添加时间', 'real_name'=>'添加人'];// 'exam_num'=>'场次',
             ImportExport::export('','考试管理',$data_list,1, $headArr, 0, ['sheet_title' => '考试管理']);
             die;
         }

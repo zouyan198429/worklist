@@ -59,36 +59,44 @@ var otheraction = {
         var index_query = layer.confirm('确定增加选中记录？', {
             btn: ['确定','取消'] //按钮
         }, function(){
+            if(!$('#dynamic-table').find('.check_all').is(':checked')) {
+                $('#dynamic-table').find('.check_all').trigger("click");
+            }// 触发搜索事件
+            var ids = get_list_checked(DYNAMIC_TABLE_BODY,1,1);
+            if(ids == '') err_alert('请选择需要操作的记录');
+            parent.addStaff(ids);
+            initList();
+            layer.close(index_query);
             //获得搜索表单的值
             // append_sure_form(SURE_FRM_IDS,FRM_IDS);//把搜索表单值转换到可以查询用的表单中
-            $('.search_frm').trigger("click");// 触发搜索事件
-            //获得表单各name的值
-            var data = get_frm_values(SURE_FRM_IDS);// {}
-            console.log(data);
-            var layer_index = layer.load();
-            $.ajax({
-                'async': false,// true,//false:同步;true:异步
-                'type' : 'POST',
-                'url' : AJAX_SEARCH_IDS_URL,
-                'data' : data,
-                'dataType' : 'json',
-                'success' : function(ret){
-                    console.log('ret',ret);
-                    if(!ret.apistatus){//失败
-                        //alert('失败');
-                        err_alert(ret.errorMsg);
-                    }else{//成功
-                        var ids = ret.result;
-                        console.log('ids', ids);
-                        //var ids = get_list_checked(DYNAMIC_TABLE_BODY,1,1);
-                        if(ids == '') err_alert('请选择需要操作的记录');
-                        parent.addStaff(ids);
-                        initList();
-                    }
-                    layer.close(layer_index)//手动关闭
-                }
-            });
-            layer.close(index_query);
+            // $('.search_frm').trigger("click");// 触发搜索事件
+            // //获得表单各name的值
+            // var data = get_frm_values(SURE_FRM_IDS);// {}
+            // console.log(data);
+            // var layer_index = layer.load();
+            // $.ajax({
+            //     'async': false,// true,//false:同步;true:异步
+            //     'type' : 'POST',
+            //     'url' : AJAX_SEARCH_IDS_URL,
+            //     'data' : data,
+            //     'dataType' : 'json',
+            //     'success' : function(ret){
+            //         console.log('ret',ret);
+            //         if(!ret.apistatus){//失败
+            //             //alert('失败');
+            //             err_alert(ret.errorMsg);
+            //         }else{//成功
+            //             var ids = ret.result;
+            //             console.log('ids', ids);
+            //             //var ids = get_list_checked(DYNAMIC_TABLE_BODY,1,1);
+            //             if(ids == '') err_alert('请选择需要操作的记录');
+            //             parent.addStaff(ids);
+            //             initList();
+            //         }
+            //         layer.close(layer_index)//手动关闭
+            //     }
+            // });
+            // layer.close(index_query);
         }, function(){
         });
         return false;

@@ -306,7 +306,8 @@ class CompanySubjectController extends CompController
                 $examInfo['total_score'] = $paperInfo['total_score'];
 
                 $examInfo['company_id'] = $company_id;
-                $exam_num = $examInfo['exam_num'] ?? '';
+//                $exam_num = $examInfo['exam_num'] ?? '';
+                $exam_subject = $examInfo['exam_subject'] ?? '';
                 $exam_begin_time  = $examInfo['exam_begin_time'] ?? '';// 开考时间
                 $exam_begin_time_last  = $examInfo['exam_begin_time_last'] ?? '';// 最晚开考时间
                 $exam_minute  = $examInfo['exam_minute'] ?? '';// 考试时长分
@@ -318,7 +319,7 @@ class CompanySubjectController extends CompController
                 $examObj = null;
                 if($examId > 0){
                     $examObj = CompanyExam::find($examId);
-                    if($company_id != $examObj->company_id) throws('记录[' . $exam_num . ']没有操作权限');
+                    if($company_id != $examObj->company_id) throws('记录[' . $exam_subject . ']没有操作权限');
                     $tem_exam_begin_time = $examObj->exam_begin_time;
                     $now_time = date('Y-m-d H:i:s');
                     if(strtotime($tem_exam_begin_time) <= strtotime($now_time)) throws('已过考试开始时间的场次不能修改!');
@@ -332,7 +333,7 @@ class CompanySubjectController extends CompController
                     $examId = $examObj->id;
                 }
 
-                if($examId <= 0) throws('记录[' . $exam_num . ']不存在');
+                if($examId <= 0) throws('记录[' . $exam_subject . ']不存在');
                 // $examObj = CompanySubjectBusiness::updateOrCreate($company_id, $examId , $examInfo);
                 $examStaffIds = [];
                 // 处理 员工
@@ -348,7 +349,7 @@ class CompanySubjectController extends CompController
                     $staffInfo['exam_end_time'] = $staff_end_time;// $exam_end_time; 答题人的最晚开考时间
                     $staffObj = CompanyExamStaffBusiness::updateOrCreate($company_id, $examId , $staff_id, $staffInfo);
                     $temId = $staffObj->id;
-                    if($temId <= 0) throws('记录[' . $exam_num . ']员工[' . $staff_id . ']不存在');
+                    if($temId <= 0) throws('记录[' . $exam_subject . ']员工[' . $staff_id . ']不存在');
                     array_push($examStaffIds, $temId);
 
                 }

@@ -52,7 +52,7 @@
 			{{--<button class="btn btn-success  btn-xs import_excel"  onclick="action.importExcel(this)">导入员工</button>--}}
 			{{--<div style="display:none;" ><input type="file" class="import_file img_input"></div>--}}{{--导入file对象--}}
 			<button class="btn btn-danger  btn-xs ace-icon fa fa-plus-square bigger-60"  onclick="otheraction.addBatch(this)">选择员工(勾选)</button>
-			<button class="btn btn-danger  btn-xs ace-icon fa fa-plus-square bigger-60"  onclick="otheraction.addBatchSearch(this)">选择员工(查询条件)</button>
+			<button class="btn btn-danger  btn-xs ace-icon fa fa-plus-square bigger-60"  onclick="otheraction.addBatchSearch(this)">选择员工(当前页)</button>
 		</div>
 
 		<table  id="dynamic-table"  class="table2">

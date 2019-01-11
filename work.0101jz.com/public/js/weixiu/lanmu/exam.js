@@ -106,7 +106,7 @@ countTime();
     document.write("    }");
     document.write("    %>");
     document.write("    <tr data-exam_begin_time=\"<%=item.exam_begin_time%>\" data-exam_end_time=\"<%=item.exam_end_time%>\"  data-status=\"<%=item.status%>\" >");
-    document.write("        <td><%=item.exam_num%><\/td>");
+    // document.write("        <td><%=item.exam_num%><\/td>");
     document.write("        <td><%=item.exam_subject%><\/td>");
     document.write("        <td><%=item.exam_begin_time%><\/td>");
     document.write("        <td><%=item.exam_minute%>分钟<\/td>");

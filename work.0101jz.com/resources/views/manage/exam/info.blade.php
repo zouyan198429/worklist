@@ -11,12 +11,12 @@
 		<form class="am-form am-form-horizontal" method="post"  id="addForm" onsubmit="return false;">
 			<input type="hidden" name="id" value="{{ $id or 0 }}"/>
 		<table class="table1">
-			<tr>
-				<th>场次</th>
-				<td>
-					{{ $exam_num or '' }}
-				</td>
-			</tr>
+			{{--<tr>--}}
+				{{--<th>场次</th>--}}
+				{{--<td>--}}
+					{{--{{ $exam_num or '' }}--}}
+				{{--</td>--}}
+			{{--</tr>--}}
 			<tr>
 				<th>考试主题</th>
 				<td>

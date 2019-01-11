@@ -18,7 +18,7 @@
     document.write("                <span class=\"lbl\"><\/span>");
     document.write("            <\/label>");
     document.write("        <\/td>");
-    document.write("        <td><%=item.exam_num%><\/td>");
+    // document.write("        <td><%=item.exam_num%><\/td>");
     document.write("        <td><%=item.exam_subject%><\/td>");
     document.write("        <td><%=item.exam_begin_time_last%><\/td>");
     document.write("        <td><%=item.exam_minute%><\/td>");

@@ -14,7 +14,7 @@
 
 	<div class="mm" id="examinbox">
 		<div class="mmhead" >
-            场次：{{ $staff_exam['exam_num'] or 0 }} <br />
+            {{--场次：{{ $staff_exam['exam_num'] or 0 }} <br />--}}
             考试主题：{{ $staff_exam['exam_subject'] or 0 }}  <br />
             时间：{{ $answer_begin_time or 0 }} -- {{ $exam_end_time or 0 }}  （{{ $staff_exam['exam_minute'] or 0 }}分钟）<br />
 			进度：<span class="doing_num">1</span>/<span class="count_num">{{ $staff_exam['subject_amount'] or 0 }}</span>  <br />
