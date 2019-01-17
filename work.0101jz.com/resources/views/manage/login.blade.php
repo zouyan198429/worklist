@@ -22,9 +22,9 @@
 		</div>
 	</form>
 	<div id="manlist">
-	<a href="{{ url('huawu') }}" >话务员</a>
-	<a href="{{ url('weixiu') }}" >维修工程师</a>
-	<a href="{{ url('manage') }}" >管理层</a>
+	<a href="http://kefu.0101jz.com" >话务员</a>
+	<a href="http://shouhou.0101jz.com" >维修工程师</a>
+	<a href="http://admin.0101jz.com" >管理层</a>
 	</div>
 </body>
 </html>
