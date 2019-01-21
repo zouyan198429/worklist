@@ -8,9 +8,9 @@ use App\Services\CommonBusiness;
 use App\Services\Tool;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\WorksController;
 
-class UploadController extends AdminController
+class UploadController extends WorksController
 {
     public $model_name = 'Resource';
     // 大后台 admin/年/月/日/文件

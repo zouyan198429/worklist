@@ -20,7 +20,7 @@
 Route::get('/test2', 'IndexController@test2');// 测试
 Route::get('/', 'IndexController@index');// 首页
 //Route::get('reg', 'IndexController@reg');// 注册
-//Route::get('login', 'IndexController@login');// 登陆
+Route::get('login', 'IndexController@login');// 登陆
 //Route::get('logout', 'IndexController@logout');// 注销
 //Route::get('404', 'IndexController@err404');// 404错误
 
@@ -242,8 +242,16 @@ Route::get('huawu/exam/doing/{id}', 'huawu\ExamController@doing');//examin_do.ht
 Route::get('huawu/exam/win/{id}', 'huawu\ExamController@win');//examin_over.html 在线考试
 
 //反馈
-Route::get('huawu/problem/add', 'huawu\ProblemController@add');//feedback.html 在线反馈
+// Route::get('huawu/problem/add', 'huawu\ProblemController@add');//feedback.html 在线反馈
 
+//反馈
+#Route::get('huawu/problem/add', 'huawu\ProblemController@add');//feedback.html 在线反馈
+Route::get('huawu/problem/add/{id}', 'huawu\ProblemController@add');//feedback.html 问题反馈-提交问题
+
+Route::get('huawu/problem', 'huawu\ProblemController@index');//m_problem.html 反馈问题 - 列表 /该模块的首页
+//Route::get('huawu/problem/reply/{id}', 'huawu\ProblemController@reply');//m_problem.html 反馈问题 - 回复
+Route::get('huawu/problem/export', 'huawu\ProblemController@export');//colleague.html 导出
+Route::get('huawu/problem/import_template', 'huawu\ProblemController@import_template');// -导入模版
 //学习
 Route::get('huawu/lore', 'huawu\LoreController@index');//know_list.html  在线学习-列表
 Route::get('huawu/lore/info/{id}', 'huawu\LoreController@info');//know_view.html 在线学习-详情
@@ -282,6 +290,11 @@ Route::get('weixiu/exam/win/{id}', 'weixiu\ExamController@win');//examin_over.ht
 //反馈
 #Route::get('weixiu/problem/add', 'weixiu\ProblemController@add');//feedback.html 在线反馈
 Route::get('weixiu/problem/add/{id}', 'weixiu\ProblemController@add');//feedback.html 问题反馈-提交问题
+
+Route::get('weixiu/problem', 'weixiu\ProblemController@index');//m_problem.html 反馈问题 - 列表 /该模块的首页
+//Route::get('weixiu/problem/reply/{id}', 'weixiu\ProblemController@reply');//m_problem.html 反馈问题 - 回复
+Route::get('weixiu/problem/export', 'weixiu\ProblemController@export');//colleague.html 导出
+Route::get('weixiu/problem/import_template', 'weixiu\ProblemController@import_template');// -导入模版
 //工单
 Route::get('weixiu/work/list', 'weixiu\WorkController@list');///Repair_list.html  我的工单
 Route::get('weixiu/work/info/{id}', 'weixiu\WorkController@info');//work_add.html 工单--详情
@@ -328,6 +341,11 @@ Route::get('m/customer', 'm\CustomerController@index');//customer_all.html 我�
 //反馈
 // Route::get('m/problem/add', 'm\ProblemController@add');//feedback.html 问题反馈-提交问题
 Route::get('m/problem/add/{id}', 'm\ProblemController@add');//feedback.html 问题反馈-提交问题
+
+Route::get('m/problem', 'm\ProblemController@index');//m_problem.html 反馈问题 - 列表 /该模块的首页
+//Route::get('m/problem/reply/{id}', 'm\ProblemController@reply');//m_problem.html 反馈问题 - 回复
+Route::get('m/problem/export', 'm\ProblemController@export');//colleague.html 导出
+Route::get('m/problem/import_template', 'm\ProblemController@import_template');// -导入模版
 
 //在线考试
 Route::get('m/exam', 'm\ExamController@index');//kaoshi.html 在线考试 --考试列表

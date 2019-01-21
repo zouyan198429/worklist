@@ -10,6 +10,13 @@ use Illuminate\Support\Facades\Log;
 
 class IndexController extends WorksController
 {
+    public static $systemArr = [
+        '1' => '管理平台'
+        , '2' => '主管平台'
+        , '3' => '客服平台'
+        , '4' => '售后平台'
+    ];
+
     /**
      * 注册
      *
@@ -137,10 +144,12 @@ class IndexController extends WorksController
      * @return mixed
      * @author zouyan(305463219@qq.com)
      */
-//    public function login(Request $request)
-//    {
-//        return view('login');
-//    }
+    public function login(Request $request)
+    {
+        $reDataArr['system_kv'] =  static::$systemArr;
+        $reDataArr['defaultSystem'] = -1;// 默认
+        return view('login', $reDataArr);
+    }
 
     /**
      * 注销

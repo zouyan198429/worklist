@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\m;
 
+use App\Business\CompanyProblemType;
 use App\Business\CompanyWork;
 use App\Http\Controllers\WorksController;
 use Illuminate\Http\Request;
@@ -10,6 +11,52 @@ use App\Business\CompanyProblem;
 
 class ProblemController extends WorksController
 {
+
+    /**
+     * 列表
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function index(Request $request)
+    {
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        // 第一级业务
+        // 获得第一级部门分类一维数组[$k=>$v]
+//        $reDataArr['problem_type_kv'] = CompanyProblemType::getChildListKeyVal($request, $this, 0, 1 + 0);
+        $reDataArr['status_kv'] =  CompanyProblem::$status_arr;
+        $reDataArr['defaultStatus'] = -1;// 列表页默认状态
+        return view('mobile.problem.index', $reDataArr);
+    }
+
+    /**
+     * ajax获得列表数据
+     *
+     * @param Request $request
+     * @return mixed
+     * @author liuxin
+     */
+    public function ajax_alist(Request $request){
+        $this->InitParams($request);
+        $request->merge([
+            'department_id' => $this->user_info['department_id']
+            , 'group_id' => $this->user_info['group_id']
+            , 'operate_staff_id' => $this->user_info['id']
+        ]);
+        $listData = CompanyProblem::getIndexList($request, $this,2 + 4);
+
+        $data_list = $listData['result']['data_list'] ?? [];
+        foreach($data_list as $k => $v){
+            $content = $v['content'] ?? '';
+            $data_list[$k]['content'] = replace_enter_char($content,2);
+            $reply_content = $v['reply_content'] ?? '';
+            $data_list[$k]['reply_content'] = replace_enter_char($reply_content,2);
+        }
+        $listData['result']['data_list'] = $data_list;
+        return $listData;
+    }
 
     /**
      * 问题反馈-提交问题
@@ -42,6 +89,7 @@ class ProblemController extends WorksController
         $resultDatas = [
             'id'=>$id,
            //  'call_number' => $this->user_info['mobile'] ?? '',
+            'resource_list'=> [],
         ];
 
         if ($id > 0) { // 获得详情数据

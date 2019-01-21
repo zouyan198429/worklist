@@ -2,12 +2,49 @@
 
 namespace App\Http\Controllers\weixiu;
 
+use App\Business\CompanyProblemType;
 use App\Http\Controllers\WorksController;
 use Illuminate\Http\Request;
 use App\Business\CompanyProblem;
 
 class ProblemController extends WorksController
 {
+    /**
+     * 列表
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function index(Request $request)
+    {
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        // 第一级业务
+        // 获得第一级部门分类一维数组[$k=>$v]
+        $reDataArr['problem_type_kv'] = CompanyProblemType::getChildListKeyVal($request, $this, 0, 1 + 0);
+        $reDataArr['status_kv'] =  CompanyProblem::$status_arr;
+        $reDataArr['defaultStatus'] = -1;// 列表页默认状态
+        return view('weixiu.problem.index', $reDataArr);
+    }
+
+    /**
+     * ajax获得列表数据
+     *
+     * @param Request $request
+     * @return mixed
+     * @author liuxin
+     */
+    public function ajax_alist(Request $request){
+        $this->InitParams($request);
+        $request->merge([
+            'department_id' => $this->user_info['department_id']
+            , 'group_id' => $this->user_info['group_id']
+            , 'operate_staff_id' => $this->user_info['id']
+        ]);
+        return  CompanyProblem::getIndexList($request, $this,2 + 4);
+    }
+
     /**
      * 添加
      *
@@ -22,6 +59,7 @@ class ProblemController extends WorksController
         $resultDatas = [
             'id'=>$id,
            //  'call_number' => $this->user_info['mobile'] ?? '',
+            'resource_list'=> [],
         ];
 
         if ($id > 0) { // 获得详情数据

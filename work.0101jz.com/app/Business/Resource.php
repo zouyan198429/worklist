@@ -24,7 +24,7 @@ class Resource extends BaseBusiness
                 'name' => '图片文件',
                 'ext' => ['jpg','jpeg','gif','png','bmp','ico'],// 扩展名
                 'dir' => 'images',// 文件夹名称
-                'maxSize' => 1,// 文件最大值  单位 M
+                'maxSize' => 5,// 文件最大值  单位 M
                 'other' => [],// 其它各自类型需要判断的指标
             ],
             '1' => [

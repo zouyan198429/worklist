@@ -302,11 +302,18 @@ Route::post('huawu/work/ajax_del', 'huawu\WorkController@ajax_del');// 删除
 Route::post('huawu/work/reply_ajax_save', 'huawu\WorkController@reply_ajax_save');// 回访新加/修改
 Route::post('huawu/work/ajax_status_count', 'huawu\WorkController@ajax_status_count');// 工单状态统计
 Route::post('huawu/work/ajax_work_count', 'huawu\WorkController@ajax_work_count');// 工单统计
+
+// 反馈
+Route::post('huawu/problem/ajax_alist', 'huawu\ProblemController@ajax_alist');//ajax获得列表数据
+Route::post('huawu/problem/ajax_save', 'huawu\ProblemController@ajax_save');// 新加/修改
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //web-weixiu 维修
+
 // 上传图片
-Route::post('weixiu/upload', 'weixiu\UploadController@index');
+Route::any('weixiu/upload', 'weixiu\UploadController@index');
+Route::post('weixiu/uploadSingle', 'weixiu\UploadController@uploadSingle');// 单文件上传
 Route::post('weixiu/upload/ajax_del', 'weixiu\UploadController@ajax_del');// 根据id删除文件
+
 // 登陆
 Route::post('weixiu/ajax_login', 'weixiu\IndexController@ajax_login');// 登陆
 Route::post('weixiu/ajax_password_save', 'weixiu\IndexController@ajax_password_save');// 修改密码
@@ -371,9 +378,12 @@ Route::post('app/ajax_login', 'app\IndexController@ajax_login');// 登陆
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //m
+
 // 上传图片
-Route::post('m/upload', 'm\UploadController@index');
+Route::any('m/upload', 'm\UploadController@index');
+Route::post('m/uploadSingle', 'm\UploadController@uploadSingle');// 单文件上传
 Route::post('m/upload/ajax_del', 'm\UploadController@ajax_del');// 根据id删除文件
+
 Route::post('m/ajax_login', 'm\IndexController@ajax_login');// 登陆
 Route::post('m/ajax_password_save', 'm\IndexController@ajax_password_save');// 修改密码
 //同事
@@ -419,6 +429,7 @@ Route::post('m/problem_type/ajax_get_child', 'm\ProblemTypeController@ajax_get_c
 //Route::post('m/problem/ajax_gettype', 'm\ProblemController@ajax_gettype');//ajax获得二级分类（类型）数据
 //Route::post('m/problem/ajax_getarea', 'm\ProblemController@ajax_getarea');//ajax获得二级地址数据
 //Route::post('m/problem/ajax_problem_add', 'm\ProblemController@ajax_problem_add');//ajax获得二级地址数据
+Route::post('m/problem/ajax_alist', 'm\ProblemController@ajax_alist');//ajax获得列表数据
 Route::post('m/problem/ajax_save', 'm\ProblemController@ajax_save');// 新加/修改
 // 消息确认
 Route::post('m/msg/ajax_save', 'm\SiteMsgController@ajax_sure');// 新加/修改

@@ -13,6 +13,25 @@ class CompanyProblem extends BaseModel
      */
     protected $table = 'company_problem';
 
+    // 状态0新问题1已回复
+    protected $status_arr = [
+        '0' => '待回复',
+        '1' => '已回复',
+    ];
+
+    // 表里没有的字段
+    protected $appends = ['status_text'];
+
+    /**
+     * 获取试题顺序的文字
+     *
+     * @return string
+     */
+    public function getStatusTextAttribute()
+    {
+        return $this->status_arr[$this->status] ?? '';
+    }
+
     /**
      * 获取问题的回复-二维
      */

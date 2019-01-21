@@ -23,6 +23,8 @@ class ProblemController extends AdminController
         // 第一级业务
         // 获得第一级部门分类一维数组[$k=>$v]
         $reDataArr['problem_type_kv'] = CompanyProblemType::getChildListKeyVal($request, $this, 0, 1 + 0);
+        $reDataArr['status_kv'] =  CompanyProblem::$status_arr;
+        $reDataArr['defaultStatus'] = -1;// 列表页默认状态
         return view('admin.problem.index', $reDataArr);
     }
 

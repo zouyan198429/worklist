@@ -145,7 +145,8 @@ class IndexController extends AdminController
     {
         // $this->InitParams($request);
         SiteAdmin::loginOut($request, $this);
-        return redirect('manage/login');
+//        return redirect('manage/login');
+        return redirect('login');
     }
 
 }

@@ -12,7 +12,7 @@ var UPLOAD_FILE_FILTERS = UPLOAD_FILE_FILTERS || {
         {title: '图标', extensions: 'ico'}
     ],
     // 最大上传文件为 2MB
-    max_file_size: '2mb',
+    max_file_size: '4mb',
     // 不允许上传重复文件
     // prevent_duplicates: true
 };

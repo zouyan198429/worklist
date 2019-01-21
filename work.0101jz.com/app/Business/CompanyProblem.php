@@ -17,6 +17,12 @@ class CompanyProblem extends BaseBusiness
 {
     protected static $model_name = 'CompanyProblem';
 
+    // 状态0新问题1已回复
+    public static $status_arr = [
+        '0' => '待回复',
+        '1' => '已回复',
+    ];
+
     /**
      * 获得列表数据--所有数据
      *
@@ -85,6 +91,18 @@ class CompanyProblem extends BaseBusiness
         if($useSearchParams) {
             // $params = self::formatListParams($request, $controller, $queryParams);
 
+            $department_id = Common::getInt($request, 'department_id');
+            if($department_id > 0 )  array_push($queryParams['where'], ['department_id', '=', $department_id]);
+
+            $group_id = Common::getInt($request, 'group_id');
+            if($group_id > 0 )  array_push($queryParams['where'], ['group_id', '=', $group_id]);
+
+            $operate_staff_id = Common::getInt($request, 'operate_staff_id');
+            if($operate_staff_id > 0 )  array_push($queryParams['where'], ['operate_staff_id', '=', $operate_staff_id]);
+
+            $status = Common::get($request, 'status');
+            if(is_numeric($status) && in_array($status,array_keys(self::$status_arr)))  array_push($queryParams['where'], ['status', '=', $status]);
+
             $work_type_id = Common::get($request, 'work_type_id');
             $field = Common::get($request, 'field');
             if (empty($field)) $field = "content";
@@ -114,7 +132,15 @@ class CompanyProblem extends BaseBusiness
 
         // 格式化数据
         $data_list = $result['data_list'] ?? [];
+        $resource_ids = '';
         foreach($data_list as $k => $v){
+            $data_list[$k]['resource_list'] = [];
+            // 图片资源信息
+            $tem_resource_id = $v['resource_id'] ?? '';
+            if(!empty($tem_resource_id)){
+                if(!empty($resource_ids)) $resource_ids .= ',';
+                $resource_ids .= $tem_resource_id;
+            }
             if($isExport == 1) {
                 $content = $v['content'] ?? '';
                 $data_list[$k]['content'] = replace_enter_char($content, 2);
@@ -131,6 +157,30 @@ class CompanyProblem extends BaseBusiness
             // 类型名称
 //            $data_list[$k]['type_name'] = $v['problem_customer_type']['type_name'] ?? '';
 //            if(isset($data_list[$k]['problem_customer_type'])) unset($data_list[$k]['problem_customer_type']);
+        }
+        // 如果有图片，处理图片信息
+        if($isExport != 1 && !empty($resource_ids)){
+            $resourcePic = Resource::getResourceByIds($request, $controller, $company_id, $resource_ids);
+            // if(!empty($resourcePic)){
+            $formatPics = [];
+            foreach($resourcePic as $v){
+                $formatPics[$v['id']] = $v;
+            }
+            foreach($data_list as $k => $v){
+                $data_list[$k]['resource_list'] = [];
+                // 图片资源信息
+                $tem_resource_id = $v['resource_id'] ?? '';
+                if(empty($tem_resource_id)) continue;
+                $temResourceIds = explode(',', $tem_resource_id);
+                $temArr = [];
+                foreach($temResourceIds as $temId){
+                    if(isset($formatPics[$temId])) array_push($temArr, $formatPics[$temId]);
+                }
+                $data_list[$k]['resource_list'] = $temArr;
+
+            }
+            // }
+
         }
         $result['data_list'] = $data_list;
         // 导出功能
@@ -293,6 +343,10 @@ class CompanyProblem extends BaseBusiness
             'company_id' => $company_id,
         ];
         CommonBusiness::judgePowerByObj($resultDatas, $judgeData );
+        // 如果有图片，处理图片信息
+        $resource_id = $resultDatas['resource_id'] ?? '';
+        $resourceList = Resource::getResourceByIds($request, $controller, $company_id, $resource_id);
+        $resultDatas['resource_list'] = $resourceList;
         return $resultDatas;
     }
 
@@ -469,6 +523,12 @@ class CompanyProblem extends BaseBusiness
 //        $area_id = Common::getInt($request, 'area_id');
 //        $address = Common::get($request, 'address');
 
+        $resource_id = Common::get($request, 'resource_id');
+        if(empty($resource_id))  $resource_id = [];
+        if(is_string($resource_id) || is_numeric($resource_id)){
+            $resource_id = explode(',' ,$resource_id);
+        }
+
         $saveData = [
             'work_type_id' => $work_type_id, //业务类型
             'business_id' => $business_id,// 业务
@@ -477,6 +537,7 @@ class CompanyProblem extends BaseBusiness
 //            'city_id' => $city_id,// 区县
 //            'area_id' => $area_id,// 街道
 //            'address' => $address,// 详细地址
+            'resource_id' => implode(',', $resource_id),
         ];
 
 //        if($id <= 0) {// 新加;要加入的特别字段

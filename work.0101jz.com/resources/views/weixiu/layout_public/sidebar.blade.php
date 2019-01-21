@@ -18,6 +18,12 @@
                 </a>
             </li>
             <li>
+                <a href="{{ url('weixiu/problem') }}">
+                    <i class="fa fa-edit fa-fw" aria-hidden="true"></i>
+                    <span>反馈问题列表</span>
+                </a>
+            </li>
+            <li>
                 <a href="{{ url('weixiu/customer') }}">
                     <i class="fa fa-star-o fa-fw" aria-hidden="true"></i>
                     <span>我的客户</span>

@@ -1,8 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <title>首页--移动工单管理</title>
+    {{-- 本页单独head使用 --}}
+    @stack('preheadscripts')
     @include('public.dynamic_list_head')
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="{{asset('staticmobile/css/style.css')}}">

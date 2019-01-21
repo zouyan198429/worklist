@@ -175,7 +175,8 @@ class IndexController extends WorksController
         $reDataArr = $this->reDataArr;
         $resDel = CompanyStaff::loginOut($request, $this);
         // return ajaxDataArr(1, $resDel, '');
-        return redirect('huawu/login');
+//        return redirect('huawu/login');
+        return redirect('login');
     }
     /**
      * err404
