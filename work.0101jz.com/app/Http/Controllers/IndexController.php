@@ -11,10 +11,10 @@ use Illuminate\Support\Facades\Log;
 class IndexController extends WorksController
 {
     public static $systemArr = [
-        '1' => '管理平台'
+        '1' => '超级管理平台'
         , '2' => '主管平台'
-        , '3' => '客服平台'
-        , '4' => '售后平台'
+        , '3' => '派单平台'
+        , '4' => '区县平台'
     ];
 
     /**
