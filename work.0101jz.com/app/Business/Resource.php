@@ -19,6 +19,8 @@ class Resource extends BaseBusiness
     // 大后台 admin/年/月/日/文件
     // 企业 company/[生产单元/]年/月/日/文件
     protected static $source_path = '/resource/company/';
+    protected static $source_tmp_path = '/resource/tmp/';// 临时文件夹
+
     public static $resource_type = [
             '0' => [
                 'name' => '图片文件',
@@ -286,108 +288,295 @@ class Resource extends BaseBusiness
      */
     public static function uploadFile(Request $request, Controller $controller, $resource_type = 0)
     {
-//        $controller->company_id = 1;
-//        $controller->operate_staff_id = 1502;
+        try{
+//            $controller->company_id = 1;
+//            $controller->operate_staff_id = 1502;
 
-        $company_id = $controller->company_id;
+            $company_id = $controller->company_id;
+            $operate_staff_id =  $controller->operate_staff_id;
+            if(!is_numeric($operate_staff_id)) $operate_staff_id = 0;
 
-        ini_set('memory_limit','1024M');    // 临时设置最大内存占用为 3072M 3G
-        ini_set("max_execution_time", "300");
-        set_time_limit(300);   // 设置脚本最大执行时间 为0 永不过期
+                ini_set('memory_limit','1024M');    // 临时设置最大内存占用为 3072M 3G
+            ini_set("max_execution_time", "300");
+            set_time_limit(300);   // 设置脚本最大执行时间 为0 永不过期
 
-        // $pro_unit_id = Common::getInt($request, 'pro_unit_id');
-        $name = Common::get($request, 'name'); // 文件名称
-        $resource_note = Common::get($request, 'note'); // 资源说明
-        // 日志
-        $requestLog = [
-            'files'       => $request->file(),
-            'posts'  => $request->post(),
-            'input'      => $request->input(),
-        ];
-        Log::info('上传文件日志',$requestLog);
-
-        if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
-            $photo = $request->file('photo');
-            Log::info('上传文件日志-文件信息',[$photo]);
-            $extensionFirst = strtolower($photo->extension());// 扩展名  该扩展名可能会和客户端提供的扩展名不一致
-            $extension = $photo->getClientOriginalExtension(); //上传文件的后缀.
-            Log::info('上传文件日志-文件后缀extensionFirst',[$extensionFirst]);
-            Log::info('上传文件日志-文件后缀',[$extension]);
-            if(empty($extension)) $extension = $extensionFirst;
-            $hashname = $photo->hashName();
-            //获取上传文件的大小
-            $size = $photo->getSize();
-            Log::info('上传文件日志-文件大小',[$size]);
-
-
-            $temFile = [
-                'extension' => $extension,
-                'hashname' => $hashname,
-                'name' => $name,
+            // $pro_unit_id = Common::getInt($request, 'pro_unit_id');
+            $name = Common::get($request, 'name'); // 文件名称 "测试名称"
+            Log::info('上传文件日志-name',[$name]);//
+            $resource_note = Common::get($request, 'note'); // 资源说明
+            // 日志
+            $requestLog = [
+                'files'       => $request->file(),
+                'posts'  => $request->post(),
+                'input'      => $request->input(),
             ];
-            Log::info('上传文件日志-文件信息',$temFile);
+            Log::info('上传文件日志',$requestLog);
 
-            // 生成保存路径
-            $savPath = self::$source_path . $company_id . '/';
+            if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
+                $photo = $request->file('photo');
+                $uuid =  Common::get($request, 'uuid');
+                Log::info('上传文件日志-uuid',[$uuid]);// o_1d1r9ofhi5v88bk46di171f53a
+                $num = Common::getInt($request, 'chunk');// 分片序号 0,1,2  或 0
+                Log::info('上传文件日志-分片序号',[$num]);// 分片序号 [0]
+                $count = Common::getInt($request, 'chunks');// 分片总数量 3 或 1
+                Log::info('上传文件日志-分片总数量count',[$count]);// 分片总数量count [1]
+                Log::info('上传文件日志-文件信息',[$photo]);// 文件信息 ["[object] (Illuminate\\Http\\UploadedFile: /tmp/phpa2eXco)"]
+                //获取原文件名
+                $originalName = $photo->getClientOriginalName();
+                Log::info('上传文件日志-原文件名',[$originalName]);// 原文件名 ["7.jpg"] 原文件名 ["blob"]
+                // 文件类型
+                $type = $photo->getClientMimeType();
+                Log::info('上传文件日志-文件类型',[$type]);// 文件类型 ["image/jpeg"]
+                //临时绝对路径
+                $realPath = $photo->getRealPath();
+                Log::info('上传文件日志-临时绝对路径',[$realPath]);// 临时绝对路径 ["/tmp/phpa2eXco"]
+                // 扩展名 jpg
+                $extFirst = strtolower($photo->extension());// 扩展名  该扩展名可能会和客户端提供的扩展名不一致
+                $ext = $photo->getClientOriginalExtension(); //上传文件的后缀. 扩展名
+                Log::info('上传文件日志-文件后缀extFirst',[$extFirst]);// 文件后缀extFirst ["jpeg"]
+                Log::info('上传文件日志-文件后缀',[$ext]);// 文件后缀 ["jpg"]
 
-            $resourceTypeArr = self::$resource_type[$resource_type] ?? [];
-            if(empty($resourceTypeArr)) throws('不明确的资源类型!');
-            $typeName = $resourceTypeArr['name'] ?? '';// 类型名称
-            $typeExt = $resourceTypeArr['ext'] ?? [];// 扩展名
-            $typeDir = $resourceTypeArr['dir'] ?? '';// 文件夹名称
-            $typeMaxSize = $resourceTypeArr['maxSize'] ?? '0.5';// 文件最大值 单位 M
-            if(!is_numeric($typeMaxSize)) $typeMaxSize = 0.5;// 0.5M
-            $typeOther = $resourceTypeArr['other'] ?? [];// 其它各自类型需要判断的指标
-            if(!in_array($extension , $typeExt)) throws($typeName . '扩展名必须为[' . implode('、', $typeExt) . ']');
+                if(empty($ext)) $ext = $extFirst;
+                $hashname = $photo->hashName();// "geEGcIfovpc8gRSlTYREDZiW4frld0helrZKzmoA.jpeg"
+                //获取上传文件的大小
+                $size = $photo->getSize();
+                Log::info('上传文件日志-文件大小',[$size]);// 文件大小 [61563]
+                // 分片时，所有片的共同标识
+                $allBlockUuid = $operate_staff_id . $originalName . $uuid . $count;
+                Log::info('上传文件日志-分片时，所有片的共同标识',[$allBlockUuid]);//
 
-            //这里可根据配置文件的设置，做得更灵活一点
-            if($size > $typeMaxSize * 1024 * 1024){
-                throws('上传文件不能超过' . [$typeMaxSize . 'M']);
-            }
-
-            if($typeDir != '' ) $savPath .=   $typeDir . '/';// 类型文件夹
-
-            //if(is_numeric($pro_unit_id)){
-            //    $savPath .=   'pro' . $pro_unit_id . '/';
-            //}
-
-            $savPath .= date('Y/m/d/',time());
-
-            $saveName = Tool::createUniqueNumber(30) .'.' . $extension;
-            //$store_result = $photo->store('photo');
-            try{
-                $store_result = $photo->storeAs($savPath, $saveName);// 返回 "resource/company/1/pro0/2018/10/13//20181013182843dc1a9783e212840f.jpeg"
-                // 保存资源
-                $saveData = [
-                    'resource_name' => $name,
-                    'resource_type' => $resource_type,
-                    'resource_note' => $resource_note,
-                    'resource_url' => $savPath . $saveName,
+                $temFile = [
+                    'extension' => $ext,
+                    'hashname' => $hashname,
+                    'name' => $name,
                 ];
-                // $reslut = CommonBusiness::createApi(self::$model_name, $saveData, $company_id);
-                $id = 0;
-                $reslut = self::replaceById($request, $controller, $saveData, $id);
-                $id = $reslut['id'] ?? '';
-                Log::info('上传文件日志-reslut',[$reslut]);
-                if(empty($id)){
-                    Log::info('上传文件日志-保存资源失败',[$id]);
-                    throws('保存资源失败!');
-                }
-            } catch ( \Exception $e) {
-                throws($e->getMessage());
-            }
-            return [
-                'id' => $id,// 资源id
-                'name' => $name,// 文件名
-                'savPath' => $savPath,// 保存路径 /结束
-                'saveName' => $saveName,// 保存文件名称
-                'store_result' => $store_result,// storeAs
-                'info' => $reslut,// 资源表记录 一维
-            ];
+                // 文件信息 {"extension":"jpg","hashname":"vggBtITcoKWwYCcRhheEIBsEr6upX16WnYTadvFY.jpeg","name":"7.jpg"}
+                Log::info('上传文件日志-文件信息',$temFile);
+                $fileArr =[
+                    'name' => $name,// 文件名称
+                    'allBlockUuid' => $allBlockUuid,// 分片时，所有片的共同标识
+                    'ext' => $ext,// 文件扩展名
+                    'size' => $size,// 文件大小
+                    'count' => $count,// 分片总数量 3
+                    'saveData' => [// 要保存的一维数据
+                        'resource_note' => $resource_note,
+                    ],
+                ];
+                //直接保存
+                if( ($num == $count &&  $count <= 1) || ($num ==0 && $count == 1)){
+                    return self::saveFile($request, $controller, 1, $company_id, $resource_type, $photo, $fileArr);
+                }else{
+                    //分片临时文件名
+                    $filename = md5($allBlockUuid).'-'.($num + 1).'.tmp';
+                    //上传目录
+                    $path_name = self::$source_tmp_path . $filename;// 'uploads/tmp/'.$filename;
+                    //方式一、保存临时文件
+                    // $bool = Storage::disk('tmp')->put($filename, file_get_contents($realPath));
+                    // $store_result = $photo->storeAs(self::$source_tmp_path, $filename);// 保存片文件
 
-        }else{
-            throws('请选择要上传的文件！');
+                    // 方式二、将内容写入缓存
+                    $publicPath = Tool::getPath('public');
+                    //打开临时文件
+                    // $handle = fopen($publicPath . $path_name,"rb");
+                    $handle = fopen($realPath,"rb");
+                    //读取临时文件 写入最终文件
+                    Tool::setRedis('tmpFilesBin', md5($path_name), fread($handle, filesize($realPath)), 60*5, 2); // 5分钟
+                    //关闭句柄 不关闭删除文件会出现没有权限
+                    fclose($handle);
+
+                    // 缓存0的扩展名
+                    if ($num == 0){
+                        Tool::setRedis('extend', md5($allBlockUuid), $ext, 60*5, 2); // 5分钟
+                    }
+                    // 文件大小处理
+                    $allSize = Tool::getRedis('size' . md5($allBlockUuid), 2);
+                    if(!is_numeric($allSize)) $allSize = 0;
+                    Tool::setRedis('size', md5($allBlockUuid), $allSize + $size, 60*5, 2); // 5分钟
+
+                    // 缓存分存临时文件名
+                    $tmpFiles = Tool::getRedis('tmpFiles' . md5($allBlockUuid), 2);
+                    if(!is_array($tmpFiles)) $tmpFiles = [];
+                    array_push($tmpFiles, $path_name);
+
+                    Tool::setRedis('tmpFiles', md5($allBlockUuid), $tmpFiles, 60*5, 2); // 5分钟
+
+                    //当分片上传完时 合并
+                    // if(($num + 1) == $count){
+                    if( count($tmpFiles) >= $count){// 因为可能是无序的，所以只能通过总数量来判断
+                        // 扩展名和文件大小处理
+                        $fileArr = array_merge($fileArr, [
+                            'ext' => Tool::getRedis('extend' . md5($allBlockUuid), 2),// 文件扩展名
+                            'size' => Tool::getRedis('size' . md5($allBlockUuid), 2),// 文件大小
+                        ]);
+                        return self::saveFile($request, $controller, 2, $company_id, $resource_type, $photo, $fileArr);
+                    }else{
+                        return [
+                            'id' => 0,// 资源id
+                            'name' => $name,// 文件名
+                            'savPath' => $path_name,// 保存路径 /结束
+                            'saveName' => $filename,// 保存文件名称
+                            'store_result' => $path_name,// storeAs
+                            'info' => [],// 资源表记录 一维
+                        ];
+                    }
+                }
+            }else{
+                throws('请选择要上传的文件！');
+            }
+        } catch ( \Exception $e) {
+            if(isset($allBlockUuid)){
+                // 缓存分存临时文件名
+                $tmpFiles = Tool::getRedis('tmpFiles' . md5($allBlockUuid), 2);
+                if(!is_array($tmpFiles)) $tmpFiles = [];
+                if(!empty($tmpFiles)) Log::info('上传文件日志-分片失败，删除临时文件',[$tmpFiles]);
+                foreach($tmpFiles as $tmp_files){
+                    // 方式一、删除临时文件
+                    // @unlink($tmp_files);
+                    // 方式二、删除缓存
+                    Tool::setRedis('tmpFilesBin', md5($tmp_files), '', 2, 2); // 2 秒
+                }
+
+                // 清除缓存
+                // 缓存0的扩展名
+                Tool::setRedis('extend', md5($allBlockUuid), '', 2, 2); // 2秒
+                // 文件大小处理
+                Tool::setRedis('size', md5($allBlockUuid), 0, 2, 2); // 2秒
+                // 缓存分存临时文件名
+                Tool::setRedis('tmpFiles', md5($allBlockUuid), [], 2, 2); // 2秒
+
+            }
+            throws($e->getMessage());
         }
+    }
+
+    /**
+     * 保存文件
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param int $operate_type 操作类型 1 单文件保存 2 分片文件保存
+     * @param int $company_id 企业id
+     * @param int $resource_type 资源类型
+     * @param object $photo 上传文件对象
+     * @param array $fileArr 文件信息
+         $fileArr =[
+            'name' => '',// 文件名称
+            'allBlockUuid' => '',// 分片时，所有片的共同标识
+            'ext' => 'jpg',// 文件扩展名
+            'size' => '',// 文件大小
+            'count' => '',// 分片总数量 3
+            'saveData' => [// 要保存的一维数据
+                // 'resource_note' => $resource_note,
+            ],
+        ];
+     * @return  array 列表数据
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function saveFile(Request $request, Controller $controller, $operate_type = 1, $company_id, $resource_type, &$photo = null, $fileArr = []){
+
+        $name = $fileArr['name'] ?? '';
+        $allBlockUuid = $fileArr['allBlockUuid'] ?? '';
+        $ext = $fileArr['ext'] ?? '';
+        $size =  $fileArr['size'] ?? 0;
+        $count =  $fileArr['count'] ?? 0;
+        $saveData =  $fileArr['saveData'] ?? [];
+        // 生成保存路径
+        $savPath = self::$source_path . $company_id . '/';
+
+        $resourceTypeArr = self::$resource_type[$resource_type] ?? [];
+        if(empty($resourceTypeArr)) throws('不明确的资源类型!');
+        $typeName = $resourceTypeArr['name'] ?? '';// 类型名称
+        $typeExt = $resourceTypeArr['ext'] ?? [];// 扩展名
+        $typeDir = $resourceTypeArr['dir'] ?? '';// 文件夹名称
+        $typeMaxSize = $resourceTypeArr['maxSize'] ?? '0.5';// 文件最大值 单位 M
+        if(!is_numeric($typeMaxSize)) $typeMaxSize = 0.5;// 0.5M
+        $typeOther = $resourceTypeArr['other'] ?? [];// 其它各自类型需要判断的指标
+        if(!in_array($ext , $typeExt)) throws($typeName . '扩展名必须为[' . implode('、', $typeExt) . ']');
+
+        //这里可根据配置文件的设置，做得更灵活一点
+        if($size > $typeMaxSize * 1024 * 1024){
+            throws('上传文件不能超过' . [$typeMaxSize . 'M']);
+        }
+
+        if($typeDir != '' ) $savPath .=   $typeDir . '/';// 类型文件夹
+
+        //if(is_numeric($pro_unit_id)){
+        //    $savPath .=   'pro' . $pro_unit_id . '/';
+        //}
+
+        $savPath .= date('Y/m/d/',time());
+
+        $saveName = Tool::createUniqueNumber(30) .'.' . $ext;
+        //$store_result = $photo->store('photo');
+        try{
+            if($operate_type == 1 ){// 小于等于0时，为没有分片上传 !empty($photo)
+                $store_result = $photo->storeAs($savPath, $saveName);// 返回 "resource/company/1/pro0/2018/10/13//20181013182843dc1a9783e212840f.jpeg"
+            }else{
+                //最后合成后的名字及路径
+                // $files_names = 'uploads/'.date("YmdHis",time()).rand(100000,999999).'.'.$ext;
+                makeDir($savPath);// 创建目录
+                $files_names = $savPath . $saveName;
+                $publicPath = Tool::getPath('public');
+                //打开文件
+                $fp = fopen($publicPath . $files_names,"ab");
+                //循环读取临时文件，写入最终文件
+                for($i = 0; $i < $count; $i++){
+                    //临时文件路径及名称
+                    $tmp_files = self::$source_tmp_path . md5($allBlockUuid).'-'.($i+1).'.tmp'; // 'uploads/tmp/'.md5($allBlockUuid).'-'.($i+1).'.tmp';
+                    //方式一、打开临时文件
+                    //$handle = fopen($publicPath . $tmp_files,"rb");
+                    //读取临时文件 写入最终文件
+                    // fwrite($fp, fread($handle, filesize($publicPath . $tmp_files)));
+                    //关闭句柄 不关闭删除文件会出现没有权限
+                    // fclose($handle);
+                    //方式一、删除临时文件
+                    // @unlink($tmp_files);
+                    // 方式二、从缓存读取
+                    fwrite($fp, Tool::getRedis('tmpFilesBin' . md5($tmp_files), 2));
+                    // 方式二、删除缓存
+                    Tool::setRedis('tmpFilesBin', md5($tmp_files), '', 2, 2); // 2 秒
+                }
+                //关闭句柄
+                fclose($fp);
+                $store_result = trim($files_names,'/');
+                Log::info('上传文件日志-完成保存图片-分片',[$store_result]);
+                // 清除缓存
+                // 缓存0的扩展名
+                Tool::setRedis('extend', md5($allBlockUuid), '', 2, 2); // 2秒
+                // 文件大小处理
+                Tool::setRedis('size', md5($allBlockUuid), 0, 2, 2); // 2秒
+                // 缓存分存临时文件名
+                Tool::setRedis('tmpFiles', md5($allBlockUuid), [], 2, 2); // 2秒
+
+            }
+            // 保存资源
+            $saveData = array_merge($saveData ,[
+                'resource_name' => $name,
+                'resource_type' => $resource_type,
+               // 'resource_note' => $resource_note,
+                'resource_url' => $savPath . $saveName,
+            ]);
+            Log::info('上传文件日志-保存数据',[$saveData]);
+            // $reslut = CommonBusiness::createApi(self::$model_name, $saveData, $company_id);
+            $id = 0;
+            $reslut = self::replaceById($request, $controller, $saveData, $id);
+            $id = $reslut['id'] ?? '';
+            Log::info('上传文件日志-reslut',[$reslut]);
+            if(empty($id)){
+                Log::info('上传文件日志-保存资源失败',[$id]);
+                throws('保存资源失败!');
+            }
+        } catch ( \Exception $e) {
+            throws($e->getMessage());
+        }
+        return [
+            'id' => $id,// 资源id
+            'name' => $name,// 文件名
+            'savPath' => $savPath,// 保存路径 /结束
+            'saveName' => $saveName,// 保存文件名称
+            'store_result' => $store_result,// storeAs
+            'info' => $reslut,// 资源表记录 一维
+        ];
     }
 
     /**

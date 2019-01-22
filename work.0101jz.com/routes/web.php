@@ -24,6 +24,8 @@ Route::get('login', 'IndexController@login');// 登陆
 //Route::get('logout', 'IndexController@logout');// 注销
 //Route::get('404', 'IndexController@err404');// 404错误
 
+// 百度上传测试
+Route::get('weixiu/webuploader', 'weixiu\WebUploaderController@index');// 上传前端html页
 
 
 // admin

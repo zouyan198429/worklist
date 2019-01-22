@@ -104,7 +104,7 @@ class IndexController extends WorksController
     {
         // $this->InitParams($request);
         // $company_id = $this->company_id;
-        return CompanyStaff::login($request, $this);
+        return CompanyStaff::login($request, $this, false);
     }
 
     /**

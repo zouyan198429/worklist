@@ -27,9 +27,10 @@ class CompanyStaff extends BaseBusiness
      * @author zouyan(305463219@qq.com)
      * @param Request $request 请求信息
      * @param Controller $controller 控制对象
+     * @param boolean $judgeSuper 控制对象 true : 部门id department_id = 120分公司 才能访问;false:其它人员
      * @return  array 用户信息[一维数组]
      */
-    public static function login(Request $request, Controller $controller){
+    public static function login(Request $request, Controller $controller, $judgeSuper = true){
         $admin_username = Common::get($request, 'admin_username');
         $admin_password = Common::get($request, 'admin_password');
         $preKey = Common::get($request, 'preKey');// 0 小程序 1后台
@@ -101,6 +102,11 @@ class CompanyStaff extends BaseBusiness
                 // return ajaxDataArr(0, null, '用户名或密码有误！');
             }
         }
+
+        $department_id = $userInfo['department_id'] ?? '';
+        if($judgeSuper && !in_array($department_id,[120]))  throws('您不是分公司员工，没有权限访问！');
+
+        if(!$judgeSuper && in_array($department_id,[120]))  throws('您是分公司员工，没有权限访问！');
 
         $account_id = $userInfo['id'] ?? 0;
         $company_id = $userInfo['company_id'] ?? 0;

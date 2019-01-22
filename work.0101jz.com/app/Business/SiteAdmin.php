@@ -68,6 +68,7 @@ class SiteAdmin extends BaseBusiness
         }
         $admin_type = $userInfo['admin_type'] ?? '';
         if($judgeSuper && $admin_type != 2)  throws('您不是超级管理员，没有权限访问！');
+        // if(!$judgeSuper && $admin_type != 1)  throws('您不是管理员，没有权限访问！');
 
         // 保存session
         // 存储数据到session...
