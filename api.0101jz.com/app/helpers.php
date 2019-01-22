@@ -377,10 +377,10 @@ function showPage($totalpg, $pg = 1, $record = 0,$showpage = 9,$show_num = 0)
  * 循环创建目录
  *
  * @param string $dir 待创建的目录
- * @param  $mode 权限
+ * @param  $mode 权限 需要注意一点，权限值最好使用八进制表示，即“0”开头，而且一定不要加引号。
  * @return boolean
  */
-function makeDir($dir, $mode = '0777') {
+function makeDir($dir, $mode = 0777) {
     if (is_dir($dir) || @mkdir($dir, $mode))
         return true;
     if (!makeDir(dirname($dir), $mode))

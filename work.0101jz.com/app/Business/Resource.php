@@ -512,11 +512,11 @@ class Resource extends BaseBusiness
             if($operate_type == 1 ){// 小于等于0时，为没有分片上传 !empty($photo)
                 $store_result = $photo->storeAs($savPath, $saveName);// 返回 "resource/company/1/pro0/2018/10/13//20181013182843dc1a9783e212840f.jpeg"
             }else{
+                $publicPath = Tool::getPath('public');
                 //最后合成后的名字及路径
                 // $files_names = 'uploads/'.date("YmdHis",time()).rand(100000,999999).'.'.$ext;
-                makeDir($savPath);// 创建目录
+                makeDir($publicPath . $savPath);// 创建目录
                 $files_names = $savPath . $saveName;
-                $publicPath = Tool::getPath('public');
                 //打开文件
                 $fp = fopen($publicPath . $files_names,"ab");
                 //循环读取临时文件，写入最终文件
