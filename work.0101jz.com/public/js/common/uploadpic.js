@@ -23,15 +23,22 @@ var FLASH_SWF_URL = FLASH_SWF_URL || '/dist/lib/uploader/Moxie.swf';// flash 上
 var SILVERLIGHT_XAP_URL = SILVERLIGHT_XAP_URL || '/dist/lib/uploader/Moxie.xap';// silverlight_xap_url silverlight 上传组件地址  默认为 lib/uploader/Moxie.xap  请确保在文件上传页面能够通过此地址访问到此文件。
 var SELF_UPLOAD = (typeof(SELF_UPLOAD) != 'boolean') ? true : SELF_UPLOAD ;//  是否自己触发上传 TRUE/1自己触发上传方法 FALSE/0控制上传按钮
 var FILE_UPLOAD_METHOD = FILE_UPLOAD_METHOD || ''// 单个上传成功后执行方法 格式 aaa();  或  空白-没有
-var FILE_UPLOAD_COMPLETE = FILE_UPLOAD_COMPLETE || ''  // 所有上传成功后执行方法 格式 aaa();  或  空白-没有
-
+var FILE_UPLOAD_COMPLETE = FILE_UPLOAD_COMPLETE || '';  // 所有上传成功后执行方法 格式 aaa();  或  空白-没有
+var FILE_RESIZE = FILE_RESIZE || {};
+// resize:{// 图片修改设置 使用一个对象来设置如果在上传图片之前对图片进行修改。该对象可以包含如下属性的一项或全部：
+//     // width: 128,// 图片压缩后的宽度，如果不指定此属性则保持图片的原始宽度；
+//     // height: 128,// 图片压缩后的高度，如果不指定此属性则保持图片的原始高度；
+//     // crop: true,// 是否对图片进行裁剪；
+//     quuality: 50,// 图片压缩质量，可取值为 0~100，数值越大，图片质量越高，压缩比例越小，文件体积也越大，默认为 90，只对 .jpg 图片有效；
+//     // preserve_headers: false // 是否保留图片的元数据，默认为 true 保留，如果为 false 不保留。
+// },
 var PIC_LIST_JSON =  PIC_LIST_JSON || {'data_list':[]};// piclistJson 数据列表json对象格式  {‘data_list’:[{'id':1,'resource_name':'aaa.jpg','resource_url':'picurl','created_at':'2018-07-05 23:00:06'}]}
 
 
 
 $(function(){
     // 初始化上传组件
-    initUploader(UPLOAD_ID, AUTO_UPLOAD, FILE_UPLOAD_URL, FILE_DATA_NAME, MULTIPART_PARAMS, UPLOAD_FILE_FILTERS, LIMIT_FILES_COUNT, MULTI_SELECTION, FLASH_SWF_URL, SILVERLIGHT_XAP_URL, SELF_UPLOAD, BAIDU_TEM_PIC_LIST, FILE_UPLOAD_METHOD, FILE_UPLOAD_COMPLETE);
+    initUploader(UPLOAD_ID, AUTO_UPLOAD, FILE_UPLOAD_URL, FILE_DATA_NAME, MULTIPART_PARAMS, UPLOAD_FILE_FILTERS, LIMIT_FILES_COUNT, MULTI_SELECTION, FLASH_SWF_URL, SILVERLIGHT_XAP_URL, SELF_UPLOAD, BAIDU_TEM_PIC_LIST, FILE_UPLOAD_METHOD, FILE_UPLOAD_COMPLETE, FILE_RESIZE);
     //自定义的-- 删除
     $(document).on("click",".delResource",function(){
         var obj = $(this);
@@ -127,7 +134,14 @@ function delResource(resource_id, type, obj, $key){
 // baidu_template_pic_list  自定义列表数据百度模板
 // fileupload // 单个上传成功后执行方法 格式 aaa();  或  空白-没有
 // uploadComplete // 所有上传成功后执行方法 格式 aaa();  或  空白-没有
-function initUploader(upload_id, autoUpload, submit_url, file_data_name, multipart_params, filters, limitFilesCount, multi_selection, flash_swf_url, silverlight_xap_url, self_upload, baidu_template_pic_list, fileupload, uploadComplete){
+// resize // {// 图片修改设置 使用一个对象来设置如果在上传图片之前对图片进行修改。该对象可以包含如下属性的一项或全部：
+//             // width: 128,// 图片压缩后的宽度，如果不指定此属性则保持图片的原始宽度；
+//             // height: 128,// 图片压缩后的高度，如果不指定此属性则保持图片的原始高度；
+//             // crop: true,// 是否对图片进行裁剪；
+//             quuality: 50,// 图片压缩质量，可取值为 0~100，数值越大，图片质量越高，压缩比例越小，文件体积也越大，默认为 90，只对 .jpg 图片有效；
+//             // preserve_headers: false // 是否保留图片的元数据，默认为 true 保留，如果为 false 不保留。
+//         },
+function initUploader(upload_id, autoUpload, submit_url, file_data_name, multipart_params, filters, limitFilesCount, multi_selection, flash_swf_url, silverlight_xap_url, self_upload, baidu_template_pic_list, fileupload, uploadComplete, resize){
     upload_id = upload_id || 'myUploader';
     if(typeof(autoUpload) != 'boolean')  autoUpload =  false;
     console.log('upload_id:', upload_id);
@@ -144,6 +158,7 @@ function initUploader(upload_id, autoUpload, submit_url, file_data_name, multipa
     console.log('silverlight_xap_url:', silverlight_xap_url);
     console.log('fileupload:', fileupload);
     console.log('uploadComplete:', uploadComplete);
+    console.log('resize:', resize);
     // 九张图片上传
     $('#' + upload_id).uploader({
         autoUpload: autoUpload,            // 当选择文件后立即自动进行上传操作
@@ -174,6 +189,14 @@ function initUploader(upload_id, autoUpload, submit_url, file_data_name, multipa
         // prevent_duplicates: true
         //},
         // removeUploaded:true,//   移除已上传文件 false（默认）或 true
+        resize:resize,
+        // resize:{// 图片修改设置 使用一个对象来设置如果在上传图片之前对图片进行修改。该对象可以包含如下属性的一项或全部：
+        //     // width: 128,// 图片压缩后的宽度，如果不指定此属性则保持图片的原始宽度；
+        //     // height: 128,// 图片压缩后的高度，如果不指定此属性则保持图片的原始高度；
+        //     // crop: true,// 是否对图片进行裁剪；
+        //     quuality: 50,// 图片压缩质量，可取值为 0~100，数值越大，图片质量越高，压缩比例越小，文件体积也越大，默认为 90，只对 .jpg 图片有效；
+        //     // preserve_headers: false // 是否保留图片的元数据，默认为 true 保留，如果为 false 不保留。
+        // },
         onFilesAdded:function(files){
             console.log('onFilesAdded当文件被添加到上传队列时触发', files);
             console.log('files count', files.length);
