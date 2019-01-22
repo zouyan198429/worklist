@@ -647,6 +647,46 @@ class CompanyWorkController extends CompController
     }
 
     /**
+     * 删除
+     *
+     * @param int $id
+     * @return Response
+     * @author zouyan(305463219@qq.com)
+     */
+    public function del(Request $request)
+    {
+        $this->InitParams($request);
+//        $currentNow = Carbon::now();
+        $company_id = $this->company_id;
+        $work_id = Common::getInt($request, 'id');
+        $staff_id = Common::getInt($request, 'staff_id');// 操作员工
+        $workObj = CompanyWork::find($work_id);
+        // $workObj = CompanyWorkDoingBusiness::getWorkInfo($company_id, $work_id); // $workDoingObj
+        if(empty($workObj)){
+            throws("工单记录不存在!");
+        }
+        if($workObj->status == 8 || $workObj->company_id != $company_id ){// || $workObj->send_staff_id != $staff_id
+            throws("此工单不可进行此操作!");
+        }
+
+        $result = 0;
+        DB::beginTransaction();
+        try {
+            // 删除正在进行的工单
+            $result = CompanyWorkBusiness::delById(1, $company_id, $work_id);
+            // 删除全表中的工单
+            // $result = CompanyWorkBusiness::delById(0, $company_id, $work_id);
+            $result = $workObj->delete();
+        } catch ( \Exception $e) {
+            DB::rollBack();
+            throws('操作失败；信息[' . $e->getMessage() . ']');
+            // throws($e->getMessage());
+        }
+        DB::commit();
+        return  okArray($result);
+    }
+
+    /**
      * 手机站首页初始化数据
      *
      * @param int $id

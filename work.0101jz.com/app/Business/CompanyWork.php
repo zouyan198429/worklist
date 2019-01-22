@@ -621,14 +621,45 @@ class CompanyWork extends BaseBusiness
      *
      * @param Request $request 请求信息
      * @param Controller $controller 控制对象
+     * @param int $notLog 是否需要登陆 0需要1不需要 2已经判断权限，不用判断权限
      * @return  array 列表数据
      * @author zouyan(305463219@qq.com)
      */
-//    public static function delAjax(Request $request, Controller $controller)
-//    {
-//        return self::delAjaxBase($request, $controller, self::$model_name);
-//
-//    }
+    public static function delAjax(Request $request, Controller $controller, $notLog = 0)
+    {
+        // 删除工单
+
+        $id = Common::get($request, 'id');
+        Tool::dataValid([["input"=>$id,"require"=>"true","validator"=>"","message"=>'参数id值不能为空']]);
+
+        $company_id = $controller->company_id;
+
+        // 判断权限
+//        if(($notLog & 2) == 2 ) {
+//            $notLog = $notLog - 2 ;
+//        }else{
+//            $judgeData = [
+//                'company_id' => $company_id,
+//            ];
+//            $relations = '';
+//            CommonBusiness::judgePower($id, $judgeData, self::$model_name, $company_id, $relations, $notLog);
+//        }
+
+
+        // 参数
+        $requestData = [
+            'id' => $id,
+            'company_id' => $company_id,
+            'staff_id' =>  $controller->user_id,
+        ];
+        $url = config('public.apiUrl') . config('apiUrl.apiPath.delWork');
+        // 生成带参数的测试get请求
+        $requestTesUrl = splicQuestAPI($url , $requestData);
+        $result = HttpRequest::HttpRequestApi($url, $requestData, [], 'POST');
+
+        return ajaxDataArr(1, $result, '');
+//         return self::delAjaxBase($request, $controller, self::$model_name);
+    }
 
     /**
      * 根据id获得单条数据

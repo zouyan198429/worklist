@@ -53,6 +53,7 @@ Route::post('comp/compareHistoryOrUpdateVersion', 'Comp\CommonController@compare
 Route::post('work/test', 'CompanyWorkController@test');//测试
 Route::post('work/add_init', 'CompanyWorkController@addInit');//工单添加页初始数据
 Route::post('work/add_save', 'CompanyWorkController@add_save');//工单添加/修改
+Route::post('work/del', 'CompanyWorkController@del');//工单删除
 Route::post('work/mobile_index', 'CompanyWorkController@mobile_index');//手机站首页初始化数据
 Route::post('work/workReSend', 'CompanyWorkController@workReSend');//工单重新指定
 Route::post('work/workSure', 'CompanyWorkController@workSure');//确认工单

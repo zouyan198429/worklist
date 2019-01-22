@@ -293,11 +293,11 @@ class WorkController extends WorksController
      * @return mixed
      * @author zouyan(305463219@qq.com)
      */
-//    public function ajax_del(Request $request)
-//    {
-//        $this->InitParams($request);
-//        return CompanyWork::delAjax($request, $this);
-//    }
+    public function ajax_del(Request $request)
+    {
+        $this->InitParams($request);
+        return CompanyWork::delAjax($request, $this);
+    }
 
     /**
      * 反馈问题的回复

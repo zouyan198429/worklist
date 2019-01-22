@@ -22,7 +22,7 @@ class Resource extends BaseBusiness
     public static $resource_type = [
             '0' => [
                 'name' => '图片文件',
-                'ext' => ['jpg','jpeg','gif','png','bmp','ico'],// 扩展名
+                'ext' => ['jpg','jpeg','gif','png','bmp','ico','bin'],// 扩展名
                 'dir' => 'images',// 文件夹名称
                 'maxSize' => 5,// 文件最大值  单位 M
                 'other' => [],// 其它各自类型需要判断的指标
@@ -309,8 +309,11 @@ class Resource extends BaseBusiness
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
             $photo = $request->file('photo');
             Log::info('上传文件日志-文件信息',[$photo]);
-            // $extension = strtolower($photo->extension());// 扩展名  该扩展名可能会和客户端提供的扩展名不一致
+            $extensionFirst = strtolower($photo->extension());// 扩展名  该扩展名可能会和客户端提供的扩展名不一致
             $extension = $photo->getClientOriginalExtension(); //上传文件的后缀.
+            Log::info('上传文件日志-文件后缀extensionFirst',[$extensionFirst]);
+            Log::info('上传文件日志-文件后缀',[$extension]);
+            if(empty($extension)) $extension = $extensionFirst;
             $hashname = $photo->hashName();
             //获取上传文件的大小
             $size = $photo->getSize();

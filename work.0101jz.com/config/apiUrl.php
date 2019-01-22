@@ -24,6 +24,7 @@ return [
         'apiPath' => [
             'workAddInit' => 'work/add_init',// 工单添加页初始数据
             'saveWork' => 'work/add_save',// 工单添加/修改
+            'delWork' => 'work/del',// 工单删除
             'workReSend' => 'work/workReSend',// 工单重新指定
             'workSure' => 'work/workSure',// 确认工单
             'workWin' => 'work/workWin',// 结单

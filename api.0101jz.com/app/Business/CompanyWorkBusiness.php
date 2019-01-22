@@ -294,10 +294,10 @@ class CompanyWorkBusiness extends BaseBusiness
         }
         if($db_num == 0){
             array_push($where,['id', '=', $work_id]);
-            return CompanyWork::find($where)->limit(1)->delete();
+            return CompanyWork::find($work_id)->delete();// ->limit(1)
         }else{
             array_push($where,['work_id', '=', $work_id]);
-            return CompanyWorkDoing::where($where)->limit(1)->delete();
+            return CompanyWorkDoing::where($where)->delete();// ->limit(1)
         }
     }
 }
