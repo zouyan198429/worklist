@@ -27,6 +27,7 @@ class UploadController extends WorksController
     public function index(Request $request)
     {
         $this->InitParams($request);
+        // Log::info('上传文件日志-获得上传数据开始:',[0]);
         return Resource::filePlupload($request, $this, 0);
     }
 
