@@ -288,15 +288,15 @@ class Resource extends BaseBusiness
      */
     public static function uploadFile(Request $request, Controller $controller, $resource_type = 0)
     {
-        try{
 //            $controller->company_id = 1;
 //            $controller->operate_staff_id = 1502;
 
+        try{
             $company_id = $controller->company_id;
             $operate_staff_id =  $controller->operate_staff_id;
             if(!is_numeric($operate_staff_id)) $operate_staff_id = 0;
 
-                ini_set('memory_limit','1024M');    // 临时设置最大内存占用为 3072M 3G
+            ini_set('memory_limit','1024M');    // 临时设置最大内存占用为 3072M 3G
             ini_set("max_execution_time", "300");
             set_time_limit(300);   // 设置脚本最大执行时间 为0 永不过期
 
@@ -495,7 +495,7 @@ class Resource extends BaseBusiness
 
         //这里可根据配置文件的设置，做得更灵活一点
         if($size > $typeMaxSize * 1024 * 1024){
-            throws('上传文件不能超过' . [$typeMaxSize . 'M']);
+            throws('上传文件不能超过[' . $typeMaxSize . 'M]');
         }
 
         if($typeDir != '' ) $savPath .=   $typeDir . '/';// 类型文件夹
