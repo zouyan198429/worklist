@@ -264,6 +264,7 @@ Route::post('huawu/ajax_password_save', 'huawu\IndexController@ajax_password_sav
 Route::post('huawu/staff/ajax_alist', 'huawu\StaffController@ajax_alist');//ajax获得列表数据
 Route::post('huawu/staff/ajax_get_child', 'huawu\StaffController@ajax_get_child');// 根据部门id,小组id获得子类员工数组[kv一维数组]
 Route::post('huawu/staff/ajax_get_areachild', 'huawu\StaffController@ajax_get_areachild');// 根据区县id,街道id获得子类员工数组[kv一维数组]
+Route::any('huawu/staff/ajax_add_staff_single', 'huawu\StaffController@ajax_add_staff_single');//ajax添加员工地址-根据试卷id,多个,号分隔--单个
 
 
 // 部门
@@ -321,7 +322,7 @@ Route::post('weixiu/ajax_password_save', 'weixiu\IndexController@ajax_password_s
 Route::post('weixiu/staff/ajax_alist', 'weixiu\StaffController@ajax_alist');//ajax获得列表数据
 Route::post('weixiu/staff/ajax_get_child', 'weixiu\StaffController@ajax_get_child');// 根据部门id,小组id获得子类员工数组[kv一维数组]
 Route::post('weixiu/staff/ajax_get_areachild', 'weixiu\StaffController@ajax_get_areachild');// 根据区县id,街道id获得子类员工数组[kv一维数组]
-
+Route::any('weixiu/staff/ajax_add_staff_single', 'weixiu\StaffController@ajax_add_staff_single');//ajax添加员工地址-根据试卷id,多个,号分隔--单个
 // 部门
 Route::post('weixiu/department/ajax_get_child', 'weixiu\DepartmentController@ajax_get_child');// 获得子类部门数组[kv一维数组]
 

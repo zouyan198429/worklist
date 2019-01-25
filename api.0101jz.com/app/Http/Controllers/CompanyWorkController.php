@@ -304,34 +304,34 @@ class CompanyWorkController extends CompController
             throws("没有业务时间信息");
         }
         $save_data['caller_type_name'] = $workCallerTypeObj->type_name ?? '';
-
-        // 部门名称
-        $send_department_name = '';
-        $send_department_id = $save_data['send_department_id'] ?? 0;
-        if($send_department_id > 0){
-            // Common::judgeInitParams($request, 'send_department_id', $send_department_id);
-            $departmentObj = CompanyDepartment::select(['id', 'department_name'])->find($send_department_id);
-            if(empty($departmentObj)){
-                throws("没有部门信息");
-            }
-            $send_department_name = $departmentObj->department_name ?? '';
-        }
-        $save_data['send_department_name'] = $send_department_name;
-        array_push($sendLogs, $send_department_name);// 指派日志
-
-        // 小组名称
-        $send_group_name = '';
-        $send_group_id = $save_data['send_group_id'] ?? 0;
-        if($send_group_id > 0){
-            // Common::judgeInitParams($request, 'send_group_id', $send_group_id);
-            $groupObj = CompanyDepartment::select(['id', 'department_name'])->find($send_group_id);
-            if(empty($groupObj)){
-                throws("没有小组信息");
-            }
-            $send_group_name = $groupObj->department_name ?? '';
-        }
-        $save_data['send_group_name'] = $send_group_name;
-        array_push($sendLogs, $send_group_name);// 指派日志
+//
+//        // 部门名称
+//        $send_department_name = '';
+//        $send_department_id = $save_data['send_department_id'] ?? 0;
+//        if($send_department_id > 0){
+//            // Common::judgeInitParams($request, 'send_department_id', $send_department_id);
+//            $departmentObj = CompanyDepartment::select(['id', 'department_name'])->find($send_department_id);
+//            if(empty($departmentObj)){
+//                throws("没有部门信息");
+//            }
+//            $send_department_name = $departmentObj->department_name ?? '';
+//        }
+//        $save_data['send_department_name'] = $send_department_name;
+//        array_push($sendLogs, $send_department_name);// 指派日志
+//
+//        // 小组名称
+//        $send_group_name = '';
+//        $send_group_id = $save_data['send_group_id'] ?? 0;
+//        if($send_group_id > 0){
+//            // Common::judgeInitParams($request, 'send_group_id', $send_group_id);
+//            $groupObj = CompanyDepartment::select(['id', 'department_name'])->find($send_group_id);
+//            if(empty($groupObj)){
+//                throws("没有小组信息");
+//            }
+//            $send_group_name = $groupObj->department_name ?? '';
+//        }
+//        $save_data['send_group_name'] = $send_group_name;
+//        array_push($sendLogs, $send_group_name);// 指派日志
 
         DB::beginTransaction();
         try {
@@ -363,7 +363,40 @@ class CompanyWorkController extends CompController
                 $save_data['send_staff_history_id'] = $send_staff_history_id;
                 $save_data['status'] = 1;//1待确认工单
 
+                // 部门名称
+                $send_department_name = '';
+                $send_department_id = $sendStaffObj->department_id;// $save_data['send_department_id'] ?? 0;
+                if($send_department_id > 0){
+                    // Common::judgeInitParams($request, 'send_department_id', $send_department_id);
+                    $departmentObj = CompanyDepartment::select(['id', 'department_name'])->find($send_department_id);
+                    if(empty($departmentObj)){
+                        throws("没有部门信息");
+                    }
+                    $send_department_name = $departmentObj->department_name ?? '';
+                }
+                $save_data['send_department_id'] = (int)$send_department_id;
+                $save_data['send_department_name'] = $send_department_name;
+                array_push($sendLogs, $send_department_name);// 指派日志
+
+                // 小组名称
+                $send_group_name = '';
+                $send_group_id = $sendStaffObj->group_id;// $save_data['send_group_id'] ?? 0;
+                if($send_group_id > 0){
+                    // Common::judgeInitParams($request, 'send_group_id', $send_group_id);
+                    $groupObj = CompanyDepartment::select(['id', 'department_name'])->find($send_group_id);
+                    if(empty($groupObj)){
+                        throws("没有小组信息");
+                    }
+                    $send_group_name = $groupObj->department_name ?? '';
+                }
+                $save_data['send_group_id'] = (int)$send_department_id;
+                $save_data['send_group_name'] = $send_group_name;
+                array_push($sendLogs, $send_group_name);// 指派日志
+
+                // 指派到员工
                 array_push($sendLogs, $sendStaffHistoryObj->real_name . '[' . $sendStaffHistoryObj->work_num . '；' . $sendStaffHistoryObj->mobile . ']');// 指派日志
+
+
             }
 
             // 获是员工历史记录id-- 操作员工

@@ -675,20 +675,39 @@ class CompanyWork extends BaseBusiness
     public static function getInfoData(Request $request, Controller $controller, $id, $relations = ''){
         $company_id = $controller->company_id;
         // $relations = '';
-        $resultDatas = CommonBusiness::getinfoApi(self::$model_name, $relations, $company_id , $id);
-        // $resultDatas = self::getInfoDataBase($request, $controller, self::$model_name, $id, $relations);
+        $info = CommonBusiness::getinfoApi(self::$model_name, $relations, $company_id , $id);
+        // $info = self::getInfoDataBase($request, $controller, self::$model_name, $id, $relations);
         // 判断权限
         $judgeData = [
             'company_id' => $company_id,
         ];
         // 加上 work_id字段
-        if(! isset($resultDatas['work_id'])) $resultDatas['work_id'] = $resultDatas['id'];
-        CommonBusiness::judgePowerByObj($resultDatas, $judgeData );
+        if(! isset($info['work_id'])) $info['work_id'] = $info['id'];
+        CommonBusiness::judgePowerByObj($info, $judgeData );
         // 如果有图片，处理图片信息
-        $resource_id = $resultDatas['resource_id'] ?? '';
+        $resource_id = $info['resource_id'] ?? '';
         $resourceList = Resource::getResourceByIds($request, $controller, $company_id, $resource_id);
-        $resultDatas['resource_list'] = $resourceList;
-        return $resultDatas;
+        $info['resource_list'] = $resourceList;
+
+        // 派发给员工
+        $send_real_name = $info['work_history_staff_send']['real_name'] ?? '';
+        if(empty($send_real_name)) $send_real_name = $info['send_staff']['real_name'] ?? '';
+        $info['send_real_name'] = $send_real_name;
+        $now_send_staff = 0;// 最新的商家 0没有变化 ;1 已经删除  2 试卷不同
+        if(isset($info['work_history_staff_send']) && isset($info['send_staff'])){
+            $history_version_num = $info['work_history_staff_send']['version_num'] ?? '';
+            $version_num = $info['send_staff']['version_num'] ?? '';
+            if(empty($info['send_staff'])){
+                $now_send_staff = 1;
+            }elseif($version_num != '' && $history_version_num != $version_num){
+                $now_send_staff = 2;
+            }
+        }
+        if(isset($info['work_history_staff_send'])) unset($info['work_history_staff_send']);
+        if(isset($info['send_staff'])) unset($info['send_staff']);
+        $info['now_send_staff'] = $now_send_staff;
+
+        return $info;
     }
 
     /**

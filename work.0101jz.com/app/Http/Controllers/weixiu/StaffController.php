@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\weixiu;
 
 use App\Business\CompanyDepartment;
+use App\Business\CompanyExam;
+use App\Business\CompanyPosition;
 use App\Business\CompanyStaff;
 use App\Http\Controllers\WorksController;
 use App\Services\Common;
@@ -96,4 +98,50 @@ class StaffController extends WorksController
         return  ajaxDataArr(1, $staffChildKV, '');;
     }
 
+    /**
+     * 同事选择-弹窗
+     *
+     * @param Request $request
+     * @return mixed
+     * @author zouyan(305463219@qq.com)
+     */
+    public function select(Request $request)
+    {
+        $this->InitParams($request);
+        $reDataArr = $this->reDataArr;
+        // 获得第一级部门分类一维数组[$k=>$v]
+        $reDataArr['department_kv'] = CompanyDepartment::getChildListKeyVal($request, $this, 0, 1 + 0);
+        // 获得第一级职位分类一维数组[$k=>$v]
+        $reDataArr['position_kv'] = CompanyPosition::getListKeyVal($request, $this, 1 + 0);
+        return view('weixiu.staff.select', $reDataArr);
+    }
+
+    /**
+     * ajax增加员工数据-根据试卷id,多个,号分隔
+     *
+     * @param Request $request
+     * @return mixed
+     * @author liuxin
+     */
+    public function ajax_add_staff(Request $request){
+        $this->InitParams($request);
+        $relations = ['subjectAnswer', 'answerType'];
+        $subjectData = CompanyExam::addStaffData($request, $this, '', $relations);
+        return ajaxDataArr(1, $subjectData, '');
+    }
+
+    /**
+     * ajax增加员工数据-根据试卷id,多个,号分隔
+     *
+     * @param Request $request
+     * @return mixed
+     * @author liuxin
+     */
+    public function ajax_add_staff_single(Request $request){
+        $this->InitParams($request);
+        $relations = ['subjectAnswer', 'answerType'];
+        $subjectData = CompanyExam::addStaffData($request, $this, '', $relations);
+        $subjectData = $subjectData[0] ?? [];
+        return ajaxDataArr(1, $subjectData, '');
+    }
 }

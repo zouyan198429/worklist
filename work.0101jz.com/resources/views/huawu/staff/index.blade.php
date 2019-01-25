@@ -12,16 +12,23 @@
 
 			@include('common.pageParams')
 			<form onsubmit="return false;" class="form-horizontal" role="form" method="post" id="search_frm" action="#">
-			<div class="tabbox" >
+			<div class="msearch fr" style="width:700px;">
 				<select class="wnormal" name="department_id">
 					<option value="">全部</option>
 					@foreach ($department_kv as $k=>$txt)
 						<option value="{{ $k }}"  @if(isset($department_id) && $department_id == $k) selected @endif >{{ $txt }}</option>
 					@endforeach
 				</select>
+				<select class="wmini" name="field">
+					{{--<option value="">全部</option>--}}
+					{{--<option value="customer_name">客户姓名</option>--}}
+					<option value="real_name">姓名</option>
+					<option value="mobile">手机</option>
+					<option value="work_num">工号</option>
+				</select>
+				<input type="text" value=""  name="keyWord" />
+				<button class="btn btn-normal  search_frm">搜索</button>
 			</div>
-
-			<div class="msearch fr"> <input type="text" value=""  name="keyword"  placeholder="请输入姓名" /> <button class="btn btn-normal  search_frm">搜索</button> </div>
 			</form>
 		</div>
 		{{--

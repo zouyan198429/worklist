@@ -20,6 +20,7 @@ class Resource extends BaseBusiness
     // 企业 company/[生产单元/]年/月/日/文件
     protected static $source_path = '/resource/company/';
     protected static $source_tmp_path = '/resource/tmp/';// 临时文件夹
+    protected static $cache_block = 2; // 1 redis缓存分片内容--适合redis内存比较大的服务器，2 临时文件缓存分片内容--redis内存比较小时
 
     public static $resource_type = [
             '0' => [
@@ -370,20 +371,21 @@ class Resource extends BaseBusiness
                     $filename = md5($allBlockUuid).'-'.($num + 1).'.tmp';
                     //上传目录
                     $path_name = self::$source_tmp_path . $filename;// 'uploads/tmp/'.$filename;
-                    //方式一、保存临时文件
-                    // $bool = Storage::disk('tmp')->put($filename, file_get_contents($realPath));
-                    // $store_result = $photo->storeAs(self::$source_tmp_path, $filename);// 保存片文件
-
-                    // 方式二、将内容写入缓存
-                    $publicPath = Tool::getPath('public');
-                    //打开临时文件
-                    // $handle = fopen($publicPath . $path_name,"rb");
-                    $handle = fopen($realPath,"rb");
-                    //读取临时文件 写入最终文件
-                    Tool::setRedis('tmpFilesBin', md5($path_name), fread($handle, filesize($realPath)), 60*5, 2); // 5分钟
-                    //关闭句柄 不关闭删除文件会出现没有权限
-                    fclose($handle);
-
+                    if(self::$cache_block == 2){
+                        //方式一、保存临时文件
+                        // $bool = Storage::disk('tmp')->put($filename, file_get_contents($realPath));
+                         $store_result = $photo->storeAs(self::$source_tmp_path, $filename);// 保存片文件
+                    }else{
+                        // 方式二、将内容写入缓存
+                        $publicPath = Tool::getPath('public');
+                        //打开临时文件
+                        // $handle = fopen($publicPath . $path_name,"rb");
+                        $handle = fopen($realPath,"rb");
+                        //读取临时文件 写入最终文件
+                        Tool::setRedis('tmpFilesBin', md5($path_name), fread($handle, filesize($realPath)), 60*5, 2); // 5分钟
+                        //关闭句柄 不关闭删除文件会出现没有权限
+                        fclose($handle);
+                    }
                     // 缓存0的扩展名
                     if ($num == 0){
                         Tool::setRedis('extend', md5($allBlockUuid), $ext, 60*5, 2); // 5分钟
@@ -430,12 +432,14 @@ class Resource extends BaseBusiness
                 if(!is_array($tmpFiles)) $tmpFiles = [];
                 if(!empty($tmpFiles)) Log::info('上传文件日志-分片失败，删除临时文件',[$tmpFiles]);
                 foreach($tmpFiles as $tmp_files){
-                    // 方式一、删除临时文件
-                    // @unlink($tmp_files);
-                    // 方式二、删除缓存
-                    Tool::setRedis('tmpFilesBin', md5($tmp_files), '', 2, 2); // 2 秒
+                    if(self::$cache_block == 2){
+                        // 方式一、删除临时文件
+                         @unlink($tmp_files);
+                    }else{
+                        // 方式二、删除缓存
+                        Tool::setRedis('tmpFilesBin', md5($tmp_files), '', 2, 2); // 2 秒
+                    }
                 }
-
                 // 清除缓存
                 // 缓存0的扩展名
                 Tool::setRedis('extend', md5($allBlockUuid), '', 2, 2); // 2秒
@@ -523,18 +527,21 @@ class Resource extends BaseBusiness
                 for($i = 0; $i < $count; $i++){
                     //临时文件路径及名称
                     $tmp_files = self::$source_tmp_path . md5($allBlockUuid).'-'.($i+1).'.tmp'; // 'uploads/tmp/'.md5($allBlockUuid).'-'.($i+1).'.tmp';
-                    //方式一、打开临时文件
-                    //$handle = fopen($publicPath . $tmp_files,"rb");
-                    //读取临时文件 写入最终文件
-                    // fwrite($fp, fread($handle, filesize($publicPath . $tmp_files)));
-                    //关闭句柄 不关闭删除文件会出现没有权限
-                    // fclose($handle);
-                    //方式一、删除临时文件
-                    // @unlink($tmp_files);
-                    // 方式二、从缓存读取
-                    fwrite($fp, Tool::getRedis('tmpFilesBin' . md5($tmp_files), 2));
-                    // 方式二、删除缓存
-                    Tool::setRedis('tmpFilesBin', md5($tmp_files), '', 2, 2); // 2 秒
+                    if(self::$cache_block == 2){
+                        //方式一、打开临时文件
+                        $handle = fopen($publicPath . $tmp_files,"rb");
+                        //读取临时文件 写入最终文件
+                         fwrite($fp, fread($handle, filesize($publicPath . $tmp_files)));
+                        //关闭句柄 不关闭删除文件会出现没有权限
+                         fclose($handle);
+                        //方式一、删除临时文件
+                         @unlink($tmp_files);
+                    }else{
+                        // 方式二、从缓存读取
+                        fwrite($fp, Tool::getRedis('tmpFilesBin' . md5($tmp_files), 2));
+                        // 方式二、删除缓存
+                        Tool::setRedis('tmpFilesBin', md5($tmp_files), '', 2, 2); // 2 秒
+                    }
                 }
                 //关闭句柄
                 fclose($fp);

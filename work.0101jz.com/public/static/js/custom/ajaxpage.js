@@ -149,6 +149,7 @@ function ajaxPageList(dynamic_id,baidu_template_page,ajax_url,is_read_page,frm_i
                     htmlStr = resolve_baidu_template(baidu_template_empty,{},'');
                     //更新新的内容
                     $("#"+body_data_id).html(htmlStr);
+                    $('#'+dynamic_id).parent().find('.pagination').html('');
                 }
                 //更新总页数
                 if($('#'+total_id).length>=1){

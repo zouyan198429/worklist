@@ -238,6 +238,7 @@ Route::get('huawu/logout', 'huawu\IndexController@logout');// 注销
    Route::get('huawu/customer/day_count', 'huawu\CustomerController@dayCount');//achievement.html 我的客户
 //同事
    Route::get('huawu/staff', 'huawu\StaffController@index');//colleague.html  我的同事
+Route::get('huawu/staff/select', 'huawu\StaffController@select');// 同事选择-弹窗
 //在线考试
 Route::get('huawu/exam', 'huawu\ExamController@index');//examin_list.html 在线考试
 Route::get('huawu/exam/doing/{id}', 'huawu\ExamController@doing');//examin_do.html 在线考试

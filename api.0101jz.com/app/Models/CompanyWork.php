@@ -118,8 +118,34 @@ class CompanyWork extends BaseModel
         return $this->belongsTo('App\Models\CompanyStaffHistory', 'operate_staff_history_id', 'id');
     }
 
+
     /**
-     * 获取工单对应的历史员工[添加者]--一维
+     * 获取派发给员工对应的部门--一维
+     */
+    public function sendDepartment()
+    {
+        return $this->belongsTo('App\Models\CompanyDepartment', 'send_department_id', 'id');
+    }
+
+    /**
+     * 获取派发给对应的小组--一维
+     */
+    public function sendGroup()
+    {
+        return $this->belongsTo('App\Models\CompanyDepartment', 'send_group_id', 'id');
+    }
+
+
+    /**
+     * 派发给员工--一维
+     */
+    public function sendStaff()
+    {
+        return $this->belongsTo('App\Models\CompanyStaff', 'send_staff_id', 'id');
+    }
+
+    /**
+     * 派发给工单对应的历史员工[添加者]--一维
      */
     public function workHistoryStaffSend()
     {

@@ -345,7 +345,9 @@ class CompanyStaff extends BaseBusiness
         if($useSearchParams) {
             // $params = self::formatListParams($request, $controller, $queryParams);
             $department_id = Common::getInt($request, 'department_id');
-            $keyword = Common::get($request, 'keyword');
+//            $keyword = Common::get($request, 'keyword');
+            $field = Common::get($request, 'field');
+            $keyWord = Common::get($request, 'keyWord');
 
             $position_ids = Common::get($request, 'position_ids');// 职位数组
             if(!empty($position_ids)){
@@ -361,8 +363,11 @@ class CompanyStaff extends BaseBusiness
                 array_push($queryParams['where'], ['group_id', $group_id]);
             }
 
-            if (!empty($keyword)) {
-                array_push($queryParams['where'], ['real_name', 'like', '%' . $keyword . '%']);
+//            if (!empty($keyword)) {
+//                array_push($queryParams['where'], ['real_name', 'like', '%' . $keyword . '%']);
+//            }
+            if (!empty($field) && !empty($keyWord)) {
+                array_push($queryParams['where'], [$field, 'like', '%' . $keyWord . '%']);
             }
             $ids = Common::get($request, 'ids');// 多个用逗号分隔,
             if (!empty($ids)) {

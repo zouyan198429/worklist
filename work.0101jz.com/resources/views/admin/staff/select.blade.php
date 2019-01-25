@@ -11,7 +11,7 @@
 
 @section('content')
 
-	<div id="crumb"><i class="fa fa-reorder fa-fw" aria-hidden="true"></i> 选择员工</div>
+	{{--<div id="crumb"><i class="fa fa-reorder fa-fw" aria-hidden="true"></i> 选择员工</div>--}}
 	<div class="mm">
 		<form onsubmit="return false;" class="form-horizontal" role="form" method="post" id="search_frm" action="#">
 		<div class="mmhead" id="mywork">
@@ -37,7 +37,14 @@
 				<select class="wmini" name="group_id">
 					<option value="">请选择班组</option>
 				</select>
-				<input type="text" value=""  style="width: 100px;" name="keyword"  placeholder="请输入姓名"/>
+				<select class="wmini" name="field">
+					{{--<option value="">全部</option>--}}
+					{{--<option value="customer_name">客户姓名</option>--}}
+					<option value="real_name">姓名</option>
+					<option value="mobile">手机</option>
+					<option value="work_num">工号</option>
+				</select>
+				<input type="text" value=""  name="keyWord" />
 				<button class="btn btn-normal search_frm " >搜索</button>
 			</div>
 		</div>

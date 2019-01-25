@@ -24,7 +24,14 @@
 						<option value="{{ $k }}"  @if(isset($department_id) && $department_id == $k) selected @endif >{{ $txt }}</option>
 					@endforeach
 				</select>
-				<input type="text" value=""  name="keyword"  placeholder="请输入姓名"/>
+				<select class="wmini" name="field">
+					{{--<option value="">全部</option>--}}
+					{{--<option value="customer_name">客户姓名</option>--}}
+					<option value="real_name">姓名</option>
+					<option value="mobile">手机</option>
+					<option value="work_num">工号</option>
+				</select>
+				<input type="text" value=""  name="keyWord" />
 				<button class="btn btn-normal search_frm " >搜索</button>
 			</div>
 			</form>

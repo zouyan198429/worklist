@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\huawu;
 
+use App\Business\CompanyStaff;
 use App\Business\CompanyWork;
 use App\Http\Controllers\WorksController;
 use App\Services\Common;
@@ -112,19 +113,31 @@ class WorkController extends WorksController
     public function add(Request $request,$id = 0)
     {
         $this->InitParams($request);
-
         $reDataArr = $this->reDataArr;
+        $send_staff_id =  Common::getInt($request, 'send_staff_id');
         $resultDatas = [
             'id'=>$id,
             'department_id' => 0,
             'book_time' => Carbon::now()->toDateTimeString(),
             'resource_list'=> [],
+            'send_department_name' => '',
+            'send_group_name' => '',
+            'send_staff_id' => $send_staff_id,
+            'now_send_staff' => 0,
         ];
 
         if ($id > 0) { // 获得详情数据
-            $resultDatas = CompanyWork::getInfoData($request, $this, $id, '');
+            $relations =['sendStaff', 'workHistoryStaffSend'];// 'sendDepartment', 'sendGroup',
+            $resultDatas = CompanyWork::getInfoData($request, $this, $id, $relations);
             $content = $resultDatas['content'] ?? '';
             $resultDatas['content'] = replace_enter_char($content,2);
+        }else{
+//            if($send_staff_id > 0 ){
+//                $partnerInfo = CompanyStaff::getInfoData($request, $this, $send_staff_id, ['staffDepartment', 'staffGroup', 'staffHistory']);
+//                $info['send_real_name'] = $partnerInfo['real_name'] ?? '';
+//                $info['shop_id_history'] = $partnerInfo['history_id'] ?? 0;
+//                $info['now_send_staff'] = $partnerInfo['now_state'] ?? 0;
+//            }
         }
         $reDataArr = array_merge($reDataArr, $resultDatas);
         // 初始化数据
@@ -193,8 +206,8 @@ class WorkController extends WorksController
         $city_id = Common::getInt($request, 'city_id');
         $area_id = Common::getInt($request, 'area_id');
         $address = Common::get($request, 'address');
-        $send_department_id = Common::getInt($request, 'send_department_id');
-        $send_group_id = Common::getInt($request, 'send_group_id');
+//        $send_department_id = Common::getInt($request, 'send_department_id');
+//        $send_group_id = Common::getInt($request, 'send_group_id');
         $send_staff_id = Common::getInt($request, 'send_staff_id');
 
         $resource_id = Common::get($request, 'resource_id');
@@ -219,8 +232,8 @@ class WorkController extends WorksController
             'city_id' => $city_id,// 区县
             'area_id' => $area_id,// 街道
             'address' => $address,// 详细地址
-            'send_department_id' => $send_department_id,
-            'send_group_id' => $send_group_id,
+//            'send_department_id' => $send_department_id,
+//            'send_group_id' => $send_group_id,
             'send_staff_id' => $send_staff_id,
             'resource_id' => implode(',', $resource_id),
         ];

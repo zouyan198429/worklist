@@ -162,6 +162,14 @@
 			<tr>
 				<th>派发到</th>
 				<td>
+					<span class="send_real_name">{{ $send_department_name or '' }} {{ $send_group_name or '' }} {{ $send_real_name or '' }}</span>
+					<input type="hidden" name="send_staff_id"  value="{{ $send_staff_id or '' }}" />
+					<input type="hidden" name="send_staff_history_id"  value="{{ $send_staff_history_id or '' }}" />
+					<button type="button"   class="btn btn-danger  btn-xs ace-icon fa fa-plus-circle bigger-60"  onclick="otheraction.selectSendStaff(this)">选择同事</button>
+
+					{{--<button type="button"   class="btn btn-danger  btn-xs ace-icon fa fa-pencil bigger-60 update_send_staff" @if(isset($now_send_staff) && in_array($now_send_staff,[0,1])) style="display: none;"  @endif  onclick="otheraction.updateSendStaff(this)">更新[当前同事已更新]</button>--}}
+
+					{{--
 					<select class="wnormal" name="send_department_id">
 						<option value="">请选择部门</option>
 						@foreach ($departmentFirstList as $k=>$txt)
@@ -174,6 +182,7 @@
 					<select class="wnormal" name="send_staff_id">
 						<option value="">请选择员工</option>
 					</select>
+					--}}
 					{{--<p class="tip">客户所在区街道和责任员工相对应</p>---}}
 				</td>
 			</tr>
@@ -200,16 +209,19 @@
         const LIST_URL = "{{url('huawu/work')}}";//保存成功后跳转到的地址
         const DEPARTMENT_CHILD_URL = "{{ url('api/huawu/department/ajax_get_child') }}";// 部门二级分类请求地址
         const GROUP_CHILD_URL = "{{ url('api/huawu/staff/ajax_get_child') }}";// 部门组获得员工---二级分类请求地址
-        const WORKTYPE_CHILD_URL = "{{ url('api/weixiu/work_type/ajax_get_child') }}";// 维修类型二级分类请求地址
-        const AREA_CHILD_URL = "{{ url('api/weixiu/area/ajax_get_child') }}";// 区县二级分类请求地址
+        const WORKTYPE_CHILD_URL = "{{ url('api/huawu/work_type/ajax_get_child') }}";// 维修类型二级分类请求地址
+        const AREA_CHILD_URL = "{{ url('api/huawu/area/ajax_get_child') }}";// 区县二级分类请求地址
         const BOOK_TIME = "{{ $book_time or '' }}" ;//预约处理时间
         const WORK_TYPE_ID = "{{ $work_type_id or 0}}";// 维修类型-默认值
         const BUSINESS_ID = "{{ $business_id or 0 }}";// 维修类型二级--默认值
         const CITY_ID = "{{ $city_id or 0}}";// 县区id默认值
         const AREA_ID = "{{ $area_id or 0 }}";// 街道默认值
-        const SEND_DEPARTMENT_ID = "{{ $send_department_id or 0}}";// 部门默认值
-        const SEND_GROUP_ID = "{{ $send_group_id or 0 }}";// 小组默认值
-        const SEND_STAFF_ID = "{{ $send_staff_id or 0 }}";// 指派员工默认值
+        {{--const SEND_DEPARTMENT_ID = "{{ $send_department_id or 0}}";// 部门默认值--}}
+        {{--const SEND_GROUP_ID = "{{ $send_group_id or 0 }}";// 小组默认值--}}
+        {{--const SEND_STAFF_ID = "{{ $send_staff_id or 0 }}";// 指派员工默认值--}}
+
+        var SELECT_SEND_STAFF_URL = "{{ url('huawu/staff/select') }}";// 选择派送到员工地址
+        var AJAX_SEND_STAFF_ADD_URL = "{{ url('api/huawu/staff/ajax_add_staff_single') }}";// ajax添加/修改派送到员工地址
 
 		// 上传图片变量
         var FILE_UPLOAD_URL = "{{ url('api/huawu/upload') }}";// 文件上传提交地址 'your/file/upload/url'
@@ -248,17 +260,17 @@
             @endif
 
             //当前部门小组
-            @if (isset($send_department_id) && $send_department_id >0 )
-                changeFirstSel(REL_CHANGE.department,SEND_DEPARTMENT_ID,SEND_GROUP_ID, false);
+            {{--@if (isset($send_department_id) && $send_department_id >0 )--}}
+                {{--changeFirstSel(REL_CHANGE.department,SEND_DEPARTMENT_ID,SEND_GROUP_ID, false);--}}
 
-                // 当前的员工
-                @if (isset($send_group_id) && $send_group_id >0 )
-					var send_department_id = $('select[name=send_department_id]').val();
-					var tem_config = REL_CHANGE.staff_department;
-					tem_config.other_params = {'department_id':send_department_id};
-                    changeFirstSel(tem_config,SEND_GROUP_ID,SEND_STAFF_ID, false);
-                @endif
-            @endif
+                {{--// 当前的员工--}}
+                {{--@if (isset($send_group_id) && $send_group_id >0 )--}}
+					{{--var send_department_id = $('select[name=send_department_id]').val();--}}
+					{{--var tem_config = REL_CHANGE.staff_department;--}}
+					{{--tem_config.other_params = {'department_id':send_department_id};--}}
+                    {{--changeFirstSel(tem_config,SEND_GROUP_ID,SEND_STAFF_ID, false);--}}
+                {{--@endif--}}
+            {{--@endif--}}
 
         });
 	</script>
