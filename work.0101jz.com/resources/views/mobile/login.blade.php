@@ -41,7 +41,10 @@
 <!-- 新加入 end-->
 <script>
     var LOGIN_URL = "{{ url('api/m/ajax_login') }}";
-    var INDEX_URL = "{{url('m')}}";
-
+	@if(isset($webType) && $webType == 2)
+    	var INDEX_URL = "{{url('m')}}";
+    @else
+    	var INDEX_URL = "{{url('m/lore')}}";
+	@endif
 </script>
 <script src="{{ asset('/js/common/login.js') }}"  type="text/javascript"></script>

@@ -12,7 +12,7 @@
 			<div class="top-title">帮助中心</div>
 		</div> 
 		<section class="main" id="help" style="text-align: left;" >
- 
+		@if(isset($webType) && $webType == 2)
  		<h2>如何查看工单？</h2>
  		<div class="con">
  			登录系统后，点击屏幕左侧主菜单：我的工单，即可进入工单列表页面。<br />
@@ -24,6 +24,7 @@
  			5. 完成 回访完成后的订单为完成订单。
  		</div>
  		<br />
+		@endif
  		<h2>如何反馈问题？</h2>
  		<div class="con">
  			登录系统后，点击屏幕左侧主菜单：反馈问题，即可进入反馈问题页面。<br />

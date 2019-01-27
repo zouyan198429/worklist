@@ -21,6 +21,7 @@
 			<div class="c"></div>
 		</div>
 		<section class="wrap" id="study" >
+			@if(isset($webType) && $webType == 2)
 			<div class="myachieve">
 				@foreach ($sumStatus as $k=>$v)
 					@if(in_array($k,$ajaxSumStatus))
@@ -39,7 +40,7 @@
 				<div class="c"></div>
 
 			</div>
-
+			@endif
 
 			<div class="mynav">
 				<ul>
@@ -64,6 +65,7 @@
 						</a>
 						<div class="c"></div>
 					</li>
+					@if(isset($webType) && $webType == 2)
 					<li>
 						<a href="{{ url('m/notice') }}">
 							<span>通知公告</span>
@@ -71,6 +73,7 @@
 						</a>
 						<div class="c"></div>
 					</li>
+					@endif
 					<li>
 						<a href="{{ url('m/problem') }}">
 							<span>我的反馈</span>
