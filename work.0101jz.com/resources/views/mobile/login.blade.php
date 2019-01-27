@@ -44,7 +44,7 @@
 	@if(isset($webType) && $webType == 2)
     	var INDEX_URL = "{{url('m')}}";
     @else
-    	var INDEX_URL = "{{url('m/lore')}}";
+    	var INDEX_URL = "{{url('m/problem')}}";
 	@endif
 </script>
 <script src="{{ asset('/js/common/login.js') }}"  type="text/javascript"></script>
