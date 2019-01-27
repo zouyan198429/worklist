@@ -6,6 +6,7 @@
 
 @section('content')
 	<div id="crumb"><i class="fa fa-reorder fa-fw" aria-hidden="true"></i> 首页</div>
+	@if(isset($webType) && $webType == 2)
 	<div class="mm">
 
 		<h2>信息总揽</h2>
@@ -31,6 +32,7 @@
 	<div style="display:none;">
 		@include('public.scan_sound')
 	</div>
+	@endif
 @endsection
 
 
@@ -38,9 +40,11 @@
 @endpush
 
 @push('footlast')
+	@if(isset($webType) && $webType == 2)
 	<script type="text/javascript">
         var SATUS_COUNT_URL = "{{ url('api/admin/work/ajax_status_count') }}";// ajax工单状态统计 url
         var NEED_PLAY_STATUS = "{{ $countPlayStatus }}";// 需要发声的状态，多个逗号,分隔
 	</script>
 	<script src="{{ asset('js/admin/lanmu/index.js') }}"  type="text/javascript"></script>
+	@endif
 @endpush

@@ -5,12 +5,14 @@
             <li>
                 <a href="{{ url('weixiu') }}"><i class="fa fa-home fa-fw" aria-hidden="true"></i> 首页</a>
             </li>
+            @if(isset($webType) && $webType == 2)
             <li>
                 <a href="{{ url('weixiu/work/list') }}">
                     <i class="fa fa-check-square fa-fw" aria-hidden="true"></i>
                     <span>我的工单</span>
                 </a>
-            </li>            
+            </li>
+            @endif
             <li>
                 <a href="{{ url('weixiu/problem/add/0') }}">
                     <i class="fa fa-edit fa-fw" aria-hidden="true"></i>
@@ -23,6 +25,7 @@
                     <span>反馈问题列表</span>
                 </a>
             </li>
+            @if(isset($webType) && $webType == 2)
             <li>
                 <a href="{{ url('weixiu/customer') }}">
                     <i class="fa fa-star-o fa-fw" aria-hidden="true"></i>
@@ -41,6 +44,7 @@
                     <span>通知公告</span>
                 </a>
             </li>
+            @endif
             <li>
                 <a href="{{ url('weixiu/staff') }}">
                     <i class="fa fa-address-book-o fa-fw" aria-hidden="true"></i>
@@ -53,12 +57,14 @@
                     <span>在线学习</span>
                 </a>
             </li>
+            @if(isset($webType) && $webType == 2)
             <li>
                 <a href="{{ url('weixiu/exam') }}">
                     <i class="fa fa-clock-o fa-fw" aria-hidden="true"></i>
                     <span>在线考试</span>
                 </a>
             </li>
+            @endif
         </ul>
     </section>
     </aside>

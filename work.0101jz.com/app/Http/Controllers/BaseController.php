@@ -19,9 +19,12 @@ class BaseController extends Controller
     public $redisKey = null;
     public $save_session = true;// true后台来的，false小程序来的
     // 返回到前端的数据
+
     public $reDataArr = [
-        'real_name'=>'',
+        'real_name'=> '',
     ];
+
+
     //缓存
     public $cache_sel = 1 + 2;//是否强制不缓存 1:缓存读,读到则直接返回;2缓存数据
 

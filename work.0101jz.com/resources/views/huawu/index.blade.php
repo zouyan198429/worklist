@@ -7,6 +7,7 @@
 @section('content')
 
 	<div id="crumb"><i class="fa fa-reorder fa-fw" aria-hidden="true"></i> 首页</div>
+	@if(isset($webType) && $webType == 2)
 	<div class="mm">
 		<h2>信息总揽</h2>
 		<div class="row" >
@@ -45,6 +46,7 @@
 	<div style="display:none;">
 		@include('public.scan_sound')
 	</div>
+	@endif
 @endsection
 
 
@@ -52,6 +54,7 @@
 @endpush
 
 @push('footlast')
+	@if(isset($webType) && $webType == 2)
 	<script type="text/javascript">
         var SATUS_COUNT_URL = "{{ url('api/huawu/work/ajax_status_count') }}";// ajax工单状态统计 url
         var NEED_PLAY_STATUS = "{{ $countPlayStatus }}";// 需要发声的状态，多个逗号,分隔
@@ -59,4 +62,5 @@
         var NOTICE_SHOW_URL = "{{url('huawu/notice/info/')}}/";//显示页面地址前缀 + id
 	</script>
 	<script src="{{ asset('js/huawu/lanmu/index.js') }}"  type="text/javascript"></script>
+	@endif
 @endpush

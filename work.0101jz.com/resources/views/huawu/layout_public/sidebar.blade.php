@@ -5,6 +5,7 @@
             <li>
                 <a href="{{ url('huawu') }}"><i class="fa fa-home fa-fw" aria-hidden="true"></i> 首页</a>
             </li>
+            @if(isset($webType) && $webType == 2)
             <li>
                 <a href="{{ url('huawu/work/add/0') }}">
                     <i class="fa fa-phone-square fa-fw" aria-hidden="true"></i>
@@ -18,6 +19,7 @@
                     <span>工单管理</span>
                 </a>
             </li>
+            @endif
             {{--
             <li class="treeview">
                 <a href="" >
@@ -32,6 +34,7 @@
                 </ul>
             </li>
             --}}
+            @if(isset($webType) && $webType == 2)
             <li>
                 <a href="{{ url('huawu/customer') }}">
                     <i class="fa fa-star-o fa-fw" aria-hidden="true"></i>
@@ -50,6 +53,7 @@
                     <span>通知公告</span>
                 </a>
             </li>
+            @endif
             <li>
                 <a href="{{ url('huawu/staff') }}">
                     <i class="fa fa-address-book-o fa-fw" aria-hidden="true"></i>
@@ -62,12 +66,14 @@
                     <span>在线学习</span>
                 </a>
             </li>
+            @if(isset($webType) && $webType == 2)
             <li>
                 <a href="{{ url('huawu/exam') }}">
                     <i class="fa fa-clock-o fa-fw" aria-hidden="true"></i>
                     <span>在线考试</span>
                 </a>
             </li>
+            @endif
         </ul>
     </section>
     </aside>

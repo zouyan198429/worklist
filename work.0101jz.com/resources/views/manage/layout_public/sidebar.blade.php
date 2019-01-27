@@ -8,18 +8,21 @@
                     <span>管理首页</span>
                 </a>
             </li>
+            @if(isset($webType) && $webType == 2)
             <li>
                 <a href="{{ url('manage/work') }}">
                     <i class="fa fa-check-square fa-fw" aria-hidden="true"></i>
                     <span>工单信息</span>
                 </a>
             </li>
+            @endif
             <li>
                 <a href="{{ url('manage/problem') }}">
                     <i class="fa fa-clock-o fa-fw" aria-hidden="true"></i>
                     <span>反馈问题</span>
                 </a>
-            </li>            
+            </li>
+            @if(isset($webType) && $webType == 2)
             <li>
                 <a href="{{ url('manage/notice') }}">
                     <i class="fa fa-bullhorn fa-fw" aria-hidden="true"></i>
@@ -32,6 +35,7 @@
                     <span>我的同事</span>
                 </a>
             </li>
+            @endif
             <li>
                 <a href="{{ url('manage/lore/list') }}">
                     <i class="fa fa-battery-3 fa-fw" aria-hidden="true"></i>
@@ -44,7 +48,7 @@
                     <span>员工管理</span>
                 </a>
             </li>
-            
+            @if(isset($webType) && $webType == 2)
             <li>
                 <a href="{{ url('manage/customer') }}">
                     <i class="fa fa-address-card-o fa-fw" aria-hidden="true"></i>
@@ -82,6 +86,7 @@
                     {{--<li><a href="{{ url('manage/count_customer') }}"><i class="fa fa-circle-o"></i> 客户数据</a></li>--}}
                 </ul>
             </li>
+            @endif
         </ul>
     </section>
     </aside>

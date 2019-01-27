@@ -38,6 +38,7 @@ class AdminController extends BaseController
 
         $real_name = $userInfo['real_name'] ?? '';
         $this->reDataArr['baseArr']['real_name'] = $real_name;
+        $this->reDataArr['webType'] = config('public.webType');// 网站类型 1  外网 2内网
     }
 
 }
