@@ -11,10 +11,10 @@
 		<div id="loginbox">
 			<h1>欢迎登录<h1>
 			<ul>
-				<li><input type="text"  name="admin_username"   placeholder="用户名" /></li>
-				<li><input type="password"  name="admin_password"  placeholder="密码" /></li>
+				<li><input type="text"  name="admin_username"   placeholder="工号" /></li>
+				<li><input type="password"  name="admin_password" style="font-size:14px;" placeholder="密码" /></li>
 				<li style="" >
-					<select  name="system_id" style="width:425px;height: 40px; font-size: 14px;" >
+					<select  name="system_id" style="font-size:14px; width: 100%; margin-bottom:25px; height:38px;"  >
 						<option value="">请选择登录平台</option>
 						@foreach ($system_kv as $k=>$txt)
 							<option value="{{ $k }}"  @if(isset($defaultSystem) && $defaultSystem == $k) selected @endif >{{ $txt }}</option>

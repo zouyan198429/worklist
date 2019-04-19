@@ -15,7 +15,7 @@
 		<div id="loginbox">
 			<h1>欢迎登录<h1>
 			<ul>
-				<li><input type="text"   name="admin_username"  placeholder="用户名"  /></li>
+				<li><input type="text"   name="admin_username"  placeholder="工号"  /></li>
 				<li><input type="password" name="admin_password"   placeholder="密码"/></li>
 				<li><input type="submit"  id="submitBtn"   {{--onClick="window.open('index.html')"--}} value="登录" class="btn" /></li>
 			</ul>
@@ -41,4 +41,4 @@
     var INDEX_URL = "{{url('huawu')}}";
 
 </script>
-<script src="{{ asset('/js/common/login.js') }}"  type="text/javascript"></script>
+<script src="{{ asset('/js/common/loginuser.js') }}"  type="text/javascript"></script>

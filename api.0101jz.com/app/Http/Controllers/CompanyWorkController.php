@@ -1176,6 +1176,29 @@ class CompanyWorkController extends CompController
     public function statusCount(Request $request)
     {
         $this->InitParams($request);
+
+        // 工单状态自动监控
+        $temPre = 'work:';// 前缀
+        $temKey = 'DoUnixTime';// 名称
+        // 获得上次请求的时间
+        $lastDoUnixTime = Tool::getRedis($temPre . $temKey, 3);
+        $isDo = false;
+        if(!is_numeric($lastDoUnixTime)){
+            $lastDoUnixTime = time();
+            $isDo = true;
+        }else{
+            $recordUnixTime = time();
+            if( ($recordUnixTime - $lastDoUnixTime) >= 60 * 3 ){
+                $isDo = true;
+                $lastDoUnixTime = $recordUnixTime;
+            }
+        }
+        if($isDo){
+            CompanyWorkDoingBusiness::autoSiteMsg();// 工单状态自动监控
+            // 缓存上次请求的时间
+            Tool::setRedis($temPre, $temKey, $lastDoUnixTime, 0 , 3);
+        }
+
         $company_id = $this->company_id;
         $staff_id = Common::getInt($request, 'staff_id');// 接收员工id
         $operate_staff_id = Common::getInt($request, 'operate_staff_id');// 添加员工id

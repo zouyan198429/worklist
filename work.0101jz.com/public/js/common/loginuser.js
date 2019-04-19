@@ -33,53 +33,15 @@ function ajax_form(){
         //err_alert('<font color="#000000">' + judgePassword + '</font>');
         return false;
     }
-
-    var system_id = $('select[name=system_id]').val();
-    var judge_seled = judge_validate(1,'登录平台',system_id,true,'digit','','');
-    if(judge_seled != ''){
-        layer_alert("请选择登录平台",3,0);
-        //err_alert('<font color="#000000">' + judge_seled + '</font>');
-        return false;
-    }
-    var login_url = '';
-    var index_url = '';
-    switch(system_id)
-    {
-        case '1'://管理平台
-        case 1://管理平台
-            login_url = LOGIN_ADMIN_URL;
-            index_url = INDEX_ADMIN_URL;
-            break;
-        case '2'://主管平台
-        case 2://主管平台
-            login_url = LOGIN_MANAGE_URL;
-            index_url = INDEX_MANAGE_URL;
-            break;
-        case '3'://客服平台
-        case 3://客服平台
-            login_url = LOGIN_HUAWU_URL;
-            index_url = INDEX_HUAWU_URL;
-            break;
-        case '4'://售后平台
-        case 4://售后平台
-            login_url = LOGIN_WEIXIU_URL;
-            index_url = INDEX_WEIXIU_URL;
-            break;
-        default:
-            layer_alert("请选择登录平台",3,0);
-            //err_alert('<font color="#000000">' + judge_seled + '</font>');
-            return false;
-            break;
-    }
     // 验证通过
     SUBMIT_FORM = false;//标记为已经提交过
     var data = $("#addForm").serialize();
-    console.log(login_url);
+    console.log(LOGIN_URL);
     console.log(data);
     var layer_index = layer.load();
     $.ajax({
         'type' : 'POST',
-        'url' : login_url,
+        'url' : LOGIN_URL,
         'data' : data,
         'dataType' : 'json',
         'success' : function(ret){
@@ -89,7 +51,7 @@ function ajax_form(){
                 layer_alert(ret.errorMsg,3,0);
                 // err_alert('<font color="#000000">' + ret.errorMsg + '</font>');
             }else{//成功
-                go(index_url);
+                go(INDEX_URL);
                 // var supplier_id = ret.result['supplier_id'];
                 //if(SUPPLIER_ID_VAL <= 0 && judge_integerpositive(supplier_id)){
                 //    SUPPLIER_ID_VAL = supplier_id;

@@ -19,7 +19,7 @@
 	<section id="loginbox" > 
 			<h1>员工登录<h1>
 			<ul>
-				<li><input type="text"  name="admin_username"  placeholder="用户名" /></li>
+				<li><input type="text"  name="admin_username"  placeholder="工号" /></li>
 				<li><input type="password" name="admin_password"   placeholder="密码" /></li>
 				<li><button type="submit" id="submitBtn"  {{-- onClick="window.open('{{ url('m') }}')" --}} >登录</button></li>
 			</ul>
@@ -47,4 +47,4 @@
     	var INDEX_URL = "{{url('m/problem')}}";
 	@endif
 </script>
-<script src="{{ asset('/js/common/login.js') }}"  type="text/javascript"></script>
+<script src="{{ asset('/js/common/loginuser.js') }}"  type="text/javascript"></script>

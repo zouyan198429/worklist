@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Comp;
 
+use App\Business\CompanyExamStaffBusiness;
 use App\Exceptions\ExportException;
 use App\Models\Company;
 use App\Models\CompanyProRecord;
@@ -12,6 +13,7 @@ use App\Models\SiteConfig;
 use App\Models\SiteIntro;
 use App\Models\SiteNews;
 use App\Services\Common;
+use App\Services\Tool;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CompController;
 use Illuminate\Support\Facades\DB;
@@ -155,6 +157,34 @@ class CommonController extends CompController
     public function getInfo(Request $request)
     {
         $this->InitParams($request);
+
+        // 对考试进行处理
+        $modelName = Common::get($request, 'Model_name');
+        Common::judgeEmptyParams($request, 'Model_name', $modelName);
+        if($modelName == 'CompanyExamStaff'){
+            // 工单状态自动监控
+            $temPre = 'exam:';// 前缀
+            $temKey = 'DoUnixTime';// 名称
+            // 获得上次请求的时间
+            $lastDoUnixTime = Tool::getRedis($temPre . $temKey, 3);
+            $isDo = false;
+            if(!is_numeric($lastDoUnixTime)){
+                $lastDoUnixTime = time();
+                $isDo = true;
+            }else{
+                $recordUnixTime = time();
+                if( ($recordUnixTime - $lastDoUnixTime) >= 60 * 3 ){
+                    $isDo = true;
+                    $lastDoUnixTime = $recordUnixTime;
+                }
+            }
+            if($isDo){
+                CompanyExamStaffBusiness::autoExamStaff();// 在线考试自动交卷
+                // 缓存上次请求的时间
+                Tool::setRedis($temPre, $temKey, $lastDoUnixTime, 0 , 3);
+            }
+        }
+
         return Common::requestInfoByID($request);
     }
 
