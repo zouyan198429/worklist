@@ -63,6 +63,7 @@ class IndexController extends WorksController
      */
     public function login(Request $request)
     {
+        $this->reDataArr['webType'] = config('public.webType');// 网站类型 1  外网 2内网
         $reDataArr = $this->reDataArr;
         return view('mobile.login', $reDataArr);
     }
