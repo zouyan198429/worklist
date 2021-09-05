@@ -137,6 +137,7 @@ class CompanySubject extends BaseBusiness
         // 非导出功能
         return ajaxDataArr(1, $result, '');
     }
+
     /**
      * 格式化 答案信息
      *

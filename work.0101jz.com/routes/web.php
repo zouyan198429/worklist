@@ -89,6 +89,9 @@ Route::get('admin/staff/import_template', 'admin\StaffController@import_template
 //客户
 Route::get('admin/customer', 'admin\CustomerController@index');//customer_all.html 客户管理
 Route::get('admin/customer/day_count', 'admin\CustomerController@dayCount');//achievement.html  我的客户-按日统计--*
+//公司分站
+Route::get('admin/company', 'admin\CompanyController@index');//class_kehu.html 公司分站
+Route::get('admin/company/add/{id}', 'admin\CompanyController@add');// 公司分站--添加
 //客户类型
 Route::get('admin/customer_type', 'admin\CustomerTypeController@index');//class_kehu.html 客户分类
 Route::get('admin/customer_type/add/{id}', 'admin\CustomerTypeController@add');// 客户分类--添加

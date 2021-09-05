@@ -1020,4 +1020,353 @@ class Tool
         }
         return $result;
     }
+
+    /**
+     *
+     * 中英混合的字符串字符的个数
+     * @param string $str 需要判断的字符串
+     * @param int $operateType 操作类型 1：字符个数【中文算一个】； 2字符位长度 [默认]
+     * @param string $encoding
+     * @return int
+     */
+    public static function getStrNum($str, $operateType = 2, $encoding = "utf8"){
+        if($operateType == 1){
+            return mb_strlen($str, $encoding);
+        }
+        return strlen($str);
+    }
+
+    /**
+     *
+     * 中英混合的字符串截取--返回的时指定的字符的个数【不是位长度】
+     * @param 待截取字符串 $sourcestr
+     * @param 截取长度 $cutlength
+     */
+    public static function subStr($sourcestr, $cutlength) {
+        $returnstr = '';//待返回字符串
+        $i = 0;
+        $n = 0;
+        $str_length = strlen ( $sourcestr ); //字符串的字节数
+        if($str_length <= $cutlength) return $sourcestr;
+        while ( ($n < $cutlength) and ($i <= $str_length) ) {
+            $temp_str = substr ( $sourcestr, $i, 1 );
+            $ascnum = Ord ( $temp_str ); //得到字符串中第$i位字符的ascii码
+            if ($ascnum >= 224) {//如果ASCII位高与224，
+                $returnstr = $returnstr . substr ( $sourcestr, $i, 3 ); //根据UTF-8编码规范，将3个连续的字符计为单个字符
+                $i = $i + 3; //实际Byte计为3
+                $n ++; //字串长度计1
+            } elseif ($ascnum >= 192){ //如果ASCII位高与192，
+                $returnstr = $returnstr . substr ( $sourcestr, $i, 2 ); //根据UTF-8编码规范，将2个连续的字符计为单个字符
+                $i = $i + 2; //实际Byte计为2
+                $n ++; //字串长度计1
+            } elseif ($ascnum >= 65 && $ascnum <= 90) {//如果是大写字母，
+                $returnstr = $returnstr . substr ( $sourcestr, $i, 1 );
+                $i = $i + 1; //实际的Byte数仍计1个
+                $n ++; //但考虑整体美观，大写字母计成一个高位字符
+            }elseif ($ascnum >= 97 && $ascnum <= 122) {
+                $returnstr = $returnstr . substr ( $sourcestr, $i, 1 );
+                $i = $i + 1; //实际的Byte数仍计1个
+                $n ++; //但考虑整体美观，大写字母计成一个高位字符
+            } else {//其他情况下，半角标点符号，
+                $returnstr = $returnstr . substr ( $sourcestr, $i, 1 );
+                $i = $i + 1;
+                $n = $n + 1;// 0.5;
+            }
+        }
+        return $returnstr;
+    }
+
+    /**
+     * 设置临时改变php内存及执行时间
+     * @param string $memory_limit // 临时设置最大内存占用为 3072M 3G
+     * @param int $max_execution_time // 设置脚本最大执行时间 为0 永不过期
+     *
+     */
+    public static function phpInitSet($memory_limit = '3072M', $max_execution_time = 0){
+        ini_set('memory_limit', $memory_limit);// '3072M');    // 临时设置最大内存占用为 3072M 3G
+        ini_set("max_execution_time", $max_execution_time);// 0);
+        set_time_limit($max_execution_time);// 0);   // 设置脚本最大执行时间 为0 永不过期
+    }
+
+    /**
+     * 对位运算，移除某个位操作 -- 存在则移除，不存在不移除 ，返回新的数
+     * @param $bitVal  要操作的数【位】   1 | 2 | 4;
+     * @param $removeBitVal 需要移除的数【位】 4
+     * @return int
+     */
+    public static function bitRemoveVal($bitVal, $removeBitVal){
+//        $bitVal = 1 | 2 | 4;
+//        $removeBitVal = 8;
+        $bitVal = (($bitVal & $removeBitVal ) == $removeBitVal) ? ($bitVal ^ $removeBitVal) : $bitVal;
+        return $bitVal;
+    }
+
+    /**
+     * 判断一个数是不是 1，2，4，8...
+     *   只是判断一次可用这个，如果有多次，则用 isBitNumByArr方法判断比较好
+     * @param int $val  需要判断的数
+     * @param int  $maxNum 最大执行的次数 如 int: 31  bigint: 63[默认]
+     * @param int  $bitNum 当前执行的次数 0[默认]，1，2，3，4，5... -- 通常不用传此值，用默认值 0 就可以从 2 0次方1开始
+     * @return boolean  true:是位数值; false:不是位数值
+     */
+    public static function isBitNum($val, $maxNum = 63, $bitNum = 0){
+        $recordJudgeNum = 2**$bitNum;// pow(2,$bitNum);
+        if( $val  == $recordJudgeNum) return true;
+
+        if( ($bitNum + 1) >= $maxNum) return false;// 已经达到最大执行次数
+
+        if(static::isBitNum($val, $maxNum, ++$bitNum)) return true;
+
+        return false;
+    }
+
+    /**
+     * 判断一个数是不是 1，2，4，8...,通过先获得所有的位一维数组
+     *   只是判断一次可用这个，如果有多次，则用 isBitNumByArr方法判断比较好
+     * @param int $val  需要判断的数
+     * @param array $bitNumArr   所有的位一维数组; 默认为空数组--会自动去获取数组值； 引用传值，可以获取到位数组后继续使用
+     * @param int  $maxNum 最大执行的次数 如 int: 31  bigint: 63[默认]
+     * @return boolean  true:是位数值; false:不是位数值
+     */
+    public static function isBitNumByArr($val, &$bitNumArr = [], $maxNum = 63){
+        if(empty($bitNumArr)) $bitNumArr = static::getBitArr($maxNum);
+        if(in_array($val, $bitNumArr)) return true;
+        return false;
+    }
+
+    /**
+     * 获得位数组 --一维 [1，2，4，8...]
+     * @param int  $maxNum 最大执行的次数 如 int: 31  bigint: 63[默认]
+     * @param int  $minBitNum 起始的位值 ；默认 1
+     * @return array  位数组 --一维 [1，2，4，8...]
+     */
+    public static function getBitArr($maxNum = 63, $minBitNum = 1){
+        $reArr = [];
+        if($minBitNum < 1) $minBitNum = 1;
+        for($i = ($minBitNum - 1); $i< $maxNum; $i++){
+            array_push($reArr, 2**$i);
+        }
+        return $reArr;
+    }
+
+    /**
+     * laravel-判断是否在cli模式运行
+     * @return boolean 命令行： true; 非命令行 :false
+     */
+    public static function isCLIDoing(){
+        // 有时候，我们需要判断是否是在命令行环境中执行，可以使用：
+        // if(app()->runningInConsole()){// 命令行： true; 非命令行 :false
+        //     // 运行在命令行下
+        //     return true;
+        //  }
+        // return false;
+        //当然，在 PHP 中，你永远可以使用 PHP 原生的方法来检测：
+        // 命令行： "cli"; 非命令行 :"fpm-fcgi"
+        if(strpos(php_sapi_name(), 'cli') !== false){
+            // 运行在命令行下
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 一个值如果不是数组，则转为数组
+     * @param mixed $paramVal 需要处理的值  可以是字符串；数组；字符
+     * @param string $splitText  如果值为字符是，转数组时的分隔符，默认逗号,
+     * @return array 转换好的数组
+     */
+    public static function paramToArrVal($paramVal, $splitText = ','){
+        // 如果是字符，则转为数组
+        if(is_string($paramVal) || is_numeric($paramVal)){
+            if(strlen(trim($paramVal)) > 0){
+                $paramVal = explode($splitText ,$paramVal);
+            }
+        }
+        if(!is_array($paramVal)) $paramVal = [];
+        return $paramVal;
+    }
+
+    // 引用处理 一个值如果不是数组，则转为数组
+    public static function valToArrVal(&$paramVal, $splitText = ','){
+        $paramVal = static::paramToArrVal($paramVal, $splitText);
+        return $paramVal;
+    }
+
+
+    /**
+     * 一维数组清除空值
+     *
+     * @param array $array
+     * @return array
+     */
+    public static function arrClsEmpty(&$array){
+        foreach($array as $k => $v){
+            if(is_null($v) || trim($v) === '') unset($array[$k]);
+        }
+        return $array;
+    }
+
+    /**
+     * 将位数组，合并为一个数值
+     * @param array $bitArr 位值数组 【1、2、、4、8...】
+     * @return int 合并后的数值
+     */
+    public static function bitJoinVal($bitArr){
+        $bitJoinVal = 0;
+        Tool::arrClsEmpty($bitArr);
+        foreach($bitArr as $bitVal){
+            $bitJoinVal = $bitJoinVal | $bitVal;
+        }
+        return $bitJoinVal;
+    }
+
+    // 引用处理 将位数组，合并为一个数值
+    public static function bitArrToInt(&$bitArr){
+        $bitArr = static::bitJoinVal($bitArr);
+        return $bitArr;
+    }
+
+    /**
+     * 根据位所有值数组及指定的位，获得指定位的数组
+     * @param array $bitKVArr 位所有值数组 ；如 [ '1' => '开通', '2' => '关闭', '4' => '作废']
+     * @param int $bitVal 要获得的位值 ; 如 1 ｜ 2  或 1 ｜ 4
+     * @return array 指定位的数组 如 [ '1' => '开通', '4' => '作废']
+     */
+    public static function getBitValArr($bitKVArr, $bitVal){
+        $return_arr = [];
+        if($bitVal <= 0 || empty($bitKVArr)) return $return_arr;
+        foreach($bitKVArr as $k => $v){
+            if(($k & $bitVal) == $k)  $return_arr[$k] = $v;
+        }
+        return $return_arr;
+    }
+
+    /**
+     * 根据位所有值数组及指定的位，获得指定位的值的文字【多个值用、号分隔】--也可以操作非位值数组【返回值下标的文字】
+     * @param array $bitKVArr 位所有值数组 ；如 [ '1' => '开通', '2' => '关闭', '4' => '作废']；
+     *                --也可以不是位值数组，是其它数组 [ '1' => '开通', '2' => '关闭', '3' => '作废'],则仅返回值下标的文字
+     * @param int $bitVal 要获得的位值 ; 如 1 ｜ 2  或 1 ｜ 4 ； 也可以是其它值 如 3
+     * @param string $splitStr 值分割字符 默认 '、'
+     * @return string
+     */
+    public static function getBitVals($bitKVArr, $bitVal, $splitStr = '、'){
+        if(empty($bitKVArr)) return '';
+        $isBitArr = true;
+        $bitNumArr = [];
+        foreach($bitKVArr as $k => $v){
+            if(!static::isBitNumByArr($k, $bitNumArr)){
+                $isBitArr = false;
+                break;
+            }
+        }
+        if($isBitArr){
+            return implode($splitStr, static::getBitValArr($bitKVArr, $bitVal));
+        }
+        return $bitKVArr[$bitVal] ?? '';
+    }
+
+    /**
+     * 根据KV数组，生成对应的正则 /^([1248]|16|32)$/
+     * @param array $bitKVArr 位所有值数组 ；如 [ '1' => '开通', '2' => '关闭', '4' => '作废']；
+     * @param array $bigArr 已有的正则项数组--一维数组
+     * @param boolean $appendSlash  是否需要加前后的 斜杠 true:需要  ; false:不需要【默认】
+     * @return string
+     */
+    public static function getPregByKVArr($bitKVArr, &$bigArr = [], $appendSlash = false){
+        $keyArr = array_keys($bitKVArr);
+        return static::getPregByKeyArr($keyArr, $bigArr, $appendSlash);
+    }
+
+    /**
+     * 根据key数组[一维]，生成对应的正则 /^([1248]|16|32)$/
+     * @param array $keyArr 位所有值数组 -- 一维数组 ；如 [ '1' , '2' , '4']；
+     * @param array $bigArr 已有的正则项数组--一维数组
+     * @param boolean $appendSlash  是否需要加前后的 斜杠 true:需要  ; false:不需要【默认】 ；前端js new RegExp(reg2); 的字符时不需要 前后 加 斜杠
+     * @return string
+     */
+    public static function getPregByKeyArr($keyArr, &$bigArr = [], $appendSlash = false){
+        $minIntArr = [];// 小于10的数字数组
+        // $bigArr = [];// 大于 10的数字或其它
+        foreach($keyArr as $keySingle){
+            if(is_numeric($keySingle) && $keySingle >= 0 && $keySingle < 10){
+                array_push($minIntArr, $keySingle);
+            }else{
+                array_push($bigArr, $keySingle);
+            }
+        }
+        $bigArrEmpty = true;
+        if(!empty($bigArr)){
+            $bigArrEmpty = false;
+        }
+        if(!empty($minIntArr)) array_unshift($bigArr, '[' . implode('', $minIntArr) . ']');
+        if($bigArrEmpty){
+            if($appendSlash){
+                return "/^" . implode('', $bigArr) . "$/";// /^[12]$/
+            }else{
+                return "^" . implode('', $bigArr) . "$";// ^[12]$
+            }
+        }
+
+        if($appendSlash) {
+            return "/^(" . implode('|', $bigArr) . ")$/";// /^([1248]|16|32)$/ ；
+        }else{
+            return "^(" . implode('|', $bigArr) . ")$";// ^([1248]|16|32)$ ；
+        }
+    }
+
+    /**
+     * 校验日期格式是否正确
+     * @param string $date 日期
+     * @param string $formats 需要检验的格式数组
+     * @return boolean
+     */
+    public static function isDate($date, $formats = ["Y-m-d", "Y/m/d","Y-m-d H:i:s"]) {
+        $unixTime = strtotime($date);
+        if (!$unixTime) { //strtotime转换不对，日期格式显然不对。
+            return false;
+        }
+        //校验日期的有效性，只要满足其中一个格式就OK
+        foreach ($formats as $format) {
+            if (date($format, $unixTime) == $date) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     *  字符编码转换成utf8
+     *   // mb_convert_encoding('要转编码的字符串','目标编码','原编码')
+     *   // mb_detect_encoding('字符串')：
+     *   // mb_convert_encoding($str,'utf-8',mb_detect_encoding($str))
+     * @param string $str 需要转的字符
+     * @return string 返回转好的字符
+     */
+    public static function strToUtf8($str){
+        $encode = mb_detect_encoding($str, array("ASCII",'UTF-8',"GB2312","GBK",'BIG5'));
+        if($encode == 'UTF-8'){
+            return $str;
+        }else{
+            return mb_convert_encoding($str, 'UTF-8', $encode);
+        }
+    }
+
+    /**
+     *  对可能有 2021/06/11 12:43:36  2021年06月11日 12:43:36 格式 转为  2021-06-11 12:43:36
+     * @param string $dataTimeStr 需要转的字符  可能有 2021/06/11 12:43:36  2021年06月11日 12:43:36
+     * @return string 返回转好的字符 2021-06-11 12:43:36
+     */
+    public static function dataTimeFormat($dataTimeStr){
+        $reStr = $dataTimeStr;
+        // 优化下，如果含有 / ，则转为 -
+        if(strpos($reStr, '/') !== false){
+            $reStr = str_replace(['/'], ['-'], $reStr);
+        }
+        // 如果 ratify_date 内容是 2021年03月05日，则进行处理
+        if(strpos($reStr, '年') !== false || strpos($reStr, '月') !== false || strpos($reStr, '日') !== false){
+            $reStr = str_replace(['年', '月', '日'], ['-', '-', ''], $reStr);
+        }
+        return $reStr;
+    }
+
 }

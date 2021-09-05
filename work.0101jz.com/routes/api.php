@@ -35,6 +35,10 @@ Route::post('admin/ajax_password_save', 'admin\IndexController@ajax_password_sav
 Route::post('admin/site_admin/ajax_alist', 'admin\SiteAdminController@ajax_alist');//ajax获得列表数据
 Route::post('admin/site_admin/ajax_del', 'admin\SiteAdminController@ajax_del');// 删除
 Route::post('admin/site_admin/ajax_save', 'admin\SiteAdminController@ajax_save');// 新加/修改
+// 公司分站
+Route::any('admin/company/ajax_alist', 'admin\CompanyController@ajax_alist');//ajax获得列表数据
+Route::post('admin/company/ajax_del', 'admin\CompanyController@ajax_del');// 删除
+Route::post('admin/company/ajax_save', 'admin\CompanyController@ajax_save');// 新加/修改
 // 客户分类
 Route::post('admin/customer_type/ajax_alist', 'admin\CustomerTypeController@ajax_alist');//ajax获得列表数据
 Route::post('admin/customer_type/ajax_del', 'admin\CustomerTypeController@ajax_del');// 删除

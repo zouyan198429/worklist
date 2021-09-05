@@ -57,7 +57,7 @@ class CompanyStaffHistory extends BaseModel
      */
     public function setAdminPasswordAttribute($value)
     {
-        $this->attributes['admin_password'] = md5($value);
+        $this->attributes['admin_password'] = $value;// md5($value);
     }
 
     /**
@@ -108,7 +108,7 @@ class CompanyStaffHistory extends BaseModel
      */
     public function setAccountPasswordAttribute($value)
     {
-        $this->attributes['account_password'] = md5($value);
+        $this->attributes['account_password'] = $value;// md5($value);
     }
 
     /**

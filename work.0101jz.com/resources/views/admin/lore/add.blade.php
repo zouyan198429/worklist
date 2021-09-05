@@ -58,6 +58,7 @@
 					</label>
 					@endforeach
 				</td>
+            </tr>
 			<tr>
 				<th> </th>
 				<td><button class="btn btn-l wnormal"  id="submitBtn" >提交</button></td>

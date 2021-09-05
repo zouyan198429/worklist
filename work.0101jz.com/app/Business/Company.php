@@ -15,6 +15,28 @@ class Company extends BaseBusiness
 {
     protected static $model_name = 'Company';
 
+    // 开通模块编号【1知识库；2在线考试；4反馈问题；8工单】
+    const MODULE_NO_LORE = 1;// 知识库
+    const MODULE_NO_EXAM = 2;// 在线考试
+    const MODULE_NO_PROBLEM = 4;// 反馈问题
+    const MODULE_NO_WORK = 8;// 工单
+    const MODULE_NO_ARR = [
+        self::MODULE_NO_LORE => '知识库',
+        self::MODULE_NO_EXAM => '在线考试',
+        self::MODULE_NO_PROBLEM => '反馈问题',
+        self::MODULE_NO_WORK => '工单',
+    ];
+
+    // 开通状态1开通；2关闭；4作废【过时关闭】；
+    const OPEN_STATUS_OPEN = 1;// 开通
+    const OPEN_STATUS_CLOSE = 2;// 关闭
+    const OPEN_STATUS_CANCEL = 4;// 作废
+    const OPEN_STATUS_ARR = [
+        self::OPEN_STATUS_OPEN => '开通',
+        self::OPEN_STATUS_CLOSE => '关闭',
+        self::OPEN_STATUS_CANCEL => '作废',
+    ];
+
     /**
      * 获得列表数据--所有数据
      *
@@ -37,7 +59,7 @@ class Company extends BaseBusiness
         // 获得数据
         $defaultQueryParams = [
             'where' => [
-                ['company_id', $company_id],
+//                ['company_id', $company_id],
                 //['mobile', $keyword],
             ],
 //            'select' => [
@@ -67,18 +89,20 @@ class Company extends BaseBusiness
             $isExport = Common::getInt($request, 'is_export'); // 是否导出 0非导出 ；1导出数据
             if ($isExport == 1) $oprateBit = 1;
         }
-        // $relations = ['CompanyInfo'];// 关系
+         $relations = ['companyDepartment'];// 关系
         // $relations = '';//['CompanyInfo'];// 关系
         $result = self::getBaseListData($request, $controller, self::$model_name, $queryParams,$relations , $oprateBit, $notLog);
 
         // 格式化数据
         $data_list = $result['data_list'] ?? [];
-//        foreach($data_list as $k => $v){
-//            // 公司名称
-//            $data_list[$k]['company_name'] = $v['company_info']['company_name'] ?? '';
-//            if(isset($data_list[$k]['company_info'])) unset($data_list[$k]['company_info']);
-//        }
-//        $result['data_list'] = $data_list;
+        foreach($data_list as $k => $v){
+            // 接线部门名称
+            $data_list[$k]['department_name'] = $v['company_department']['department_name'] ?? '';
+            if(isset($data_list[$k]['company_department'])){
+                unset($data_list[$k]['company_department']);
+            }
+        }
+        $result['data_list'] = $data_list;
         // 导出功能
         if($isExport == 1){
 //            $headArr = ['work_num'=>'工号', 'department_name'=>'部门'];
@@ -140,7 +164,7 @@ class Company extends BaseBusiness
         // 前**条[默认]  // 有count下标则是查询数量
         $defaultQueryParams = [
             'where' => [
-                ['company_id', $company_id],
+//                ['company_id', $company_id],
 //                ['id', '>', $id],
             ],
 //            'select' => [
@@ -234,7 +258,7 @@ class Company extends BaseBusiness
         // $resultDatas = self::getInfoDataBase($request, $controller, self::$model_name, $id, $relations);
         // 判断权限
         $judgeData = [
-            'company_id' => $company_id,
+//            'company_id' => $company_id,
         ];
         CommonBusiness::judgePowerByObj($resultDatas, $judgeData );
         return $resultDatas;
@@ -257,7 +281,7 @@ class Company extends BaseBusiness
         if($id > 0){
             // 判断权限
             $judgeData = [
-                'company_id' => $company_id,
+//                'company_id' => $company_id,
             ];
             $relations = '';
             CommonBusiness::judgePower($id, $judgeData, self::$model_name, $company_id, $relations, $notLog);
@@ -265,7 +289,7 @@ class Company extends BaseBusiness
 
         }else {// 新加;要加入的特别字段
             $addNewData = [
-                'company_id' => $company_id,
+//                'company_id' => $company_id,
             ];
             $saveData = array_merge($saveData, $addNewData);
             // 加入操作人员信息
