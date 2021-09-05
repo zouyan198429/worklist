@@ -1,0 +1,49 @@
+
+<!-- 前端模板部分 -->
+<!-- 列表模板部分 开始  <!-- 模板中可以用HTML注释 -- >  或  <%* 这是模板自带注释格式 *%>-->
+<script type="text/template"  id="baidu_template_data_list">
+    <%for(var i = 0; i<data_list.length;i++){
+    var item = data_list[i];
+    var status = item.status;
+    var can_modify = false;
+    if(status == 1 || status == 2){
+    can_modify = true;
+    }
+    %>
+    <tr data-exam_begin_time="<%=item.exam_begin_time%>" data-exam_end_time="<%=item.exam_end_time%>"  data-status="<%=item.status%>" >
+        <td><%=item.exam_num%></td>
+        <td><%=item.exam_subject%></td>
+        <td><%=item.exam_begin_time%></td>
+        <td><%=item.exam_minute%>分钟</td>
+        <td><%=item.exam_end_time%></td>
+        <td><%=item.subject_amount%>题</td>
+        <td><%=item.total_score%>分<br/><%=item.pass_score%>分</td>
+        <td>
+            <%=item.pass_text%>
+
+            <%if( status > 1){%>
+            (<%=item.exam_results%>分)
+            <%}%>
+        </td>
+        <td><%=item.status_text%></td>
+        <td>
+            <%if( can_modify){%>
+            <span class="exam_time" style="display: none;">距离开考：
+						<span class="_d">00</span>
+						<span class="_h">00</span>
+						<span class="_m">00</span>
+						<span class="_s">00</span>
+						<span class="_ms">00</span>
+					</span>
+            <a href="javascript:void(0);" class="btn exam_doing"  onclick="otheraction.doing(<%=item.id%>)" style="display: none;" >进入</a>
+            <%}%>
+            <%if( false && can_modify){%>
+            2天3小时33分钟
+            <a href="examin_cj.html" class="btn" >查看成绩</a>
+            <%}%>
+        </td>
+    </tr>
+    <%}%>
+</script>
+<!-- 列表模板部分 结束-->
+<!-- 前端模板结束 -->

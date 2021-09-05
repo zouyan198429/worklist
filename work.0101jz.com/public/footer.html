@@ -1,0 +1,52 @@
+<!-- 前端模板部分 -->
+<!-- 列表模板部分 开始  <! -- 模板中可以用HTML注释 -- >  或  <%* 这是模板自带注释格式 *%>-->
+<script type="text/template"  id="baidu_template_data_list">
+    <%for(var i = 0; i<data_list.length;i++){
+    var item = data_list[i];
+    var status = item.status;
+    var can_modify = false;
+    if(status == 1 || status == 2){
+    can_modify = true;
+    }
+    %>
+    <li  data-exam_begin_time="<%=item.exam_begin_time%>" data-exam_end_time="<%=item.exam_end_time%>"  data-status="<%=item.status%>" >
+
+        <h3><%=item.exam_num%></h3>
+        <dl>
+            <dt>开考日期</dt>
+            <dd><%=item.exam_begin_time%></dd>
+        </dl>
+        <dl>
+            <dt>考试时长</dt>
+            <dd><%=item.exam_minute%>分钟</dd>
+        </dl>
+        <dl>
+            <dt>考试主题</dt>
+            <dd><%=item.exam_subject%></dd>
+        </dl>
+        <dl>
+            <dt>状态</dt>
+            <dd><%=item.status_text%></dd>
+        </dl>
+        <dl>
+            <dt>总分</dt>
+            <dd><%=item.total_score%></dd>
+        </dl>
+        <dl>
+            <dt>及格分</dt>
+            <dd><%=item.pass_score%></dd>
+        </dl>
+        <dl>
+            <dt>考试得分</dt>
+            <dd><%=item.pass_text%>(<%=item.exam_results%>分)</dd>
+        </dl>
+        <dl>
+            <dt>答题时间</dt>
+            <dd><%=item.answer_begin_time%>--<%=item.answer_end_time%></dd>
+        </dl>
+        <div class="c"></div>
+    </li>
+    <%}%>
+</script>
+<!-- 列表模板部分 结束-->
+<!-- 前端模板结束 -->

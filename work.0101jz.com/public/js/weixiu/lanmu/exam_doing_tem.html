@@ -1,0 +1,21 @@
+<!-- 前端模板部分 -->
+<!-- 列表模板部分 开始  <! -- 模板中可以用HTML注释 -- >  或  <%* 这是模板自带注释格式 *%>-->
+<script type="text/template"  id="baidu_template_data_list">
+    <%for(var i = 0; i<data_list.length;i++){
+    var item = data_list[i];
+    var now_staff = item.now_staff;
+    can_modify = true;
+    %>
+
+    <li>
+        <label>
+            <input type="radio" name="answer_val" value="<%=item.answer_val%>"  />
+            <input type="checkbox" class="check_answer"  name="check_answer_val[]" value="<%=item.answer_val%>"  />
+            <span class="colum"><%=item.colum%></span>、
+            <span><%=item.answer_content%></span>
+        </label>
+    </li>
+    <%}%>
+</script>
+<!-- 列表模板部分 结束-->
+<!-- 前端模板结束 -->

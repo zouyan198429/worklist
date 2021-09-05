@@ -1,0 +1,41 @@
+
+<!-- 前端模板部分 -->
+<!-- 列表模板部分 开始  <! -- 模板中可以用HTML注释 -- >  或  <%* 这是模板自带注释格式 *%>-->
+<script type="text/template"  id="baidu_template_data_list">
+    <%for(var i = 0; i<data_list.length;i++){
+    var item = data_list[i];
+    var status = item.status;
+    %>
+
+    <div class="gd-list" >
+        <div class="gd-hd">
+            <p>
+                <span class="khname"><i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i> <%=item.customer_name%>(<%=item.sex_text%>) </span>
+                <a href="tel:<%=item.call_number%>" class="btnnb fr" ><i class="fa fa-phone fa-fw" aria-hidden="true"></i> <%=item.call_number%></a>
+        </div>
+        <div class="gd-bd">
+            <p><i class="fa fa-flag fa-fw" aria-hidden="true"></i>  工单类型：<%=item.type_name%>--<%=item.business_name%></p>
+            <p class="khtip"><%=item.content%>
+            </p>
+            <p>
+                <span class="gdtime"><i class="fa fa-clock-o fa-fw" aria-hidden="true"></i> 报修时间：<%=item.created_at%></span>
+                <span class="gdtime"> 到期时间：<%=item.expiry_time%></span>
+            </p>
+        </div>
+        <div class="gd-fd">
+            <i class="fa fa-map-marker fa-fw" aria-hidden="true"></i> <%=item.city_name%><%=item.area_name%><%=item.address%> </p>
+        </div>
+        <div class="btnbox">
+            <%if( status == 1){%>
+            <a href="javascript:void(0);" class="btn fr work_sure" data-id="<%=item.id%>" >确认</a>
+            <%}%>
+            <%if( status == 2){%>
+            <a href="javascript:void(0);" class="btn fr work_win" data-id="<%=item.id%>" >结单</a>
+            <%}%>
+            <div class="c"></div>
+        </div>
+    </div>
+    <%}%>
+</script>
+<!-- 列表模板部分 结束-->
+<!-- 前端模板结束 -->
