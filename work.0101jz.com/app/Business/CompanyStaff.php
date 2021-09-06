@@ -176,6 +176,7 @@ class CompanyStaff extends BaseBusiness
      * @return  array 用户信息[一维数组]
      */
     public static function login(Request $request, Controller $controller, $judgeSuper = true){
+        $company_id = Common::getInt($request, 'company_id');
         $admin_username = Common::get($request, 'admin_username');
         $admin_password = Common::get($request, 'admin_password');
         $preKey = Common::get($request, 'preKey');// 0 小程序 1后台
@@ -190,7 +191,7 @@ class CompanyStaff extends BaseBusiness
         // 查询用户名是否有
         $queryParams = [
             'where' => [
-                // ['company_id',$company_id],
+                 ['company_id',$company_id],
                 // ['admin_username',$admin_username],
                 ['work_num',$admin_username],
                 ['admin_password',md5($admin_password)],
@@ -231,7 +232,7 @@ class CompanyStaff extends BaseBusiness
                 // 查询手机号是否有
                 $queryParams = [
                     'where' => [
-                        //['company_id',$company_id],
+                        ['company_id',$company_id],
                         ['mobile', $admin_username],
                         ['admin_password', md5($admin_password)],
                         ['admin_type',self::$admin_type],
@@ -257,10 +258,26 @@ class CompanyStaff extends BaseBusiness
             }
         }
 
-        $department_id = $userInfo['department_id'] ?? '';
-        if($judgeSuper && !in_array($department_id,[120]))  throws('您不是分公司员工，没有权限访问！');
+        $staff_company = $userInfo['staff_company'];
+        if(empty($staff_company)) throws('企业信息不存在！');
+        $company_name = $staff_company['company_name'] ?? '';// 企业名称
 
-        if(!$judgeSuper && in_array($department_id,[120]))  throws('您是分公司员工，没有权限访问！');
+        $module_no = $staff_company['module_no'] ?? 0;// 开通模块编号
+        $module_no_text = $staff_company['module_no_text'] ?? '';// 开通模块编号名称
+
+        $open_status = $staff_company['open_status'] ?? 0;// 开通状态1开通；2关闭；4作废【过时关闭】；
+        $open_status_text = $staff_company['open_status_text'] ?? '';// 开通状态文字
+        if($open_status != Company::OPEN_STATUS_OPEN) throws('企业【' . $company_name . '】状态【' . $open_status_text . '】，不可以进行登录！');
+
+        $send_work_department_id = $staff_company['send_work_department_id'] ?? 0;// 接线部门id
+
+        $department_id = $userInfo['department_id'] ?? '';
+        if($send_work_department_id > 0 && $judgeSuper && $department_id != $send_work_department_id){
+            throws('您不是接线部门的员工，没有权限访问！');
+        }
+        // if($judgeSuper && !in_array($department_id,[120]))  throws('您不是分公司员工，没有权限访问！');
+
+        // if(!$judgeSuper && in_array($department_id,[120]))  throws('您是分公司员工，没有权限访问！');
 
         $account_id = $userInfo['id'] ?? 0;
         $company_id = $userInfo['company_id'] ?? 0;
@@ -269,6 +286,7 @@ class CompanyStaff extends BaseBusiness
             throws('账号已冻结！');
             //return ajaxDataArr(0, null, '账号已冻结！');
         }
+
         // 部门
         $userInfo['department_name'] = $userInfo['staff_department']['department_name'] ?? '';
         if(isset($userInfo['staff_department'])) unset($userInfo['staff_department']);

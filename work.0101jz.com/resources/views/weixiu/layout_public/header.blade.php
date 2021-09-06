@@ -10,5 +10,5 @@
                 <li><a href="{{ url('weixiu/help') }}" >帮助中心</a></li>
             </ul>
         </div>
-        <span class="quit"><a href="{{ url('weixiu/logout') }}"><i class="fa fa-power-off fa-fw" aria-hidden="true"></i>退出</a></span></div>
+        <span class="quit"><a href="{{ url('weixiu/' . $baseArr ['company_id'] . '/logout') }}"><i class="fa fa-power-off fa-fw" aria-hidden="true"></i>退出</a></span></div>
 </div>

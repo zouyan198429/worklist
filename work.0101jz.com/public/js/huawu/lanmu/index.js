@@ -10,7 +10,25 @@ $(function(){
         ajax_status_count(1, 0, 0);//ajax工单状态统计
     };
     setInterval(autoObj.orderProcessList,60000);
+
+    $('.qrcode').each(function(){
+        let qrObj = $(this);
+        // 交付二维码
+        var qrcodeurl = qrObj.data('qrcodeurl');
+        consoleLogs(['qrcodeurl', qrcodeurl]);
+        if(qrcodeurl != ''){
+            // showQRCodeTable('qrcode', qrcodeurl, 250, 250);// 显示付款二维码
+            // qrObj.qrcode(toUtf8QRCode(qrcodeurl)); //任意字符串
+            qrObj.qrcode({
+                render: "canvas", //table方式
+                width: 150, //宽度
+                height:150, //高度
+                text: toUtf8QRCode(qrcodeurl) //任意内容
+            });
+        }
+    });
 });
+
 
 //ajax工单状态统计
 // from_id 来源 0 页面第一次加载,不播放音乐 1 每分钟获得数量，有变化，播放音乐
@@ -99,4 +117,19 @@ var otheraction = {
         layeriframe(weburl,tishi,950,600,0);
         return false;
     },
+    copyWebUrl :function(thisObj) {
+        var btnObj = $(thisObj);
+        var htmlStr = btnObj.closest('.web_block').find('.web_url').text();
+        console.log('==htmlStr===', htmlStr);
+        copyToClip( thisObj, htmlStr);
+        // Clipboard.copy(thisObj,htmlStr,'复制成功！！');
+    },
+    copyH5Url:function(thisObj) {
+        var btnObj = $(thisObj);
+        var htmlStr = btnObj.closest('.m_block').find('.h5_url').text();
+        console.log('==htmlStr===', htmlStr);
+        copyToClip( thisObj, htmlStr);
+        // Clipboard.copy(thisObj,htmlStr,'复制成功！！');
+    }
+
 };

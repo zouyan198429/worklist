@@ -13,18 +13,20 @@
 <body id="body-login">
 	<form action="#"  method="post"  id="addForm" >
 		<div id="loginbox">
-			<h1>欢迎登录<h1>
+			<h1>欢迎登录</h1>
+            <h3>{{ $company_info['company_name'] or '' }}</h3>
+            <input type="hidden"  name="company_id"   value="{{ $company_info['id'] or '' }}" />
 			<ul>
 				<li><input type="text"   name="admin_username"  placeholder="工号"  /></li>
 				<li><input type="password" name="admin_password"   placeholder="密码"/></li>
 				<li><input type="submit"  id="submitBtn"   {{--onClick="window.open('index.html')"--}} value="登录" class="btn" /></li>
 			</ul>
 		</div>
-	</form><!-- 
+	</form><!--
 	<div id="manlist">
 	<a href="{{ url('huawu') }}" >话务员</a>
-	<a href="../web-weixiu/main_wx.html" >维修工程师</a>   
-	<a href="../web-manage/main_admin.html" >管理层</a>   
+	<a href="../web-weixiu/main_wx.html" >维修工程师</a>
+	<a href="../web-manage/main_admin.html" >管理层</a>
 	</div> -->
 </body>
 </html>
@@ -41,4 +43,4 @@
     var INDEX_URL = "{{url('huawu')}}";
 
 </script>
-<script src="{{ asset('/js/common/loginuser.js') }}"  type="text/javascript"></script>
+<script src="{{ asset('/js/common/loginuser.js') }}?1"  type="text/javascript"></script>

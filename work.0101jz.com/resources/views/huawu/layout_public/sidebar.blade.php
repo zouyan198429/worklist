@@ -5,7 +5,7 @@
             <li>
                 <a href="{{ url('huawu') }}"><i class="fa fa-home fa-fw" aria-hidden="true"></i> 首页</a>
             </li>
-            @if(isset($webType) && $webType == 2)
+            @if( (isset($webType) && $webType == 2) || (isset($baseArr['module_no']) && ($baseArr['module_no'] & 8) == 8))
             <li>
                 <a href="{{ url('huawu/work/add/0') }}">
                     <i class="fa fa-phone-square fa-fw" aria-hidden="true"></i>
@@ -35,18 +35,20 @@
             </li>
             --}}
             @if(isset($webType) && $webType == 2)
-            <li>
-                <a href="{{ url('huawu/customer') }}">
-                    <i class="fa fa-star-o fa-fw" aria-hidden="true"></i>
-                    <span>我的客户</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ url('huawu/customer/day_count') }}">
-                    <i class="fa fa-bar-chart fa-fw" aria-hidden="true"></i>
-                    <span>我的业绩</span>
-                </a>
-            </li>
+                @if( isset($baseArr['module_no']) && ($baseArr['module_no'] & 8) == 8)
+                <li>
+                    <a href="{{ url('huawu/customer') }}">
+                        <i class="fa fa-star-o fa-fw" aria-hidden="true"></i>
+                        <span>我的客户</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url('huawu/customer/day_count') }}">
+                        <i class="fa fa-bar-chart fa-fw" aria-hidden="true"></i>
+                        <span>我的业绩</span>
+                    </a>
+                </li>
+                @endif
             <li>
                 <a href="{{ url('huawu/notice') }}">
                     <i class="fa fa-bullhorn fa-fw" aria-hidden="true"></i>
@@ -54,19 +56,23 @@
                 </a>
             </li>
             @endif
+            @if( isset($baseArr['module_no']) && ($baseArr['module_no'] & 16) == 16)
             <li>
                 <a href="{{ url('huawu/staff') }}">
                     <i class="fa fa-address-book-o fa-fw" aria-hidden="true"></i>
                     <span>我的同事</span>
                 </a>
             </li>
+            @endif
+            @if( isset($baseArr ['module_no']) && ($baseArr ['module_no'] & 1) == 1)
             <li>
                 <a href="{{ url('huawu/lore') }}">
                     <i class="fa fa-battery-3 fa-fw" aria-hidden="true"></i>
                     <span>在线学习</span>
                 </a>
             </li>
-            @if(isset($webType) && $webType == 2)
+            @endif
+            @if( (isset($webType) && $webType == 2) || (isset($baseArr['module_no']) && ($baseArr['module_no'] & 2) == 2))
             <li>
                 <a href="{{ url('huawu/exam') }}">
                     <i class="fa fa-clock-o fa-fw" aria-hidden="true"></i>
@@ -76,5 +82,5 @@
             @endif
         </ul>
     </section>
-    </aside>
+{{--    </aside>--}}
 </div>

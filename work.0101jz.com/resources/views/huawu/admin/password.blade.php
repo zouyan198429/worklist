@@ -62,7 +62,7 @@
 @push('footlast')
 	<script>
         const SAVE_URL = "{{ url('api/huawu/ajax_password_save') }}";
-        const SET_URL = "{{url('huawu/logout')}}";//"{{url('huawu/password')}}"
+        const SET_URL = "{{url('huawu/' . $baseArr ['company_id'] . '/logout')}}";//"{{url('huawu/password')}}"
 	</script>
 	<script src="{{ asset('js/common/staff_password.js') }}"  type="text/javascript"></script>
 @endpush

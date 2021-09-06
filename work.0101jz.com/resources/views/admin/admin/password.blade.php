@@ -71,7 +71,7 @@
 @push('footlast')
 	<script>
         var SAVE_URL = "{{ url('api/admin/ajax_password_save') }}";
-        var SET_URL = "{{url('admin/logout')}}";//"{{url('admin/password')}}"
+        var SET_URL = "{{url('admin/' . $baseArr ['company_id'] . '/logout')}}";//"{{url('admin/password')}}"
 	</script>
 	<script src="{{ asset('js/common/admin_password.js') }}"  type="text/javascript"></script>
 @endpush

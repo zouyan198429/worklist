@@ -178,7 +178,7 @@ function append_sure_form(search_sure_form,frm_ids){
         $('#modal_show_id_before').before(html_frm);
     }else{
         $('body').append(html_frm);//追加到body
-    } 
+    }
 }
 //确认、取消弹出窗
 //参数 sure_cancel_data json对象
@@ -225,6 +225,23 @@ function alert_modal_cancel(modal_id){
         alert_obj.modal('hide');
     }
 }
+
+// message - 内容 默认：'' content可传入的值是灵活多变的，不仅可以传入普通的html内容，还可以指定DOM，更可以随着type的不同而不同。
+// icon 0-6 图标 0：紫红叹号--出错警示 ；1：绿色对勾--成功；2：无图标 ；3：淡黄问号；4：灰色小锁图标；
+//               5：红色哭脸--         ； 6：绝色笑脸
+// shade 默认：0.3 即弹层外区域。默认是0.3透明度的黑色背景（'#000'）。如果你想定义别的颜色，可以shade: [0.8, '#393D49']；如果你不想显示遮罩，可以shade: 0
+// time - 自动关闭所需毫秒 默认：0  默认不会自动关闭。当你想自动关闭时，可以time: 5000，即代表5秒后自动关闭，注意单位是毫秒（1秒=1000毫秒）
+function layerMsg(message, icon, shade, time, doFun) {
+    layer.msg(message, {
+        icon: icon,// 1,
+        shade: shade,// 0.3,
+        time: time// 3000 //2秒关闭（如果不配置，默认是3秒）
+    }, function(){
+        //do something
+        doFun && doFun();
+    });
+}
+
 //error错误弹窗 -倒记时
 //参数 err_msg 错误信息
 function err_alert(err_msg){
@@ -339,7 +356,7 @@ function countdown_alert(tishi_msg,icon_num,sec_num){
     var intervalId =setInterval(function(){
         var alert_obj = $("#"+modal_id);
         var close_loop = false;//是否关闭循环 true：关闭 ;false不关闭
-	if(alert_obj.length>0){            
+	if(alert_obj.length>0){
             var record_sec_obj = alert_obj.find('.show_second');
             var sec_num = Math.ceil(parseInt(record_sec_obj.html()));
             if(judge_judge_digit(sec_num) === false){
@@ -362,7 +379,7 @@ function countdown_alert(tishi_msg,icon_num,sec_num){
     },1000);
 }
 function countdown_clearTimeout(){
-    
+
 }
 	//列表页信息展示
         //dynamic_obj 动态表格对象
@@ -385,7 +402,7 @@ function countdown_clearTimeout(){
             //加载中..
             //加载层-默认风格
             //$("#"+body_data_id).html('');
-            
+
             var htmlStr = '';//
             //alert('加载中...');
             dynamic_obj = datatables_destroy(dynamic_obj,aoColumns,dynamic_id,body_data_id,htmlStr,baidu_template_page);
@@ -405,10 +422,10 @@ function countdown_clearTimeout(){
                 }
             }
             data['page'] = page;
-            //每页显示数量			
+            //每页显示数量
             //var pagesize = Math.ceil(parseInt($('#pagesize').val()));
             data['pagesize'] = pagesize;
-            //总记录数量[特别说明:小于0,需要从数据库重新获取]			
+            //总记录数量[特别说明:小于0,需要从数据库重新获取]
             var total = -1;
             if($('#'+total_id).length>=1){
                 total = Math.ceil(parseInt($('#'+total_id).val()));
@@ -418,12 +435,12 @@ function countdown_clearTimeout(){
             }
             data['total'] = total;
             //其它条件
-			
+
 //		data['checked_status'] = $('#checked_status').val();
 //		data['goods_type'] = $('#goodsType .selected').attr('name');
 //		data['type'] = $('select[name=type]').val();
 //		data['keywords'] = $('input[name=keywords]').val();
-//		
+//
 //		if (data['type']) { if (!data['keywords']) { alert("搜索关键词不能为空"); return false; } }
 //		if (data['type'] == "1") { if (isNaN(data['keywords'])) { alert("搜索关键词必须为数字"); return false; } }
 
@@ -465,7 +482,7 @@ function countdown_clearTimeout(){
                                         dynamic_obj = ajaxList(dynamic_obj,aoColumns,dynamic_id,baidu_template_page,ajax_url,true,frm_ids,true,baidu_template,body_data_id,baidu_template_loding,baidu_template_empty,page_id,pagesize,total_id);
                                     }
                                 });
-                            }); 
+                            });
                             //输入页码框[跳转]按钮事件
                             $('#'+dynamic_id).parent().find('.page_go').each(function () {
                                 $(this).click(function () {
@@ -483,9 +500,9 @@ function countdown_clearTimeout(){
                                     if($('#'+page_id).length>=1){
                                         $('#'+page_id).val(page);
                                     }
-                                    dynamic_obj = ajaxList(dynamic_obj,aoColumns,dynamic_id,baidu_template_page,ajax_url,true,frm_ids,false,baidu_template,body_data_id,baidu_template_loding,baidu_template_empty,page_id,pagesize,total_id);  
+                                    dynamic_obj = ajaxList(dynamic_obj,aoColumns,dynamic_id,baidu_template_page,ajax_url,true,frm_ids,false,baidu_template,body_data_id,baidu_template_loding,baidu_template_empty,page_id,pagesize,total_id);
                                 });
-                            }); 
+                            });
                         }else{
                             //alert('无记录');
                             //没有数据记录

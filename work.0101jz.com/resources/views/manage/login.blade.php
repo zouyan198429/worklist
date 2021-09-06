@@ -13,7 +13,9 @@
 <body id="body-login">
 	<form class="am-form" action="#"  method="post"  id="addForm">
 		<div id="loginbox">
-			<h1>欢迎登录<h1>
+			<h1>欢迎登录</h1>
+            <h3>{{ $company_info['company_name'] or '' }}</h3>
+            <input type="hidden"  name="company_id"   value="{{ $company_info['id'] or '' }}" />
 			<ul>
 				<li><input type="text"  name="admin_username"  placeholder="用户名" /></li>
 				<li><input type="password"  name="admin_password"  placeholder="密码" /></li>
@@ -41,4 +43,4 @@
     const INDEX_URL = "{{url('manage')}}";
 
 </script>
-<script src="{{ asset('/js/common/login.js') }}"  type="text/javascript"></script>
+<script src="{{ asset('/js/common/login.js') }}?1"  type="text/javascript"></script>

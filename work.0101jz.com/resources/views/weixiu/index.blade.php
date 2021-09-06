@@ -2,6 +2,7 @@
 
 @push('headscripts')
 {{--  本页单独使用 --}}
+<script src="{{asset('dist/lib/jquery-qrcode-master/jquery.qrcode.min.js')}}"></script>
 @endpush
 
 @section('content')
@@ -17,7 +18,7 @@
 					@endif
 					<h4>{{ $txt }}</h4>
 				</div>
-			@endforeach 
+			@endforeach
 		</div>
 	</div>
 	<div class="mm">
@@ -37,6 +38,39 @@
 		@include('public.scan_sound')
 	</div>
 	@endif
+
+    <div class="mm">
+
+        <h2>访问地址</h2>
+        <div class="row" >
+            {{--            <div class="col-sm">--}}
+            {{--                <p class="layui-badge">0</p>--}}
+            {{--               <h4>aaaaa</h4>--}}
+            {{--            </div>--}}
+
+            <p class="web_block">
+                web后台：
+                <span class="web_url">{{ $webLoginUrl or '' }}</span>
+                <input type="button" class="btn btn-success  btn-xs export_excel"  value="复制"  onclick="otheraction.copyWebUrl(this)">
+                <br/><span class="qrcode" data-qrcodeurl="{{ $webLoginUrl or '' }}"></span>
+                <br/><a href="{{ $webLoginUrl or '' }}" target="_blank" >马上登录，使用系统</a>
+            </p>
+            <p class="m_block">
+                员工H5系统： <span class="h5_url">{{ $mLoginUrl or '' }}</span>
+                <input type="button" class="btn btn-success  btn-xs export_excel"  value="复制"  onclick="otheraction.copyH5Url(this)">
+                <br/><span class="qrcode" data-qrcodeurl="{{ $mLoginUrl or '' }}"></span>
+                <br/><a href="{{ $mLoginUrl or '' }}" target="_blank">马上登录，使用系统</a>
+            </p>
+            {{--
+            <div class="col-sm">
+                <p>0</p>
+                <h4>今日受理工单</h4>
+            </div>
+            --}}
+        </div>
+
+
+    </div>
 @endsection
 
 

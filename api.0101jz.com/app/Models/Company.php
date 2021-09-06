@@ -20,11 +20,13 @@ class Company extends BaseModel
     const MODULE_NO_EXAM = 2;// 在线考试
     const MODULE_NO_PROBLEM = 4;// 反馈问题
     const MODULE_NO_WORK = 8;// 工单
+    const MODULE_NO_STAFF = 16;// 我的同事
     const MODULE_NO_ARR = [
         self::MODULE_NO_LORE => '知识库',
         self::MODULE_NO_EXAM => '在线考试',
         self::MODULE_NO_PROBLEM => '反馈问题',
         self::MODULE_NO_WORK => '工单',
+        self::MODULE_NO_STAFF => '我的同事',
     ];
 
     // 开通状态1开通；2关闭；4作废【过时关闭】；
@@ -37,8 +39,24 @@ class Company extends BaseModel
         self::OPEN_STATUS_CANCEL => '作废',
     ];
 
+    // 性别0未知1男2女
+    public static $sexArr = [
+        '0' => '未知',
+        '1' => '男',
+        '2' => '女',
+    ];
+
+    // 公司状态;1新注册2试用客户4VIP 8VIP 将过期  16过期会员32过期试用
+    public static $companyStatusArr = [
+        '1' => '新注册',
+        '2' => '试用客户',
+        '4' => 'VIP',
+        '8' => 'VIP 将过期',
+        '16' => '过期会员',
+        '32' => '过期试用',
+    ];
     // 表里没有的字段
-    protected $appends = ['module_no_text', 'open_status_text'];
+    protected $appends = ['module_no_text', 'open_status_text', 'sex_text', 'company_status_text'];
 
     /**
      * 获取开通模块文字
@@ -60,6 +78,26 @@ class Company extends BaseModel
     {
         return Tool::getBitVals(static::OPEN_STATUS_ARR, $this->open_status, '、');
         // return static::OPEN_STATUS_ARR[$this->open_status] ?? '';
+    }
+
+    /**
+     * 获取用户性别文字
+     *
+     * @return string
+     */
+    public function getSexTextAttribute()
+    {
+        return static::$sexArr[$this->sex] ?? '';
+    }
+
+    /**
+     * 获取公司状态文字
+     *
+     * @return string
+     */
+    public function getCompanyStatusTextAttribute()
+    {
+        return static::$companyStatusArr[$this->company_status] ?? '';
     }
 
     /**

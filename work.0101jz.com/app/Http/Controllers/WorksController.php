@@ -53,6 +53,7 @@ class WorksController extends BaseController
             $real_name = $mobile;
         }
         $this->reDataArr['baseArr']['real_name'] = $real_name;
+        $this->initCompanyMsg($userInfo);
         $this->reDataArr['webType'] = config('public.webType');// 网站类型 1  外网 2内网
         // 每*分钟，自动更新一下左则
 //        $recordTime  = time();

@@ -33,7 +33,8 @@
 					<button class="btn btn-normal search_frm">搜索</button>
 				</div>
 			</form>
-		</div>
+
+        </div>
 		<table id="dynamic-table"  class="table2">
 			<thead>
 			<tr>

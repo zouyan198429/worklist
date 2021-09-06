@@ -22,7 +22,8 @@ Route::get('excel/export','ExcelController@export'); // 导出
 Route::get('excel/import','ExcelController@import'); // 导入
 Route::get('excel/import_test','ExcelController@import_test'); // 导入 - 测试
 
-//
+
+Route::post('ajax_reg', 'IndexController@ajax_reg');// 注册企业
 // admin
 // 上传图片
 Route::post('admin/upload', 'admin\UploadController@index');

@@ -19,7 +19,8 @@
 //Route::get('/test', 'IndexController@test');// 测试
 Route::get('/test2', 'IndexController@test2');// 测试
 Route::get('/', 'IndexController@index');// 首页
-//Route::get('reg', 'IndexController@reg');// 注册
+Route::get('reg', 'IndexController@reg');// 注册
+Route::get('{company_id}/login', 'IndexController@login');// 登陆
 Route::get('login', 'IndexController@login');// 登陆
 //Route::get('logout', 'IndexController@logout');// 注销
 //Route::get('404', 'IndexController@err404');// 404错误
@@ -30,7 +31,9 @@ Route::get('weixiu/webuploader', 'weixiu\WebUploaderController@index');// 上传
 
 // admin
 Route::get('admin', 'admin\IndexController@index');//index.html  首页
+Route::get('admin/{company_id}/login', 'admin\IndexController@login');//login.html 登录
 Route::get('admin/login', 'admin\IndexController@login');//login.html 登录
+Route::get('admin/{company_id}/logout', 'admin\IndexController@logout');// 注销
 Route::get('admin/logout', 'admin\IndexController@logout');// 注销
 Route::get('admin/password', 'admin\IndexController@password');//psdmodify.html 个人信息-修改密码
 Route::get('admin/info', 'admin\IndexController@info');//myinfo.html 个人信息--显示
@@ -162,7 +165,9 @@ Route::get('admin/paper/select', 'admin\PaperController@select');// 试卷选择
 //web-manage
 Route::get('manage/testUpfile', 'manage\IndexController@testUpfile');// 测试
 Route::get('manage', 'manage\IndexController@index');//main_admin.html -首页
+Route::get('manage/{company_id}/login', 'manage\IndexController@login');//login.html 登陆
 Route::get('manage/login', 'manage\IndexController@login');//login.html 登陆
+Route::get('manage/{company_id}/logout', 'manage\IndexController@logout');// 注销
 Route::get('manage/logout', 'manage\IndexController@logout');// 注销
 Route::get('manage/hot', 'manage\IndexController@index_hot');//work_hot.html 首页
 Route::get('manage/info', 'manage\IndexController@info');//myinfo.html 个人信息
@@ -232,7 +237,9 @@ Route::get('huawu/testUpfile', 'huawu\IndexController@testUpfile');// 测试
 Route::get('huawu/test', 'huawu\IndexController@test');// 测试
 Route::get('huawu', 'huawu\IndexController@index');//main.html 首页
 Route::get('huawu/getHistoryIdTest', 'huawu\IndexController@getHistoryIdTest');// 测试：根据主表id，获得对应的历史表id
+Route::get('huawu/{company_id}/login', 'huawu\IndexController@login');//login.html 登录
 Route::get('huawu/login', 'huawu\IndexController@login');//login.html 登录
+Route::get('huawu/{company_id}/logout', 'huawu\IndexController@logout');// 注销
 Route::get('huawu/logout', 'huawu\IndexController@logout');// 注销
    Route::get('huawu/info', 'huawu\IndexController@info');//myinfo.html  个人信息
    Route::get('huawu/password', 'huawu\IndexController@password');//psdmodify.html 个人信息-修改密码
@@ -279,7 +286,9 @@ Route::get('huawu/work/reply/{id}', 'huawu\WorkController@reply');// 工单-- �
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //web-weixiu 维修
 Route::get('weixiu', 'weixiu\IndexController@index');//main_wx.html  -首页
+Route::get('weixiu/{company_id}/login', 'weixiu\IndexController@login');///login.html 登陆
 Route::get('weixiu/login', 'weixiu\IndexController@login');///login.html 登陆
+Route::get('weixiu/{company_id}/logout', 'weixiu\IndexController@logout');// 注销
 Route::get('weixiu/logout', 'weixiu\IndexController@logout');// 注销
 Route::get('weixiu/info', 'weixiu\IndexController@info');//myinfo.html 个人信息
 Route::get('weixiu/password', 'weixiu\IndexController@password');//psdmodify.html- 修改密码
@@ -317,7 +326,9 @@ Route::get('weixiu/help', 'weixiu\HelpController@index');// 帮助中心
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //app
+Route::get('app/{company_id}/login', 'app\IndexController@login');//login.html 登录
 Route::get('app/login', 'app\IndexController@login');//login.html 登录
+Route::get('app/{company_id}/logout', 'app\IndexController@logout');// 注销
 Route::get('app/logout', 'app\IndexController@logout');// 注销
 Route::get('app/info', 'app\IndexController@info');//myinfo.html 我的详情
 //客户
@@ -335,7 +346,9 @@ Route::get('app/work', 'app\WorkController@index');//work_monitor.html 工单
 //m
 Route::get('m', 'm\IndexController@index');//index.html  首页
 Route::get('m/index_back', 'm\IndexController@indexBack');// index-bk.html 首页
+Route::get('m/{company_id}/login', 'm\IndexController@login');//login.html 员工登录
 Route::get('m/login', 'm\IndexController@login');//login.html 员工登录
+Route::get('m/{company_id}/logout', 'm\IndexController@logout');// 注销
 Route::get('m/logout', 'm\IndexController@logout');// 注销
 Route::get('m/password', 'm\IndexController@password');//login.html 修改密码
 

@@ -36,7 +36,7 @@
                         <li><a href="{{ url('accounts/set') }}">资料设置</a></li>
                         <li><a href="{{ url('accounts/mypass') }}">修改密码</a></li>
                         <li class="divider"></li>
-                        <li><a href="{{ url('logout') }}">退出</a></li>
+                        <li><a href="{{ url('' . $baseArr ['company_id'] . '/logout') }}">退出</a></li>
                     </ul>
                 </li>
             </ul>

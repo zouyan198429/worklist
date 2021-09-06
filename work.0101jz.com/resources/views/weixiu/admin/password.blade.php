@@ -59,7 +59,7 @@
 @push('footlast')
 	<script>
         const SAVE_URL = "{{ url('api/weixiu/ajax_password_save') }}";
-        const SET_URL = "{{url('weixiu/logout')}}";//"{{url('weixiu/password')}}"
+        const SET_URL = "{{url('weixiu/' . $baseArr ['company_id'] . '/logout')}}";//"{{url('weixiu/password')}}"
 	</script>
 	<script src="{{ asset('js/common/staff_password.js') }}"  type="text/javascript"></script>
 @endpush

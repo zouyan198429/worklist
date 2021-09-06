@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Business\Company;
 use App\Business\SiteAdmin;
 use App\Business\CompanyWork;
 use App\Http\Controllers\AdminController;
@@ -31,6 +32,9 @@ class IndexController extends AdminController
         $reDataArr['defaultStatus'] = 1;// 列表页默认状态
         $reDataArr['countStatus'] = [-8,-4,0,1,2,4];// 列表页需要统计的状态数组
         $reDataArr['countPlayStatus'] = '-8,-4';// 需要播放提示声音的状态，多个逗号,分隔
+
+        $reDataArr['webLoginUrl'] = url($this->company_id . '/login');
+        $reDataArr['mLoginUrl'] = url(config('public.mWebURL') . 'm/' . $this->company_id . '/login');
         return view('admin.index', $reDataArr);
     }
 
@@ -41,9 +45,17 @@ class IndexController extends AdminController
      * @return mixed
      * @author zouyan(305463219@qq.com)
      */
-    public function login(Request $request)
+    public function login(Request $request, $company_id = 1)
     {
         $reDataArr = $this->reDataArr;
+        try{
+            $company_info = Company::loginGetInfo($request, $this, $company_id, 1);
+            if(empty($company_info)) throws('企业记录【' . $company_id . '】不存在！');
+        } catch ( \Exception $e) {
+            $reDataArr['errStr'] = $e->getMessage();
+            return view('error', $reDataArr);
+        }
+        $reDataArr['company_info'] = $company_info;
         return view('admin.login', $reDataArr);
     }
 
@@ -115,13 +127,13 @@ class IndexController extends AdminController
      * @return mixed
      * @author zouyan(305463219@qq.com)
      */
-    public function logout(Request $request)
+    public function logout(Request $request, $company_id = 1)
     {
         // $this->InitParams($request);
         SiteAdmin::loginOut($request, $this);
         $reDataArr = $this->reDataArr;
-        // return redirect('admin/login');
-        return redirect('login');
+        // return redirect('admin/' . $company_id . '/login');
+        return redirect($company_id . '/login');
     }
 
     /**

@@ -33,6 +33,7 @@ class SiteAdmin extends BaseBusiness
      * @author zouyan(305463219@qq.com)
      */
     public static function login(Request $request, Controller $controller, $judgeSuper = true){
+        $company_id = Common::getInt($request, 'company_id');
         $admin_username = Common::get($request, 'admin_username');
         $admin_password = Common::get($request, 'admin_password');
 //        $preKey = Common::get($request, 'preKey');// 0 小程序 1后台
@@ -43,7 +44,7 @@ class SiteAdmin extends BaseBusiness
         // $company_id = config('public.company_id');
         $queryParams = [
             'where' => [
-                // ['company_id',$company_id],
+                ['company_id',$company_id],
                 ['admin_username',$admin_username],
                 ['admin_password',md5($admin_password)],
             ],
@@ -69,6 +70,21 @@ class SiteAdmin extends BaseBusiness
         $admin_type = $userInfo['admin_type'] ?? '';
         if($judgeSuper && $admin_type != 2)  throws('您不是超级管理员，没有权限访问！');
         // if(!$judgeSuper && $admin_type != 1)  throws('您不是管理员，没有权限访问！');
+
+
+        $staff_company = $userInfo['staff_company'];
+        if(empty($staff_company)) throws('企业信息不存在！');
+        $company_name = $staff_company['company_name'] ?? '';// 企业名称
+
+        $module_no = $staff_company['module_no'] ?? 0;// 开通模块编号
+        $module_no_text = $staff_company['module_no_text'] ?? '';// 开通模块编号名称
+
+        $open_status = $staff_company['open_status'] ?? 0;// 开通状态1开通；2关闭；4作废【过时关闭】；
+        $open_status_text = $staff_company['open_status_text'] ?? '';// 开通状态文字
+        if($open_status != Company::OPEN_STATUS_OPEN) throws('企业【' . $company_name . '】状态【' . $open_status_text . '】，不可以进行登录！');
+
+        $send_work_department_id = $staff_company['send_work_department_id'] ?? 0;// 接线部门id
+
 
         // 保存session
         // 存储数据到session...
@@ -381,11 +397,16 @@ class SiteAdmin extends BaseBusiness
      * @param int $id id
      * @param boolean $modifAddOprate 修改时是否加操作人，true:加;false:不加[默认]
      * @param int $notLog 是否需要登陆 0需要1不需要
+     * @param int $company_id 可以指定所属企业id,<=0 时: 再从属性重新获取
      * @return  array 单条数据 - -维数组 为0 新加，返回新的对象数组[-维],  > 0 ：修改对应的记录，返回true
      * @author zouyan(305463219@qq.com)
      */
-    public static function replaceById(Request $request, Controller $controller, $saveData, &$id, $modifAddOprate = false, $notLog = 0){
-        $company_id = $controller->company_id;
+    public static function replaceById(Request $request, Controller $controller, $saveData, &$id, $modifAddOprate = false, $notLog = 0, $company_id = 0){
+        $is_not_login_reg = true;// 是否是未登录的企业注册 true:是；false:不是
+        if($company_id <= 0){
+            $is_not_login_reg = false;
+            $company_id = $controller->company_id;
+        }
 
         $admin_username = $saveData['admin_username'] ?? '';
         // 新加时
@@ -398,7 +419,7 @@ class SiteAdmin extends BaseBusiness
         }
 
         // 判断用户名是否已经存在
-        if(isset($saveData['admin_username']) && self::existUsername($request, $controller, $saveData['admin_username'], $id)){
+        if(isset($saveData['admin_username']) && self::existUsername($request, $controller, $saveData['admin_username'], $id, $company_id)){
             // return ajaxDataArr(0, null, '用户名已存在！');
             throws('用户名已存在！');
         }
@@ -417,7 +438,7 @@ class SiteAdmin extends BaseBusiness
             ];
             $saveData = array_merge($saveData, $addNewData);
             // 加入操作人员信息
-            self::addOprate($request, $controller, $saveData);
+            if(!$is_not_login_reg) self::addOprate($request, $controller, $saveData);
         }
         // 新加或修改
         return self::replaceByIdBase($request, $controller, self::$model_name, $saveData, $id, $notLog);
@@ -430,11 +451,12 @@ class SiteAdmin extends BaseBusiness
      * @param Controller $controller 控制对象
      * @param string $username 用户
      * @param int $id id
+     * @param int $company_id 可以指定所属企业id,<=0 时: 再从属性重新获取
      * @return  array 单条数据 - -维数组
      * @author zouyan(305463219@qq.com)
      */
-    public static function existUsername(Request $request, Controller $controller, $username, $id){
-        $company_id = $controller->company_id;
+    public static function existUsername(Request $request, Controller $controller, $username, $id, $company_id = 0){
+        if($company_id <= 0) $company_id = $controller->company_id;
         $queryParams = [
             'where' => [
                 ['company_id', $company_id],

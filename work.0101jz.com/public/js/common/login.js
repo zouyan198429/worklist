@@ -18,6 +18,13 @@ $(function(){
 //ajax提交表单
 function ajax_form(){
     if (!SUBMIT_FORM) return false;//false，则返回
+
+    // 企业id信息
+    var company_id = $('input[name=company_id]').val();
+    if(!judge_validate(4,'登录企业id',company_id,true,'positive_int','','')){
+        return false;
+    }
+
     // 验证信息
     var admin_username = $('input[name=admin_username]').val();
     var judgeuser =judge_validate(1,'用户名',admin_username,true,'length',6,20);

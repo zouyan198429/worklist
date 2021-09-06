@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\huawu;
 
+use App\Business\Company;
 use App\Business\CompanyNotice;
 use App\Business\CompanyStaff;
 use App\Business\CompanyWork;
@@ -54,6 +55,8 @@ class IndexController extends WorksController
         // 最新6条公告
         $reDataArr['noticeList'] =  CompanyNotice::getNearList($request, $this, 0, 4, 6, 0, [], '');
 
+        $reDataArr['webLoginUrl'] = url($this->company_id . '/login');
+        $reDataArr['mLoginUrl'] = url(config('public.mWebURL') . 'm/' . $this->company_id . '/login');
         return view('huawu.index', $reDataArr);
     }
 
@@ -97,9 +100,17 @@ class IndexController extends WorksController
      * @return mixed
      * @author zouyan(305463219@qq.com)
      */
-    public function login(Request $request)
+    public function login(Request $request, $company_id = 1)
     {
         $reDataArr = $this->reDataArr;
+        try{
+            $company_info = Company::loginGetInfo($request, $this, $company_id, 1);
+            if(empty($company_info)) throws('企业记录【' . $company_id . '】不存在！');
+        } catch ( \Exception $e) {
+            $reDataArr['errStr'] = $e->getMessage();
+            return view('error', $reDataArr);
+        }
+        $reDataArr['company_info'] = $company_info;
         return view('huawu.login', $reDataArr);
     }
 
@@ -170,13 +181,13 @@ class IndexController extends WorksController
      * @return mixed
      * @author zouyan(305463219@qq.com)
      */
-    public function logout(Request $request)
+    public function logout(Request $request, $company_id = 1)
     {
         $reDataArr = $this->reDataArr;
         $resDel = CompanyStaff::loginOut($request, $this);
         // return ajaxDataArr(1, $resDel, '');
-//        return redirect('huawu/login');
-        return redirect('login');
+//        return redirect('huawu/' . $company_id . '/login');
+        return redirect($company_id . '/login');
     }
     /**
      * err404

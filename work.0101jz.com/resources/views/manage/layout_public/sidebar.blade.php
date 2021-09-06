@@ -8,7 +8,7 @@
                     <span>管理首页</span>
                 </a>
             </li>
-            @if(isset($webType) && $webType == 2)
+            @if( (isset($webType) && $webType == 2) || (isset($baseArr['module_no']) && ($baseArr['module_no'] & 8) == 8))
             <li>
                 <a href="{{ url('manage/work') }}">
                     <i class="fa fa-check-square fa-fw" aria-hidden="true"></i>
@@ -16,12 +16,14 @@
                 </a>
             </li>
             @endif
+            @if( isset($baseArr ['module_no']) && ($baseArr ['module_no'] & 4) == 4)
             <li>
                 <a href="{{ url('manage/problem') }}">
                     <i class="fa fa-clock-o fa-fw" aria-hidden="true"></i>
                     <span>反馈问题</span>
                 </a>
             </li>
+            @endif
             @if(isset($webType) && $webType == 2)
             <li>
                 <a href="{{ url('manage/notice') }}">
@@ -29,6 +31,7 @@
                     <span>通知公告</span>
                 </a>
             </li>
+            @if( isset($baseArr['module_no']) && ($baseArr['module_no'] & 16) == 16)
             <li>
                 <a href="{{ url('manage/staff') }}">
                     <i class="fa fa-address-book-o fa-fw" aria-hidden="true"></i>
@@ -36,12 +39,15 @@
                 </a>
             </li>
             @endif
+            @endif
+            @if( isset($baseArr ['module_no']) && ($baseArr ['module_no'] & 1) == 1)
             <li>
                 <a href="{{ url('manage/lore/list') }}">
                     <i class="fa fa-battery-3 fa-fw" aria-hidden="true"></i>
                     <span>在线学习</span>
                 </a>
             </li>
+            @endif
             <li>
                 <a href="{{ url('manage/staff/list') }}">
                     <i class="fa fa-user-o fa-fw" aria-hidden="true"></i>
@@ -49,18 +55,23 @@
                 </a>
             </li>
             @if(isset($webType) && $webType == 2)
+            @if( isset($baseArr['module_no']) && ($baseArr['module_no'] & 8) == 8)
             <li>
                 <a href="{{ url('manage/customer') }}">
                     <i class="fa fa-address-card-o fa-fw" aria-hidden="true"></i>
                     <span>客户管理</span>
                 </a>
             </li>
+            @endif
+            @if( isset($baseArr ['module_no']) && ($baseArr ['module_no'] & 1) == 1)
             <li>
                 <a href="{{ url('manage/lore') }}">
                     <i class="fa fa-book fa-fw" aria-hidden="true"></i>
                     <span>知识管理</span>
                 </a>
             </li>
+            @endif
+            @if( isset($baseArr['module_no']) && ($baseArr['module_no'] & 2) == 2)
             <li class="treeview">
                 <a href="" >
                     <i class="fa fa-check-square fa-fw" aria-hidden="true"></i>
@@ -74,6 +85,8 @@
                     {{--<li><a href="x_achievement.html"><i class="fa fa-circle-o"></i> 成绩查看</a></li>--}}
                 </ul>
             </li>
+            @endif
+            @if( isset($baseArr['module_no']) && ($baseArr['module_no'] & 8) == 8)
             <li class="treeview">
                 <a href="" >
                     <i class="fa fa-bar-chart fa-fw" aria-hidden="true"></i>
@@ -87,7 +100,8 @@
                 </ul>
             </li>
             @endif
+            @endif
         </ul>
     </section>
-    </aside>
+{{--    </aside>--}}
 </div>

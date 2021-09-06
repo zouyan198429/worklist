@@ -90,6 +90,27 @@ class BaseController extends Controller
         return Tool::cacheData($pre, $cacheKey, $cacheData, $expire, $operate); // 1分钟
     }
 
+    /**
+     * 保存redis值-json/序列化保存
+     * @param array $userInfo 用户信息数组；注意必须有  staff_company  企业信息-- 一维数组
+     * @return null
+     * @author zouyan(305463219@qq.com)
+     */
+    public function initCompanyMsg($userInfo){
+        $company_id = $userInfo['staff_company']['id'] ?? 0;// 企业id
+        $this->reDataArr['baseArr']['company_id'] = $company_id;
+        $company_name = $userInfo['staff_company']['company_name'] ?? '';// 企业名称
+        $this->reDataArr['baseArr']['company_name'] = $company_name;
+
+        $module_no = $userInfo['staff_company']['module_no'] ?? 0;// 开通模块编号
+        $this->reDataArr['baseArr']['module_no'] = $module_no;
+        $module_no_text = $userInfo['staff_company']['module_no_text'] ?? '';// 开通模块编号名称
+        $this->reDataArr['baseArr']['module_no_text'] = $module_no_text;
+
+        $send_work_department_id = $userInfo['staff_company']['send_work_department_id'] ?? 0;// 接线部门id
+        $this->reDataArr['baseArr']['send_work_department_id'] = $send_work_department_id;
+    }
+
     /** 使用
 
     // 获得 redis缓存数据  ; 1:缓存读,读到则直接返回

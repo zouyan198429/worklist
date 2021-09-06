@@ -11,8 +11,22 @@ $(function(){
         // }, function(){
         //});
         return false;
-    })
+    });
+    var id = $('input[name=id]').val();
+    if(id > 0){
+        $('.user').hide();
+    }
 
+    //执行一个laydate实例
+    // 开始日期
+    laydate.render({
+        elem: '.company_vipend' //指定元素
+        ,type: 'datetime'
+        ,value: COMPANY_VIPEND// '2018-08-18' //必须遵循format参数设定的格式
+        ,min: get_now_format()//'2017-1-1'
+        //,max: get_now_format()//'2017-12-31'
+        ,calendar: true//是否显示公历节日
+    });
 });
 
 //ajax提交表单
@@ -31,7 +45,7 @@ function ajax_form(){
     }
 
     if(!judge_list_checked('selModuleNos',2)) {//没有选中的
-        layer_alert('请选择开通模块编！',3,0);
+        layer_alert('请选择开通模块！',3,0);
         return false;
     }
 
@@ -51,11 +65,64 @@ function ajax_form(){
         return false;
     }
 
+    var company_linkman = $('input[name=company_linkman]').val();
+    if(!judge_validate(4,'联系人',company_linkman,true,'length',1,30)){
+        return false;
+    }
+
+    var sex = $('input[name=sex]:checked').val() || '';
+    var judge_seled = judge_validate(1,'性别',sex,true,'custom',/^[12]$/,"");
+    if(judge_seled != ''){
+        layer_alert("请选择性别",3,0);
+        //err_alert('<font color="#000000">' + judge_seled + '</font>');
+        return false;
+    }
+
+    var company_mobile = $('input[name=company_mobile]').val();
+    if(!judge_validate(4,'手机',company_mobile,true,'mobile','','')){
+        return false;
+    }
+
+    var company_status = $('input[name=company_status]:checked').val() || '';
+    var judge_seled = judge_validate(1,'公司状态',company_status,true,'custom',/^([1248]|16|32)$/,"");
+    if(judge_seled != ''){
+        layer_alert("请选择公司状态",3,0);
+        //err_alert('<font color="#000000">' + judge_seled + '</font>');
+        return false;
+    }
+
+    // 到期时间
+    var company_vipend = $('input[name=company_vipend]').val();
+    if(!judge_validate(4,'到期时间',company_vipend,true,'date','','')){
+        return false;
+    }
     // var sort_num = $('input[name=sort_num]').val();
     // if(!judge_validate(4,'排序',sort_num,false,'digit','','')){
     //     return false;
     // }
 
+    if(id <= 0){
+
+        var admin_username = $('input[name=admin_username]').val();
+        if(!judge_validate(4,'用户名',admin_username,true,'length',6,20)){
+            return false;
+        }
+        var admin_password = $('input[name=admin_password]').val();
+        var sure_password = $('input[name=sure_password]').val();
+        // var admin_password = $('input[name=admin_password]').val();
+        if(!judge_validate(4,'密码',admin_password,true,'length',6,20)){
+            return false;
+        }
+        // var sure_password = $('input[name=sure_password]').val();
+        if(!judge_validate(4,'确认密码',sure_password,true,'length',6,20)){
+            return false;
+        }
+
+        if(admin_password !== sure_password){
+            layer_alert('确认密码和密码不一致！',5,0);
+            return false;
+        }
+    }
     // 验证通过
     SUBMIT_FORM = false;//标记为已经提交过
     var data = $("#addForm").serialize();

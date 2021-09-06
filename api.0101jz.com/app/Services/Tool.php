@@ -1371,4 +1371,43 @@ class Tool
         return $reStr;
     }
 
+
+    /**
+     * 功能：日期 加/减操作
+     * @param string $operateDate 操作日期/时间;// 为空，则操作当前时间
+     * @param array $oprates 操作类型 一维数组, 下面空格拼接执行
+     *   // +1 day +1 hour +1 minute  可以随便自由组合，以达到任意输出时间的目的
+     *   // -1 day  ---昨天  // 可以修改参数1为任何想需要的数  day也可以改成year（年），month（月），hour（小时），minute（分），second（秒）
+     *   // +1 day  ---明天
+     *   // +1 week  ---一周后
+     *   // +1 week 2 days 4 hours 2 seconds  ---一周零两天四小时两秒后
+     *  // next Thursday   ---下个星期四
+     *   // last Monday  --- 上个周一
+     *   // last month  ---一个月前
+     *   // +1 month  ---一个月后
+     *   // +10 year  ---十年后
+     * @param string $format 返回数据格式化 "Y-m-d H:i:s","Y-m-d","H:i:s"
+     * @param string $errDo 错误处理方式 1 throws 2直接返回错误
+     * @param string $dateName 日期(默认); 时间
+     * @return mixed  sting 具体错误 ； throws 错误
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function addMinusDate($operateDate, $oprates = [], $format = 'Y-m-d H:i:s', $errDo = 1, $dateName = '时间')
+    {
+        // date_default_timezone_set('PRC'); //默认时区
+        if(empty($operateDate)) $operateDate = date('Y-m-d H:i:s');
+        // 开始时间
+        $date_unix = judgeDate($operateDate);
+        if($date_unix === false){
+            $errMsg = '开始' . $dateName . '不是有效' . $dateName . '!';
+            if($errDo == 1) throws($errMsg);
+            return $errMsg;
+        }
+        // date('Y-m-d', strtotime ("+1 day", strtotime('2011-11-01')))
+        if(!empty($oprates)){
+            return date($format, strtotime (implode(' ', $oprates), strtotime(judgeDate($date_unix, "Y-m-d H:i:s"))));
+        }
+        return judgeDate($date_unix, $format);
+    }
+
 }

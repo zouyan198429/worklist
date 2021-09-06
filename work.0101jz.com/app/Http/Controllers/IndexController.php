@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Business\Company;
+use App\Business\CompanyDepartment;
+use App\Business\SiteAdmin;
+use App\Services\Common;
 use App\Services\CommonBusiness;
 use App\Services\HttpRequest;
 use App\Services\Tool;
@@ -14,7 +18,7 @@ class IndexController extends WorksController
         '1' => '超级管理平台'
         , '2' => '主管平台'
         , '3' => '派单平台'
-        , '4' => '区县平台'
+        , '4' => '员工平台',// '区县平台'
     ];
 
     /**
@@ -132,10 +136,93 @@ class IndexController extends WorksController
      * @return mixed
      * @author zouyan(305463219@qq.com)
      */
-//    public function reg(Request $request)
-//    {
-//        return view('reg');
-//    }
+    public function reg(Request $request)
+    {
+        $reDataArr = $this->reDataArr;
+        $reDataArr['module_no_kv'] = Company::MODULE_NO_ARR;
+        return view('reg', $reDataArr);
+    }
+
+    /**
+     * ajax保存数据-- 企业注册
+     *
+     * @param int $id
+     * @return Response
+     * @author zouyan(305463219@qq.com)
+     */
+    public function ajax_reg(Request $request)
+    {
+        // $this->InitParams($request);
+        $id = 0;// Common::getInt($request, 'id');
+        // Common::judgeEmptyParams($request, 'id', $id);
+        $company_id = $this->company_id;
+        $company_name = Common::get($request, 'company_name');
+        $open_status = Company::OPEN_STATUS_OPEN;// Common::getInt($request, 'open_status');
+        $module_nos = Common::get($request, 'module_nos');
+        $send_work_department_id = 0;// Common::getInt($request, 'send_work_department_id');
+        // 如果是字符，则转为数组
+        Tool::valToArrVal($module_nos);
+        $sel_module_nos = Tool::bitJoinVal($module_nos);// 将位数组，合并为一个数值
+        $company_linkman = Common::get($request, 'company_linkman');
+        $sex = Common::getInt($request, 'sex');
+        $company_mobile = Common::get($request, 'company_mobile');
+        $company_status = 2;// Common::getInt($request, 'company_status');
+
+        $admin_username = Common::get($request, 'admin_username');
+        $admin_password = Common::get($request, 'admin_password');
+        $sure_password = Common::get($request, 'sure_password');
+        $now_time = date('Y-m-d H:i:s');
+
+        $company_vipend = Tool::addMinusDate($now_time, ['+15 day'], 'Y-m-d H:i:s', 1, '时间');// Common::get($request, 'company_vipend');// 到期时间 -- 15天
+        Tool::judgeBeginEndDate($company_vipend, '', 1);
+
+        $saveData = [
+            'company_name' => $company_name,
+            'open_status' => $open_status,
+            'module_no' => $sel_module_nos,
+            'send_work_department_id' => $send_work_department_id,
+            'company_linkman' => $company_linkman,
+            'sex' => $sex,
+            'company_mobile' => $company_mobile,
+            'company_status' => $company_status,
+            'company_vipend' => $company_vipend,
+        ];
+        $saveStaffData = [];
+        if($id <= 0) {// 新加;要加入的特别字段
+            if(empty($admin_username) || empty($admin_password)){
+                throws('用户名或密码不能为空！');
+            }
+            $saveStaffData = [
+                'admin_type' => 2,
+                'admin_username' => $admin_username,
+                'real_name' => $company_linkman,
+            ];
+            if($admin_password != '' || $sure_password != ''){
+                if ($admin_password != $sure_password){
+                    return ajaxDataArr(0, null, '密码和确定密码不一致！');
+                }
+                $saveStaffData['admin_password'] = $admin_password;
+            }
+
+//            $addNewData = [
+//                // 'account_password' => $account_password,
+//            ];
+//            $saveData = array_merge($saveData, $addNewData);
+        }
+
+        $resultDatas = Company::replaceById($request, $this, $saveData, $id, false, 1);
+        if(!empty($saveStaffData)){
+            $staff_id = 0;
+            SiteAdmin::replaceById($request, $this, $saveStaffData, $staff_id, false,1, $id);
+
+        }
+        $res = [
+            'id' => $id,
+            'webLoginUrl' => url($id . '/login'),
+            'mLoginUrl' => url(config('public.mWebURL') . 'm/' . $id . '/login'),
+        ];
+        return ajaxDataArr(1, $res, '');
+    }
 
     /**
      * 登陆
@@ -144,10 +231,20 @@ class IndexController extends WorksController
      * @return mixed
      * @author zouyan(305463219@qq.com)
      */
-    public function login(Request $request)
+    public function login(Request $request, $company_id = 1)
     {
+        $reDataArr = $this->reDataArr;
+
         $reDataArr['system_kv'] =  static::$systemArr;
         $reDataArr['defaultSystem'] = -1;// 默认
+        try{
+            $company_info = Company::loginGetInfo($request, $this, $company_id, 1);
+            if(empty($company_info)) throws('企业记录【' . $company_id . '】不存在！');
+        } catch ( \Exception $e) {
+            $reDataArr['errStr'] = $e->getMessage();
+            return view('error', $reDataArr);
+        }
+        $reDataArr['company_info'] = $company_info;
         return view('login', $reDataArr);
     }
 
@@ -158,7 +255,7 @@ class IndexController extends WorksController
      * @return mixed
      * @author zouyan(305463219@qq.com)
      */
-//    public function logout(Request $request)
+//    public function logout(Request $request, $company_id = 1)
 //    {
 //        $this->InitParams($request);
 //        // session_start(); // 初始化session

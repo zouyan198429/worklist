@@ -5,6 +5,7 @@ namespace App\Business;
 use App\Services\Common;
 use App\Services\CommonBusiness;
 use App\Services\Excel\ImportExport;
+use App\Services\Tool;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as Controller;
 
@@ -15,16 +16,18 @@ class Company extends BaseBusiness
 {
     protected static $model_name = 'Company';
 
-    // 开通模块编号【1知识库；2在线考试；4反馈问题；8工单】
+    // 开通模块编号【1知识库；2在线考试；4反馈问题；8工单；16我的同事】
     const MODULE_NO_LORE = 1;// 知识库
     const MODULE_NO_EXAM = 2;// 在线考试
     const MODULE_NO_PROBLEM = 4;// 反馈问题
     const MODULE_NO_WORK = 8;// 工单
+    const MODULE_NO_STAFF = 16;// 我的同事
     const MODULE_NO_ARR = [
         self::MODULE_NO_LORE => '知识库',
         self::MODULE_NO_EXAM => '在线考试',
         self::MODULE_NO_PROBLEM => '反馈问题',
         self::MODULE_NO_WORK => '工单',
+        self::MODULE_NO_STAFF => '我的同事',
     ];
 
     // 开通状态1开通；2关闭；4作废【过时关闭】；
@@ -35,6 +38,23 @@ class Company extends BaseBusiness
         self::OPEN_STATUS_OPEN => '开通',
         self::OPEN_STATUS_CLOSE => '关闭',
         self::OPEN_STATUS_CANCEL => '作废',
+    ];
+
+    // 性别0未知1男2女
+    public static $sexArr = [
+        '0' => '未知',
+        '1' => '男',
+        '2' => '女',
+    ];
+
+    // 公司状态;1新注册2试用客户4VIP 8VIP 将过期  16过期会员32过期试用
+    public static $companyStatusArr = [
+        '1' => '新注册',
+        '2' => '试用客户',
+        '4' => 'VIP',
+        '8' => 'VIP 将过期',
+        '16' => '过期会员',
+        '32' => '过期试用',
     ];
 
     /**
@@ -77,6 +97,27 @@ class Company extends BaseBusiness
 
         $useSearchParams = $extParams['useQueryParams'] ?? true;// 是否用来拼接查询条件，true:用[默认];false：不用
         if($useSearchParams) {
+            $company_status = Common::getInt($request, 'company_status');
+            if ($company_status > 0) {
+                array_push($queryParams['where'], ['company_status', $company_status]);
+            }
+
+            $module_no = Common::getInt($request, 'module_no');
+            if ($module_no > 0) {
+                array_push($queryParams['where'], ['module_no', '&', $module_no . '=' . $module_no]);
+            }
+
+            $sex = Common::getInt($request, 'sex');
+            if ($sex > 0) {
+                array_push($queryParams['where'], ['sex', $sex]);
+            }
+            $field = Common::get($request, 'field');
+            $keyWord = Common::get($request, 'keyWord');
+
+            if (!empty($field) && !empty($keyWord)) {
+                array_push($queryParams['where'], [$field, 'like', '%' . $keyWord . '%']);
+            }
+
             // $params = self::formatListParams($request, $controller, $queryParams);
             $ids = Common::get($request, 'ids');// 多个用逗号分隔,
             if (!empty($ids)) {
@@ -95,12 +136,16 @@ class Company extends BaseBusiness
 
         // 格式化数据
         $data_list = $result['data_list'] ?? [];
-        foreach($data_list as $k => $v){
+        foreach($data_list as $k => &$v){
             // 接线部门名称
             $data_list[$k]['department_name'] = $v['company_department']['department_name'] ?? '';
             if(isset($data_list[$k]['company_department'])){
                 unset($data_list[$k]['company_department']);
             }
+            // 加入后台访问地址
+            $v['webLoginUrl'] = url($v['id'] . '/login');
+            // 加入h5访问地址
+            $v['mLoginUrl'] = url(config('public.mWebURL') . 'm/' . $v['id'] . '/login');
         }
         $result['data_list'] = $data_list;
         // 导出功能
@@ -232,13 +277,45 @@ class Company extends BaseBusiness
      *
      * @param Request $request 请求信息
      * @param Controller $controller 控制对象
+     * @param int $notLog 是否需要登陆 0需要1不需要 2已经判断权限，不用判断权限
      * @return  array 列表数据
      * @author zouyan(305463219@qq.com)
      */
-    public static function delAjax(Request $request, Controller $controller)
+    public static function delAjax(Request $request, Controller $controller, $notLog = 0)
     {
-        return self::delAjaxBase($request, $controller, self::$model_name);
+        // return self::delAjaxBase($request, $controller, self::$model_name);
+        $model_name = self::$model_name;
+        $id = Common::get($request, 'id');
+        Tool::dataValid([["input"=>$id,"require"=>"true","validator"=>"","message"=>'参数id值不能为空']]);
 
+        $company_id = $controller->company_id;
+
+        // 判断权限
+        if(($notLog & 2) == 2 ) {
+            $notLog = $notLog - 2 ;
+        }else{
+//            $judgeData = [
+//                'company_id' => $company_id,
+//            ];
+//            $relations = '';
+//            CommonBusiness::judgePower($id, $judgeData, $model_name, $company_id, $relations, $notLog);
+        }
+
+        $queryParams =[// 查询条件参数
+            'where' => [
+                // ['id', $id],
+//                ['company_id', $company_id]
+            ]
+        ];
+        if (strpos($id, ',') === false) { // 单条
+            array_push($queryParams['where'],['id', $id]);
+        }else{
+            $queryParams['whereIn']['id'] = explode(',',$id);
+        }
+
+        $resultDatas = CommonBusiness::ajaxDelApi($model_name, $company_id , $queryParams, $notLog);
+
+        return ajaxDataArr(1, $resultDatas, '');
     }
 
     /**
@@ -248,13 +325,14 @@ class Company extends BaseBusiness
      * @param Controller $controller 控制对象
      * @param int $id id
      * @param mixed $relations 关系
+     * @param int $notLog 是否需要登陆 0需要1不需要
      * @return  array 单条数据 - -维数组
      * @author zouyan(305463219@qq.com)
      */
-    public static function getInfoData(Request $request, Controller $controller, $id, $relations = ''){
+    public static function getInfoData(Request $request, Controller $controller, $id, $relations = '', $notLog = 0){
         $company_id = $controller->company_id;
         // $relations = '';
-        $resultDatas = CommonBusiness::getinfoApi(self::$model_name, $relations, $company_id , $id);
+        $resultDatas = CommonBusiness::getinfoApi(self::$model_name, $relations, $company_id , $id, $notLog);
         // $resultDatas = self::getInfoDataBase($request, $controller, self::$model_name, $id, $relations);
         // 判断权限
         $judgeData = [
@@ -297,5 +375,28 @@ class Company extends BaseBusiness
         }
         // 新加或修改
         return self::replaceByIdBase($request, $controller, self::$model_name, $saveData, $id, $notLog);
+    }
+
+    /**
+     * 登录时，根据企业id，获得企业 信息
+     *
+     * @param Request $request 请求信息
+     * @param Controller $controller 控制对象
+     * @param int $company_id 企业id
+     * @param int $notLog 是否需要登陆 0需要1不需要
+     * @return  array 单条数据 - -维数组
+     * @author zouyan(305463219@qq.com)
+     */
+    public static function loginGetInfo(Request $request, Controller $controller, $company_id = 0, $notLog = 0){
+        $company_info = [];
+        if ($company_id > 0) { // 获得详情数据
+            $company_info = Company::getInfoData($request, $controller, $company_id, '', $notLog);
+        }
+        $module_no = $company_info['module_no'] ?? 0;
+        $send_work_department_id = $company_info['send_work_department_id'] ?? 0;
+        $open_status = $company_info['open_status'] ?? 0;
+        $module_no_text = $company_info['module_no_text'] ?? '';
+        $company_name = $company_info['company_name'] ?? '';
+        return $company_info;
     }
 }

@@ -16,18 +16,20 @@
  	</div>
 
 	<form action="#"  method="post"  id="addForm" >
-	<section id="loginbox" > 
-			<h1>员工登录<h1>
+	<section id="loginbox" >
+			<h1>员工登录</h1>
+            <h3>{{ $company_info['company_name'] or '' }}</h3>
+            <input type="hidden"  name="company_id"   value="{{ $company_info['id'] or '' }}" />
 			<ul>
 				<li><input type="text"  name="admin_username"  placeholder="工号" /></li>
 				<li><input type="password" name="admin_password"   placeholder="密码" /></li>
 				<li><button type="submit" id="submitBtn"  {{-- onClick="window.open('{{ url('m') }}')" --}} >登录</button></li>
 			</ul>
 	</section>
-	</form> 
+	</form>
 
 
- 
+
 </div>
 </body>
 </html>
@@ -42,9 +44,13 @@
 <script>
     var LOGIN_URL = "{{ url('api/m/ajax_login') }}";
 	@if(isset($webType) && $webType == 2)
-    	var INDEX_URL = "{{url('m')}}";
+        @if( isset($baseArr['module_no']) && ($baseArr ['module_no'] & 8) == 8)
+    	    var INDEX_URL = "{{url('m')}}";
+        @else
+            var INDEX_URL = "{{ url('m/staff') }}";
+        @endif
     @else
     	var INDEX_URL = "{{url('m/problem')}}";
 	@endif
 </script>
-<script src="{{ asset('/js/common/loginuser.js') }}"  type="text/javascript"></script>
+<script src="{{ asset('/js/common/loginuser.js') }}?1"  type="text/javascript"></script>

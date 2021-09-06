@@ -51,6 +51,7 @@
 						</a>
 						<div class="c"></div>
 					</li>
+                    @if( isset($baseArr['module_no']) && ($baseArr['module_no'] & 16) == 16)
 					<li>
 						<a href="{{ url('m/staff/list') }}">
 							<span>我的同事</span>
@@ -58,6 +59,7 @@
 						</a>
 						<div class="c"></div>
 					</li>
+                    @endif
 					<li>
 						<a href="{{ url('m/help') }}">
 							<span>帮助中心</span>
@@ -74,6 +76,7 @@
 						<div class="c"></div>
 					</li>
 					@endif
+                    @if( isset($baseArr['module_no']) && ($baseArr['module_no'] & 4) == 4)
 					<li>
 						<a href="{{ url('m/problem') }}">
 							<span>我的反馈</span>
@@ -81,8 +84,9 @@
 						</a>
 						<div class="c"></div>
 					</li>
+                    @endif
 					<li>
-						<a href="{{ url('m/logout') }}"><span>退出</span></a>
+						<a href="{{ url('m/' . $baseArr ['company_id'] . '/logout') }}"><span>退出</span></a>
 						<div class="c"></div>
 					</li>
 
