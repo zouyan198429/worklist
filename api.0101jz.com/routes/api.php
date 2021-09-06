@@ -50,7 +50,7 @@ Route::post('comp/updateOrCreate', 'Comp\CommonController@updateOrCreate');//已
 Route::post('comp/compareHistoryOrUpdateVersion', 'Comp\CommonController@compareHistoryOrUpdateVersion');// 对比主表和历史表是否相同，相同：不更新版本号，不同：版本号+1
 
 // 大后台
-Route::post('work/test', 'CompanyWorkController@test');//测试
+Route::any('work/test', 'CompanyWorkController@test');//测试
 Route::post('work/add_init', 'CompanyWorkController@addInit');//工单添加页初始数据
 Route::post('work/add_save', 'CompanyWorkController@add_save');//工单添加/修改
 Route::post('work/del', 'CompanyWorkController@del');//工单删除

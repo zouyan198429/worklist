@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Business\CompanyAreaBusiness;
+use App\Business\CompanyBusiness;
 use App\Business\CompanyCustomerTypeBusiness;
 use App\Business\CompanyDepartmentBusiness;
 use App\Business\CompanyProblemTypeBusiness;
@@ -132,6 +133,8 @@ class CompanyWorkController extends CompController
      */
     public function test(Request $request)
     {
+        CompanyBusiness::autoCompanyStatusMsg();// 更新过期 ，快到期
+        pr(11);
 
 //         CompanyWorkDoingBusiness::autoSiteMsg();
          // $worksObj = CompanyWorkDoingBusiness::getWorkInfo(1, 3);

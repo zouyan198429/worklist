@@ -91,10 +91,10 @@ var otheraction = {
     document.write("        <td>");
     document.write("        <span class='web_url' ><%=item.webLoginUrl%></span>");
     document.write("        <input type=\"button\" class=\"btn btn-success  btn-xs export_excel\"  value=\"复制\"  onclick=\"otheraction.copyWebUrl(this)\">");
-    document.write("        <span class=\"qrcode\" data-qrcodeurl=\"<%=item.webLoginUrl%>\"></span>");
+    document.write("        <br/><span class=\"qrcode\" data-qrcodeurl=\"<%=item.webLoginUrl%>\"></span>");
     document.write("        <hr/><span class='h5_url' ><%=item.mLoginUrl%></span>");
     document.write("        <input type=\"button\" class=\"btn btn-success  btn-xs export_excel\"  value=\"复制\"  onclick=\"otheraction.copyH5Url(this)\">");
-    document.write("        <span class=\"qrcode\" data-qrcodeurl=\"<%=item.mLoginUrl%>\"></span>");
+    document.write("        <br/><span class=\"qrcode\" data-qrcodeurl=\"<%=item.mLoginUrl%>\"></span>");
     document.write("        <\/td>");
     document.write("        <td>");
     document.write("            <a href=\"javascript:void(0);\" class=\"btn btn-mini btn-info\" onclick=\"action.edit(<%=item.id%>)\">");

@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Business\CompanyBusiness;
 use App\Business\CompanyExamStaffBusiness;
 use App\Business\CompanyWorkDoingBusiness;
 use Illuminate\Console\Scheduling\Schedule;
@@ -31,6 +32,7 @@ class Kernel extends ConsoleKernel
         $filePath = '/data/CronResult.text';
         $schedule->call(function () {
             CompanyWorkDoingBusiness::autoSiteMsg();// 工单状态自动监控
+            CompanyBusiness::autoCompanyStatusMsg();// 更新过期 ，快到期
         })->everyMinute();// 每分钟执行一次 锁会在 5 分钟后失效->withoutOverlapping(5)[会失败] ;  ->appendOutputTo($filePath)
         $schedule->call(function () {
             CompanyExamStaffBusiness::autoExamStaff();// 在线考试自动交卷
