@@ -39,6 +39,14 @@ class Company extends BaseModel
         self::OPEN_STATUS_CANCEL => '作废',
     ];
 
+    // 帐号来源类型1本系统维护；2第三方系统同步
+    const ACCOUNT_TYPE_SELF = 1;// 本系统维护
+    const ACCOUNT_TYPE_SYNC = 2;// 第三方系统同步
+    const ACCOUNT_TYPE_ARR = [
+        self::ACCOUNT_TYPE_SELF => '本系统维护',
+        self::ACCOUNT_TYPE_SYNC => '第三方系统同步',
+    ];
+
     // 性别0未知1男2女
     public static $sexArr = [
         '0' => '未知',
@@ -56,7 +64,7 @@ class Company extends BaseModel
         '32' => '过期试用',
     ];
     // 表里没有的字段
-    protected $appends = ['module_no_text', 'open_status_text', 'sex_text', 'company_status_text'];
+    protected $appends = ['module_no_text', 'open_status_text', 'sex_text', 'company_status_text', 'account_type_text'];
 
     /**
      * 获取开通模块文字
@@ -98,6 +106,16 @@ class Company extends BaseModel
     public function getCompanyStatusTextAttribute()
     {
         return static::$companyStatusArr[$this->company_status] ?? '';
+    }
+
+    /**
+     * 获取帐号来源类型文字
+     *
+     * @return string
+     */
+    public function getAccountTypeTextAttribute()
+    {
+        return static::ACCOUNT_TYPE_ARR[$this->account_type] ?? '';
     }
 
     /**

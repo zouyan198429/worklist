@@ -304,6 +304,7 @@ class Tool
      */
     public static function setRedis($pre = '', $key = null, $value = '', $expire = 0, $operate = 1)
     {
+//        ini_set('default_socket_timeout', -1);  //不超时
         if(empty($key)){
             $key = self::createUniqueNumber(25);
         }
@@ -342,6 +343,7 @@ class Tool
      */
     public static function getRedis($key, $operate = 1)
     {
+//        ini_set('default_socket_timeout', -1);  //不超时
         $value = Redis::get($key);
         if(is_bool($value) || is_null($value)){//string或BOOL 如果键不存在，则返回 FALSE。否则，返回指定键对应的value值。
             return false;

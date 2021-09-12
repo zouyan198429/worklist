@@ -173,8 +173,12 @@ class LoreController extends AdminController
         $content = Common::get($request, 'content');
         $level_num = Common::getInt($request, 'level_num');
         $positionIds = Common::get($request, 'position_ids');
-        if(!is_array($positionIds) && is_string($positionIds)){// 转为数组
-            $positionIds = explode(',',$positionIds);
+        if(!empty($positionIds)){
+            if(!is_array($positionIds) && is_string($positionIds)){// 转为数组
+                $positionIds = explode(',',$positionIds);
+            }
+        }else{
+            $positionIds = [];
         }
 
         $content = stripslashes($content);
@@ -188,6 +192,7 @@ class LoreController extends AdminController
             'position_ids' => $position_ids,
             'positionIds' => $positionIds,// 此下标为职位关系
         ];
+        // throws(\GuzzleHttp\json_encode($saveData));
 //        if($id <= 0) {// 新加;要加入的特别字段
 //            $addNewData = [
 //                // 'account_password' => $account_password,

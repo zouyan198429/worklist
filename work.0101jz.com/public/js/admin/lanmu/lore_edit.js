@@ -60,10 +60,10 @@ function ajax_form(){
         return false;
     }
 
-    if(!judge_list_checked('selPositionIds',2)) {//没有选中的
-        layer_alert('请选择适用岗位！',3,0);
-        return false;
-    }
+    // if(!judge_list_checked('selPositionIds',2)) {//没有选中的
+    //     layer_alert('请选择适用岗位！',3,0);
+    //     return false;
+    // }
 
     // 验证通过
     SUBMIT_FORM = false;//标记为已经提交过

@@ -44,6 +44,7 @@
 
 			<div class="mynav">
 				<ul>
+                    @if(isset($baseArr['account_type']) && $baseArr['account_type'] != 2)
 					<li>
 						<a href="{{ url('m/password') }}">
 							<span>修改密码</span>
@@ -51,6 +52,7 @@
 						</a>
 						<div class="c"></div>
 					</li>
+                    @endif
                     @if( isset($baseArr['module_no']) && ($baseArr['module_no'] & 16) == 16)
 					<li>
 						<a href="{{ url('m/staff/list') }}">

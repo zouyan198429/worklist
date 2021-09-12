@@ -22,9 +22,25 @@ function pr($s, $exit = true)
 
 function throws($message, $code = -1)
 {
-    throw new \App\Exceptions\ExportException($message, $code);
+    try {
+        if(!\App\Services\Tool::isCLIDoing()){
+            $controller = request()->route()->getController();// 获得当前控制器对象
+            // $action = request()->route()->getAction();// action 数组
+            // $actionName = request()->route()->getActionName();// App\Http\Controllers\WX\MiniProgramController@test
+            $source = $controller->source ?? '';
+            if($code == -1 && is_numeric($source)) $code = $source;
+        }
+    } catch ( \Exception $e) {
+    }finally{
+        throwsException($message, $code);
+    }
+//    throw new \App\Exceptions\ExportException($message, $code);
 }
 
+function throwsException($message, $code = -1)
+{
+    throw new \App\Exceptions\ExportException($message, (int) $code);
+}
 
 //判断数据不是JSON格式:
 function isNotJson($str){

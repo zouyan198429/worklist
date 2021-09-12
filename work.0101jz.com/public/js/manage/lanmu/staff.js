@@ -8,6 +8,13 @@
 //     reset_list(is_read_page, false);
 // }
 
+// 是否显示账号操作
+function hasShowOperate(){
+    if(ACCOUNT_TYPE == 2){
+        return false;
+    }
+    return true;
+}
 (function() {
     document.write("");
     document.write("    <!-- 前端模板部分 -->");
@@ -43,6 +50,7 @@
     document.write("                    <i class=\"ace-icon fa fa-check bigger-60\"> 查看<\/i>");
     document.write("                <\/a>");
     document.write("                <%}%>");
+    document.write("            <%if( hasShowOperate()){%>");
     document.write("                <a href=\"javascript:void(0);\" class=\"btn btn-mini btn-info\" onclick=\"action.edit(<%=item.id%>)\">");
     document.write("                    <i class=\"ace-icon fa fa-pencil bigger-60\"> 编辑<\/i>");
     document.write("                <\/a>");
@@ -50,6 +58,7 @@
     document.write("                <a href=\"javascript:void(0);\" class=\"btn btn-mini btn-info\" onclick=\"action.del(<%=item.id%>)\">");
     document.write("                    <i class=\"ace-icon fa fa-trash-o bigger-60\"> 删除<\/i>");
     document.write("                <\/a>");
+    document.write("                <%}%>");
     document.write("                <%}%>");
     document.write("");
     document.write("            <\/td>");

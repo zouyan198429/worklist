@@ -36,6 +36,11 @@ Route::post('admin/ajax_password_save', 'admin\IndexController@ajax_password_sav
 Route::post('admin/site_admin/ajax_alist', 'admin\SiteAdminController@ajax_alist');//ajax获得列表数据
 Route::post('admin/site_admin/ajax_del', 'admin\SiteAdminController@ajax_del');// 删除
 Route::post('admin/site_admin/ajax_save', 'admin\SiteAdminController@ajax_save');// 新加/修改
+
+Route::any('admin/api/site_admin/ajax_alist', 'admin\qualitycontrol\APISiteAdminController@ajax_alist');//ajax获得列表数据
+Route::any('admin/api/site_admin/ajax_save', 'admin\qualitycontrol\APISiteAdminController@ajax_save');// 新加/修改
+Route::post('admin/api/site_admin/ajax_del', 'admin\qualitycontrol\APISiteAdminController@ajax_del');// 删除
+
 // 公司分站
 Route::any('admin/company/ajax_alist', 'admin\CompanyController@ajax_alist');//ajax获得列表数据
 Route::post('admin/company/ajax_del', 'admin\CompanyController@ajax_del');// 删除
@@ -99,10 +104,14 @@ Route::post('admin/area/ajax_del', 'admin\AreaController@ajax_del');// 删除
 Route::post('admin/area/ajax_save', 'admin\AreaController@ajax_save');// 新加/修改
 
 // 部门
-Route::post('admin/department/ajax_alist', 'admin\DepartmentController@ajax_alist');//ajax获得列表数据
+Route::any('admin/department/ajax_alist', 'admin\DepartmentController@ajax_alist');//ajax获得列表数据
 Route::post('admin/department/ajax_get_child', 'admin\DepartmentController@ajax_get_child');// 获得子类部门数组[kv一维数组]
 Route::post('admin/department/ajax_del', 'admin\DepartmentController@ajax_del');// 删除
 Route::post('admin/department/ajax_save', 'admin\DepartmentController@ajax_save');// 新加/修改
+
+Route::any('admin/api/department/ajax_alist', 'admin\qualitycontrol\APIDepartmentController@ajax_alist');//ajax获得列表数据
+Route::any('admin/api/department/ajax_save', 'admin\qualitycontrol\APIDepartmentController@ajax_save');// 新加/修改
+Route::post('admin/api/department/ajax_del', 'admin\qualitycontrol\APIDepartmentController@ajax_del');// 删除
 
 // 职位
 Route::post('admin/position/ajax_alist', 'admin\PositionController@ajax_alist');//ajax获得列表数据
@@ -161,6 +170,12 @@ Route::post('admin/staff/ajax_import_staff','admin\StaffController@ajax_import_s
 
 Route::post('admin/staff/import', 'admin\StaffController@import');// 导入excel
 Route::any('admin/staff/ajax_get_ids', 'admin\StaffController@ajax_get_ids');// 获得查询所有记录的id字符串，多个逗号分隔
+
+
+Route::any('admin/api/staff/ajax_alist', 'admin\qualitycontrol\APIStaffController@ajax_alist');//ajax获得列表数据
+Route::any('admin/api/staff/ajax_save', 'admin\qualitycontrol\APIStaffController@ajax_save');// 新加/修改
+Route::post('admin/api/staff/ajax_del', 'admin\qualitycontrol\APIStaffController@ajax_del');// 删除
+
 // 反馈分类
 Route::post('admin/problem_type/ajax_alist', 'admin\ProblemTypeController@ajax_alist');//ajax获得列表数据
 Route::post('admin/problem_type/ajax_get_child', 'admin\ProblemTypeController@ajax_get_child');// 获得子类部门数组[kv一维数组]

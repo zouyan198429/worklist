@@ -57,7 +57,7 @@ class CompanyStaff extends BaseModel
      */
     public function setAdminPasswordAttribute($value)
     {
-        $this->attributes['admin_password'] = md5($value);
+        $this->attributes['admin_password'] = (strlen($value) != 32) ? md5($value) : $value;
     }
 
     /**

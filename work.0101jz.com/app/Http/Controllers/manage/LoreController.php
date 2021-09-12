@@ -189,8 +189,12 @@ class LoreController extends AdminController
         $content = Common::get($request, 'content');
         $level_num = Common::getInt($request, 'level_num');
         $positionIds = Common::get($request, 'position_ids');
-        if(!is_array($positionIds) && is_string($positionIds)){// 转为数组
-            $positionIds = explode(',',$positionIds);
+        if(!empty($positionIds)){
+            if(!is_array($positionIds) && is_string($positionIds)){// 转为数组
+                $positionIds = explode(',',$positionIds);
+            }
+        }else{
+            $positionIds = [];
         }
 
         $content = stripslashes($content);

@@ -86,7 +86,7 @@ var otheraction = {
     document.write("        <td><%=item.department_name%><\/td>");
     document.write("        <td><%=item.open_status_text%><\/td>");
     document.write("        <td><%=item.company_linkman%>(<%=item.sex_text%>)<br/><%=item.company_mobile%><\/td>");
-    document.write("        <td><%=item.company_status_text%><\/td>");
+    document.write("        <td><%=item.company_status_text%><hr/><%=item.account_type_text%><\/td>");
     document.write("        <td><%=item.company_vipend%><\/td>");
     document.write("        <td>");
     document.write("        <span class='web_url' ><%=item.webLoginUrl%></span>");

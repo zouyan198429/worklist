@@ -299,6 +299,7 @@ class BaseBusiness
     public static function getStaffHistoryId(Request $request, Controller $controller){
         $company_id = $controller->company_id;
         $operate_staff_id = $controller->operate_staff_id;
+        if(!is_numeric($operate_staff_id) || $operate_staff_id <= 0) return 0;
         // 获得 redis缓存数据  ; 1:缓存读,读到则直接返回
         if( ($controller->cache_sel & 1) == 1){
             $cachePre = 'operate_staff_history_id' ;// __FUNCTION__;// 缓存前缀

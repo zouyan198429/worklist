@@ -11,9 +11,12 @@
 		<div class="mmhead" id="mywork">
 
 			@include('common.pageParams')
+            @if(isset($baseArr['account_type']) && $baseArr['account_type'] != 2)
 			<div class="tabbox" >
 				<a href="javascript:void(0);" class="on"  onclick="action.add()">添加管理员</a>
 			</div>
+            @endif
+
 		</div>
 		{{--
 		<div class="table-header">
@@ -58,8 +61,9 @@
         var IMPORT_EXCEL_TEMPLATE_URL = "{{ url('admin/site_admin/import_template') }}";//导入EXCEL模版地址
         var IMPORT_EXCEL_URL = "{{ url('api/admin/site_admin/import') }}";//导入EXCEL地址
         var IMPORT_EXCEL_CLASS = "import_file";// 导入EXCEL的file的class
+        var ACCOUNT_TYPE = {{ $baseArr['account_type'] or 1 }};// 帐号来源类型1本系统维护；2第三方系统同步；
 
 	</script>
 	<script src="{{asset('js/common/list.js')}}"></script>
-	<script src="{{ asset('js/admin/lanmu/site_admin.js') }}"  type="text/javascript"></script>
+	<script src="{{ asset('js/admin/lanmu/site_admin.js') }}?1"  type="text/javascript"></script>
 @endpush

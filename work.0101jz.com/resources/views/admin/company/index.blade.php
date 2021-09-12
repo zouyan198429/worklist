@@ -61,7 +61,7 @@
                 <th>接线部门</th>
                 <th>开启状态</th>
                 <th>联系人</th>
-                <th>公司状态</th>
+                <th>公司状态<hr/>帐号来源类型</th>
                 <th>到期时间</th>
                 <th>后台地址<hr/>h5地址</th>
 				<th width=200>操作</th>
@@ -98,5 +98,5 @@
 
 	</script>
 	<script src="{{asset('js/common/list.js')}}"></script>
-	<script src="{{ asset('/js/admin/lanmu/company.js') }}?8"  type="text/javascript"></script>
+	<script src="{{ asset('/js/admin/lanmu/company.js') }}?10"  type="text/javascript"></script>
 @endpush

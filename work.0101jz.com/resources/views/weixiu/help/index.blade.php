@@ -8,12 +8,13 @@
 
 	<div id="crumb"><i class="fa fa-reorder fa-fw" aria-hidden="true"></i> 帮助中心</div>
 	<div class="mm">
-		<h2>如何访问手机站？</h2>
-		<div class="con">
-			手机访问客户端，请使用手机扫描以下二维码：<br />
-			<img src="http://ofn8u9rp0.bkt.clouddn.com/ydmewm.png">
-		</div>		
-		<br />
+{{--		<h2>如何访问手机站？</h2>--}}
+{{--		<div class="con">--}}
+{{--			手机访问客户端，请使用手机扫描以下二维码：<br />--}}
+{{--			<img src="http://ofn8u9rp0.bkt.clouddn.com/ydmewm.png">--}}
+{{--		</div>		--}}
+{{--		<br />--}}
+        @if( isset($baseArr ['module_no']) && ($baseArr ['module_no'] & 8) == 8)
  		<h2>如何查看工单？</h2>
  		<div class="con">
  			登录系统后，点击屏幕左侧主菜单：我的工单，即可进入工单列表页面。<br />
@@ -25,18 +26,23 @@
  			5. 完成 回访完成后的订单为完成订单。
  		</div>
  		<br />
+        @endif
+        @if( isset($baseArr ['module_no']) && ($baseArr ['module_no'] & 4) == 4)
  		<h2>如何反馈问题？</h2>
  		<div class="con">
  			登录系统后，点击屏幕左侧主菜单：反馈问题，即可进入反馈问题页面。<br />
  			进入页面后，选择问题类型及反馈到哪个部门，再填写问题详细描述，点击提交即可。
  		</div>
  		<br />
+        @endif
+        @if( isset($baseArr ['account_type']) && $baseArr ['account_type'] != 2)
  		<h2>如何修改密码？</h2>
  		<idv class="con">
  			新登录用户建议在第一次登录后即修改掉原始登录密码。<br />
  			将鼠标移到屏幕右上角部门名称或个人姓名处，即弹出隐藏的二级菜单，点击修改密码项即可进入密码修改页面。根据提示输入新密码即可，新密码须6位以上，含英文及数字，建议首字母大写。
 
  		</idv>
+        @endif
 
 
 

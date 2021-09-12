@@ -932,7 +932,7 @@ class CommonBusiness
     public static function judgePowerByObj($infoData, $judgeArr = [] ){
         if(empty($infoData)){
             // throws('记录不存!', $this->source);
-            throws('记录不存!');
+            throws('记录不存在!');
         }
         foreach($judgeArr as $field => $val){
             if(!isset($infoData[$field])){

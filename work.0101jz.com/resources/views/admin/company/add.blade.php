@@ -44,6 +44,14 @@
                 </td>
             </tr>
             <tr>
+                <th>帐号来源类型<span class="must">*</span></th>
+                <td class="sel_account_type">
+                    @foreach ($accountType as $k=>$txt)
+                        <label><input type="radio"  name="account_type"  value="{{ $k }}"  @if(isset($account_type) && $account_type == $k) checked="checked"  @endif />{{ $txt }} </label>
+                    @endforeach
+                </td>
+            </tr>
+            <tr>
                 <th>开启状态<span class="must">*</span></th>
                 <td class="sel_open_status">
                     @foreach ($openStatus as $k=>$txt)
@@ -131,5 +139,5 @@
 
         var COMPANY_VIPEND = "{{ $company_vipend or '' }}" ;//开考时间
 	</script>
-	<script src="{{ asset('/js/admin/lanmu/company_edit.js') }}?5"  type="text/javascript"></script>
+	<script src="{{ asset('/js/admin/lanmu/company_edit.js') }}?7"  type="text/javascript"></script>
 @endpush

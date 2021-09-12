@@ -57,6 +57,14 @@ function ajax_form(){
         return false;
     }
 
+    var account_type = $('input[name=account_type]:checked').val() || '';
+    var judge_seled = judge_validate(1,'帐号来源类型',account_type,true,'custom',/^[12]$/,"");
+    if(judge_seled != ''){
+        layer_alert("请选择帐号来源类型",3,0);
+        //err_alert('<font color="#000000">' + judge_seled + '</font>');
+        return false;
+    }
+
     var open_status = $('input[name=open_status]:checked').val() || '';
     var judge_seled = judge_validate(1,'开启状态',open_status,true,'custom',/^[124]$/,"");
     if(judge_seled != ''){

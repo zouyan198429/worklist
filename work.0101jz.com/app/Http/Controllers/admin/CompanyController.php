@@ -61,6 +61,8 @@ class CompanyController extends AdminController
         $reDataArr['module_no_kv'] = Company::MODULE_NO_ARR;
         // 开通状态1开通；2关闭；4作废【过时关闭】；
         $reDataArr['openStatus'] =  Company::OPEN_STATUS_ARR;
+        // 帐号来源类型1本系统维护；2第三方系统同步；
+        $reDataArr['accountType'] =  Company::ACCOUNT_TYPE_ARR;
         $reDataArr['department_kv'] = CompanyDepartment::getChildListKeyVal($request, $this, 0, 1 + 0, 0, $id);
         // 公司状态;1新注册2试用客户4VIP 8VIP 将过期  16过期会员
         $reDataArr['companyStatus'] =  Company::$companyStatusArr;
@@ -118,6 +120,7 @@ class CompanyController extends AdminController
         $company_id = $this->company_id;
         $company_name = Common::get($request, 'company_name');
         $open_status = Common::getInt($request, 'open_status');
+        $account_type = Common::getInt($request, 'account_type');
         $module_nos = Common::get($request, 'module_nos');
         $send_work_department_id = Common::getInt($request, 'send_work_department_id');
         // 如果是字符，则转为数组
@@ -138,6 +141,7 @@ class CompanyController extends AdminController
         $saveData = [
             'company_name' => $company_name,
             'open_status' => $open_status,
+            'account_type' => $account_type,
             'module_no' => $sel_module_nos,
             'send_work_department_id' => $send_work_department_id,
             'company_linkman' => $company_linkman,

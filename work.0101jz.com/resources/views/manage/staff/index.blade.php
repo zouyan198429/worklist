@@ -85,8 +85,9 @@
         var IMPORT_EXCEL_TEMPLATE_URL = "{{ url('manage/staff/import_template') }}";//导入EXCEL模版地址
         var IMPORT_EXCEL_URL = "{{ url('api/manage/staff/import') }}";//导入EXCEL地址
         var IMPORT_EXCEL_CLASS = "import_file";// 导入EXCEL的file的class
+        var ACCOUNT_TYPE = {{ $baseArr['account_type'] or 1 }};// 帐号来源类型1本系统维护；2第三方系统同步；
 
 	</script>
 	<script src="{{asset('js/common/list.js')}}"></script>
-	<script src="{{ asset('js/manage/lanmu/staff_index.js') }}"  type="text/javascript"></script>
+	<script src="{{ asset('js/manage/lanmu/staff_index.js') }}?1"  type="text/javascript"></script>
 @endpush

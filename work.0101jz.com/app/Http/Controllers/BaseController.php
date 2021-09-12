@@ -109,6 +109,9 @@ class BaseController extends Controller
 
         $send_work_department_id = $userInfo['staff_company']['send_work_department_id'] ?? 0;// 接线部门id
         $this->reDataArr['baseArr']['send_work_department_id'] = $send_work_department_id;
+
+        $account_type = $userInfo['staff_company']['account_type'] ?? 0;// 帐号来源类型1本系统维护；2第三方系统同步；
+        $this->reDataArr['baseArr']['account_type'] = $account_type;
     }
 
     /** 使用

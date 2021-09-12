@@ -78,5 +78,5 @@
         const SAVE_URL = "{{ url('api/admin/lore/ajax_save') }}";// ajax保存记录地址
         const LIST_URL = "{{url('admin/lore')}}";//保存成功后跳转到的地址
 	</script>
-	<script src="{{ asset('/js/admin/lanmu/lore_edit.js') }}"  type="text/javascript"></script>
+	<script src="{{ asset('/js/admin/lanmu/lore_edit.js') }}?1"  type="text/javascript"></script>
 @endpush
