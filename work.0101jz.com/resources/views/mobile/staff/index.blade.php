@@ -22,7 +22,7 @@
 		</div>
 		<section class="wrap" id="study" >
 			@if(isset($webType) && $webType == 2)
-			<div class="myachieve">
+			<div class="myachieve"  @if( isset($baseArr ['module_no']) && ($baseArr ['module_no'] & 8) != 8) style="display: none;" @endif>
 				@foreach ($sumStatus as $k=>$v)
 					@if(in_array($k,$ajaxSumStatus))
 					<dl>

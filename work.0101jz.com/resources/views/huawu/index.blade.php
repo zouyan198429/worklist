@@ -9,7 +9,7 @@
 
 	<div id="crumb"><i class="fa fa-reorder fa-fw" aria-hidden="true"></i> 首页</div>
 	@if(isset($webType) && $webType == 2)
-	<div class="mm">
+	<div class="mm"  @if( isset($baseArr ['module_no']) && ($baseArr ['module_no'] & 8) != 8) style="display: none;" @endif>
 		<h2>信息总揽</h2>
 		<div class="row" >
 			@foreach ($status as $k=>$txt)
@@ -30,7 +30,6 @@
 
 
 	</div>
-
 	<div class="mm">
 		<h3>最新公告</h3>
 		<div class="row" >

@@ -5,7 +5,7 @@
             <li>
                 <div class="link"><a href="{{ url('admin') }}"><i class="fa fa-home"></i>首页</a></div>
             </li>
-            @if( (isset($webType) && $webType == 2) || (isset($baseArr['module_no']) && ($baseArr['module_no'] & 8) == 8))
+            @if( (isset($webType) && $webType == 2) && (isset($baseArr['module_no']) && ($baseArr['module_no'] & 8) == 8))
             <li>
                 <div class="link"><a href="{{ url('admin/work') }}"  ><i class="fa fa-check-square"></i>工单列表</a></div>
             </li>
@@ -15,7 +15,7 @@
                 <div class="link"><a href="{{ url('admin/problem') }}"  ><i class="fa fa-file-text-o "></i>回馈问题</a></div>
             </li>
             @endif
-            @if( (isset($webType) && $webType == 2) || (isset($baseArr['module_no']) && ($baseArr['module_no'] & 8) == 8))
+            @if( (isset($webType) && $webType == 2) && (isset($baseArr['module_no']) && ($baseArr['module_no'] & 8) == 8))
             <li>
                 <div class="link"><i class="fa fa-address-card-o"></i><a href="{{ url('admin/customer') }}">客户管理</a></div>
             </li>
@@ -60,7 +60,7 @@
                     @endif
                     <li><a href="{{ url('admin/department') }}">部门管理</a></li>
                     <li><a href="{{ url('admin/position') }}">职位</a></li>
-                    @if( (isset($webType) && $webType == 2)  || (isset($baseArr['module_no']) && ($baseArr['module_no'] & 8) == 8) )
+                    @if( (isset($webType) && $webType == 2)  && (isset($baseArr['module_no']) && ($baseArr['module_no'] & 8) == 8) )
                     <li><a href="{{ url('admin/customer_type') }}">客户分类</a></li>
                     <li><a href="{{ url('admin/work_caller_type') }}">来电分类</a></li>
                     <li><a href="{{ url('admin/work_type') }}">工单分类</a></li>

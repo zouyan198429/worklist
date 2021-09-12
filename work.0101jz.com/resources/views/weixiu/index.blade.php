@@ -8,19 +8,19 @@
 @section('content')
 	<div id="crumb"><i class="fa fa-reorder fa-fw" aria-hidden="true"></i> 首页</div>
 	@if(isset($webType) && $webType == 2)
-	<div class="mm">
-		<h2>信息总揽</h2>
-		<div class="row" >
-			@foreach ($status as $k=>$txt)
-				<div class="col-sm">
-					@if(in_array($k,$countStatus))
-						<p class="layui-badge status_count_{{ $k }}" data-old_count="0">0</p>
-					@endif
-					<h4>{{ $txt }}</h4>
-				</div>
-			@endforeach
-		</div>
-	</div>
+    <div class="mm"  @if( isset($baseArr ['module_no']) && ($baseArr ['module_no'] & 8) != 8) style="display: none;" @endif>
+        <h2>信息总揽</h2>
+        <div class="row" >
+            @foreach ($status as $k=>$txt)
+                <div class="col-sm">
+                    @if(in_array($k,$countStatus))
+                        <p class="layui-badge status_count_{{ $k }}" data-old_count="0">0</p>
+                    @endif
+                    <h4>{{ $txt }}</h4>
+                </div>
+            @endforeach
+        </div>
+    </div>
 	<div class="mm">
 
 		<h3>最新公告</h3>

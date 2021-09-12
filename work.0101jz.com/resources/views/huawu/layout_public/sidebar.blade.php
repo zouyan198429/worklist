@@ -5,7 +5,7 @@
             <li>
                 <a href="{{ url('huawu') }}"><i class="fa fa-home fa-fw" aria-hidden="true"></i> 首页</a>
             </li>
-            @if( (isset($webType) && $webType == 2) || (isset($baseArr['module_no']) && ($baseArr['module_no'] & 8) == 8))
+            @if( (isset($webType) && $webType == 2) && (isset($baseArr['module_no']) && ($baseArr['module_no'] & 8) == 8))
             <li>
                 <a href="{{ url('huawu/work/add/0') }}">
                     <i class="fa fa-phone-square fa-fw" aria-hidden="true"></i>
