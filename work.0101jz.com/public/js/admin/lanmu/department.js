@@ -1,3 +1,11 @@
+
+// 是否显示账号操作
+function hasShowOperate(){
+    if(ACCOUNT_TYPE == 2){
+        return false;
+    }
+    return true;
+}
 (function() {
     document.write("");
     document.write("<!-- 前端模板部分 -->");
@@ -12,12 +20,14 @@
     document.write("        <td><%=item.group_name%><\/td>");
     document.write("        <td><%=item.sort_num%><\/td>");
     document.write("        <td>");
+    document.write("            <%if( hasShowOperate()){%>");
     document.write("            <a href=\"javascript:void(0);\" class=\"btn btn-mini btn-info\" onclick=\"action.edit(<%=item.id%>)\">");
     document.write("                <i class=\"ace-icon fa fa-pencil bigger-60\"> 编辑<\/i>");
     document.write("            <\/a>");
     document.write("            <a href=\"javascript:void(0);\" class=\"btn btn-mini btn-info\" onclick=\"action.del(<%=item.id%>)\">");
     document.write("                <i class=\"ace-icon fa fa-trash-o bigger-60\"> 删除<\/i>");
     document.write("            <\/a>");
+    document.write("                <%}%>");
     document.write("        <\/td>");
     document.write("    <\/tr>");
     document.write("");
