@@ -58,8 +58,10 @@
                     @if(isset($baseArr['company_id']) && $baseArr['company_id'] == 1)
                     <li><a href="{{ url('admin/company') }}">企业管理</a></li>
                     @endif
+                    @if(isset($baseArr['account_type']) && $baseArr['account_type'] != 2)
                     <li><a href="{{ url('admin/department') }}">部门管理</a></li>
                     <li><a href="{{ url('admin/position') }}">职位</a></li>
+                    @endif
                     @if( (isset($webType) && $webType == 2)  && (isset($baseArr['module_no']) && ($baseArr['module_no'] & 8) == 8) )
                     <li><a href="{{ url('admin/customer_type') }}">客户分类</a></li>
                     <li><a href="{{ url('admin/work_caller_type') }}">来电分类</a></li>
@@ -69,7 +71,9 @@
                     <li><a href="{{ url('admin/problem_type') }}">反馈分类</a></li>
                     @endif
                     @if(isset($webType) && $webType == 2)
+                    @if( isset($baseArr['module_no']) && ($baseArr['module_no'] & 8) == 8)
                     <li><a href="{{ url('admin/tags') }}">业务标签</a></li>
+                    @endif
                     @endif
                     @if( isset($baseArr['module_no']) && ($baseArr['module_no'] & 8) == 8)
                     <li><a href="{{ url('admin/area') }}">区县划分</a></li>

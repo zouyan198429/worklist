@@ -19,7 +19,9 @@
 					<select  name="system_id" style="font-size:14px; width: 100%; margin-bottom:25px; height:38px;"  >
 						<option value="">请选择登录平台</option>
 						@foreach ($system_kv as $k=>$txt)
+                            @if($k != 3 || ($k == 3 && isset($baseArr['module_no']) && ($baseArr['module_no'] & 8) != 8))
 							<option value="{{ $k }}"  @if(isset($defaultSystem) && $defaultSystem == $k) selected @endif >{{ $txt }}</option>
+                            @endif
 						@endforeach
 					</select>
 				</li>
