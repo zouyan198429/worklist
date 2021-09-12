@@ -43,9 +43,11 @@
 			{{--<button class="btn btn-danger  btn-xs batch_del"  onclick="action.batchDel(this)">批量删除</button>--}}
 			<button class="btn btn-success  btn-xs export_excel"  onclick="action.batchExportExcel(this)" >导出[按条件]</button>
 			<button class="btn btn-success  btn-xs export_excel"  onclick="action.exportExcel(this)" >导出[勾选]</button>
+            @if(isset($baseArr['account_type']) && $baseArr['account_type'] != 2)
 			<button class="btn btn-success  btn-xs import_excel"  onclick="action.importExcelTemplate(this)">导入模版[EXCEL]</button>
 			<button class="btn btn-success  btn-xs import_excel"  onclick="action.importExcel(this)">导入员工</button>
 			<div style="display:none;" ><input type="file" class="import_file img_input"></div>{{--导入file对象--}}
+            @endif
 		</div>
 
 		<table  id="dynamic-table"  class="table2">
