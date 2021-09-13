@@ -220,11 +220,11 @@ class CompanyStaff extends BaseBusiness
         $resultDatas = CommonBusiness::ajaxGetList($modelName, $pageParams, 0,$queryParams ,$relations, 1);
 
         $dataList = $resultDatas['dataList'] ?? [];
-        if(count($dataList) > 1) throws('工号有重复，请联系管理员修改重复工号！');
+        if(count($dataList) > 1) throws('帐号有重复，请联系管理员修改重复帐号！');
         $userInfo = $dataList[0] ?? [];
         if(true){
             if(empty($dataList) || count($dataList) <= 0 || empty($userInfo)){
-                throws('工号或密码有误！');
+                throws('帐号或密码有误！');
                 // return ajaxDataArr(0, null, '用户名或密码有误！');
             }
         }else{
@@ -577,7 +577,7 @@ class CompanyStaff extends BaseBusiness
         $result['data_list'] = $data_list;
         // 导出功能
         if($isExport == 1){
-            $headArr = ['work_num'=>'工号', 'department_name'=>'县区', 'group_name'=>'归属营业厅或片区', 'real_name'=>'姓名或渠道名称', 'sex_text'=>'性别', 'position_name'=>'职务', 'mobile'=>'手机号'];
+            $headArr = ['work_num'=>'帐号', 'department_name'=>'县区', 'group_name'=>'归属营业厅或片区', 'real_name'=>'姓名或渠道名称', 'sex_text'=>'性别', 'position_name'=>'职务', 'mobile'=>'手机号'];
             ImportExport::export('','员工列表',$data_list,1, $headArr, 0, ['sheet_title' => '员工列表']);
             die;
         }
@@ -695,7 +695,7 @@ class CompanyStaff extends BaseBusiness
      */
     public static function importTemplate(Request $request, Controller $controller)
     {
-        $headArr = ['work_num'=>'工号', 'department_name'=>'县区', 'group_name'=>'归属营业厅或片区', 'real_name'=>'姓名或渠道名称', 'sex_text'=>'性别', 'position_name'=>'职务', 'mobile'=>'手机号'];
+        $headArr = ['work_num'=>'帐号', 'department_name'=>'县区', 'group_name'=>'归属营业厅或片区', 'real_name'=>'姓名或渠道名称', 'sex_text'=>'性别', 'position_name'=>'职务', 'mobile'=>'手机号'];
         $data_list = [];
         ImportExport::export('','员工导入模版',$data_list,1, $headArr, 0, ['sheet_title' => '员工导入模版']);
         die;
@@ -759,15 +759,15 @@ class CompanyStaff extends BaseBusiness
         $admin_username = $saveData['admin_username'] ?? '';
         // 新加时
         if( $id <= 0 && (empty($work_num) || empty($mobile) || empty($admin_username))){
-            throws('工号、手机号、用户名不能为空！');
+            throws('帐号、手机号、用户名不能为空！');
         }
 
         if(isset($saveData['work_num']) && empty($saveData['work_num'])  ){
-            throws('工号不能为空！');
+            throws('帐号不能为空！');
         }
 
         if(isset($saveData['mobile']) && empty($saveData['mobile'])  ){
-            throws('工号不能为空！');
+            throws('帐号不能为空！');
         }
 
         if(isset($saveData['admin_username']) && empty($saveData['admin_username'])  ){
@@ -776,7 +776,7 @@ class CompanyStaff extends BaseBusiness
 
         //判断员工号
         if( isset($saveData['work_num']) && self::judgeFieldExist($request, $controller, $id ,"work_num", $saveData['work_num'], $notLog)){
-            throws('工号已存在！');
+            throws('工帐号已存在！');
         }
 
         // 查询手机号是否已经有企业使用--账号表里查
@@ -998,7 +998,7 @@ class CompanyStaff extends BaseBusiness
             '归属营业厅或片区' => 'group',
             '姓名或渠道名称' => 'channel',
             //'姓名' => 'real_name',
-            '工号' => 'work_num',
+            '帐号' => 'work_num',
             '职务' => 'position',
             '手机号' => 'mobile',
             '性别' => 'sex',

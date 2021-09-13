@@ -17,7 +17,7 @@
 				<p>考试时间：2015-02-25</p>
 			</div>
 			<div class="search">
-				<input type="text" value="输入工号" ><button>搜索</button>
+				<input type="text" value="输入帐号" ><button>搜索</button>
 			</div>
 
 			<div class="bd" >

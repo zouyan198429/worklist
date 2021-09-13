@@ -126,7 +126,7 @@ class CompanyStaffController extends CompController
                 continue;
             }
             if (empty($mobile) || empty($work_num)) {
-                throws('手机号或工号不能为空');
+                throws('手机号或帐号不能为空');
             }
             if(empty($department) ){
                 throws('县区不能为空!');
@@ -166,7 +166,7 @@ class CompanyStaffController extends CompController
             $mobile = $info['mobile'] ?? '';// 手机号
             $sex = $info['sex'] ?? '';// 性别
             if(empty($mobile) || empty($work_num)){
-                throws('手机号或工号不能为空');
+                throws('手机号或帐号不能为空');
             }
             if(empty($department) ){
                 throws('县区不能为空!');

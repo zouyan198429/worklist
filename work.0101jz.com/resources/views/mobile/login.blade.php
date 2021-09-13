@@ -23,7 +23,7 @@
             <h3>{{ $company_info['company_name'] or '' }}</h3>
             <input type="hidden"  name="company_id"   value="{{ $company_info['id'] or '' }}" />
 			<ul>
-				<li><input type="text"  name="admin_username"  placeholder="工号" /></li>
+				<li><input type="text"  name="admin_username"  placeholder="帐号" /></li>
 				<li><input type="password" name="admin_password"   placeholder="密码" /></li>
 				<li><button type="submit" id="submitBtn"  {{-- onClick="window.open('{{ url('m') }}')" --}} >登录</button></li>
 			</ul>

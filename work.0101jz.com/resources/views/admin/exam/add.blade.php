@@ -83,7 +83,7 @@
 									<input type="hidden" name="subject_ids[]" value="1502"/>
 									<input type="hidden" name="subject_history_ids[]" value="17"/>
 								</th>
-								<th>工号</th>
+								<th>帐号</th>
 								<th>部门/班组</th>
 								<th>姓名</th>
 								<th>性别</th>
