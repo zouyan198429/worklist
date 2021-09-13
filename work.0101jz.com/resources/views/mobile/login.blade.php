@@ -12,12 +12,14 @@
 <body>
 <div class="page" id="login">
 	<div id="loginheader">
-		<img src="http://pic.0101jz.com/logo-ydapp3.png" alt="移动工单管理系统">
+        @if(isset($company_info['id']) && $company_info['id'] == 1)
+		<img src="{{asset('images/logo-ydapp3.png')}}" alt="移动工单管理系统">
+        @endif
  	</div>
 
 	<form action="#"  method="post"  id="addForm" >
 	<section id="loginbox" >
-			<h1>员工登录</h1>
+			<h1>用户登录</h1>
             <h3>{{ $company_info['company_name'] or '' }}</h3>
             <input type="hidden"  name="company_id"   value="{{ $company_info['id'] or '' }}" />
 			<ul>
