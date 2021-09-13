@@ -13,7 +13,7 @@
 <div class="page" id="login">
 	<div id="loginheader">
         @if(isset($company_info['id']) && $company_info['id'] == 1)
-		<img src="{{asset('images/logo-ydapp3.png')}}" alt="移动工单管理系统">
+		<img src="{{asset('staticmobile/images/logo-ydapp3.png')}}" alt="移动工单管理系统">
         @endif
  	</div>
 
