@@ -62,6 +62,7 @@
 						<div class="c"></div>
 					</li>
                     @endif
+                    @if( isset($baseArr ['module_no']) && ($baseArr ['module_no'] & (8 | 4)) > 0)
 					<li>
 						<a href="{{ url('m/help') }}">
 							<span>帮助中心</span>
@@ -69,6 +70,7 @@
 						</a>
 						<div class="c"></div>
 					</li>
+                    @endif
 					@if(isset($webType) && $webType == 2)
 					<li>
 						<a href="{{ url('m/notice') }}">
